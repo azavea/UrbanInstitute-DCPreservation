@@ -1,1 +1,1 @@
-﻿<%@ WebHandler Language="C#" Class="Furman.PDP.Handlers.NychanisMetadataHandler" %>
+﻿<%@ WebHandler Language="C#" Class="Urban.DCP.Handlers.NychanisMetadataHandler" %>

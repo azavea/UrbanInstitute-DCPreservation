@@ -4,7 +4,7 @@ using Azavea.Open.Common;
 using Azavea.Open.DAO.Criteria;
 using log4net;
 
-namespace Furman.PDP.Data
+namespace Urban.DCP.Data
 {
     /// <summary>
     /// Compares dictionaries given a list of SortOrders of the dictionary keys and directions

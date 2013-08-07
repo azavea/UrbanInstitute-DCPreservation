@@ -1,4 +1,4 @@
-namespace Furman.PDP.Data.PDB
+namespace Urban.DCP.Data.PDB
 {
     /// <summary>
     /// The secondary table has a fixed layout, it is a key-value table.

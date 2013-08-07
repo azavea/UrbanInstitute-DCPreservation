@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Furman.PDP.Data.PDB
+namespace Urban.DCP.Data.PDB
 {
     /// <summary>
     /// A subcategory consists of a display name, a sort order, and a group of attributes.

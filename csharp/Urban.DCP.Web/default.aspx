@@ -1,7 +1,7 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" MasterPageFile="~/masters/Default.Master" Inherits="Furman.PDP.Web.Default" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" MasterPageFile="~/masters/Default.Master" Inherits="Urban.DCP.Web.Default" %>
 <%@ Import Namespace="Azavea.Open.Common"%>
 <%@ Import Namespace="Azavea.Web"%>
-<%@ MasterType TypeName="Furman.PDP.Web.masters.Default" %>
+<%@ MasterType TypeName="Urban.DCP.Web.masters.Default" %>
 
 <asp:Content ID="Script1" ContentPlaceHolderID="executeScriptPlaceHolder" runat="server">
     <script type="text/javascript">

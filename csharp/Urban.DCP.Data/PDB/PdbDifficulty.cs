@@ -1,4 +1,4 @@
-namespace Furman.PDP.Data.PDB
+namespace Urban.DCP.Data.PDB
 {
     /// <summary>
     /// Which view (advanced or normal) will the attribute be shown in.

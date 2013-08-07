@@ -1,6 +1,6 @@
 ﻿<%@ Import Namespace="Azavea.Web"%>
 <%@ Import Namespace="Azavea.Open.Common"%>
-<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Default.master.cs" Inherits="Furman.PDP.Web.masters.Default" %>
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Default.master.cs" Inherits="Urban.DCP.Web.masters.Default" %>
 <!DOCTYPE html>
 
 <html>
@@ -14,7 +14,7 @@
 <script type="text/javascript">
 
   var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-18996382-2']);
+  _gaq.push(['_setAccount', 'XXXXX']);
   _gaq.push(['_trackPageview']);
 
   (function() {

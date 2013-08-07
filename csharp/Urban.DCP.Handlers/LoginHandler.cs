@@ -7,9 +7,9 @@ using Azavea.Open.Common;
 using Azavea.Utilities.Common;
 using Azavea.Web;
 using Azavea.Web.Handler;
-using Furman.PDP.Data;
+using Urban.DCP.Data;
 
-namespace Furman.PDP.Handlers
+namespace Urban.DCP.Handlers
 {
     public class LoginHandler : BaseHandler
     {

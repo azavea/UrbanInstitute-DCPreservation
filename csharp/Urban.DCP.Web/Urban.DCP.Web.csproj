@@ -10,8 +10,8 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Furman.PDP.Web</RootNamespace>
-    <AssemblyName>Furman.PDP.Web</AssemblyName>
+    <RootNamespace>Urban.DCP.Web</RootNamespace>
+    <AssemblyName>Urban.DCP.Web</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -236,17 +236,17 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Urban.DCP.Data\Urban.DCP.Data.csproj">
-      <Project>{E17683CE-0F9E-4F46-9FD9-B3B18E8F9A44}</Project>
-      <Name>Furman.PDP.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Urban.DCP.Handlers\Urban.DCP.Handlers.csproj">
-      <Project>{6AF0AB80-ACB1-4101-BB79-329E2F163421}</Project>
-      <Name>Furman.PDP.Handlers</Name>
-    </ProjectReference>
+    <Folder Include="clientsrc\pdp\css\images\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="clientsrc\pdp\css\images\" />
+    <ProjectReference Include="..\Urban.DCP.Data\Urban.DCP.Data.csproj">
+      <Project>{e17683ce-0f9e-4f46-9fd9-b3b18e8f9a44}</Project>
+      <Name>Urban.DCP.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Urban.DCP.Handlers\Urban.DCP.Handlers.csproj">
+      <Project>{6af0ab80-acb1-4101-bb79-329e2f163421}</Project>
+      <Name>Urban.DCP.Handlers</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

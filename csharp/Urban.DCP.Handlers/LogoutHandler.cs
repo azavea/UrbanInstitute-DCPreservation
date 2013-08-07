@@ -2,7 +2,7 @@
 using System.Web.Security;
 using Azavea.Web.Handler;
 
-namespace Furman.PDP.Handlers
+namespace Urban.DCP.Handlers
 {
     public class LogoutHandler: BaseHandler
     {

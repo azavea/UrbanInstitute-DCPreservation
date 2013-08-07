@@ -4,10 +4,10 @@ using System.Text;
 using Azavea.Open.Common;
 using Azavea.Open.DAO;
 using Azavea.Open.DAO.Criteria;
-using Furman.PDP.Data.PDB;
+using Urban.DCP.Data.PDB;
 using NUnit.Framework;
 
-namespace Furman.PDP.Data.Tests
+namespace Urban.DCP.Data.Tests
 {
     /// <exclude/>
     [TestFixture]

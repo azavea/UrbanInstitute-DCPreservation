@@ -7,7 +7,7 @@ using System.Web;
 using System.Web.Security;
 using System.Web.SessionState;
 
-namespace Furman.PDP.Web
+namespace Urban.DCP.Web
 {
     public class Global : System.Web.HttpApplication
     {

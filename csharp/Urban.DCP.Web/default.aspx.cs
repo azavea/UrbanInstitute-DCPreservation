@@ -1,7 +1,7 @@
 ﻿using System;
 using Azavea.Web.Page;
 
-namespace Furman.PDP.Web
+namespace Urban.DCP.Web
 {
     public partial class Default : BasePage
     {
@@ -14,9 +14,7 @@ namespace Furman.PDP.Web
             Master.RegisterCssFile("client/OpenLayers-2.11/theme/default/google.css");
             Master.RegisterCssFile("client/ktable/css/jquery.ktable.colsizable.css");
             Master.RegisterCssFile("client/css/pdp-app.css", true);
-            Master.RegisterCssFile("client/feedbacker/css/feedbacker-min.css");
-            Master.RegisterCssFile("http://www.furmancenter.org/tweaks/production.min.css");
-
+            
             // IE css only
             Master.RegisterCssFile("client/css/pdp-ie.css", "IE", true);
             Master.RegisterCssFile("client/css/pdp-ie-lte7.css", "lte IE 7", true);
@@ -38,12 +36,6 @@ namespace Furman.PDP.Web
             // Application js
             Master.RegisterJavascriptFile("client/pdp.config.js", false);
             Master.RegisterJavascriptFile("client/pdp-app.js", true);
-
-            // Feedbacker js
-            Master.RegisterJavascriptFile("client/feedbacker/feedbacker-min.js");
-            Master.RegisterJavascriptFile("http://www.furmancenter.org/tweaks/production.min.js");
-
-
         }
     }
 }

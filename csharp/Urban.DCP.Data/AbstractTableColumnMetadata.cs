@@ -1,4 +1,4 @@
-namespace Furman.PDP.Data
+namespace Urban.DCP.Data
 {
     /// <summary>
     /// Base class for all the objects returned as metadata for table columns/attributes.

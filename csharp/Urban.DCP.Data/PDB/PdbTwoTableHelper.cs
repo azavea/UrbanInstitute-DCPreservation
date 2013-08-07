@@ -14,7 +14,7 @@ using DictionaryDao = Azavea.Database.DictionaryDao;
 using System.IO;
 using Reprojector=Azavea.Open.Reprojection.Reprojector;
 
-namespace Furman.PDP.Data.PDB
+namespace Urban.DCP.Data.PDB
 {
     /// <summary>
     /// Reads data from a primary and secondary table and returns it as though it were

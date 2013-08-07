@@ -1,6 +1,6 @@
 using Azavea.Open.Common;
 
-namespace Furman.PDP.Data.PDB
+namespace Urban.DCP.Data.PDB
 {
     /// <summary>
     /// Represents a single attribute from the PDP data, that lives in

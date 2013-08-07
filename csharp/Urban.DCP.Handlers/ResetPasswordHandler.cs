@@ -7,10 +7,10 @@ using Azavea.Utilities.Common;
 using Azavea.Web;
 using Azavea.Web.Exceptions;
 using Azavea.Web.Handler;
-using Furman.PDP.Data;
+using Urban.DCP.Data;
 using System.Net.Mail;
 
-namespace Furman.PDP.Handlers
+namespace Urban.DCP.Handlers
 {
     public class ResetPasswordHandler : BaseHandler
     {

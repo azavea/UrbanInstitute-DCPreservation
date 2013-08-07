@@ -1,6 +1,6 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="profile.aspx.cs" MasterPageFile="~/masters/Default.Master" Inherits="Furman.PDP.Web.user.Profile" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="profile.aspx.cs" MasterPageFile="~/masters/Default.Master" Inherits="Urban.DCP.Web.user.Profile" %>
 <%@ Import Namespace="Azavea.Web"%>
-<%@ MasterType TypeName="Furman.PDP.Web.masters.Default" %>
+<%@ MasterType TypeName="Urban.DCP.Web.masters.Default" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="contentPlaceHolder" runat="server">
     <h2 id="pdp-profile-header">Your Profile</h2>

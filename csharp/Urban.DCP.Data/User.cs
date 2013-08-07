@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Furman.PDP.Data
+namespace Urban.DCP.Data
 {
     /// <summary>
     /// Represents a user from the PDP users table.

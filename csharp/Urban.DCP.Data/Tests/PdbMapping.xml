@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" default-lazy="false">
-  <class name="Furman.PDP.Data.PDB.PdbAttribute,Furman.PDP.Data" table="PDP_Attributes">
+  <class name="Urban.DCP.Data.PDB.PdbAttribute,Urban.DCP.Data" table="PDP_Attributes">
     <property name="EntityType" column="Entity" type="string"/>
     <property name="Name" column="Attribute" />
     <property name="AllowFiltering" column="IsFilter" />
@@ -25,12 +25,12 @@
     <property name="LongViewOrder" column="LongViewOrder" />
     <property name="Difficulty" column="Difficulty" type="string"/>
   </class>
-  <class name="Furman.PDP.Data.PDB.PdbAttributeValue,Furman.PDP.Data" table="PDP_Attribute_Values">
+  <class name="Urban.DCP.Data.PDB.PdbAttributeValue,Urban.DCP.Data" table="PDP_Attribute_Values">
     <property name="AttributeName" column="Attribute" />
     <property name="Value" column="AttributeValue" />
     <property name="Group" column="AttributeGrouping" />
   </class>
-  <class name="Furman.PDP.Data.User,Furman.PDP.Data" table="Users">
+  <class name="Urban.DCP.Data.User,Urban.DCP.Data" table="Users">
 	<id name="Id" column="Id">
 		<generator class="native" />
 	</id>

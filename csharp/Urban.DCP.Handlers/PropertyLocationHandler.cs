@@ -3,10 +3,10 @@ using Azavea.Open.Common;
 using Azavea.Open.DAO.Criteria;
 using Azavea.Web;
 using Azavea.Web.Handler;
-using Furman.PDP.Data;
-using Furman.PDP.Data.PDB;
+using Urban.DCP.Data;
+using Urban.DCP.Data.PDB;
 
-namespace Furman.PDP.Handlers
+namespace Urban.DCP.Handlers
 {
     public class PropertyLocationHandler : BaseHandler
     {

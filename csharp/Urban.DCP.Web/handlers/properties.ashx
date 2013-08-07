@@ -1,1 +1,1 @@
-﻿<%@ WebHandler Language="C#" Class="Furman.PDP.Handlers.PropertiesHandler" %>
+﻿<%@ WebHandler Language="C#" Class="Urban.DCP.Handlers.PropertiesHandler" %>

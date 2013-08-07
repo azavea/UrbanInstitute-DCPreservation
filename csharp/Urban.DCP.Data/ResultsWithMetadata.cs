@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Furman.PDP.Data
+namespace Urban.DCP.Data
 {
     /// <summary>
     /// This class holds the results of a query plus the metadata about the attributes of those results.

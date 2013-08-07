@@ -8,8 +8,8 @@
     <ProjectGuid>{6AF0AB80-ACB1-4101-BB79-329E2F163421}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Furman.PDP.Handlers</RootNamespace>
-    <AssemblyName>Furman.PDP.Handlers</AssemblyName>
+    <RootNamespace>Urban.DCP.Handlers</RootNamespace>
+    <AssemblyName>Urban.DCP.Handlers</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
@@ -111,12 +111,6 @@
     <None Include="Tests\test.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Urban.DCP.Data\Urban.DCP.Data.csproj">
-      <Project>{E17683CE-0F9E-4F46-9FD9-B3B18E8F9A44}</Project>
-      <Name>Furman.PDP.Data</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>
       <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
@@ -127,6 +121,12 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Urban.DCP.Data\Urban.DCP.Data.csproj">
+      <Project>{e17683ce-0f9e-4f46-9fd9-b3b18e8f9a44}</Project>
+      <Name>Urban.DCP.Data</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

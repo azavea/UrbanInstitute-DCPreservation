@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Furman.PDP.Data
+namespace Urban.DCP.Data
 {
     public class UserResultMetadata
     {

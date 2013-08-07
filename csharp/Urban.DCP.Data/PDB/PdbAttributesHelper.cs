@@ -4,7 +4,7 @@ using Azavea.Open.Common;
 using Azavea.Open.Common.Collections;
 using Azavea.Open.DAO.Criteria;
 
-namespace Furman.PDP.Data.PDB
+namespace Urban.DCP.Data.PDB
 {
     /// <summary>
     /// This class handles reading the metadata tables about the Attributes in the PDB.

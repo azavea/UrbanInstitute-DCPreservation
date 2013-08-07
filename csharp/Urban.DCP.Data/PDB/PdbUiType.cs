@@ -1,4 +1,4 @@
-namespace Furman.PDP.Data.PDB
+namespace Urban.DCP.Data.PDB
 {
     /// <summary>
     /// Types of UI options for displaying/querying attributes.

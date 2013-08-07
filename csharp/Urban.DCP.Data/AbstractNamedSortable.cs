@@ -1,4 +1,4 @@
-namespace Furman.PDP.Data
+namespace Urban.DCP.Data
 {
     /// <summary>
     /// This adds a user-friendly name attribute, and overrides tostring to show it.

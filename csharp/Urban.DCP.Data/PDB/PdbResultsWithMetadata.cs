@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Azavea.Open.Common.Collections;
 
-namespace Furman.PDP.Data.PDB
+namespace Urban.DCP.Data.PDB
 {
     /// <summary>
     /// This class holds the results of a query plus the metadata about the attributes of those results.

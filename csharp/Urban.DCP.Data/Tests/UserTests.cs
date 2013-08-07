@@ -4,7 +4,7 @@ using System.IO;
 using Azavea.Utilities.Common;
 using NUnit.Framework;
 
-namespace Furman.PDP.Data.Tests
+namespace Urban.DCP.Data.Tests
 {
     /// <exclude/>
     [TestFixture]

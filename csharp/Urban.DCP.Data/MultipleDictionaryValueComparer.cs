@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Azavea.Open.DAO.Criteria;
 
-namespace Furman.PDP.Data
+namespace Urban.DCP.Data
 {
     /// <summary>
     /// Compares dictionaries given a list of SortOrders of the dictionary keys and directions

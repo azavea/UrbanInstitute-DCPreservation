@@ -1,6 +1,6 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="manage-users.aspx.cs" MasterPageFile="~/masters/Default.Master" Inherits="Furman.PDP.Web.admin.ManageUsers" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="manage-users.aspx.cs" MasterPageFile="~/masters/Default.Master" Inherits="Urban.DCP.Web.admin.ManageUsers" %>
 <%@ Import Namespace="Azavea.Web"%>
-<%@ MasterType TypeName="Furman.PDP.Web.masters.Default" %>
+<%@ MasterType TypeName="Urban.DCP.Web.masters.Default" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="contentPlaceHolder" runat="server">
      <h2 id="pdp-profile-header">User Administration</h2>

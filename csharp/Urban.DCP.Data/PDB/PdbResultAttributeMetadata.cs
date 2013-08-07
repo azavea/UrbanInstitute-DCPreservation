@@ -1,6 +1,6 @@
 using System;
 
-namespace Furman.PDP.Data.PDB
+namespace Urban.DCP.Data.PDB
 {
     /// <summary>
     /// The minimal metadata necessary for the UI to render a table column.

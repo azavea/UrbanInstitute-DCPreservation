@@ -8,8 +8,8 @@
     <ProjectGuid>{E17683CE-0F9E-4F46-9FD9-B3B18E8F9A44}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Furman.PDP.Data</RootNamespace>
-    <AssemblyName>Furman.PDP.Data</AssemblyName>
+    <RootNamespace>Urban.DCP.Data</RootNamespace>
+    <AssemblyName>Urban.DCP.Data</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>

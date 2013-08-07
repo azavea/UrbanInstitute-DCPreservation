@@ -6,10 +6,10 @@ using Azavea.Web;
 using Azavea.Web.Exceptions;
 using Azavea.Web.Handler;
 using Azavea.Open.Common;
-using Furman.PDP.Data;
+using Urban.DCP.Data;
 using Azavea.Utilities.Common;
 
-namespace Furman.PDP.Handlers
+namespace Urban.DCP.Handlers
 {
     public class UsersHandler : BaseHandler
     {

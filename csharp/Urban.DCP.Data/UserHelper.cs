@@ -6,7 +6,7 @@ using Azavea.Open.Common;
 using Azavea.Open.DAO.Criteria;
 using log4net;
 
-namespace Furman.PDP.Data
+namespace Urban.DCP.Data
 {
     /// <summary>
     /// Utility class for doing things like user management and getting info for the current

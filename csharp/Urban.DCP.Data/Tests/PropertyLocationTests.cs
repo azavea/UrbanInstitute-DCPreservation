@@ -1,9 +1,9 @@
 ﻿using System;
 using Azavea.Open.Common;
-using Furman.PDP.Data.PDB;
+using Urban.DCP.Data.PDB;
 using NUnit.Framework;
 
-namespace Furman.PDP.Data.Tests
+namespace Urban.DCP.Data.Tests
 {
     /// <exclude/>
     [TestFixture]

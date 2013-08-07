@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Furman.PDP.Data")]
+[assembly: AssemblyTitle("Urban.DCP.Data")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Avencia")]
-[assembly: AssemblyProduct("Furman.PDP.Data")]
+[assembly: AssemblyProduct("Urban.DCP.Data")]
 [assembly: AssemblyCopyright("Copyright © Avencia 2010")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
