@@ -1,0 +1,104 @@
+/* General styles */
+.feedbacker-textinput { width:90%;border:1px solid #aaa;font-size:0.9em;padding:4px;display:block; }
+.feedbacker-listinput { border:1px solid #aaa;font-size:0.9em;padding:4px;display:block; }
+.feedbacker-biginput { height:80px;font-family:inherit; }
+.feedbacker-button { cursor:pointer;padding:2px 4px;background-color:#f3f3f3;border-width:1px;border-style:solid;border-color:#bbb #777 #777 #bbb;font-size:0.9em;font-weight:bold;margin-right:8px;border-radius:4px;-moz-border-radius:4px;-webkit-border-radius:4px; }
+.feedbacker-button-hover { border-color:#777 #bbb #bbb #777;background-color:#fff; }
+.feedbacker-required { color:#a33;font-size:0.9em;margin-left:4px; }
+
+.feedbacker-list { list-style:none;margin:0;padding:0; }
+
+/* Feedback form styles */
+.feedbacker-float { position:absolute;z-index:1100;overflow:hidden; }
+.feedbacker-floatTopLeft { top:0;left:0; }
+.feedbacker-floatTopRight { top:0;right:0; }
+.feedbacker-floatTopCenter { top:0;left:50%;margin-left:-175px; }
+.feedbacker-floatTopFull { top:0;left:0;right:0; }
+.feedbacker-floatRight { top:20px;right:0;padding:0 0 4px 4px;width:350px; }
+.feedbacker-floatLeft { left:0;padding:4px 4px 1px 1px;width:350px; }
+
+    .feedbacker-floatTopLeft .feedbacker-content-shadow { box-shadow:1px 1px 2px #999;-moz-box-shadow:1px 1px 2px #999;-webkit-box-shadow:1px 1px 2px #999; }
+    .feedbacker-floatTopRight .feedbacker-content-shadow { box-shadow:-1px 1px 2px #999;-moz-box-shadow:-1px 1px 2px #999;-webkit-box-shadow:-1px 1px 2px #999; }
+    .feedbacker-floatTopCenter .feedbacker-content-shadow { box-shadow:1px 1px 2px #999;-moz-box-shadow:1px 1px 2px #999;-webkit-box-shadow:1px 1px 2px #999; }
+    .feedbacker-floatTopFull .feedbacker-content-shadow { box-shadow:0 2px 4px #666;-moz-box-shadow:0 2px 4px #666;-webkit-box-shadow:0 2px 4px #666;overflow:auto; }
+    .feedbacker-floatRight .feedbacker-content-shadow { box-shadow:-2px 2px 4px #666;-moz-box-shadow:-2px 2px 4px #666;-webkit-box-shadow:-2px 2px 4px #666;overflow:auto; }
+    .feedbacker-floatLeft .feedbacker-content-shadow { box-shadow:2px 2px 4px #666;-moz-box-shadow:2px 2px 4px #666;-webkit-box-shadow:2px 2px 4px #666;overflow:auto; }
+
+    .feedbacker-floatRight .feedbacker-openbutton-tab { background-color:transparent;position:absolute;top:16px;left:4px; }
+        .feedbacker-floatRight .feedbacker-openbutton-tab strong { display:block;font-weight:bold;margin:0 -1px 0 0;cursor:pointer;padding:6px 16px;border:1px solid #333;border-right:none; }
+        .feedbacker-floatRight .feedbacker-openbutton-tab strong { -moz-border-radius:8px 0 0 8px;-moz-box-shadow:-2px 2px 4px #666;-webkit-border-top-left-radius:8px;-webkit-border-bottom-left-radius:8px;-webkit-box-shadow:-2px 2px 4px #666; }
+    
+    .feedbacker-floatRight .feedbacker-openbutton-imgtab strong { background:url(images/feedbacker-tab-right.png) no-repeat;text-indent:-1000px;height:94px;width:26px;padding:0; }
+
+    .feedbacker-floatLeft .feedbacker-openbutton-tab { background-color:transparent;position:absolute;top:200px;right:4px; }
+        .feedbacker-floatLeft .feedbacker-openbutton-tab strong { display:block;font-weight:bold;margin:0 -1px 0 0;cursor:pointer;padding:6px 16px;border:1px solid #333;border-left:none; }
+        .feedbacker-floatLeft .feedbacker-openbutton-tab strong { -moz-border-radius:0 8px 8px 0;-moz-box-shadow:2px 2px 4px #666;-webkit-border-top-right-radius:8px;-webkit-border-bottom-right-radius:8px;-webkit-box-shadow:2px 2px 4px #666; }
+    
+    .feedbacker-floatLeft .feedbacker-openbutton-imgtab strong { background:url(images/feedbacker-tab-left.png) no-repeat;text-indent:-1000px;height:94px;width:26px;padding:0; }
+
+
+.feedbacker-content { font-size:0.9em;position:relative; }
+    .feedbacker-content ul { list-style:none;margin:0;padding:0; }
+
+.feedbacker-float .feedbacker-content { background-color:#fff; }
+.feedbacker-float-open .feedbacker-content { padding:8px;border:1px solid #aaa; }
+    .feedbacker-fieldlist { width:350px; }
+        .feedbacker-field { margin:6px 0 2px; }
+            .feedbacker-field label { cursor:pointer;font-weight:bold; }
+
+.feedbacker-buttons { white-space:nowrap;margin-top:2px; } /* attempts to prevent buttons from wrapping during animations */
+
+/* Admin styles */
+.feedbacker-admin-msgs { position:absolute;top:0;right:30%;left:30%;padding:8px;border:1px solid #aaa;background-color:#fff;z-index:7000; }
+
+    .feedbacker-admin-list-filters { font-size:0.9em;background-color:#ebebeb;border:1px solid #bbb;padding:4px 8px; }
+        .feedbacker-admin-list-filters ul { overflow:auto; }
+            .feedbacker-admin-list-filters li { float:left;margin-right:16px; }
+                .feedbacker-admin-list-filters label { font-weight:bold;display:block;font-size:0.9em;padding:2px 0; }
+
+    .feedbacker-admin-list-actions { margin:12px 0 0 4px; }
+        .feedbacker-admin-list-count { }
+
+.feedbacker-adminlist table { clear:both;margin-top:4px;width:100%;border-collapse:collapse; }
+    .feedbacker-adminlist th { font-size:1.1em;padding:4px 8px;text-align:left; }
+        .feedbacker-adminlist th a { color:#777; }
+        .feedbacker-adminlist th a:hover { color:#444; }
+    .feedbacker-adminlist td { cursor:pointer;padding:4px 8px; }
+    .feedbacker-adminlist tr.new td { font-weight:bold; }
+    .feedbacker-adminlist tr.alt td { background-color:#e3e3e3; }
+    .feedbacker-adminlist tr:hover td { background-color:#f0f0f0; }
+        .feedbacker-adminlist th .sajara-feedback-admin-sorted { /* what to do here? */ }
+
+.feedbacker-admin-list-more { margin-top:8px; }
+    .feedbacker-admin-list-more .feedbacker-button { padding:5px 15px;background-color:#f3f3f3;border-color:#bbb #777 #777 #bbb;-moz-border-radius:6px;-webkit-border-radius:6px; }
+    .feedbacker-admin-list-more .feedbacker-button:hover { border-color:#777 #bbb #bbb #777;background-color:#fff; }
+
+.feedbacker-admin-detail { position:absolute;top:10%;right:10%;bottom:10%;left:10%;z-index:200;background-color:#fff;border:1px solid #777;padding:16px; }
+.feedbacker-admin-detail { -moz-box-shadow:4px 4px 8px #bbb; }
+    .feedback-admin-detail-close { position:absolute;top:2px;right:8px;height:8px;width:8px;text-align:center;vertical-align:middle;cursor:pointer; }
+.feedbacker-admin-detail ul { list-style:none;margin:0;padding:0; }
+    .feedbacker-admin-detail li { position:relative;border-top:1px solid #dadada;border-bottom:1px solid #f6f6f6;padding:4px 8px; }
+    .feedbacker-admin-detail li:hover { background-color:#f3f3f3; }
+    .feedbacker-admin-detail li.first { border-top:none; }
+        .feedbacker-admin-detail li label { position:absolute;top:4px;left:4px;font-weight:bold;width:30%;padding:4px 8px; }
+        .feedbacker-admin-detail li span { display:block;margin-left:30%;padding:4px 4px 4px 8px; }
+            .feedbacker-admin-detail li span p { margin:0; }
+
+.feedbacker-loginform { width:300px; }
+.feedbacker-commands { list-style:none;margin:0;padding:0; }
+    .feedbacker-commands li { float:left;border:1px solid #666;padding:4px 8px;margin:0 0 -1px 8px;background-color:#e3e3e3;cursor:pointer; }
+    .feedbacker-commands li { border-radius:8px 8px 0 0;-moz-border-radius:8px 8px 0 0;-webkit-border-top-left-radius:8px;-webkit-border-top-right-radius:8px; }
+        .feedbacker-commands li strong { }
+    .feedbacker-commands li.active { background-color:#fff;border-bottom:1px solid #fff; }
+.feedbacker-admincontent { font-size:0.9em;background-color:#fff;border:1px solid #666;padding:8px 16px;clear:both; }
+
+.feedbacker-configlist { }
+    .feedbacker-configlist li { border:1px solid #666;background-color:#f3f3f3;margin:8px 0; }
+    .feedbacker-configlist > li { box-shadow:1px 1px 2px #ccc;-moz-box-shadow:1px 1px 2px #ccc;-webkit-box-shadow:1px 1px 2px #ccc;margin-left:4px; }
+    .feedbacker-configlist > li.active { box-shadow:4px 4px 4px #bbb;-moz-box-shadow:4px 4px 4px #bbb;-webkit-box-shadow:4px 4px 4px #bbb;margin-left:0;margin-right:4px; }
+        .feedbacker-configlist h4 { margin:0;padding:4px 8px;cursor:pointer;font-size:1.2em;color:#545454; }
+        .feedbacker-configlist li ul { margin-left:20px;display:none; }
+            .feedbacker-configlist li li { border:none;font-size:0.9em; }
+                .feedbacker-configlist li li span { font-family:Courier New,Monospace; }
+
+.feedbacker-error, .feedbacker-content .feedbacker-error { border:1px solid #a33;background-color:#fee;color:#a33; }

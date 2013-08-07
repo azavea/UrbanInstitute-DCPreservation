@@ -1,0 +1,1849 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Azavea.Open.Common</name>
+    </assembly>
+    <members>
+        <member name="T:Azavea.Open.Common.Caching.ClearingCache`1">
+            <summary>
+            This class extends the SimpleCache and uses reflection (once, during construction)
+            to try and find a method "void Clear()" on the type it is instantiated with.
+            
+            The Clear method will be called whenever an object is returned to the cache, relieving
+            the client of the responsibility of reseting the state of the object before
+            returning it.
+            
+            In particular, this is for caching Collection classes (I.E. ArrayLists,
+            Dictionaries, etc) which all have a Clear method.  But it will work for anything
+            else with such a method as well.
+            </summary>
+            <typeparam name="T">Type to cache.  Unfortunately we have to use reflection, so
+                                the compiler will allow types without a "Clear()" method, but
+                                it better be there or we'll throw an exception at run time.</typeparam>
+        </member>
+        <member name="T:Azavea.Open.Common.Caching.SimpleCache`1">
+            <summary>
+            This class caches objects for you, that you might not want to create and
+            delete all the time.  The cache tolerates leaks, meaning it will construct
+            new objects as necessary to satisfy requests.
+            
+            It has a max size (number of objects cached) that defaults to 1000.  This
+            prevents someone from accidentally returning too many objects and the cache
+            consuming a rediculous amount of memory.
+            
+            One assumption in this class is that the objects are either stateless, state
+            is unimportant, or state is reset by the client.
+            
+            This class is thread-safe.
+            </summary>
+            <typeparam name="T">Type of object to cache.  The only requirement is that the
+                                object have a parameterless constructor.</typeparam>
+        </member>
+        <member name="F:Azavea.Open.Common.Caching.SimpleCache`1._defaultMaxSize">
+            <summary>
+            What the max size of the cache will be if not otherwise specified.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.Common.Caching.SimpleCache`1._cache">
+            <summary>
+            The actual collection holding the cached objects.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.Common.Caching.SimpleCache`1._maxSize">
+            <summary>
+            The actual max size.
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.Common.Caching.SimpleCache`1.#ctor">
+            <summary>
+            Construct the cache with a default max size.
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.Common.Caching.SimpleCache`1.#ctor(System.Int32)">
+            <summary>
+            Construct the cache with a custom max size.
+            </summary>
+            <param name="maxSize">The maximum number of objects to keep in the cache at one time.</param>
+        </member>
+        <member name="M:Azavea.Open.Common.Caching.SimpleCache`1.Get">
+            <summary>
+            Gets an object from the cache.  If there are currently no objects actually
+            stored in the cache, this will return a brand new one.
+            </summary>
+            <returns>An object, hopefully from the cache.</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.Caching.SimpleCache`1.Return(`0)">
+            <summary>
+            Returns an object to the cache.  It's up to the client to remember to call this.
+            This will discard the object if the cache already has the maximum number of
+            objects.
+            </summary>
+            <param name="obj">The object that is done, hopefully has had its state returned
+                              to some variation on "blank" or "unset", and will be put back
+                              in the cache.</param>
+        </member>
+        <member name="M:Azavea.Open.Common.Caching.SimpleCache`1.MakeNewOne">
+            <summary>
+            By default this just returns a new object, however there may be some pre-
+            or post-construction steps that need to be done, so it may be overridden in
+            a child class.
+            </summary>
+            <returns>A new object, all ready to go.</returns>
+        </member>
+        <member name="F:Azavea.Open.Common.Caching.ClearingCache`1._clearMethod">
+            <summary>
+            The info on the method to call before putting an object back in the cache.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.Common.Caching.ClearingCache`1._clearParams">
+            <summary>
+            The method has zero params, so we create the empty param list one time and reuse it.
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.Common.Caching.ClearingCache`1.#ctor">
+            <summary>
+            Construct the cache with a default max size.
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.Common.Caching.ClearingCache`1.#ctor(System.Int32)">
+            <summary>
+            Construct the cache with a custom max size.
+            </summary>
+            <param name="maxSize">The maximum number of objects to keep in the cache at one time.</param>
+        </member>
+        <member name="M:Azavea.Open.Common.Caching.ClearingCache`1.GetClearMethod">
+            <summary>
+            Uses reflection to get the MethodInfo for the method called "Clear" and save
+            it as a class attribute.  Throws if the type doesn't have a Clear method.
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.Common.Caching.ClearingCache`1.Return(`0)">
+            <summary>
+            Overridden to call Clear() on the object before putting it back in the cache.
+            </summary>
+            <param name="obj">The object that is done, it will have its Clear() method
+                              called, and will be put back in the cache.</param>
+        </member>
+        <member name="T:Azavea.Open.Common.Caching.StringBuilderCache">
+            <summary>
+            A cache specific for StringBuilder objects.
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.Common.Caching.StringBuilderCache.Return(System.Text.StringBuilder)">
+            <summary>
+            Overridden to remove the contents of the builder before reinserting in the cache.
+            </summary>
+            <param name="obj">StringBuilder to return</param>
+        </member>
+        <member name="M:Azavea.Open.Common.Caching.StringBuilderCache.MakeNewOne">
+            <summary>
+            Overridden to default the string builder to a fairly large size.
+            </summary>
+            <returns>A new empty but large string builder.</returns>
+        </member>
+        <member name="T:Azavea.Open.Common.Caching.TimedCache`2">
+            <summary>
+            A cache that basically acts like a dictionary, but with a max duration.
+            NOTE: This does NOT clear values that are expired, it just won't return them.
+            It is intended for cases when you are reusing keys.
+            If you are using an infinite set of keys, you will run out of memory eventually.
+            For example:
+            If you're using filenames as keys and you have a finite set of files, you're fine.
+            If you're using timestamps as keys and you always use "now", you'll run out of
+            memory eventually because the old ones don't get cleared.
+            
+            This class uses locking to ensure thread-safety.
+            </summary>
+            <typeparam name="K">Type of the key.</typeparam>
+            <typeparam name="T">Type of the data.</typeparam>
+        </member>
+        <member name="F:Azavea.Open.Common.Caching.TimedCache`2._innerCache">
+            <summary>
+            Stores the actual data (with a timestamp for when it was added
+            to the cache) for each key.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.Common.Caching.TimedCache`2._getGuaranteeTime">
+            <summary>
+            The amount of time data for a given key is guaranteed to
+            remain valid for after a call to ContainsKey(key) returns true.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.Common.Caching.TimedCache`2._cacheRealDuration">
+            <summary>
+            How long should the cache keep things before discarding them.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.Common.Caching.TimedCache`2._cacheCheckDuration">
+            <summary>
+            How long ContainsKey(key) will return true after data for
+            that key is added to the cache.  (_cacheRealDuration - _getGuaranteeTime).
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.Common.Caching.TimedCache`2.#ctor(System.TimeSpan)">
+            <summary>
+            Construct the cache.
+            </summary>
+            <param name="cacheDuration">How long should the cache keep things before discarding them.</param>
+        </member>
+        <member name="M:Azavea.Open.Common.Caching.TimedCache`2.ContainsKey(`0)">
+            <summary>
+            Returns true only if we have a cached data item for this key and
+            that data has not expired (and is not about to immediately).
+            
+            NOTE: A true response only guarauntees GetData(key) will work for 1 second after this call.
+            It is possible to call this, get true, wait 2 seconds,
+            call GetData, and get a KeyNotFoundException.  Thems the breaks
+            when using a cache with data that expires.
+            </summary>
+            <param name="key">Key that identifies the data you want.</param>
+            <returns>True if GetData(key) will return a valid data item.</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.Caching.TimedCache`2.Get(`0)">
+            <summary>
+            Returns the data for the given cache key.  Throws KeyNotFoundException
+            if we don't have that key or if the value is expired.
+            </summary>
+            <param name="key">Key that identifies the data you want.</param>
+            <returns>The object that was cached.</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.Caching.TimedCache`2.TryGet(`0,`1@)">
+            <summary>
+            Attempts to return data for the given cache key.  Returns False
+            if we don't have that key or if the value is expired, True otherwise.
+            </summary>
+            <param name="key">Key that identifies the data you want.</param>
+            <param name="value">Will update this with the object that was cached
+            if the key was found and the value was not expired.</param>
+            <returns>True if the key was found and the value was not expired, False otherwise.</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.Caching.TimedCache`2.Set(`0,`1)">
+            <summary>
+            Saves the given data into the cache with the given key.
+            </summary>
+            <param name="key">Key to save the data under.</param>
+            <param name="data">Data to save.</param>
+        </member>
+        <member name="M:Azavea.Open.Common.Caching.TimedCache`2.Reset(`0)">
+            <summary>
+            Extends the lifetime of cached data by resetting the timestamp
+            for a key's value to the current time.
+            </summary>
+            <param name="key">Key to reset.</param>
+        </member>
+        <member name="M:Azavea.Open.Common.Caching.TimedCache`2.TryReset(`0)">
+            <summary>
+            Extends the lifetime of cached data by resetting the timestamp
+            for a key's value to the current time.
+            </summary>
+            <param name="key">Key to reset.</param>
+            <returns>False if the key was not found or the value was expired, True otherwise.</returns>
+        </member>
+        <member name="T:Azavea.Open.Common.Caching.TimestampedData`1">
+            <summary>
+            Represents a piece of data plus a timestamp that is relevant to that data.
+            </summary>
+            <typeparam name="T">The type of data held in this item.</typeparam>
+        </member>
+        <member name="F:Azavea.Open.Common.Caching.TimestampedData`1.Data">
+            <summary>
+            The data that you're timestamping.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.Common.Caching.TimestampedData`1.Time">
+            <summary>
+            This is the time associated with that data.
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.Common.Caching.TimestampedData`1.#ctor(`0)">
+            <summary>
+            Timestamp some data.  The timestamp used will be 'DateTime.Now'.
+            </summary>
+            <param name="data">The data to timestamp.</param>
+        </member>
+        <member name="T:Azavea.Open.Common.Chronometer">
+            <summary>
+            A class for timing how long things take.  You can instantiate a Chronometer,
+            or just use the static methods for timing named operations.
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.Common.Chronometer.#ctor">
+            <summary>
+            Creates (and starts) the timer.
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.Common.Chronometer.Start">
+            <summary>
+            Restarts the timer.
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.Common.Chronometer.Reset">
+            <summary>
+            Restarts the timer (same as calling Start() again).
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.Common.Chronometer.GetRunTime">
+            <summary>
+            How long has the timer been running.
+            </summary>
+            <returns>The TimeSpan since the timer was created or Start or Reset was last called.</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.Chronometer.GetSplit">
+            <summary>
+            How long has the timer been running since you last called GetSplit.
+            </summary>
+            <returns>The TimeSpan since GetSplit was last called, or if it has never been
+                     called, since the timer was created or Start or Reset was last called.</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.Chronometer.GetSplitMilliseconds">
+            <summary>
+            For display purposes, reports the split time in milliseconds.
+            </summary>
+            <returns>The total split time in ms, as a string "# ms".</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.Chronometer.GetSplitSeconds">
+            <summary>
+            For display purposes, reports the split time in seconds.
+            </summary>
+            <returns>The total split time in seconds, as a string "# s".</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.Chronometer.GetElapsedTime">
+            <summary>
+            For display purposes, reports the run time as a long string.
+            </summary>
+            <returns>The total run time, as a string "# days, # hours, # minutes, # seconds, # milliseconds".</returns>
+        </member>
+        <member name="F:Azavea.Open.Common.Chronometer._sbCache">
+            <summary>
+            Cache the StringBuilders we use to minimize the amount of time added
+            by the timing code itself.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.Common.Chronometer._operationStartTimes">
+            <summary>
+            The times of the operations currently "started" via the static methods.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.Common.Chronometer._operationTotalTimes">
+            <summary>
+            The total times for all the operations that have been "ended" via
+            the static methods at least once.
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.Common.Chronometer.BeginTiming(System.Text.StringBuilder)">
+            <summary>
+            Starts timing the specified named operation.  Each time the same
+            named operation is completed the time will be added to our list, so
+            that a number of calls to the same command will give you totals,
+            average, and number of executions.
+            </summary>
+            <param name="keyBuilder">A StringBuilder containing a string that uniquely
+                                     identifies the operation.</param>
+        </member>
+        <member name="M:Azavea.Open.Common.Chronometer.BeginTiming(System.String)">
+            <summary>
+            Starts timing the specified named operation.  Each time the same
+            named operation is completed the time will be added to our list, so
+            that a number of calls to the same command will give you totals,
+            average, and number of executions.
+            </summary>
+            <param name="key">A string that uniquely identifies the operation.</param>
+        </member>
+        <member name="M:Azavea.Open.Common.Chronometer.ReallyBeginTiming(System.String)">
+            <summary>
+            Behind the scenes we tack onto the key the name of the thread, in case 
+            multiple threads are running the same named operation at the same time.
+            </summary>
+            <param name="keyWithThread">Key consisting of the original key plus the thread name.</param>
+        </member>
+        <member name="M:Azavea.Open.Common.Chronometer.EndTiming(System.Text.StringBuilder)">
+            <summary>
+            Stops timing the given item and updates the timing report.
+            </summary>
+            <param name="keyBuilder">A StringBuilder containing a string that uniquely
+                                     identifies the operation.</param>
+            <returns>The duration just measured, in ticks, or -1 if not valid.</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.Chronometer.EndTiming(System.String)">
+            <summary>
+            Stops timing the given item and updates the timing report.
+            </summary>
+            <param name="key">A string that uniquely identifies the operation.</param>
+            <returns>The duration just measured, in ticks, or -1 if not valid.</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.Chronometer.ReallyEndTiming(System.String,System.String)">
+            <summary>
+            Behind the scenes we tack onto the key the name of the thread, in case 
+            multiple threads are running the same named operation at the same time.
+            </summary>
+            <param name="originalKey">The key provided by the client.</param>
+            <param name="keyWithThread">Key consisting of the original key plus the thread name.</param>
+            <returns>The duration just measured, in ticks, or -1 if not valid.</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.Chronometer.ReportTimes(System.Boolean,Azavea.Open.Common.Chronometer.ReportType,System.Boolean)">
+            <summary>
+            Reports all the times for all the operations that both BeginTiming and
+            EndTiming were called for.  This is imperfect as any call that failed may
+            or may not have a time reported.  It should,
+            however, give a rough idea what operations are taking how long.
+            </summary>
+            <param name="printDisclaimer">Print a disclaimer notice along with the times.</param>
+            <param name="extendedStats">Show extended stats: Min, Max, StdDev, Variance.</param>
+            <param name="outType">The type of output to report.</param>
+        </member>
+        <member name="M:Azavea.Open.Common.Chronometer.ReportTimes">
+            <summary>
+            Reports all the times for all the operations that both BeginTiming and
+            EndTiming were called for.  This is imperfect as any call that failed may
+            or may not have a time reported.  It should,
+            however, give a rough idea what operations are taking how long.
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.Common.Chronometer.ReportTimes(System.Boolean)">
+            <summary>
+            Reports all the times for all the operations that both BeginTiming and
+            EndTiming were called for.  This is imperfect as any call that failed may
+            or may not have a time reported.  It should,
+            however, give a rough idea what operations are taking how long.
+            </summary>
+            <param name="extendedStats">Show extended stats: Min, Max, StdDev, Variance.</param>
+        </member>
+        <member name="M:Azavea.Open.Common.Chronometer.ReportTimes(System.Boolean,Azavea.Open.Common.Chronometer.ReportType)">
+            <summary>
+            Reports all the times for all the operations that both BeginTiming and
+            EndTiming were called for.  This is imperfect as any call that failed may
+            or may not have a time reported.  It should,
+            however, give a rough idea what operations are taking how long.
+            </summary>
+            <param name="extendedStats">Show extended stats: Min, Max, StdDev, Variance.</param>
+            <param name="reportType">Print a disclaimer notice along with the times.</param>
+        </member>
+        <member name="P:Azavea.Open.Common.Chronometer.StartTime">
+            <summary>
+            The time the timer was created, or the last time Start or Reset was called.
+            </summary>
+        </member>
+        <member name="P:Azavea.Open.Common.Chronometer.LastSplit">
+            <summary>
+            The time GetSplit was last called, or the timer was created,
+            or the last time Start or Reset was called.
+            </summary>
+        </member>
+        <member name="T:Azavea.Open.Common.Chronometer.ReportType">
+            <summary>
+            Chronometer reporting enumeration.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.Common.Chronometer.ReportType.TextTable">
+            <summary>
+            Display output as a text table.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.Common.Chronometer.ReportType.XmlElements">
+            <summary>
+            Generate XML fragments for each key.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.Common.Chronometer.ReportType.TextCsv">
+            <summary>
+            Generate a CSV list for each key.
+            </summary>
+        </member>
+        <member name="T:Azavea.Open.Common.Chronometer.IReporter">
+            <summary>
+            Define a private interface for a reported used by ReportTimes.
+            </summary>
+        </member>
+        <member name="T:Azavea.Open.Common.Chronometer.TextTableReporter">
+            <summary>
+            A class that writes a nicely human readable text table of timing reports.
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.Common.Chronometer.TextTableReporter.ReportPrologue(System.Boolean)">
+            <summary>
+            Display a text prologue.
+            </summary>
+            <param name="printDisclaimer">Show the disclaimer text.</param>
+        </member>
+        <member name="M:Azavea.Open.Common.Chronometer.TextTableReporter.ReportKey(System.String,System.Int32,System.Int64,System.Int64,System.Int64,System.Int64,System.Double,System.Double,System.Boolean)">
+            <summary>
+            Report the timing information for 1 key.
+            </summary>
+            <param name="key">The name of the key.</param>
+            <param name="count">The number of times timed.</param>
+            <param name="totalTicks">The total time over all times timed.</param>
+            <param name="average">The average tick time.</param>
+            <param name="minTicks">The minimum tick time.</param>
+            <param name="maxTicks">The maximum tick time.</param>
+            <param name="stddev">The standard deviation in tick times.</param>
+            <param name="variance">The variance in tick times.</param>
+            <param name="extended">Show extended stats (min, max, stddev, variance).</param>
+        </member>
+        <member name="M:Azavea.Open.Common.Chronometer.TextTableReporter.ReportEpilogue">
+            <summary>
+            Display a text epilogue.
+            </summary>
+        </member>
+        <member name="T:Azavea.Open.Common.Chronometer.TextCsvReporter">
+            <summary>
+            A class that writes a nicely machine readable text table of timing reports.
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.Common.Chronometer.TextCsvReporter.ReportPrologue(System.Boolean)">
+            <summary>
+            Display a text prologue.
+            </summary>
+            <param name="printDisclaimer">Show the disclaimer text.</param>
+        </member>
+        <member name="M:Azavea.Open.Common.Chronometer.TextCsvReporter.ReportKey(System.String,System.Int32,System.Int64,System.Int64,System.Int64,System.Int64,System.Double,System.Double,System.Boolean)">
+            <summary>
+            Report the timing information for 1 key.
+            </summary>
+            <param name="key">The name of the key.</param>
+            <param name="count">The number of times timed.</param>
+            <param name="totalTicks">The total time over all times timed.</param>
+            <param name="average">The average tick time.</param>
+            <param name="minTicks">The minimum tick time.</param>
+            <param name="maxTicks">The maximum tick time.</param>
+            <param name="stddev">The standard deviation in tick times.</param>
+            <param name="variance">The variance in tick times.</param>
+            <param name="extended">Show extended stats (min, max, stddev, variance).</param>
+        </member>
+        <member name="M:Azavea.Open.Common.Chronometer.TextCsvReporter.ReportEpilogue">
+            <summary>
+            Display a text epilogue.
+            </summary>
+        </member>
+        <member name="T:Azavea.Open.Common.Chronometer.XmlElementReporter">
+            <summary>
+            A class that writes a nicely machine readable text table of timing reports.
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.Common.Chronometer.XmlElementReporter.ReportPrologue(System.Boolean)">
+            <summary>
+            Display an xml prologue.
+            </summary>
+            <param name="printDisclaimer">Show the disclaimer text.</param>
+        </member>
+        <member name="M:Azavea.Open.Common.Chronometer.XmlElementReporter.ReportKey(System.String,System.Int32,System.Int64,System.Int64,System.Int64,System.Int64,System.Double,System.Double,System.Boolean)">
+            <summary>
+            Report the timing information for 1 key.
+            </summary>
+            <param name="key">The name of the key.</param>
+            <param name="count">The number of times timed.</param>
+            <param name="totalTicks">The total time over all times timed.</param>
+            <param name="average">The average tick time.</param>
+            <param name="minTicks">The minimum tick time.</param>
+            <param name="maxTicks">The maximum tick time.</param>
+            <param name="stddev">The standard deviation in tick times.</param>
+            <param name="variance">The variance in tick times.</param>
+            <param name="extended">Show extended stats (min, max, stddev, variance).</param>
+        </member>
+        <member name="M:Azavea.Open.Common.Chronometer.XmlElementReporter.ReportEpilogue">
+            <summary>
+            Display a text epilogue.
+            </summary>
+        </member>
+        <member name="T:Azavea.Open.Common.Collections.CaseInsensitiveStringComparer">
+            <summary>
+            The System.Collections.CaseInsensitiveComparer does not actually implement
+            IEqualityComparer, so we have to do it for them.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.Common.Collections.CaseInsensitiveStringComparer._systemComparer">
+            <summary>
+            We save this on construction because apparently calling .Default
+            does some real work, it was taking a substantial amount of time
+            during performance profiling.  Doing this once produced about
+            a 60% reduction in time spent calling Equals(x,y).
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.Common.Collections.CaseInsensitiveStringComparer.Equals(System.String,System.String)">
+            <summary>
+                                Determines whether the specified objects are equal.
+            </summary>
+            <returns>
+            true if the specified objects are equal; otherwise, false.
+            </returns>
+            <param name="x">
+                                The first string to compare.
+                            </param>
+            <param name="y">
+                                The second string to compare.
+                            </param>
+        </member>
+        <member name="M:Azavea.Open.Common.Collections.CaseInsensitiveStringComparer.GetHashCode(System.String)">
+            <summary>
+                                Returns a hash code for the specified object.
+            </summary>
+            <returns>
+                                A hash code for the specified object.
+            </returns>
+            <param name="obj">
+                                The <see cref="T:System.Object" /> for which a hash code is to be returned.
+                            </param>
+            <exception cref="T:System.ArgumentNullException">
+                                The type of <paramref name="obj" /> is a reference type and <paramref name="obj" /> is null.
+                            </exception>
+        </member>
+        <member name="T:Azavea.Open.Common.Collections.CheckedArray">
+            <summary>
+            This is a class of methods that are workarounds for the fact that 
+            basic system arrays don't have useful enough error messages.
+            Methods on here should do a normal simple operation and throw an exception
+            with enough data to debug it.
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.Common.Collections.CheckedArray.Get``1(``0[],System.Int32)">
+            <summary>
+            Attempts to get a value from that index within the array.
+            If unable to, throws an exception that says what index it tried to get
+            and how long the array was.
+            </summary>
+            <typeparam name="T">Type of value in the array.</typeparam>
+            <param name="arr">Array to get a value from.</param>
+            <param name="index">Which value do you want.</param>
+            <returns>The value.</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.Collections.CheckedArray.Get``2(``1[],System.Int32)">
+            <summary>
+            Attempts to get a value from that index within the array.
+            If unable to, throws an exception that says what index it tried to get
+            and how long the array was.
+            </summary>
+            <typeparam name="T">Type of value you want back.</typeparam>
+            <typeparam name="A">Type of values in the array</typeparam>
+            <param name="arr">Array to get a value from.</param>
+            <param name="index">Which value do you want.</param>
+            <returns>The value.</returns>
+        </member>
+        <member name="T:Azavea.Open.Common.Collections.CheckedDictionary">
+            <summary>
+            This is a class of methods that are workarounds for the fact that 
+            basic system dictionaries don't have useful enough error messages.
+            Methods on here should do a normal simple operation and throw an exception
+            with enough data to debug it.
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.Common.Collections.CheckedDictionary.Get``1(System.Collections.Generic.IDictionary{System.String,System.Object},System.String)">
+            <summary>
+            This gets a value from a dictionary.  If the key does not exist
+            in the dictionary, the exception tells you what it was, and the
+            first few (up to 20) of the valid keys!
+            It also helpfully casts it to the right type for you (handy if
+            you're dealing in dictionaries with objects for values).  If it
+            cannot cast it, the exception tells you what it tried to cast
+            to and what the value actually was!
+            </summary>
+            <typeparam name="T">Type you expect it to be.</typeparam>
+            <param name="dict">Dictionary to get a value from.</param>
+            <param name="key">Key to look up in the dictionary.</param>
+            <returns>The value from the dictionary, cast to type T.</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.Collections.CheckedDictionary.Get``2(System.Collections.Generic.IDictionary{``1,System.Object},``1)">
+            <summary>
+            This gets a value from a dictionary.  If the key does not exist
+            in the dictionary, the exception tells you what it was, and the
+            first few (up to 20) of the valid keys!
+            It also helpfully casts it to the right type for you (handy if
+            you're dealing in dictionaries with objects for values).  If it
+            cannot cast it, the exception tells you what it tried to cast
+            to and what the value actually was!
+            </summary>
+            <typeparam name="T">Type you expect it to be.</typeparam>
+            <typeparam name="A">Type of keys in the dictionary.</typeparam>
+            <param name="dict">Dictionary to get a value from.</param>
+            <param name="key">Key to look up in the dictionary.</param>
+            <returns>The value from the dictionary, cast to type T.</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.Collections.CheckedDictionary.Get``3(System.Collections.Generic.IDictionary{``1,``2},``1)">
+            <summary>
+            This gets a value from a dictionary.  If the key does not exist
+            in the dictionary, the exception tells you what it was, and the
+            first few (up to 20) of the valid keys!
+            It also helpfully casts it to the right type for you (handy if
+            you're dealing in dictionaries with objects for values).  If it
+            cannot cast it, the exception tells you what it tried to cast
+            to and what the value actually was!
+            </summary>
+            <typeparam name="T">Type you expect it to be.</typeparam>
+            <typeparam name="A">Type of keys in the dictionary.</typeparam>
+            <typeparam name="B">Type of values in the dictionary.</typeparam>
+            <param name="dict">Dictionary to get a value from.</param>
+            <param name="key">Key to look up in the dictionary.</param>
+            <returns>The value from the dictionary, cast to type T.</returns>
+        </member>
+        <member name="T:Azavea.Open.Common.Collections.CheckedDictionary`2">
+            <summary>
+            This is an IDictionary implementation that throws USEFUL exceptions
+            when you ask for things that aren't there etc.
+            </summary>
+            <typeparam name="K">Type of the dictionary key.</typeparam>
+            <typeparam name="V">Type of the dictionary value.</typeparam>
+        </member>
+        <member name="M:Azavea.Open.Common.Collections.CheckedDictionary`2.#ctor">
+            <summary>
+            Default constructor, creates an empty dictionary.
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.Common.Collections.CheckedDictionary`2.#ctor(System.Collections.Generic.IEqualityComparer{`0})">
+            <summary>
+            Creates a dictionary using the given comparer.
+            </summary>
+            <param name="comparer">Comparer to use to compare keys in the dictionary.</param>
+        </member>
+        <member name="M:Azavea.Open.Common.Collections.CheckedDictionary`2.#ctor(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{`0,`1}})">
+            <summary>
+            Copy constructor, creates a new dictionary with the same contents as 
+            the other collection.
+            </summary>
+            <param name="other">The collection to load all our contents from.</param>
+        </member>
+        <member name="M:Azavea.Open.Common.Collections.CheckedDictionary`2.AddRange(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{`0,`1}})">
+            <summary>
+            Adds all the items from the other collection to this one.  This may throw
+            an exception of there are items in the other that violate our constraints
+            (such as two values with the same key).
+            </summary>
+            <param name="other">The collection to add values from.</param>
+        </member>
+        <member name="M:Azavea.Open.Common.Collections.CheckedDictionary`2.Add(System.Collections.Generic.KeyValuePair{`0,`1})">
+            <summary>
+                                Adds an item to the <see cref="T:System.Collections.Generic.ICollection`1" />.
+            </summary>
+            <param name="item">
+                                The object to add to the <see cref="T:System.Collections.Generic.ICollection`1" />.
+                            </param>
+            <exception cref="T:System.NotSupportedException">
+                                The <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only.
+                            </exception>
+        </member>
+        <member name="M:Azavea.Open.Common.Collections.CheckedDictionary`2.Add(`0,`1)">
+            <summary>
+                                Adds an element with the provided key and value to the <see cref="T:System.Collections.Generic.IDictionary`2" />.
+            </summary>
+            <param name="key">
+                                The object to use as the key of the element to add.
+                            </param>
+            <param name="value">
+                                The object to use as the value of the element to add.
+                            </param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="key" /> is null.
+                            </exception>
+            <exception cref="T:System.ArgumentException">
+                                An element with the same key already exists in the <see cref="T:System.Collections.Generic.IDictionary`2" />.
+                            </exception>
+            <exception cref="T:System.NotSupportedException">
+                                The <see cref="T:System.Collections.Generic.IDictionary`2" /> is read-only.
+                            </exception>
+        </member>
+        <member name="M:Azavea.Open.Common.Collections.CheckedDictionary`2.Contains(System.Collections.Generic.KeyValuePair{`0,`1})">
+            <summary>
+                                Determines whether the <see cref="T:System.Collections.Generic.ICollection`1" /> contains a specific value.
+            </summary>
+            <returns>
+            true if <paramref name="item" /> is found in the <see cref="T:System.Collections.Generic.ICollection`1" />; otherwise, false.
+            </returns>
+            <param name="item">
+                                The object to locate in the <see cref="T:System.Collections.Generic.ICollection`1" />.
+                            </param>
+        </member>
+        <member name="M:Azavea.Open.Common.Collections.CheckedDictionary`2.ContainsKey(`0)">
+            <summary>
+                                Determines whether the <see cref="T:System.Collections.Generic.IDictionary`2" /> contains an element with the specified key.
+            </summary>
+            <returns>
+            true if the <see cref="T:System.Collections.Generic.IDictionary`2" /> contains an element with the key; otherwise, false.
+            </returns>
+            <param name="key">
+                                The key to locate in the <see cref="T:System.Collections.Generic.IDictionary`2" />.
+                            </param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="key" /> is null.
+                            </exception>
+        </member>
+        <member name="M:Azavea.Open.Common.Collections.CheckedDictionary`2.CopyTo(System.Collections.Generic.KeyValuePair{`0,`1}[],System.Int32)">
+            <summary>
+                                Copies the elements of the <see cref="T:System.Collections.Generic.ICollection`1" /> to an <see cref="T:System.Array" />, starting at a particular <see cref="T:System.Array" /> index.
+            </summary>
+            <param name="array">
+                                The one-dimensional <see cref="T:System.Array" /> that is the destination of the elements copied from <see cref="T:System.Collections.Generic.ICollection`1" />. The <see cref="T:System.Array" /> must have zero-based indexing.
+                            </param>
+            <param name="arrayIndex">
+                                The zero-based index in <paramref name="array" /> at which copying begins.
+                            </param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="array" /> is null.
+                            </exception>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="arrayIndex" /> is less than 0.
+                            </exception>
+            <exception cref="T:System.ArgumentException"><paramref name="array" /> is multidimensional.
+                                -or-
+                            <paramref name="arrayIndex" /> is equal to or greater than the length of <paramref name="array" />.
+                                -or-
+                                The number of elements in the source <see cref="T:System.Collections.Generic.ICollection`1" /> is greater than the available space from <paramref name="arrayIndex" /> to the end of the destination <paramref name="array" />.
+                                -or-
+                                Type cannot be cast automatically to the type of the destination <paramref name="array" />.
+                            </exception>
+        </member>
+        <member name="M:Azavea.Open.Common.Collections.CheckedDictionary`2.Remove(System.Collections.Generic.KeyValuePair{`0,`1})">
+            <summary>
+                                Removes the first occurrence of a specific object from the <see cref="T:System.Collections.Generic.ICollection`1" />.
+            </summary>
+            <returns>
+            true if <paramref name="item" /> was successfully removed from the <see cref="T:System.Collections.Generic.ICollection`1" />; otherwise, false. This method also returns false if <paramref name="item" /> is not found in the original <see cref="T:System.Collections.Generic.ICollection`1" />.
+            </returns>
+            <param name="item">
+                                The object to remove from the <see cref="T:System.Collections.Generic.ICollection`1" />.
+                            </param>
+            <exception cref="T:System.NotSupportedException">
+                                The <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only.
+                            </exception>
+        </member>
+        <member name="M:Azavea.Open.Common.Collections.CheckedDictionary`2.Remove(`0)">
+            <summary>
+                                Removes the element with the specified key from the <see cref="T:System.Collections.Generic.IDictionary`2" />.
+            </summary>
+            <returns>
+            true if the element is successfully removed; otherwise, false.  This method also returns false if <paramref name="key" /> was not found in the original <see cref="T:System.Collections.Generic.IDictionary`2" />.
+            </returns>
+            <param name="key">
+                                The key of the element to remove.
+                            </param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="key" /> is null.
+                            </exception>
+            <exception cref="T:System.NotSupportedException">
+                                The <see cref="T:System.Collections.Generic.IDictionary`2" /> is read-only.
+                            </exception>
+        </member>
+        <member name="M:Azavea.Open.Common.Collections.CheckedDictionary`2.TryGetValue(`0,`1@)">
+            <summary>
+                                Gets the value associated with the specified key.
+            </summary>
+            <returns>
+            true if the object that implements <see cref="T:System.Collections.Generic.IDictionary`2" /> contains an element with the specified key; otherwise, false.
+            </returns>
+            <param name="key">
+                                The key whose value to get.
+                            </param>
+            <param name="value">
+                                When this method returns, the value associated with the specified key, if the key is found; otherwise, the default value for the type of the <paramref name="value" /> parameter. This parameter is passed uninitialized.
+                            </param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="key" /> is null.
+                            </exception>
+        </member>
+        <member name="M:Azavea.Open.Common.Collections.CheckedDictionary`2.GetEnumerator">
+            <summary>
+                                Returns an enumerator that iterates through the collection.
+            </summary>
+            <returns>
+                                A <see cref="T:System.Collections.Generic.IEnumerator`1" /> that can be used to iterate through the collection.
+            </returns>
+            <filterpriority>1</filterpriority>
+        </member>
+        <member name="M:Azavea.Open.Common.Collections.CheckedDictionary`2.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+                                Returns an enumerator that iterates through a collection.
+            </summary>
+            <returns>
+                                An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.
+            </returns>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="M:Azavea.Open.Common.Collections.CheckedDictionary`2.Clear">
+            <summary>
+                                Removes all items from the <see cref="T:System.Collections.Generic.ICollection`1" />.
+            </summary>
+            <exception cref="T:System.NotSupportedException">
+                                The <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only. 
+                            </exception>
+        </member>
+        <member name="P:Azavea.Open.Common.Collections.CheckedDictionary`2.Item(`0)">
+            <summary>
+                                Gets or sets the element with the specified key.
+            </summary>
+            <returns>
+                                The element with the specified key.
+            </returns>
+            <param name="key">
+                                The key of the element to get or set.
+                            </param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="key" /> is null.
+                            </exception>
+            <exception cref="T:System.Collections.Generic.KeyNotFoundException">
+                                The property is retrieved and <paramref name="key" /> is not found.
+                            </exception>
+            <exception cref="T:System.NotSupportedException">
+                                The property is set and the <see cref="T:System.Collections.Generic.IDictionary`2" /> is read-only.
+                            </exception>
+        </member>
+        <member name="P:Azavea.Open.Common.Collections.CheckedDictionary`2.Count">
+            <summary>
+                                Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1" />.
+            </summary>
+            <returns>
+                                The number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1" />.
+            </returns>
+        </member>
+        <member name="P:Azavea.Open.Common.Collections.CheckedDictionary`2.IsReadOnly">
+            <summary>
+                                Gets a value indicating whether the <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only.
+            </summary>
+            <returns>
+            true if the <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only; otherwise, false.
+            </returns>
+        </member>
+        <member name="P:Azavea.Open.Common.Collections.CheckedDictionary`2.Keys">
+            <summary>
+                                Gets an <see cref="T:System.Collections.Generic.ICollection`1" /> containing the keys of the <see cref="T:System.Collections.Generic.IDictionary`2" />.
+            </summary>
+            <returns>
+                                An <see cref="T:System.Collections.Generic.ICollection`1" /> containing the keys of the object that implements <see cref="T:System.Collections.Generic.IDictionary`2" />.
+            </returns>
+        </member>
+        <member name="P:Azavea.Open.Common.Collections.CheckedDictionary`2.Values">
+            <summary>
+                                Gets an <see cref="T:System.Collections.Generic.ICollection`1" /> containing the values in the <see cref="T:System.Collections.Generic.IDictionary`2" />.
+            </summary>
+            <returns>
+                                An <see cref="T:System.Collections.Generic.ICollection`1" /> containing the values in the object that implements <see cref="T:System.Collections.Generic.IDictionary`2" />.
+            </returns>
+        </member>
+        <member name="P:Azavea.Open.Common.Collections.CheckedDictionary`2.RealDictionary">
+            <summary>
+            Get the realy IDictionary
+            </summary>
+        </member>
+        <member name="T:Azavea.Open.Common.Collections.CheckedList">
+            <summary>
+            This is a class of methods that are workarounds for the fact that 
+            basic system lists don't have useful enough error messages.
+            Methods on here should do a normal simple operation and throw an exception
+            with enough data to debug it.
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.Common.Collections.CheckedList.Get``1(System.Collections.Generic.IList{System.Object},System.Int32)">
+            <summary>
+            Attempts to get a value from that index within the list.
+            If unable to, throws an exception that says what index it tried to get
+            and how long the list was.
+            </summary>
+            <typeparam name="T">Type of value in the list.</typeparam>
+            <param name="list">list to get a value from.</param>
+            <param name="index">Which value do you want.</param>
+            <returns>The value.</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.Collections.CheckedList.Get``2(System.Collections.Generic.IList{``1},System.Int32)">
+            <summary>
+            Attempts to get a value from that index within the list.
+            If unable to, throws an exception that says what index it tried to get
+            and how long the list was.
+            </summary>
+            <typeparam name="T">Type of value you want back.</typeparam>
+            <typeparam name="A">Type of values in the list</typeparam>
+            <param name="list">list to get a value from.</param>
+            <param name="index">Which value do you want.</param>
+            <returns>The value.</returns>
+        </member>
+        <member name="T:Azavea.Open.Common.Config">
+            <summary>
+            This class reads configuration parameters from a standalone config file
+            identified in the app.config or web.config's "appSettings" section.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.Common.Config._log">
+            <summary>
+            A logger that can be used by child classes as well.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.Common.Config._configCache">
+            <summary>
+            We keep a cache of Config objects that can be accessed via the GetConfig method.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.Common.Config.ConfigFile">
+            <summary>
+            The filename (including path) of the config file.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.Common.Config.ConfigXmlDoc">
+            <summary>
+            The contents of the config file as an XmlDocument.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.Common.Config.Application">
+            <summary>
+            The app name passed in when constructing this object.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.Common.Config._paramsByComponent">
+            <summary>
+            This is a Dictionary of groups of parameters (key/value pairs),
+            keyed by component (component = one section in the config file).
+            The groups are dictionaries to facilitate fast lookups by
+            key.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.Common.Config._orderedParamsByComponent">
+            <summary>
+            This is a Dictionary of groups of parameters (key/value pairs),
+            keyed by component (component = one section in the config file).
+            The groups are lists, for times when the order of the parameters
+            matters.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.Common.Config._outerXmlByComponent">
+            <summary>
+            This is a Dictionary of the XML contents of each component/section,
+            keyed by component (component = one section in the config file).
+            The values are XML strings.  This includes the containing "component" tag.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.Common.Config._innerXmlByComponent">
+            <summary>
+            This is a Dictionary of the XML contents of each component/section,
+            keyed by component (component = one section in the config file).
+            The values are XML strings.  This does NOT include the containing "component" tag.
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.Common.Config.GetConfig(System.String)">
+            <summary>
+            This allows you to avoid reading the same config file over and over again.
+            Since Config objects are read-only, we can read the file once and hand the
+            same object out over and over without worrying about threading issues.
+            </summary>
+            <param name="appName">Identifies which config file we want.</param>
+            <returns>The config object representing that config file.</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.Config.ClearConfigCache(System.String)">
+            <summary>
+            Allows you to explicitly remove a config from the cache, for example during
+            unit testing, or any time when you know the config file in the cache is
+            no longer valid.
+            </summary>
+            <param name="appName">Identifies which config file we want.</param>
+        </member>
+        <member name="M:Azavea.Open.Common.Config.#ctor(System.String)">
+            <summary>
+            Constructs a config class given the "appName", or the key to look up
+            in the app/web.config's "appSettings" section.  The value for that key
+            is the path to the config file we're interested in.
+            </summary>
+            <param name="appName">Identifies which config file we want.</param>
+        </member>
+        <member name="M:Azavea.Open.Common.Config.#ctor(System.String,System.String)">
+            <summary>
+            Constructs a config class given a specific config file to load.
+            </summary>
+            <param name="configFileName">The file name of the configuration file to load.</param>
+            <param name="appName">Since the config file is specified, this app name is just
+                                  used for identification in log/error messages.</param>
+        </member>
+        <member name="M:Azavea.Open.Common.Config.#ctor(System.String,System.Xml.XmlDocument)">
+            <summary>
+            Construct a config directly from an XML document rather than from a file.
+            </summary>
+            <param name="appName">App name (I.E. config file name or whatever), used for logging.</param>
+            <param name="configXml">The XML containing all the config information.</param>
+        </member>
+        <member name="M:Azavea.Open.Common.Config.#ctor(System.String,System.String,System.Xml.XmlDocument)">
+            <summary>
+            Construct a config class.  The app name is used for logging, and to get
+            the config file name if the file name was not specified and the XML was
+            not passed directly.
+            
+            If you provide the XML, the app name is just used for logging, and the filename
+            is stored but not used for anything (and may be blank).
+            </summary>
+            <param name="configFileName">The file name of the configuration file to load.</param>
+            <param name="appName">App name (I.E. config file name or whatever), used for logging.</param>
+            <param name="configXml">The XML containing all the config information.</param>
+        </member>
+        <member name="M:Azavea.Open.Common.Config.#ctor(System.String,System.String,System.Xml.XmlDocument,System.Boolean)">
+            <summary>
+            The default behavior of Config is to throw an exception if the config file
+            does not exist.  This constructor allows a child class to override that,
+            in which case a missing file will be treated as though it were empty
+            (no values loaded, but no exception thrown).
+            </summary>
+            <param name="configFileName">The file name of the configuration file to load.</param>
+            <param name="appName">App name (I.E. config file name or whatever), used for logging.</param>
+            <param name="configXml">The XML containing all the config information.</param>
+            <param name="treatMissingFileAsEmpty">If true, a missing config file will not cause an exception.</param>
+        </member>
+        <member name="M:Azavea.Open.Common.Config.#ctor(System.String,System.String,System.Xml.XmlDocument,System.Boolean,System.Collections.Generic.IDictionary{System.String,System.Collections.Generic.IDictionary{System.String,System.String}},System.Collections.Generic.IDictionary{System.String,System.Collections.Generic.IList{System.Collections.Generic.KeyValuePair{System.String,System.String}}},System.Collections.Generic.IDictionary{System.String,System.String},System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            This signature lets a child class provide more complicated or specific types of
+            collections.
+            
+            Reminder: You probably want to use CaseInsensitiveStringComparers in your
+            dictionaries!
+            </summary>
+            <param name="configFileName">The file name of the configuration file to load.</param>
+            <param name="appName">App name (I.E. config file name or whatever), used for logging.</param>
+            <param name="configXml">The XML containing all the config information.</param>
+            <param name="treatMissingFileAsEmpty">If true, a missing config file will not cause an exception.</param>
+            <param name="paramsByComponent">The dictionary that will hold the parameters keyed by component.</param>
+            <param name="orderedParamsByComponent">The dictionary that will hold the parameters in order from the file, keyed by component.</param>
+            <param name="outerXmlByComponent">The dictionary that will hold XML chunks from the file, keyed by component.</param>
+            <param name="innerXmlByComponent">The dictionary that will hold XML chunks from the file, keyed by component.</param>
+        </member>
+        <member name="M:Azavea.Open.Common.Config.MakeParameterCollection">
+            <summary>
+            This is a ugly hack at the moment.  This allows child classes to
+            override the internal type of collection we use.  This will be
+            removed when we refactor the architecture to have an abstract
+            base class so we can have a "writeable" version of Config that does not
+            conflict with the implementation of this "readonly" Config.
+            </summary>
+            <returns>A dictionary to use to hold parameters we've read from the
+                     config file.</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.Config.ParseConfigXml">
+            <summary>
+            Reads the XML and populates the various attributes based on it
+            (lists of params, dictionaries of params, etc).
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.Common.Config.ReplaceEnvironmentVariables(System.String,System.Boolean)">
+            <summary>
+            If there are any environment variables (in the form %VAR%) in the
+            input string, replaces them with the values from the environment.
+            
+            This method can be tolerant or intolerant of errors, so:
+            "abc" -> "abc"
+            "abc%windir%abc" -> "abcC:\WINDOWSabc"
+            "abc%abc" -> exception (intolerant) or "abc%abc" (tolerant)
+            "abc%nosuchvar%abc" -> exception (intolerant) or "abc%nosuchvar%abc" (tolerant)
+            "abc%windir%abc%" -> exception (intolerant) or "abcC:\WINDOWSabc%" (tolerant)
+            
+            Calling this method with "false" for tolerant matches the previous behavior.
+            
+            Methods like File.Exists do not parse environment variables, so this
+            method should be called before attempting to use filenames etc.
+            </summary>
+            <param name="val">Input string to search for environment vars.</param>
+            <param name="tolerant">If true, this method logs warnings.  If false, it
+                                   throws exceptions.</param>
+            <returns>The string with variables replaced with values, or the
+                     unmodified string if there are no valid variables in it.
+                     (Note: input of null means output of null).</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.Config.GetParameter(System.String,System.String)">
+            <summary>
+            Returns the config parameter for the given component.  Throws an exception
+            if there is no such parameter.  If you want to know if the parameter exists,
+            call ParameterExists(...).
+            </summary>
+            <param name="component">The component or section of the config file, used to
+                                    locate the parameter.</param>
+            <param name="parameter">The name of the config parameter.</param>
+            <returns>The string value for the parameter.  Will never be null, if no
+                     value could be found this method will throw.  Could be ""
+                     since "" is a valid thing to have in a config file.</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.Config.GetParameterAsInt(System.String,System.String)">
+            <summary>
+            Similar to GetParameter, but converts the type for you (if possible, throws if not).
+            </summary>
+            <param name="component">The component or section of the config file, used to
+                                    locate the parameter.</param>
+            <param name="parameter">The name of the config parameter.</param>
+            <returns>The value for the parameter.  Throws an exception if unable to convert
+                     to an integer.</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.Config.GetParameterAsDouble(System.String,System.String)">
+            <summary>
+            Similar to GetParameter, but converts the type for you (if possible, throws if not).
+            </summary>
+            <param name="component">The component or section of the config file, used to
+                                    locate the parameter.</param>
+            <param name="parameter">The name of the config parameter.</param>
+            <returns>The value for the parameter.  Throws an exception if unable to convert
+                     to a double.</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.Config.GetParameterAsBool(System.String,System.String)">
+            <summary>
+            Similar to GetParameter, but converts the type for you (if possible, throws if not).
+            </summary>
+            <param name="component">The component or section of the config file, used to
+                                    locate the parameter.</param>
+            <param name="parameter">The name of the config parameter.</param>
+            <returns>The value for the parameter.  Throws an exception if unable to convert
+                     to a boolean.</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.Config.GetParameterWithSubstitution(System.String,System.String,System.Boolean)">
+            <summary>
+            Similar to the regular GetParameter method, except it will substitute 
+            environment variables in the values if present.
+            </summary>
+            <param name="component">The component or section of the config file, used to
+                                    locate the parameter.</param>
+            <param name="parameter">The name of the config parameter.</param>
+            <param name="tolerant">If true, this method logs warnings for unmatched environment
+                                   variables.  If false, it throws exceptions.</param>
+            <returns>The string value for the parameter.  Will never be null, if no
+                     value could be found this method will throw.  Could be ""
+                     since "" is a valid thing to have in a config file.</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.Config.GetParameterWithSubstitution(System.String,System.String,System.Boolean,System.String)">
+            <summary>
+            Similar to the regular GetParameter method, except it will substitute 
+            environment variables in the values if present.
+            </summary>
+            <param name="component">The component or section of the config file, used to
+                                    locate the parameter.</param>
+            <param name="parameter">The name of the config parameter.</param>
+            <param name="tolerant">If true, this method logs warnings for unmatched environment
+                                   variables.  If false, it throws exceptions.</param>
+            <param name="defaultValue">Value to return if the parameter doesn't exist.</param>
+            <returns>The string value for the parameter.  Will never be null, if no
+                     value could be found this method will throw.  Could be ""
+                     since "" is a valid thing to have in a config file.</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.Config.GetParameter(System.String,System.String,System.String)">
+            <summary>
+            Similar to GetParameter, except rather than throwing an exception if a parameter
+            doesn't exist, returns the default value.
+            </summary>
+            <param name="component">The component or section of the config file, used to
+                                    locate the parameter.</param>
+            <param name="parameter">The name of the config parameter.</param>
+            <param name="defaultValue">Value to return if the parameter doesn't exist.</param>
+            <returns>The parameter from the config, or the default.</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.Config.GetParameterAsInt(System.String,System.String,System.Int32)">
+            <summary>
+            Similar to GetParameterWithDefault, except converts the type of the value (if present).
+            </summary>
+            <param name="component">The component or section of the config file, used to
+                                    locate the parameter.</param>
+            <param name="parameter">The name of the config parameter.</param>
+            <param name="defaultValue">Value to return if the parameter doesn't exist.</param>
+            <returns>The parameter from the config, or the default.</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.Config.GetParameterAsInt(System.String,System.String,System.Nullable{System.Int32})">
+            <summary>
+            Similar to GetParameterWithDefault, except converts the type of the value (if present).
+            </summary>
+            <param name="component">The component or section of the config file, used to
+                                    locate the parameter.</param>
+            <param name="parameter">The name of the config parameter.</param>
+            <param name="defaultValue">Value to return if the parameter doesn't exist.</param>
+            <returns>The parameter from the config, or the default.</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.Config.GetParameterAsBool(System.String,System.String,System.Boolean)">
+            <summary>
+            Similar to GetParameterWithDefault, except converts the type of the value (if present).
+            </summary>
+            <param name="component">The component or section of the config file, used to
+                                    locate the parameter.</param>
+            <param name="parameter">The name of the config parameter.</param>
+            <param name="defaultValue">Value to return if the parameter doesn't exist.</param>
+            <returns>The parameter from the config, or the default.</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.Config.GetParameterAsBool(System.String,System.String,System.Nullable{System.Boolean})">
+            <summary>
+            Similar to GetParameterWithDefault, except converts the type of the value (if present).
+            </summary>
+            <param name="component">The component or section of the config file, used to
+                                    locate the parameter.</param>
+            <param name="parameter">The name of the config parameter.</param>
+            <param name="defaultValue">Value to return if the parameter doesn't exist.</param>
+            <returns>The parameter from the config, or the default.</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.Config.GetParameterAsDouble(System.String,System.String,System.Double)">
+            <summary>
+            Similar to GetParameterWithDefault, except converts the type of the value (if present).
+            </summary>
+            <param name="component">The component or section of the config file, used to
+                                    locate the parameter.</param>
+            <param name="parameter">The name of the config parameter.</param>
+            <param name="defaultValue">Value to return if the parameter doesn't exist.</param>
+            <returns>The parameter from the config, or the default.</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.Config.GetParameterAsDouble(System.String,System.String,System.Nullable{System.Double})">
+            <summary>
+            Similar to GetParameterWithDefault, except converts the type of the value (if present).
+            </summary>
+            <param name="component">The component or section of the config file, used to
+                                    locate the parameter.</param>
+            <param name="parameter">The name of the config parameter.</param>
+            <param name="defaultValue">Value to return if the parameter doesn't exist.</param>
+            <returns>The parameter from the config, or the default.</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.Config.ParameterExists(System.String,System.String)">
+            <summary>
+            Method to check if a parameter exists, prior to calling GetParameter (which
+            throws exceptions if you request an invalid parameter).
+            </summary>
+            <param name="component">The component or section of the config file, used to
+                                    locate the parameter.</param>
+            <param name="parameter">The name of the config parameter.</param>
+            <returns>True if the component has a section in the config file, and if that
+                     section has the parameter.  False otherwise.</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.Config.ComponentExists(System.String)">
+            <summary>
+            Method to check if a config section exists for a component, prior to calling
+            GetConfigXml or GetParametersAsHashTable (which throw exceptions if you request
+            an invalid component name).
+            </summary>
+            <param name="component">The component or section of the config file, used to
+                                    locate the parameter.</param>
+            <returns>True if the component has a section in the config file.  False otherwise.</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.Config.GetConfigXml(System.String)">
+            <summary>
+            Gets you the XML section for the component, allowing you to do any special
+            parsing that may be necessary.  This includes the "component" tag, and any
+            text included in that tag.
+            </summary>
+            <param name="component">The component or section of the config file, used to
+                                    locate the parameter.</param>
+            <returns>The XML section (inclusive of the "component" tag) for the
+            given component.</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.Config.GetConfigInnerXml(System.String)">
+            <summary>
+            Gets you the XML section for the component, allowing you to do any special
+            parsing that may be necessary.  This includes ONLY the children of the
+            "component" tag, and will not have any text included in that tag.
+            </summary>
+            <param name="component">The component or section of the config file, used to
+                                    locate the parameter.</param>
+            <returns>The XML section (exclusive of the "component" tag) for the
+            given component.</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.Config.GetParametersAsDictionary(System.String)">
+            <summary>
+            Gets you a Dictionary of all the parameters for the component.
+            </summary>
+            <param name="component">The component or section of the config file, used to
+                                    locate the parameter.</param>
+            <returns>A Dictionary, with string values keyed (case insentively) by string parameter names.</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.Config.GetParametersAsList(System.String)">
+            <summary>
+            Gets you a list of all the parameters for the component as key-value-pairs.
+            This preserves the order of parameters from the config file.
+            </summary>
+            <param name="component">The component or section of the config file, used to
+                                    locate the parameter.</param>
+            <returns>A list of key-value-pairs, with string values keyed by string parameter names.</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.Config.ReThrowException(System.String,System.Object[],System.Exception)">
+            <summary>
+            All the checks for null are because there was an issue where something about
+            a caught exception was null, which caused the error handling code to bomb.
+            Since error handling code is the worst place to bomb (you lose the original
+            exception), to be safe we manually convert null values into "null" strings.
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.Common.Config.Equals(System.Object)">
+            <summary>
+             Two Configs with the same config file and appname are Equal.
+            </summary>
+            
+            <returns>
+            true if the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />; otherwise, false.
+            </returns>
+            
+            <param name="obj">The <see cref="T:System.Object" /> to compare with the current <see cref="T:System.Object" />. </param>
+            <exception cref="T:System.NullReferenceException">The <paramref name="obj" /> parameter is null.</exception><filterpriority>2</filterpriority>
+        </member>
+        <member name="M:Azavea.Open.Common.Config.GetHashCode">
+            <summary>
+            Hash code, based on the config file name and app name.
+            </summary>
+            
+            <returns>
+            A hash code for the current <see cref="T:System.Object" />.
+            </returns>
+        </member>
+        <member name="M:Azavea.Open.Common.Config.ToString">
+            <summary>
+            Returns the config file name and app name./>.
+            </summary>
+            
+            <returns>
+            A <see cref="T:System.String" /> that represents the current <see cref="T:System.Object" />.
+            </returns>
+        </member>
+        <member name="T:Azavea.Open.Common.Cryptography.IOneWayHash">
+            <summary>
+            An interface for classes that perform a one-way encryption (no decryption) on an input.
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.Common.Cryptography.IOneWayHash.Encrypt(System.String)">
+            <summary>
+            Cryptographically hashes a plaintext string into a short-message digest
+            (hard to decrypt)
+            </summary>
+            <param name="input">plaintext</param>
+            <returns>one-way hash</returns>
+        </member>
+        <member name="T:Azavea.Open.Common.Cryptography.ITwoWayHash">
+            <summary>
+            An interface for classes that perform two-way encryption/decryption on an input.
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.Common.Cryptography.ITwoWayHash.Encrypt(System.String)">
+            <summary>
+            Encrypts a plaintext string into cyphertext
+            </summary>
+            <param name="input">plaintext</param>
+            <returns>cyphertext</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.Cryptography.ITwoWayHash.Decrypt(System.String)">
+            <summary>
+            decrypts cyphertext into plaintext
+            </summary>
+            <param name="input">cyphertext</param>
+            <returns>plaintext</returns>
+        </member>
+        <member name="T:Azavea.Open.Common.LoggingException">
+            <summary>
+            This exception logs its message and parent exception (if any) as
+            "debug" log messages, allowing run-time debugging if it is discovered
+            that an exception is being eaten somewhere.
+            
+            Normally an exception will be logged by client code, so there is no
+            need to log a warning everywhere one is generated.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.Common.LoggingException._log">
+            <summary>
+            A log4net logger that can be used to log info about the exception.
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.Common.LoggingException.#ctor(System.String,System.Exception)">
+            <summary>
+            Creates the exception, with an inner exception.
+            </summary>
+            <param name="message">What went wrong?</param>
+            <param name="e">Another exception that caused this one to be thrown.</param>
+        </member>
+        <member name="M:Azavea.Open.Common.LoggingException.#ctor(System.String)">
+            <summary>
+            Creates the exception.
+            </summary>
+            <param name="message">What went wrong?</param>
+        </member>
+        <member name="T:Azavea.Open.Common.StringHelper">
+            <summary>
+            This class consists of all the various static string manipulation helper functions we've
+            written over the years.  Primarily they have to do with validating that the string (user input
+            typically) is actually an int, an email address, is blank, etc, but also anything else
+            that is a common string manipulation operation.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.Common.StringHelper.TelephoneRegex">
+            <summary>
+            This is a regex expression for use in StringHelper.FormatTelephone(string). The expression is public so that it 
+            can also be used in a RegularExpressionValidator in aspx pages. It is USA centric but supports both USA and International numbers.
+            USA numbers may contain letters (eg 800-GOT-MILK) and may have optional extension designated by 'x' or 'ext'.
+            International telphone numbers must follow the pattern: +(country code) (zone code) (3 or 4 numbers) (3 or 4 numbers).
+            Valid separators are ./- or space. AreaCode or ZoneCode may be surrounded by (parens).
+            The match if any is grouped into either International or USA match group, which is in turn grouped into respective named groups.
+            International group contains named groups CountryCode ZoneCode Number1 Number2. eg +XX XX XXXX XXXX.
+            USA group contains named groups AreaCode Exchange Number. eg XXX XXX XXXX
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.Common.StringHelper.IsEmailAddress(System.String)">
+            <summary>
+            Validates an email address using a regex expression.
+            </summary>
+            <param name="input">A string containing an email to validate.  Can be null (will return false).</param>
+            <returns>true if the string is an email address</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.StringHelper.FormatTitleCase(System.String)">
+            <summary>
+            Formats the case of a string like so: "This Has A Case Of Title Case."
+            This is not strict title case, but rather a simplified version: The first letter
+            of every word is upper case, the rest of the word is lower case.
+            
+            Strict title case does not capitalize some short words such as "a", "and", "the",
+            etc. (unless it is the first word in the sentence).
+            </summary>
+            <param name="input">String to format.  Cannot be null.</param>
+            <returns>The input string with nothing changed but the case of the letters.</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.StringHelper.FormatTelephone(System.String)">
+            <summary>
+            Formats a string into a formatted telephone string if it matches either the international or USA pattern.
+            </summary>
+            <param name="telephone"></param>
+            <returns>A telephone string format as (###) ###-#### [x###] -OR- +## (###) #### #### -OR- empty if no match</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.StringHelper.IsNonBlank(System.String)">
+            <summary>
+            Checks if the string is null or contains only whitespace.
+            Similar to "String.IsNullOrEmpty(string input)", except that
+            this method will say that "   " is blank, whereas IsNullOrEmpty will
+            claim it is NOT empty.
+            </summary>
+            <param name="input">String to check.  Can be null.</param>
+            <returns>true if the string contains non-whitespace characters.</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.StringHelper.IsAlpha(System.String)">
+            <summary>
+            Checks if the string contains nothing but letters.  Any non-letter
+            characters (including whitespace, numbers, etc) will cause this to
+            return false.
+            </summary>
+            <param name="input">String to check.  Can be null.</param>
+            <returns>true if the string is non-blank and contains only letters.</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.StringHelper.IsValidUsername(System.String)">
+            <summary>
+            Allows alpha numeric chars and . and - and _ and @.
+            This checks only that this is an acceptable user name, not that it is in fact an
+            actual user name in any particular system.
+            </summary>
+            <param name="input">String to check.  Can be null.</param>
+            <returns>true if the string is non-blank and contains only acceptable username characters.</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.StringHelper.IsInteger(System.String)">
+            <summary>
+            Checks whether the input string is an integer.
+            </summary>
+            <param name="input">String to check.  Can be null.</param>
+            <returns>true if the input is non-empty and can be parsed as an integer.</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.StringHelper.IsIntWithinRange(System.String,System.Int32,System.Int32)">
+            <summary>
+            Checks whether the input string is an integer, and if so, whether it
+            is within the specified range, inclusive.
+            </summary>
+            <param name="input">String to check.  Can be null.</param>
+            <param name="low">Value that the input must be greater than or equal to.</param>
+            <param name="high">Value that the input must be less than or equal to.</param>
+            <returns>true if the input can be parsed as an integer, and low &lt;= input &lt;= high.</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.StringHelper.IsDouble(System.String)">
+            <summary>
+            Checks whether the input string is a double.
+            </summary>
+            <param name="input">String to check.  Can be null.</param>
+            <returns>true if the input is non-empty and can be parsed as a double.</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.StringHelper.IsDateTime(System.String)">
+            <summary>
+            Checks whether the input string is a DateTime.  This doesn't support all possible datetime
+            formats, so you should verify that it recognizes the format you expect before rolling out to
+            production. (a great way to do that is add a few lines to the unit test!)
+            </summary>
+            <param name="input">String to check.  Can be null.</param>
+            <returns>true if the input is non-empty and can be parsed as a DateTime.</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.StringHelper.SafeEquals(System.String,System.String)">
+            <summary>
+            Ever wondered when to use ==, or .Equals, with strings?  .Equals is safer, because ==
+            can fail if the compiler doesn't realize both types are strings (one is in an "object"
+            variable for example).  But .Equals doesn't work on null (NullReferenceException!).
+            So you can use this instead.  Either or both can be null and it will always return
+            the right answer (null == null is true).
+            </summary>
+            <param name="str1">A string to compare, can be null.</param>
+            <param name="str2">A string to compare, can be null.</param>
+            <returns>true if both are null or both are identical strings, false otherwise.</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.StringHelper.SafeCompare(System.String,System.String)">
+            <summary>
+            Similar to string.CompareTo, except this handles nulls (null is "less" than a value,
+            two nulls are equal).
+            </summary>
+            <param name="str1">A string to compare, can be null.</param>
+            <param name="str2">A string to compare, can be null.</param>
+            <returns>Less than 0 if str1 is less than str2,
+                     0 if str1 is equal to str2,
+                     greater than 0 if str1 is greater than str2.</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.StringHelper.Join(System.Collections.IEnumerable)">
+            <summary>
+            Takes a group of anything and joins based on ToString values, separated by the given
+            separator.
+            </summary>
+            <param name="joinUs">Group of values to concatenate.</param>
+            <returns>All the values concatenated, or "" if there were no values.</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.StringHelper.Join(System.Collections.IEnumerable,System.String)">
+            <summary>
+            Takes a group of anything and joins based on ToString values, separated by the given
+            separator.
+            </summary>
+            <param name="joinUs">Group of values to concatenate.</param>
+            <param name="separator">String to insert between each of the values.</param>
+            <returns>All the values concatenated, or "" if there were no values.</returns>
+        </member>
+        <member name="M:Azavea.Open.Common.StringHelper.Join(System.Collections.IEnumerable,System.String,System.Boolean)">
+            <summary>
+            Takes a group of anything and joins based on ToString values, separated by the given
+            separator.
+            </summary>
+            <param name="joinUs">Group of values to concatenate.</param>
+            <param name="separator">String to insert between each of the values.</param>
+            <param name="showNulls">If true, null values will be listed as the string "&lt;null&gt;".
+                                    If false, null values will be left as the default ("").</param>
+            <returns>All the values concatenated, or "" if there were no values.</returns>
+        </member>
+        <member name="T:Azavea.Open.Common.StringHelper.SmartComparer">
+            <summary>
+            A comparer that sorts strings numerically if possible.  I.E.
+            "Jeff1", "Jeff2", and "Jeff10" will be sorted in that order, instead
+            of the more typical "Jeff1", "Jeff10", "Jeff2".
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.Common.StringHelper.SmartComparer.NumericSeparatorRegex">
+            <summary>
+            Regex to separate blocks of digits from blocks of non-digit text.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.Common.StringHelper.SmartComparer.Instance">
+            <summary>
+            The one and only instance of this class.  It is stateless so you
+            don't need to instantiate it.
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.Common.StringHelper.SmartComparer.#ctor">
+            <summary>
+            Use SmartComparer.Instance instead.
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.Common.StringHelper.SmartComparer.Compare(System.Object,System.Object)">
+            <summary>
+            Compares two objects and returns a value indicating whether one is less than, equal to, or greater than the other.
+            </summary>
+            <returns>
+            Value Condition Less than zero <paramref name="x"/> is less than <paramref name="y"/>. Zero <paramref name="x"/> equals <paramref name="y"/>. Greater than zero <paramref name="x"/> is greater than <paramref name="y"/>. 
+            </returns>
+            <param name="x">The first object to compare. </param><param name="y">The second object to compare. </param><exception cref="T:System.ArgumentException">Neither <paramref name="x"/> nor <paramref name="y"/> implements the <see cref="T:System.IComparable"/> interface.-or- <paramref name="x"/> and <paramref name="y"/> are of different types and neither one can handle comparisons with the other. </exception><filterpriority>2</filterpriority>
+        </member>
+        <member name="M:Azavea.Open.Common.StringHelper.SmartComparer.SmartCompare(System.String,System.String)">
+            <summary>
+            Sorts strings numerically if possible.  I.E.
+            "Jeff1", "Jeff2", and "Jeff10" will be sorted in that order, instead
+            of the more typical "Jeff1", "Jeff10", "Jeff2".
+            </summary>
+            <param name="x">First string to compare.</param>
+            <param name="y">Second string to compare.</param>
+            <returns>
+            Value Condition Less than zero <paramref name="x"/> is less than <paramref name="y"/>. Zero <paramref name="x"/> equals <paramref name="y"/>. Greater than zero <paramref name="x"/> is greater than <paramref name="y"/>. 
+            </returns>
+        </member>
+        <member name="M:Azavea.Open.Common.StringHelper.SmartComparer.Compare(System.String,System.String)">
+            <summary>
+            Compares two objects and returns a value indicating whether one is less than, equal to, or greater than the other.
+            </summary>
+            <returns>
+            Value Condition Less than zero<paramref name="x"/> is less than <paramref name="y"/>.Zero<paramref name="x"/> equals <paramref name="y"/>.Greater than zero<paramref name="x"/> is greater than <paramref name="y"/>.
+            </returns>
+            <param name="x">The first object to compare.</param><param name="y">The second object to compare.</param>
+        </member>
+        <member name="T:Azavea.Open.Common.Tests.ChronoTests">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.ChronoTests.TestSplitMS">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.ChronoTests.TestSplitS">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.ChronoTests.TestSplit">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.ChronoTests.TestReset">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.ChronoTests.TestRunTime">
+            <exclude/>
+        </member>
+        <member name="T:Azavea.Open.Common.Tests.CollectionTests">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.CollectionTests.TestDictionaryAdd">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.CollectionTests.TestDictionaryContains">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.CollectionTests.TestDictionaryCopyTo">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.CollectionTests.TestDictionaryRemove">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.CollectionTests.TestDictionaryTryGetValue">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.CollectionTests.TestDictionaryBracketGet">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.CollectionTests.TestDictionaryBracketSet">
+            <exclude/>
+        </member>
+        <member name="T:Azavea.Open.Common.Tests.ConfigTests">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.ConfigTests.TestAppNameConstructor">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.ConfigTests.TestGetConfig">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.ConfigTests.TestAppNameConstructorInvalidName">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.ConfigTests.TestAppNameConstructorNameWithNoFile">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.ConfigTests.TestAppNameConstructorNullName">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.ConfigTests.TestAppNameConstructorBlankName">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.ConfigTests.TestFileNameConstructor">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.ConfigTests.TestFileNameConstructorInvalidFile">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.ConfigTests.TestFileNameConstructorNullAppName">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.ConfigTests.TestFileNameConstructorBlankAppName">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.ConfigTests.TestFileNameConstructorNullFileName">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.ConfigTests.TestFileNameConstructorBlankFileName">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.ConfigTests.TestXmlDocumentConstructor">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.ConfigTests.TestReplaceEnvUnchanged">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.ConfigTests.TestReplaceEnvChanged">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.ConfigTests.TestReplaceEnvAdvanced">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.ConfigTests.TestReplaceEnvIntolerantExceptions">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.ConfigTests.TestReplaceEnvVarIntolerantUnchanged">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.ConfigTests.TestReplaceEnvVarIntolerantChanged">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.ConfigTests.TestGetParamValid">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.ConfigTests.TestCaseInsensitivity">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.ConfigTests.TestEmptyValue">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.ConfigTests.TestGetParamNulls">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.ConfigTests.TestGetParamInvalid">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.ConfigTests.GetParamInvalidHelper(Azavea.Open.Common.Config,System.String,System.String,System.String)">
+            <summary>
+            Call GetParameter with invalid params, catch the exception and check the message.
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.ConfigTests.TestGetParamNonAttr">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.ConfigTests.TestParseInt">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.ConfigTests.TestParseBool">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.ConfigTests.TestParseDouble">
+            <exclude/>
+        </member>
+        <member name="T:Azavea.Open.Common.Tests.HelperTests">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.HelperTests.TestValidEmails">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.HelperTests.TestInvalidEmails">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.HelperTests.TestValidTelephone">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.HelperTests.TestInvalidTelephone">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.HelperTests.TestTitleCase">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.HelperTests.TestNonEmpty">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.HelperTests.TestAlpha">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.HelperTests.TestUsername">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.HelperTests.TestInteger">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.HelperTests.TestIntRange">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.HelperTests.TestDouble">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.HelperTests.TestDateTime">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.HelperTests.TestSmartCompareRegex">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.HelperTests.TestSmartCompare">
+            <exclude/>
+        </member>
+        <member name="T:Azavea.Open.Common.Tests.TimedCacheTests">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.TimedCacheTests.TryGetTest1">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.TimedCacheTests.TryGetTest2">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.TimedCacheTests.ResetTest">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.TimedCacheTests.ResetTest2">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.TimedCacheTests.ResetTest3">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.TimedCacheTests.TryResetTest">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.TimedCacheTests.TryResetTest2">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.Common.Tests.TimedCacheTests.TryResetTest3">
+            <exclude/>
+        </member>
+    </members>
+</doc>

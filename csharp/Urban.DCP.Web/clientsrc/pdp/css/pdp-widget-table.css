@@ -1,0 +1,57 @@
+.pdp-table { 	
+	    border-spacing: 0;
+	    border-collapse: collapse;
+}
+    .pdp-table-row-alt-pdb { background: #EEF6D1; /*#dddfd5;*/ }
+    .pdp-table-row-alt-nyc { background: #DFEBBE; /*#dddfd5;*/ }
+    
+    .pdp-table-col-extra {width: 75px !important;}
+    .pdp-table th { cursor:pointer; color: #fff; text-align:center; font-weight: bold; border: 0px;}
+    .pdp-table th { 
+        padding:2px 3px 2px 6px; text-shadow: -1px -1px 0px #607860 ;
+        background: -webkit-gradient(linear, left top, left bottom, from(#A1AE8D), to(#727A65));
+	    background: -moz-linear-gradient(top,  #A1AE8D,  #727A65);
+	    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#A1AE8D', endColorstr='#727A65') !important;
+    }
+    .pdp-table td { padding:2px 3px 2px 6px; border-left: 1px solid #c0c0c0;}
+    .pdp-table th.pdp-table-col-nosort { cursor:auto; }
+
+.pdp-table-pager-ctrl { float:left; padding: 1px 2px; margin-left: 3px;}
+.pdp-table-pager-ctrl-first, .pdp-table-pager-ctrl-prev, .pdp-table-pager-ctrl-next, .pdp-table-pager-ctrl-last { cursor:pointer; }
+.pdp-table-pager-ctrl.pdp-border:hover{  border: solid 1px #4D6916; }
+
+.pdp-table col{
+    width: 125px;  /* For col elements, "width" means min-width, there is no spec for min-width on <col>. */
+}
+
+/* Rendering based on metadata ui type*/
+.pdp-column-render-integer, .pdp-column-render-year, .pdp-column-render-money, .pdp-column-render-percent, .pdp-column-render-dollars, .pdp-column-render-ratio, .pdp-column-render-count{
+    text-align : right;
+}
+.pdp-widget-table-context-row{
+    font-weight: bold;
+    font-style: italic;
+}
+.pdp-widget-table-context-row-last{
+    border-bottom: solid 1px #000;
+}
+
+#pdp-table-pager-ctrl-curpage-input{
+    width: 40px;
+}
+.pdp-table-pager select{
+    width: 55px;
+}
+
+.pdp-table-col-sortdesc, .pdp-table-col-sortasc{
+    background: -webkit-gradient(linear, left top, left bottom, from(#98D40C), to(#6BA40E)) !important;
+	background: -moz-linear-gradient(top,  #98D40C,  #6BA40E) !important;
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#98D40C', endColorstr='#6BA40E') !important;
+	color: #fff;
+	
+	text-shadow: -1px -1px #004D0F;
+	font-weight: bold;
+}
+
+/* IE7 will not take display:none for a col element.  It will take a vis: collapse, but FF will not.*/ 
+.pdp-table-col-hide { display: none; }

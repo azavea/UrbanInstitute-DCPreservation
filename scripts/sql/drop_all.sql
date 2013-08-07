@@ -1,0 +1,9 @@
+DROP TABLE Nychanis_Data
+DROP TABLE Nychanis_Data_Times
+DROP TABLE Nychanis_Geography
+DROP TABLE Nychanis_Indicators
+DROP TABLE Nychanis_Time
+DROP TABLE PDP_Attribute_Values
+DROP TABLE PDP_Attributes
+DROP TABLE PDP_Properties_Primary
+DROP TABLE PDP_Properties_Secondary

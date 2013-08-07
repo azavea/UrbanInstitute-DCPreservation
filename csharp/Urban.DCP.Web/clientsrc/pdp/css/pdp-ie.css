@@ -1,0 +1,6 @@
+.pdp-map-aggregated-icon img { display:inline; }
+.pdp-map-marker-aggregated-label { position:absolute;top:0;left:0;background:transparent;border:none;filter:none;-ms-filter:none; }
+#pdp-pdb-map-layers-help{border: none; }
+.olFramedCloudPopupContent { width:350px !important; }
+
+.ui-autocomplete { height: 100px; }

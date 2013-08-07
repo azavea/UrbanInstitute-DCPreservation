@@ -1,0 +1,12 @@
+bin/
+obj/
+local/
+config/MergeFiles/
+*.user
+*.suo
+*.log
+_ReSharper*
+csharp/Urban.DCP.Web/client/*
+csharp/*/Web.config
+csharp/Urban.DCP.Data/Tests/Test_User.mdb
+build/

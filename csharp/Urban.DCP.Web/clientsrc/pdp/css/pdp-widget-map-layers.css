@@ -1,0 +1,61 @@
+#pdp-map-layers{
+    z-index: 3000;
+    float: none;
+    position: absolute;
+    border: Solid 1px #c0c0c0;
+    display: block;
+    background-color: #fff;
+    text-align: center;
+    padding: 0.1em 0.25em;
+    width: 65px;
+    cursor:pointer;    
+    right: 10px;
+    top: 10px;
+}
+
+#pdp-map-layers-panel {
+    background-color: #fff;
+    display: block;
+    z-index: 9998;
+    float: none;
+    position: absolute;
+    border: Solid 1px #c0c0c0;
+    padding: 5px 15px;
+    right: 10px;
+    top: 35px;
+}
+
+#pdp-nychanis-results-container{
+    display: none;
+}
+
+.pdp-nychanis-legend-row { width: 230px;margin: 2px auto; }
+    /* Height should be the same as the font being used, which is why it's in ems here. */
+    .pdp-nychanis-legend-swatch { display:inline-block;height:1.2em;width:30px; }
+    /* Without the vertical-align:top, these are oddly two pixels or so below the swatch span. */
+    .pdp-nychanis-legend-info { display:inline-block;width:92px;vertical-align:top;}
+        .pdp-nychanis-legend-info-sep { text-align:center;width:10px; }
+        .pdp-nychanis-legend-info-min { text-align:right;margin-right:3px; }
+        .pdp-nychanis-legend-info-max { text-align:left;margin-left:3px; }
+    
+.pdp-map-layers-section{
+    margin:15px 0;
+    position: relative;
+}
+
+.pdp-map-layers-label 
+{
+    font-weight:bold;
+    padding:0.6em 0.3em;
+    color: #2a4203;
+}
+
+.pdp-map-layers-content { padding:5px 10px 5px 17px; }
+    .pdp-map-layers-content label { display:block; margin: 4px 0; }
+    
+#pdp-map-layers-panel-buttonset .ui-button-text{padding:0.2em 1.2em;}
+#pdp-nychanis-legend-container{max-width: 250px; }
+#pdp-pdb-map-layers-help{position: absolute; right: 70px; top: -5px; height: 25px; width: 25px; line-height: 25px; border: solid 1px #808080; left: auto !important;} /* left override for IE  */ 
+.pdp-map-layers-tooltip {    
+    z-index:9999 !important;
+}

@@ -1,0 +1,289 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1602A39D-F476-47F8-ACCB-C85220B69519}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Furman.PDP.Web</RootNamespace>
+    <AssemblyName>Furman.PDP.Web</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UseIISExpress>false</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Azavea.Open.Common, Version=2.1.9.16050, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Azavea.Open.Common.2.1.9\lib\net20\Azavea.Open.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Azavea.Utilities.Common, Version=3.2.2.20389, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Azavea.Utilities.Common.3.2.2\lib\net20\Azavea.Utilities.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Azavea.Web, Version=1.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Azavea.Web.1.1.2\lib\net20\Azavea.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\log4net.2.0.0\lib\net35-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.5.0.6\lib\net35\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.6.2.12296, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.mocks, Version=2.6.2.12296, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NUnit.Mocks.2.6.2\lib\nunit.mocks.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="admin\manage-users.aspx.cs">
+      <DependentUpon>manage-users.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\manage-users.aspx.designer.cs">
+      <DependentUpon>manage-users.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="masters\Default.Master.cs">
+      <DependentUpon>Default.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="masters\Default.Master.designer.cs">
+      <DependentUpon>Default.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="user\profile.aspx.cs">
+      <DependentUpon>profile.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="user\profile.aspx.designer.cs">
+      <DependentUpon>profile.aspx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="admin\manage-users.aspx" />
+    <Content Include="clientsrc\feedbacker\css\feedbacker.css" />
+    <Content Include="clientsrc\feedbacker\css\images\feedbacker-tab-right.png" />
+    <Content Include="clientsrc\feedbacker\feedbacker.admin.config.js" />
+    <Content Include="clientsrc\feedbacker\feedbacker.admin.js" />
+    <Content Include="clientsrc\feedbacker\feedbacker.admin.list.js" />
+    <Content Include="clientsrc\feedbacker\feedbacker.js" />
+    <Content Include="clientsrc\hash\Hash.js" />
+    <Content Include="clientsrc\hash\jquery.hash.js" />
+    <Content Include="clientsrc\json\json2.js" />
+    <Content Include="clientsrc\pdp\css\pdp-manage-users.css" />
+    <Content Include="clientsrc\pdp\css\pdp-widget-map-geocode.css" />
+    <Content Include="clientsrc\pdp\pdp-widget-map-geocode.js" />
+    <Content Include="clientsrc\pdp\css\pdp-ie-lte7.css" />
+    <Content Include="clientsrc\pdp\css\pdp-ie.css" />
+    <Content Include="clientsrc\pdp\css\pdp-widget-splash.css" />
+    <Content Include="clientsrc\pdp\pdp-widget-pdb-longview.js" />
+    <Content Include="clientsrc\pdp\pdp-widget-splash.js" />
+    <Content Include="clientsrc\pdp\css\pdp-map.css" />
+    <Content Include="clientsrc\pdp\css\pdp-widget-loading-indicator.css" />
+    <Content Include="clientsrc\pdp\pdp-browser-warning.js" />
+    <Content Include="clientsrc\pdp\pdp-widget-loading-indicator.js" />
+    <Content Include="clientsrc\pdp\css\pdp-nychanis-search.css" />
+    <Content Include="clientsrc\pdp\css\pdp-widget-map-layers.css" />
+    <Content Include="clientsrc\pdp\pdp-map.js" />
+    <Content Include="clientsrc\pdp\pdp-widget-map-layers.js" />
+    <Content Include="clientsrc\pdp\css\pdp-pdb-search.css" />
+    <Content Include="clientsrc\pdp\css\pdp-widget-export.css" />
+    <Content Include="clientsrc\pdp\pdp-nychanis-results.js" />
+    <Content Include="clientsrc\pdp\pdp-nychanis-search.js" />
+    <Content Include="clientsrc\pdp\pdp-widget-export.js" />
+    <Content Include="clientsrc\pdp\css\pdp-widget-column-selector.css" />
+    <Content Include="clientsrc\pdp\pdp-widget-column-selector.js" />
+    <Content Include="clientsrc\pdp\pdp-pdb-search.js" />
+    <Content Include="clientsrc\pdp\pdp-pdb-results.js" />
+    <Content Include="clientsrc\pdp\pdp-widget-nychanis-resolution.js" />
+    <Content Include="clientsrc\pdp\pdp-widget-nychanis-indicator.js" />
+    <Content Include="clientsrc\pdp\pdp-widget-nychanis-time.js" />
+    <Content Include="clientsrc\pdp\pdp-widget-panel-closer.js" />
+    <Content Include="clientsrc\pdp\pdp-widget-pdb-aggregations.js" />
+    <Content Include="clientsrc\pdp\pdp-widget-pdb-controls.js" />
+    <Content Include="clientsrc\pdp\pdp-widget-pdb-criteria.js" />
+    <Content Include="clientsrc\pdp\pdp-widget-signup.js" />
+    <Content Include="clientsrc\pdp\css\pdp-widget-login.css" />
+    <Content Include="clientsrc\pdp\css\pdp-widget-longview.css" />
+    <Content Include="clientsrc\pdp\pdp-widget-login.js" />
+    <Content Include="clientsrc\pdp\css\pdp-app.css" />
+    <Content Include="clientsrc\pdp\css\pdp-core.css" />
+    <Content Include="clientsrc\pdp\css\pdp-widget-control.css" />
+    <Content Include="clientsrc\pdp\pdp-app.js" />
+    <Content Include="clientsrc\pdp\css\pdp-widget-table.css" />
+    <Content Include="clientsrc\pdp\css\reset.css" />
+    <Content Include="clientsrc\pdp\pdp-manage-users.js" />
+    <Content Include="clientsrc\pdp\css\pdp-form.css" />
+    <Content Include="clientsrc\pdp\pdp-core.js" />
+    <Content Include="clientsrc\pdp\pdp-data.js" />
+    <Content Include="clientsrc\pdp\pdp-form.js" />
+    <Content Include="clientsrc\pdp\pdp-profile.js" />
+    <Content Include="clientsrc\pdp\pdp-util.js" />
+    <Content Include="clientsrc\pdp\pdp-widget-table.js" />
+    <Content Include="clientsrc\util\azavea.renderers.js" />
+    <Content Include="clientsrc\util\azavea.util.js" />
+    <Content Include="clientsrc\util\azavea.util.prototype.js" />
+    <Content Include="client\jqueryui\css\custom\images\button-bg.png" />
+    <Content Include="client\jqueryui\css\custom\images\flyout-button.png" />
+    <Content Include="client\jqueryui\css\custom\images\sidebar-button-sprite.png" />
+    <Content Include="client\jqueryui\css\custom\images\submit-button-bg.png" />
+    <Content Include="client\jqueryui\css\custom\images\switch-bg-down.png" />
+    <Content Include="client\jqueryui\css\custom\images\switch-bg-up.png" />
+    <Content Include="client\jqueryui\css\custom\images\trans75.png" />
+    <Content Include="client\jqueryui\css\custom\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="client\jqueryui\css\custom\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="client\jqueryui\css\custom\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="client\jqueryui\css\custom\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="client\jqueryui\css\custom\images\ui-bg_highlight-soft_100_7ab603_1x100.png" />
+    <Content Include="client\jqueryui\css\custom\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="client\jqueryui\css\custom\images\ui-bg_inset-soft_75_e6e6e6_1x100.png" />
+    <Content Include="client\jqueryui\css\custom\images\ui-bg_inset-soft_95_fef1ec_1x100.png" />
+    <Content Include="client\jqueryui\css\custom\images\ui-icons_222222_256x240.png" />
+    <Content Include="client\jqueryui\css\custom\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="client\jqueryui\css\custom\images\ui-icons_454545_256x240.png" />
+    <Content Include="client\jqueryui\css\custom\images\ui-icons_888888_256x240.png" />
+    <Content Include="client\jqueryui\css\custom\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="client\jqueryui\css\custom\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="client\jqueryui\css\custom\images\ui-slider-bg.png" />
+    <Content Include="client\jqueryui\css\custom\images\ui-slider-handle.png" />
+    <Content Include="client\jqueryui\css\custom\jquery-ui-1.8.5.custom.css" />
+    <Content Include="client\jqueryui\jquery-1.4.2.min.js" />
+    <Content Include="client\jqueryui\jquery-ui-1.8.4.custom.min.js" />
+    <Content Include="client\ktable\css\jquery.ktable.colsizable.css" />
+    <Content Include="client\ktable\jquery.event.drag-1.4.js" />
+    <Content Include="client\ktable\jquery.ktable.colsizable-1.1.js" />
+    <Content Include="default.aspx" />
+    <Content Include="Global.asax" />
+    <Content Include="masters\Default.Master" />
+    <Content Include="handlers\login.ashx" />
+    <Content Include="handlers\attributes.ashx" />
+    <Content Include="handlers\properties.ashx" />
+    <Content Include="user\profile.aspx" />
+    <Content Include="handlers\users.ashx" />
+    <Content Include="handlers\reset-password.ashx" />
+    <Content Include="handlers\nyc-meta.ashx" />
+    <Content Include="handlers\nychanis.ashx" />
+    <Content Include="handlers\logout.ashx" />
+    <Content Include="handlers\nyc-sld.ashx" />
+    <Content Include="handlers\feedbacker\authenticate.ashx" />
+    <Content Include="handlers\feedbacker\configuration.ashx" />
+    <Content Include="handlers\feedbacker\database.ashx" />
+    <Content Include="handlers\feedbacker\feedback.ashx" />
+    <Content Include="handlers\property-details.ashx" />
+    <Content Include="handlers\property-locations.ashx" />
+    <Content Include="handlers\app-health.ashx" />
+    <Content Include="handlers\report-download.ashx" />
+    <None Include="minifier.conf" />
+    <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Urban.DCP.Data\Urban.DCP.Data.csproj">
+      <Project>{E17683CE-0F9E-4F46-9FD9-B3B18E8F9A44}</Project>
+      <Name>Furman.PDP.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Urban.DCP.Handlers\Urban.DCP.Handlers.csproj">
+      <Project>{6AF0AB80-ACB1-4101-BB79-329E2F163421}</Project>
+      <Name>Furman.PDP.Handlers</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="clientsrc\pdp\css\images\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>1318</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <PropertyGroup>
+    <PreBuildEvent>$(SolutionDir)..\scripts\externals\minifier\minifier.py -i $(ProjectDir) -o $(ProjectDir) -c $(ProjectDir)minifier.conf</PreBuildEvent>
+  </PropertyGroup>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+</Project>

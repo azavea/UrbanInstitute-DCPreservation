@@ -1,0 +1,3 @@
+[submodule "scripts/externals/minifier"]
+	path = scripts/externals/minifier
+	url = git://github.com/azavea/minifier.git

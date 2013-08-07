@@ -1,0 +1,27 @@
+#pdp-nychanis-view { background-color:#DFEBBE; height:100%; }
+    #pdp-nychanis-view select { width:93%; }
+
+.pdp-nychanis-search-container { clear:both; }
+    .pdp-nyc-control { margin:0px 0px 5px 20px; }
+        .pdp-nyc-control-label-help {float:right; position:relative; right:2px; top:3px;}
+
+#pdp-nyc-search-result-details { margin:0 20px 15px 20px; text-align:center; }
+
+#pdp-nyc-subscope-container { float:right; }
+#pdp-nyc-scope-container { float:right; }
+    #pdp-nyc-scope-container select, #pdp-nyc-subscope-container select { width:150px; margin-right: 4px;}
+    #pdp-nyc-scope-container label { margin-right:5px; }
+
+.pdp-nyc-year-container input { width:80px !important; }
+
+#pdp-nyc-search-result-details .ui-button-text {
+    padding:0.2em 1.5em;
+}
+
+#pdp-nyc-result-year-slider { margin:10px 25px 0 35px; }
+.pdp-nychanis-slider-tick { background-color:#AAAAAA; position:absolute; height:100%; width:1px; top:0; z-index:1; }
+
+#pdp-nyc-help-indicator {position: relative; float: right; right: 200px; top: -5px }
+#pdp-nyc-help-geo {position: relative; float: right; right: 110px; top: -5px; }
+#pdp-nyc-help-results { position: relative; float: right; right: 130px; top: -5px; }
+#pdp-nyc-help-slider { top: -20px; z-index:3; }

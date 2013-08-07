@@ -1,0 +1,1293 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Azavea.Utilities.Common</name>
+    </assembly>
+    <members>
+        <member name="T:Azavea.Utilities.Common.CiInfo">
+            <summary>Info about the continuous integration server build that produced this binary.</summary> 
+        </member>
+        <member name="F:Azavea.Utilities.Common.CiInfo.BuildNumber">
+            <summary>The current build number, such as "153"</summary> 
+        </member>
+        <member name="F:Azavea.Utilities.Common.CiInfo.BuildTag">
+            <summary>String of the build number and build date/time, and other useful info.</summary> 
+        </member>
+        <member name="T:Azavea.Utilities.Common.Collections.ListDictionary`2">
+            <summary>
+            ListDictionary maintains a list of key,value pairs indexed by key, and by insertion order (only, no reordering).
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.Common.Collections.ListDictionary`2._storage">
+            <summary>
+            the internal value storage
+            
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.Common.Collections.ListDictionary`2._order">
+            <summary>
+            used to maintain a quick sorted key list
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.Common.Collections.ListDictionary`2._nextIdx">
+            <summary>
+            the next key index
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Collections.ListDictionary`2.#ctor">
+            <summary>
+            Construct a new default ListDictionary
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Collections.ListDictionary`2.#ctor(System.Collections.Generic.IEqualityComparer{`0})">
+            <summary>
+            Construct a new ListDictionary, but use a comparer for the keys
+            </summary>
+            <param name="comparer"></param>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Collections.ListDictionary`2.init(System.Int32,System.Collections.Generic.IEqualityComparer{`0})">
+            <summary>
+            init the collection
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Collections.ListDictionary`2.Add(`0,`1)">
+            <summary>
+            Add a key/value pair
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Collections.ListDictionary`2.ContainsKey(`0)">
+            <summary>
+            check to see if a given key is contained by this dictionary
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Collections.ListDictionary`2.Remove(`0)">
+            <summary>
+            removes a key, does _NOT_ reorder the contents (insertion order is perserved)
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Collections.ListDictionary`2.TryGetValue(`0,`1@)">
+            <summary>
+            Trys safely to retrieve a value
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Collections.ListDictionary`2.Clear">
+            <summary>
+            Clears internal storage
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Collections.ListDictionary`2.Add(System.Collections.Generic.KeyValuePair{`0,`1})">
+            <summary>
+            ICollection interface
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Collections.ListDictionary`2.System#Collections#Generic#ICollection{System#Collections#Generic#KeyValuePair{TKey@TValue}}#Clear">
+            <summary>
+            ICollection interface
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Collections.ListDictionary`2.Contains(System.Collections.Generic.KeyValuePair{`0,`1})">
+            <summary>
+            ICollection interface
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Collections.ListDictionary`2.CopyTo(System.Collections.Generic.KeyValuePair{`0,`1}[],System.Int32)">
+            <summary>
+            ICollection interface
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Collections.ListDictionary`2.Remove(System.Collections.Generic.KeyValuePair{`0,`1})">
+            <summary>
+            ICollection interface
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Collections.ListDictionary`2.GetEnumerator">
+            <summary>
+            IEnumerable interface
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Collections.ListDictionary`2.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            IEnumerable interface
+            </summary>
+        </member>
+        <member name="P:Azavea.Utilities.Common.Collections.ListDictionary`2.Keys">
+            <summary>
+            retrieve the in-order collection of keys for this dictionary
+            </summary>
+        </member>
+        <member name="P:Azavea.Utilities.Common.Collections.ListDictionary`2.KeyList">
+            <summary>
+            retrieve the in-order list of keys for this dictionary
+            </summary>
+        </member>
+        <member name="P:Azavea.Utilities.Common.Collections.ListDictionary`2.Values">
+            <summary>
+            retrieve the out-of-order list of values
+            </summary>
+        </member>
+        <member name="P:Azavea.Utilities.Common.Collections.ListDictionary`2.Item(`0)">
+            <summary>
+            retrieve / add / or update the value for any key
+            </summary>
+        </member>
+        <member name="P:Azavea.Utilities.Common.Collections.ListDictionary`2.Count">
+            <summary>
+            ICollection interface
+            </summary>
+        </member>
+        <member name="P:Azavea.Utilities.Common.Collections.ListDictionary`2.IsReadOnly">
+            <summary>
+            ICollection interface
+            </summary>
+        </member>
+        <member name="T:Azavea.Utilities.Common.Collections.ListDictionary`2.ListDictionaryEnumerator`2">
+            <summary>
+            An IEnumerable class to use with ListDictionary
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.Common.Collections.ListDictionary`2.ListDictionaryEnumerator`2._src">
+            <summary>
+            the collection to walk
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.Common.Collections.ListDictionary`2.ListDictionaryEnumerator`2._theOrder">
+            <summary>
+            the enumerator from the ordered ListDictionary key set
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Collections.ListDictionary`2.ListDictionaryEnumerator`2.#ctor(Azavea.Utilities.Common.Collections.ListDictionary{`2,`3})">
+            <summary>
+            Constructs a default ListDictionaryEnumerator
+            </summary>
+            <param name="source"></param>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Collections.ListDictionary`2.ListDictionaryEnumerator`2.Dispose">
+            <summary>
+            Disposes this enumerator
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Collections.ListDictionary`2.ListDictionaryEnumerator`2.MoveNext">
+            <summary>
+            iterates this enumerator to the next position in the collection
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Collections.ListDictionary`2.ListDictionaryEnumerator`2.Reset">
+            <summary>
+            resets the enumeration back to the initial position, before the beginning of the collection
+            </summary>
+        </member>
+        <member name="P:Azavea.Utilities.Common.Collections.ListDictionary`2.ListDictionaryEnumerator`2.Current">
+            <summary>
+            Retrieves the Current enumerated KeyPair
+            </summary>
+        </member>
+        <member name="P:Azavea.Utilities.Common.Collections.ListDictionary`2.ListDictionaryEnumerator`2.System#Collections#IEnumerator#Current">
+            <summary>
+            Retrieves the current value
+            </summary>
+        </member>
+        <member name="T:Azavea.Utilities.Common.Collections.WrapClassAsDictionary`1">
+            <summary>
+            Serves as a reflect-once read-many wrapper for foreign types,
+            also makes it really easy / fast to get a list of properties
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="F:Azavea.Utilities.Common.Collections.WrapClassAsDictionary`1._core">
+            <summary>
+            a public copy of the wrapped object
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.Common.Collections.WrapClassAsDictionary`1._propList">
+            <summary>
+            the reflected property list, generated on construction
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Collections.WrapClassAsDictionary`1.#ctor(`0)">
+            <summary>
+            accepts an instance of T, and reflects out the properties
+            </summary>
+            <param name="core"></param>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Collections.WrapClassAsDictionary`1.GetValue(`0,System.String)">
+            <summary>
+            a read helper function (for read-reuse)
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Collections.WrapClassAsDictionary`1.SetValue(`0,System.String,System.Object)">
+            <summary>
+            a write-helper function (for write-reuse)
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Collections.WrapClassAsDictionary`1.GetPropertyNames">
+            <summary>
+            returns a complete list of property names for type T
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Collections.WrapClassAsDictionary`1.Wrap(`0)">
+            <summary>
+            Assigns the instance of the class that this wrapper is wrapping.
+            </summary>
+            <param name="instance">The real object to wrap.</param>
+        </member>
+        <member name="P:Azavea.Utilities.Common.Collections.WrapClassAsDictionary`1.Item(System.String)">
+            <summary>
+            simplifies read/write of any named property
+            </summary>
+        </member>
+        <member name="T:Azavea.Utilities.Common.COMHelper">
+            <summary>
+            This class holds static utility methods for dealing with COM objects (such as ArcObjects).
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.Common.COMHelper.SafeRelease(System.Object)">
+            <summary>
+            This is a method for releasing a COM object.
+            This tries its utmost NOT to throw any exceptions, so it can be used like:
+            SafeRelease(obj1);
+            SafeRelease(obj2);
+            With no need to worry that obj2 might not get released if something is wrong
+            with obj1.
+            </summary>
+            <param name="o">Object to release.  If null, nothing happens.</param>
+        </member>
+        <member name="T:Azavea.Utilities.Common.CompareUtils">
+            <summary>
+            Utility methods for sorting and comparing.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.Common.CompareUtils.NullOKCompare(System.IComparable,System.IComparable)">
+            <summary>
+            Basically does a CompareTo, except it also works if either or both are null.
+            Nulls sort ahead ("lower value") of non-nulls.
+            </summary>
+        </member>
+        <member name="T:Azavea.Utilities.Common.Constants">
+            <summary>
+            This class can have any "universal" Azavea constants.
+            </summary>
+        </member>
+        <member name="T:Azavea.Utilities.Common.Cryptography.SHA512">
+            <summary>
+            A Wrapper around the .Net SHA512Managed cryptographic hash utility
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Cryptography.SHA512.Hash(System.String)">
+            <summary>
+            Creates a SHA 512 hash using an instance of the 
+            .Net SHA512 managed hash class (the currently most secure SHA hash built into .Net).
+            see: http://en.wikipedia.org/wiki/SHA_hash_functions
+            </summary>
+            <param name="input">any input string</param>
+            <returns>an 88 character (base64 char string)</returns>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Cryptography.SHA512.Encrypt(System.String)">
+            <summary>
+            Performs a one way cryptographic hash of the input string using SHA512
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Azavea.Utilities.Common.Cryptography.Whirlpool">
+             <summary>
+             
+             * The Whirlpool hashing function.
+             *
+             * 
+             * <b>References</b>
+             *
+             *
+             * The Whirlpool algorithm was developed by
+             * ("pbarreto@scopus.com.br") Paulo S. L. M. Barreto and
+             * ("vincent.rijmen@cryptomathic.com" ) Vincent Rijmen.
+             *
+             * See
+             *      P.S.L.M. Barreto, V. Rijmen,
+             *      ``The Whirlpool hashing function,''
+             *      First NESSIE workshop, 2000 (tweaked version, 2003),
+             *      https://www.cosic.esat.kuleuven.ac.be/nessie/workshop/submissions/whirlpool.zip
+             * 
+             * @author    Paulo S.L.M. Barreto
+             * @author    Vincent Rijmen.
+             *
+             * @version 3.0 (2003.03.12)
+             *
+             * =============================================================================
+             *
+             * Differences from version 2.1:
+             *
+             * - Suboptimal diffusion matrix replaced by cir(1, 1, 4, 1, 8, 5, 2, 9).
+             *
+             * =============================================================================
+             *
+             * Differences from version 2.0:
+             *
+             * - Generation of ISO/IEC 10118-3 test vectors.
+             * - Bug fix: nonzero carry was ignored when tallying the data length
+             *      (this bug apparently only manifested itself when feeding data
+             *      in pieces rather than in a single chunk at once).
+             *
+             * Differences from version 1.0:
+             *
+             * - Original S-box replaced by the tweaked, hardware-efficient version.
+             *
+             * =============================================================================
+             *
+             * THIS SOFTWARE IS PROVIDED BY THE AUTHORS ''AS IS'' AND ANY EXPRESS
+             * OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+             * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+             * ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHORS OR CONTRIBUTORS BE
+             * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+             * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+             * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+             * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+             * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+             * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+             * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+             *     
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.Common.Cryptography.Whirlpool.DIGESTBITS">
+            The message digest size (in bits)
+        </member>
+        <member name="F:Azavea.Utilities.Common.Cryptography.Whirlpool.DIGESTBYTES">
+            The message digest size (in bytes)
+        </member>
+        <member name="F:Azavea.Utilities.Common.Cryptography.Whirlpool.R">
+            The number of rounds of the internal dedicated block cipher.
+        </member>
+        <member name="F:Azavea.Utilities.Common.Cryptography.Whirlpool.sbox">
+            The substitution box.
+        </member>
+        <member name="F:Azavea.Utilities.Common.Cryptography.Whirlpool.bitLength">
+            Global number of hashed bits (256-bit counter).
+        </member>
+        <member name="F:Azavea.Utilities.Common.Cryptography.Whirlpool.buffer">
+            Buffer of data to hash.
+        </member>
+        <member name="F:Azavea.Utilities.Common.Cryptography.Whirlpool.bufferBits">
+            Current number of bits on the buffer.
+        </member>
+        <member name="F:Azavea.Utilities.Common.Cryptography.Whirlpool.bufferPos">
+            Current (possibly incomplete) byte slot on the buffer.
+        </member>
+        <member name="F:Azavea.Utilities.Common.Cryptography.Whirlpool.hash">
+            The hashing state.
+        </member>
+        <member name="M:Azavea.Utilities.Common.Cryptography.Whirlpool.#ctor">
+            <summary>
+            Creates a new instance of the Whirlpool class
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Cryptography.Whirlpool.processBuffer">
+            The core Whirlpool transform.
+        </member>
+        <member name="M:Azavea.Utilities.Common.Cryptography.Whirlpool.NESSIEinit">
+            Initialize the hashing state.
+        </member>
+        <member name="M:Azavea.Utilities.Common.Cryptography.Whirlpool.NESSIEadd(System.Byte[],System.Int64)">
+            Delivers input data to the hashing algorithm.
+            
+            @param    source        plaintext data to hash.
+            @param    sourceBits    how many bits of plaintext to process.
+            
+            This method maintains the invariant: bufferBits less than  512
+        </member>
+        <member name="M:Azavea.Utilities.Common.Cryptography.Whirlpool.NESSIEfinalize(System.Byte[])">
+            Get the hash value from the hashing state.
+            
+            This method uses the invariant: bufferBits less than 512
+        </member>
+        <member name="M:Azavea.Utilities.Common.Cryptography.Whirlpool.NESSIEadd(System.String)">
+            Delivers string input data to the hashing algorithm.
+            
+            @param    source        plaintext data to hash (ASCII text string).
+            
+            This method maintains the invariant: bufferBits less than 512
+        </member>
+        <member name="M:Azavea.Utilities.Common.Cryptography.Whirlpool.makeNESSIETestVectors">
+             Generate the NESSIE test vector set for Whirlpool.
+            
+             The test consists of:
+             1. hashing all bit strings containing only zero bits
+                for all lengths from 0 to 1023;
+             2. hashing all 512-bit strings containing a single set bit;
+             3. the iterated hashing of the 512-bit string of zero bits a large number of times.
+        </member>
+        <member name="M:Azavea.Utilities.Common.Cryptography.Whirlpool.makeISOTestVectors">
+            Generate the ISO/IEC 10118-3 test vector set for Whirlpool.
+        </member>
+        <member name="M:Azavea.Utilities.Common.Cryptography.Whirlpool.main(System.String[])">
+            <summary>
+            Runs a suite of ISO Test vectors
+            </summary>
+            <param name="args"></param>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Cryptography.Whirlpool.Hash(System.String)">
+            <summary>
+            Creates a new instance of Whirlpool, and returns a hexadecimal string containing the 512 byte hash
+            see http://www.larc.usp.br/~pbarreto/WhirlpoolPage.html
+            </summary>
+            <param name="input">any input string (use the class directly for files or bytes)</param>
+            <returns>a 512 byte hash (128 characters in hex)</returns>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Cryptography.Whirlpool.Encrypt(System.String)">
+            <summary>
+            Performs a one-way hash on the input plaintext using the WHIRLPOOL algorithm (version 3)
+            </summary>
+            <param name="input">plaintext</param>
+            <returns>cryptographically secure message digest (one-way-hash)</returns>
+        </member>
+        <member name="T:Azavea.Utilities.Common.Azavea_Exception">
+            <summary>
+            An exception class, for those who dislike using the standard .NET exception classes.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Azavea_Exception.#ctor(System.String,System.String,System.Exception)">
+            <summary>
+            When rethrowing because you caught an exception, use this signature.
+            This way the stack trace of the original exception will not be lost.
+            </summary>
+            <param name="message">What went wrong.</param>
+            <param name="errorType">What component or type of error is this.</param>
+            <param name="e">The exception that was originally thrown.</param>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Azavea_Exception.#ctor(System.String,System.String)">
+            <summary>
+            When throwing a NEW exception, use this constructor.  If you've caught an exception
+            and are re-throwing, use the constructor that takes an inner exception.
+            </summary>
+            <param name="message">What went wrong.</param>
+            <param name="errorType">What component or type of error is this.</param>
+        </member>
+        <member name="P:Azavea.Utilities.Common.Azavea_Exception.ErrorType">
+            <summary>
+            A string describing what type or category of error this is (used for
+            things like activity logging where we want to track how many of different
+            kinds of errors occur).
+            </summary>
+        </member>
+        <member name="T:Azavea.Utilities.Common.ExecUtil">
+            <summary>
+            Executing external processes can be complicated in .NET, for example
+            you're required to spin up multiple threads if you want to redirect
+            the output safely.  This utility class has methods that do all that
+            for you.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.Common.ExecUtil.Exec(System.String)">
+            <summary>
+            Executes the given executable or system call.
+            </summary>
+            <param name="command">Path to an executable file, or system command, etc.</param>
+            <returns>Output from the command (stdout + stderr).</returns>
+        </member>
+        <member name="M:Azavea.Utilities.Common.ExecUtil.Exec(System.String,System.String)">
+            <summary>
+            Executes the given executable or system call.
+            </summary>
+            <param name="command">Path to an executable file, or system command, etc.</param>
+            <param name="args">Arguments to the command.  Arguments are generally
+                               whitespace-separated, so remember to quote parameters that
+                               contain spaces.</param>
+            <returns>Output from the command (stdout + stderr).</returns>
+        </member>
+        <member name="M:Azavea.Utilities.Common.ExecUtil.Exec(System.String,System.String,System.String)">
+            <summary>
+            Executes the given executable or system call.
+            </summary>
+            <param name="command">Path to an executable file, or system command, etc.</param>
+            <param name="args">Arguments to the command.  Arguments are generally
+                               whitespace-separated, so remember to quote parameters that
+                               contain spaces.</param>
+            <param name="stdin">If non-null, this will be fed to the command's standard in.</param>
+            <returns>Output from the command (stdout + stderr).</returns>
+        </member>
+        <member name="M:Azavea.Utilities.Common.ExecUtil.Exec(System.String,System.String,System.String,System.Boolean)">
+            <summary>
+            Executes the given executable or system call.
+            </summary>
+            <param name="command">Path to an executable file, or system command, etc.</param>
+            <param name="args">Arguments to the command.  Arguments are generally
+                               whitespace-separated, so remember to quote parameters that
+                               contain spaces.</param>
+            <param name="stdin">If non-null, this will be fed to the command's standard in.</param>
+            <param name="failOnError">If false, the return code of the command is ignored.
+                                      If true, a non-zero return code will result in an exception.</param>
+            <returns>Output from the command (stdout + stderr).</returns>
+        </member>
+        <member name="M:Azavea.Utilities.Common.ExecUtil.Exec(System.String,System.String,System.String,System.String@,System.String@,System.Boolean)">
+            <summary>
+            Executes the given executable or system call.
+            </summary>
+            <param name="command">Path to an executable file, or system command, etc.</param>
+            <param name="args">Arguments to the command.  Arguments are generally
+                               whitespace-separated, so remember to quote parameters that
+                               contain spaces.</param>
+            <param name="stdin">If non-null, this will be fed to the command's standard in.</param>
+            <param name="stdout">Output from the process will be written here.</param>
+            <param name="stderr">Error output from the process will be written here.</param>
+            <param name="failOnError">If false, the return code of the command is ignored.
+                                      If true, a non-zero return code will result in an exception.</param>
+            <returns>The exit code from the command.</returns>
+        </member>
+        <member name="M:Azavea.Utilities.Common.ExecUtil.#ctor(System.String)">
+            <summary>
+            Creates a non-static utility class to execute a process.  This allows you to
+            do things like execute asynchronously, kill the process, etc.  If you don't
+            need anything like that, see the static ExecUtil.Exec method.
+            </summary>
+            <param name="command">Path to an executable file, or system command, etc.</param>
+        </member>
+        <member name="M:Azavea.Utilities.Common.ExecUtil.#ctor(System.String,System.String)">
+            <summary>
+            Creates a non-static utility class to execute a process.  This allows you to
+            do things like execute asynchronously, kill the process, etc.  If you don't
+            need anything like that, see the static ExecUtil.Exec method.
+            </summary>
+            <param name="command">Path to an executable file, or system command, etc.</param>
+            <param name="args">Arguments to the command.  Arguments are generally
+                               whitespace-separated, so remember to quote parameters that
+                               contain spaces.</param>
+        </member>
+        <member name="M:Azavea.Utilities.Common.ExecUtil.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Creates a non-static utility class to execute a process.  This allows you to
+            do things like execute asynchronously, kill the process, etc.  If you don't
+            need anything like that, see the static ExecUtil.Exec method.
+            </summary>
+            <param name="command">Path to an executable file, or system command, etc.</param>
+            <param name="args">Arguments to the command.  Arguments are generally
+                               whitespace-separated, so remember to quote parameters that
+                               contain spaces.</param>
+            <param name="stdin">If non-null, this will be fed to the command's standard in.</param>
+        </member>
+        <member name="M:Azavea.Utilities.Common.ExecUtil.Start">
+            <summary>
+            Starts the process executing.  This returns as soon as the process has started.
+            You must later call WaitForCompletion.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.Common.ExecUtil.Kill">
+            <summary>
+            Kills a running process (or tries to anyway).  Any WaitForCompletion calls that
+            are currently blocked should return shortly after calling this, quite possibly by
+            throwing exceptions.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.Common.ExecUtil.WaitForCompletion">
+            <summary>
+            Waits for the process to complete.  Throws an exception if the process
+            returns an error exit code.
+            Returns immediately if the process has already completed.
+            </summary>
+            <returns>The process' stdout + stderr.</returns>
+        </member>
+        <member name="M:Azavea.Utilities.Common.ExecUtil.WaitForCompletion(System.Boolean)">
+            <summary>
+            Waits for the process to complete.
+            Returns immediately if the process has already completed.
+            </summary>
+            <param name="failOnError">If false, the return code of the command is ignored.
+                                      If true, a non-zero return code will result in an exception.</param>
+            <returns>The process' stdout + stderr.</returns>
+        </member>
+        <member name="M:Azavea.Utilities.Common.ExecUtil.WaitForCompletion(System.String@,System.String@)">
+            <summary>
+            Waits for the process to complete.  Throws an exception if the process
+            returns an error exit code.
+            Returns immediately if the process has already completed.
+            </summary>
+            <param name="stdout">Output from the process will be written here.</param>
+            <param name="stderr">Error output from the process will be written here.</param>
+        </member>
+        <member name="M:Azavea.Utilities.Common.ExecUtil.WaitForCompletion(System.String@,System.String@,System.Boolean)">
+            <summary>
+            Waits for the process to complete.
+            Returns immediately if the process has already completed.
+            </summary>
+            <param name="stdout">Output from the process will be written here.</param>
+            <param name="stderr">Error output from the process will be written here.</param>
+            <param name="failOnError">If false, the return code of the command is ignored.
+                                      If true, a non-zero return code will result in an exception.</param>
+            <returns>The exit code from the command.</returns>
+        </member>
+        <member name="P:Azavea.Utilities.Common.ExecUtil.StandardOutput">
+            <summary>
+            The standard output from the process once the process has exited.
+            Until the process has exited this will be null.
+            </summary>
+        </member>
+        <member name="P:Azavea.Utilities.Common.ExecUtil.StandardError">
+            <summary>
+            The error output from the process once the process has exited.
+            Until the process has exited this will be null.
+            </summary>
+        </member>
+        <member name="P:Azavea.Utilities.Common.ExecUtil.ExitCode">
+            <summary>
+            The exit code from the process once the process has exited.
+            Until the process has exited this will be 0.  If the process
+            exits successfully, this will still be 0.
+            </summary>
+        </member>
+        <member name="T:Azavea.Utilities.Common.ExecUtil.CommandStreamReader">
+            <summary>
+            Reads either the stderr or stdout stream from a process.
+            Upon creation this spools up a thread to read from the given
+            output from the process.  Call GetAllOutput to wait until
+            all output is read.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.Common.ExecUtil.CommandStreamReader._output">
+            <summary>
+            Output from the process.  This will be null if we have not yet
+            finished reading it, otherwise it will be non-null (may be "").
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.Common.ExecUtil.CommandStreamReader.GetAllOutput">
+            <summary>
+            Blocks until the process has finished writing all its output (I.E.
+            it exits) and returns the output as a string.
+            </summary>
+            <returns>All the output from the process on this stream (stderr or stdout).
+                     Will return "" if the process didn't write anything, not null.</returns>
+        </member>
+        <member name="M:Azavea.Utilities.Common.ExecUtil.CommandStreamReader.Read">
+            <summary>
+            Meant to be run as a separate thread to read from the
+            standard error stream from the process in RunProcess.
+            </summary>
+        </member>
+        <member name="T:Azavea.Utilities.Common.ExecutionFailedException">
+            <summary>
+            The exception that is thrown when execution of an external process or command
+            fails.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.Common.ExecutionFailedException.ExitCode">
+            <summary>
+            The return code from the process.  If 0, this exception was thrown without
+            having obtained an exit code.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.Common.ExecutionFailedException.#ctor(System.String,System.Exception,System.Int32)">
+            <summary>
+            The exception that is thrown when execution of an external process or command
+            fails.
+            </summary>
+            <param name="message">Message describing what went wrong.</param>
+            <param name="e">Exception that caused this exception.</param>
+            <param name="exitCode">The exit code from the process that failed.</param>
+        </member>
+        <member name="M:Azavea.Utilities.Common.ExecutionFailedException.#ctor(System.String,System.Int32)">
+            <summary>
+            The exception that is thrown when execution of an external process or command
+            fails.
+            </summary>
+            <param name="message">Message describing what went wrong.</param>
+            <param name="exitCode">The exit code from the process that failed.</param>
+        </member>
+        <member name="T:Azavea.Utilities.Common.Hasher">
+            <summary>
+            This class hashes and unhashes strings, typically passwords, that we wish to store
+            (in config files, in a database, etc).  It is not a sophisticated encryption scheme,
+            but it allows us to simply store passwords without storing them in plain text.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Hasher.Encrypt(System.String)">
+            <summary>
+            Encrypts the given string.
+            </summary>
+            <param name="original">A (plain text) string, such as a password. May not be null or blank.</param>
+            <returns>An encrypted version that can be returned to the plain text
+                     using the Decrypt method.</returns>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Hasher.Decrypt(System.String)">
+            <summary>
+            Decrypts the given encrypted string.
+            </summary>
+            <param name="encrypted">An encrypted string that you wish to decrypt.
+                                    May not be null or blank.</param>
+            <returns>The plain text string originally encrypted using Hasher.Encrypt.</returns>
+        </member>
+        <member name="T:Azavea.Utilities.Common.Mailer">
+            <summary>
+            Summary description for Mailer.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.Common.Mailer.DEFAULT_PORT">
+            <summary>
+            Default SMTP port.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.Common.Mailer._smtpServer">
+            <summary>
+            The name of the SMTP server.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.Common.Mailer._smtpPortNumber">
+            <summary>
+            The port number used to access the SMTP service.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.Common.Mailer._smtpUser">
+            <summary>
+            The name of a user who is authorized to send messages to the SMTP server.
+            Required if the SMTP server requires authorization credentials to end e-mail.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.Common.Mailer._smtpPassword">
+            <summary>
+            The password of the _smtpUser. 
+            Required if the SMTP server requires authorization credentials to end e-mail. 
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.Common.Mailer._smtpEnableSsl">
+            <summary>
+            Whether or not the SMTP server will use SSL.  Usually, this also means a different port.
+            Default is false.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Mailer.#ctor(System.String)">
+            <summary>
+            Create a new Mailer for a specific smtpServer.  The port will be DEFAULT_PORT.
+            There will be no credentials.
+            </summary>
+            <param name="smtpServer">The name of an SMTP server.</param>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Mailer.#ctor(System.String,System.Int32)">
+            <summary>
+            Create a new Mailer for a specific smtpServer on a specific port number.
+            There will be no credentials.
+            </summary>
+            <param name="smtpServer">The name of an SMTP server.</param>
+            <param name="smtpPortNumber">The port number used by that SMTP service.</param>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Mailer.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Create a new Mailer for a specific smtpServer with the specified SMTP user and password.  
+            The port will be DEFAULT_PORT.  
+            </summary>
+            <param name="smtpServer">The name of an SMTP server.</param>
+            <param name="smtpUser">The user ID of someone who is authorized to send e-mail
+            through the specified SMTP server.</param>
+            <param name="smtpPassword">The user's password.</param>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Mailer.#ctor(System.String,System.Int32,System.String,System.String)">
+            <summary>
+            Create a new Mailer for a specific smtpServer on the specified port number with the 
+            specified SMTP user and password.
+            </summary>
+            <param name="smtpServer">The name of an SMTP server.</param>
+            <param name="smtpPortNumber">The port number used by that SMTP server.</param>
+            <param name="smtpUser">The user ID of someone who is authorized to send e-mail
+            through the specified SMTP server.</param>
+            <param name="smtpPassword">The user's password.</param>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Mailer.#ctor(System.String,System.Int32,System.String,System.String,System.Boolean)">
+            <summary>
+            Create a new Mailer for a specific smtpServer on the specified port number with the 
+            specified SMTP user and password.
+            </summary>
+            <param name="smtpServer">The name of an SMTP server.</param>
+            <param name="smtpPortNumber">The port number used by that SMTP server.</param>
+            <param name="smtpUser">The user ID of someone who is authorized to send e-mail
+            through the specified SMTP server.</param>
+            <param name="smtpPassword">The user's password.</param>
+            <param name="useSSL">If true, will attempt to use an encrypted connection.</param>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Mailer.SendTextEmail(System.String,System.Collections.Generic.ICollection{System.String},System.String,System.String)">
+            <summary>
+            Sends e-mail in plain text format.
+            </summary>
+            <param name="fromAddress">Sender E-Mail Address</param>
+            <param name="toAddresses">Recipient addresses.</param>
+            <param name="subject">Subject Line</param>
+            <param name="messageText">Text of the email message.</param>
+            <returns>was e-mail successful or not</returns>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Mailer.SendTextEmail(System.String,System.String,System.Collections.Generic.ICollection{System.String},System.String,System.String)">
+            <summary>
+            Sends e-mail in plain text format.
+            </summary>
+            <param name="fromAddress">Sender E-Mail Address</param>
+            <param name="fromName">Sender email name</param>
+            <param name="toAddresses">Recipient addresses.</param>
+            <param name="subject">Subject Line</param>
+            <param name="messageText">Text of the email message.</param>
+            <returns>was e-mail successful or not</returns>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Mailer.SendTextEmail(System.String,System.String,System.String,System.String)">
+            <summary>
+            Sends e-mail in plain text format.
+            </summary>
+            <param name="fromAddress">Sender E-Mail Address</param>
+            <param name="toAddresses">Recipient addresses.  May be a single address,
+                                        or a semicolon-separated list.</param>
+            <param name="subject">Subject Line</param>
+            <param name="messageText">Text of the email message.</param>
+            <returns>was e-mail successful or not</returns>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Mailer.SendTextEmail(System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            Sends e-mail in plain text format.
+            </summary>
+            <param name="fromAddress">Sender E-Mail Address</param>
+            <param name="fromName">Sender email name</param>
+            <param name="toAddresses">Recipient addresses.  May be a single address,
+                                        or a semicolon-separated list.</param>
+            <param name="subject">Subject Line</param>
+            <param name="messageText">Text of the email message.</param>
+            <returns>was e-mail successful or not</returns>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Mailer.SendHTMLEmail(System.String,System.Collections.Generic.ICollection{System.String},System.String,System.String)">
+            <summary>
+            Sends e-mail in HTML format.
+            </summary>
+            <param name="fromAddress">Sender E-Mail Address</param>
+            <param name="toAddresses">Recipient addresses.</param>
+            <param name="subject">Subject Line</param>
+            <param name="messageText">Text of the email message.</param>
+            <returns>was e-mail successful or not</returns>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Mailer.SendHTMLEmail(System.String,System.String,System.Collections.Generic.ICollection{System.String},System.String,System.String)">
+            <summary>
+            Sends e-mail in HTML format.
+            </summary>
+            <param name="fromAddress">Sender email Address</param>
+            <param name="fromName">Sender email name</param>
+            <param name="toAddresses">Recipient addresses.</param>
+            <param name="subject">Subject Line</param>
+            <param name="messageText">Text of the email message.</param>
+            <returns>was e-mail successful or not</returns>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Mailer.SendHTMLEmail(System.String,System.String,System.String,System.String)">
+            <summary>
+            Sends e-mail in HTML format.
+            </summary>
+            <param name="fromAddress">Sender E-Mail Address</param>
+            <param name="toAddresses">Recipient addresses.  May be a single address,
+                                        or a semicolon-separated list.</param>
+            <param name="subject">Subject Line</param>
+            <param name="messageText">Text of the email message.</param>
+            <returns>was e-mail successful or not</returns>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Mailer.SendHTMLEmail(System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            Sends an email in HTML format with a from Name
+            </summary>
+             <param name="fromAddress">Sender email Address</param>
+             <param name="fromName">Sender email name</param>
+             <param name="toAddresses">Recipient addresses.  May be a single address,
+                                         or a semicolon-separated list.</param>
+             <param name="subject">Subject Line</param>
+             <param name="messageText">Text of the email message.</param>
+             <returns>was e-mail successful or not</returns>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Mailer.SendMailWithAttachment(System.String,System.Collections.Generic.ICollection{System.String},System.String,System.String,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Sends plain text e-mail with an array of file attachment paths
+            </summary>
+            <param name="fromAddress">Sender E-Mail Address</param>
+            <param name="toAddresses">Recipient addresses.</param>
+            <param name="subject">Subject Line</param>
+            <param name="messageText">Text of the email message.</param>
+            <param name="attachmentPaths">an array of attachment paths - must be actual file paths.</param>
+            <returns>was e-mail successful or not</returns>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Mailer.SendMailWithAttachment(System.String,System.String,System.String,System.String,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Sends plain text e-mail with an array of file attachment paths
+            </summary>
+            <param name="fromAddress">Sender E-Mail Address</param>
+            <param name="toAddresses">Recipient addresses.  May be a single address,
+                                        or a semicolon-separated list.</param>
+            <param name="subject">Subject Line</param>
+            <param name="messageText">Text of the email message.</param>
+            <param name="attachmentPaths">an array of attachment paths - must be actual file paths.</param>
+            <returns>was e-mail successful or not</returns>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Mailer.SendMessageObject(System.Net.Mail.MailMessage)">
+            <summary>
+            Sends an email if you have already created the MailMessage object.
+            </summary>
+            <param name="msg">A fully-populated MailMessage, all ready to go.</param>
+            <returns>was e-mail successful or not</returns>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Mailer.CreateMessageObject(System.Net.Mail.MailAddress,System.Collections.Generic.ICollection{System.String},System.String,System.String,System.Boolean,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Creates a MailMessage based on the given values.
+            </summary>
+            <param name="fromAddress">Email address the message will be from.</param>
+            <param name="toAddresses">List of addresses to send the message to.  Null or blank
+                                    entries in this list will be ignored.  This list should not
+                                    be empty.</param>
+            <param name="subject">Message subject, may be null.</param>
+            <param name="messageText">Message text, may be null.</param>
+            <param name="isHtml">Is the messageText html or plain text.</param>
+            <param name="attachmentPaths">Paths for file attachments.  Null or blank entries
+                                        in this list will be ignored.  This list may be null
+                                        or empty.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Mailer.SplitAddresses(System.String)">
+            <summary>
+            Splits out the semi-colon-separated list of addresses.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Mailer.ValidateEmailViaServer(System.String)">
+            <summary>
+            Attempts to use the email server to verify that this is a valid
+            email address.
+            </summary>
+            <param name="address">Address to validate.</param>
+            <returns>True if we are able to confirm it is a valid address.</returns>
+        </member>
+        <member name="P:Azavea.Utilities.Common.Mailer.SmtpServer">
+            <summary>
+            The server name of the SMTP server we will use.
+            </summary>
+        </member>
+        <member name="P:Azavea.Utilities.Common.Mailer.SmtpPort">
+            <summary>
+            The port number on the SMTP server to use (defaults to the standard SMTP port).
+            </summary>
+        </member>
+        <member name="P:Azavea.Utilities.Common.Mailer.SmtpUser">
+            <summary>
+            User name, if necessary, to use when sending messages.
+            </summary>
+        </member>
+        <member name="P:Azavea.Utilities.Common.Mailer.SmtpPassword">
+            <summary>
+            Password, if necessary, to use when sending messages.
+            </summary>
+        </member>
+        <member name="P:Azavea.Utilities.Common.Mailer.SmtpEnableSsl">
+            <summary>
+            Whether or not to use SSL to communicate with the server.
+            </summary>
+        </member>
+        <member name="T:Azavea.Utilities.Common.RichTextBoxAppender">
+            <summary>
+            This class allows a RichTextBox to receive log4net logging messages.  To use it, define an
+            appender something like this in your log4net config section:
+            
+            &lt;appender name=&quot;textBoxAppender1&quot; type=&quot;Azavea.Utilities.Common.RichTextBoxAppender,Azavea.Utilities.Common&quot;&gt;
+            	&lt;layout type=&quot;log4net.Layout.PatternLayout&quot;&gt;
+            		&lt;param name=&quot;ConversionPattern&quot; value=&quot;%m%n&quot; /&gt;
+            	&lt;/layout&gt;
+            &lt;/appender&gt;
+            
+            Then in your winforms app code somewhere, call RichTextBoxAppender.SetRichTextBox(myRTB);
+            
+            The original code came from a message posted to the Apache logging discussion group.  The
+            message can be viewed at 
+            http://mail-archives.apache.org/mod_mbox/logging-log4net-user/200410.mbox/%3c76758090F8686C47A44B6FF52514A1D306B8280A@hermes.uai.int%3e
+            As it was posted to a discussion board for an open source project, and did not contain
+            an explicit copyright declaration, I believe this is legal use.
+            
+            It has since been modified for thread safety, exception handling, etc.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.Common.RichTextBoxAppender.Append(log4net.Core.LoggingEvent)">
+            <summary>
+            Override this method to update the control and fire appropriate events.
+            </summary>
+            <param name="loggingEvent">The log4net event that needs to become a winforms content event.</param>
+        </member>
+        <member name="M:Azavea.Utilities.Common.RichTextBoxAppender.SetRichTextBox(System.Windows.Forms.RichTextBox)">
+            <summary>
+            Sets the RichTextBox that will be receiving log messages.  This implementation only
+            allows one RichTextBox at a time to receive log messages.
+            </summary>
+            <param name="rtb">The RichTextBox that we should append log messages to.</param>
+        </member>
+        <member name="P:Azavea.Utilities.Common.RichTextBoxAppender.RichTextBox">
+            <summary>
+            The RichTextBox that this appender instance is writing log messages to.
+            </summary>
+        </member>
+        <member name="T:Azavea.Utilities.Common.StringTokenizer">
+            <summary>
+            This class is for taking a string and splitting it up based on some parameters.  It originated
+            from Sajara for the search page, but since the code will be used in more than one project
+            (Connect211) it seems like it should go into Common.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.Common.StringTokenizer.GetTokensFromSearchText(System.String)">
+            <summary>
+            This method is used by Sajara and Connect211 search pages to split a keyword typed in by a user into the
+            tokens that will be searched for.  This should probably be genericized and made obsolete if necessary in
+            other projects.
+            </summary>
+            <param name="searchText">
+            Text, passed from e.g. the search page or a URL query, for the 'keyword' part of the search.
+            </param>
+            <returns>A list of strings which are tokens, that should be added separately to the search criteria.</returns>
+        </member>
+        <member name="T:Azavea.Utilities.Common.Tests.ExecTests">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Tests.ExecTests.TestStdOut">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Tests.ExecTests.TestStdErr">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Tests.ExecTests.TestStdOutAndErr">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Tests.ExecTests.TestStdOutFailNoEx">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Tests.ExecTests.TestStdErrFailNoEx">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Tests.ExecTests.TestJustFailNoEx">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Tests.ExecTests.TestStdOutAndErrFailNoEx">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Tests.ExecTests.TestStdOutFailEx">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Tests.ExecTests.TestStdErrFailEx">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Tests.ExecTests.TestJustFailEx">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Tests.ExecTests.TestStdOutAndErrFailEx">
+            <exclude/>
+        </member>
+        <member name="T:Azavea.Utilities.Common.Tests.WriteableConfigTests">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Tests.WriteableConfigTests.TestCreateNew">
+            <exclude/>
+            <summary>
+            Tests to make sure a normal, empty configuration can be created and used normally.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Tests.WriteableConfigTests.TestUseNonExistantFilename">
+            <exclude/>
+            <summary>
+            Tests to make sure a configuration can be opened against a non-existant file
+            (these are configuration buckets, not configuration instances)
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Tests.WriteableConfigTests.TestBogusAppname">
+            <exclude/>
+            <summary>
+            Checks to ensure no artifical dependency is placed against the .Net ConfigurationManager
+            or the application's central XML config file.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Tests.WriteableConfigTests.TestCreateSaveLoad">
+            <exclude/>
+            <summary>
+            Tests a real use case for this class
+            </summary>
+        </member>
+        <member name="T:Azavea.Utilities.Common.Tests.HasherTests">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Tests.HasherTests.TestReversible">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Tests.HasherTests.TestCaseSensitive">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Tests.HasherTests.TestHashing">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Tests.HasherTests.TestUnhashing">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Tests.HasherTests.TestHashBlank">
+            <exclude/>
+        </member>
+        <member name="T:Azavea.Utilities.Common.Tests.MailTests">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Tests.MailTests.Init">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Tests.MailTests.TestSplittingSingle">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Tests.MailTests.TestSplittingMultiple">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Tests.MailTests.TestConstructTextEmailToSingleUser">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Tests.MailTests.TestConstructTextEmailToMultipleUsers">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Tests.MailTests.TestConstructHTMLEmailToSingleUser">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Tests.MailTests.TestConstructHTMLEmailToMultipleUsers">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.Common.Tests.MailTests.TestSendMessageObject">
+            <exclude/>
+        </member>
+        <member name="T:Azavea.Utilities.Common.WriteableConfig">
+            <summary>
+            This is a more dynamic version of the 'Config' class.  It supports changing components, parameters, etc, on the fly.  
+            It is also able to write a 'standard xml config file' readable by the Config class.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.Common.WriteableConfig.xmlComponent">
+            <summary>
+            const label for 'components' in a config file (holds groups of parameters)
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.Common.WriteableConfig.xmlName">
+            <summary>
+            const label for a 'name' attribute
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.Common.WriteableConfig.xmlValue">
+            <summary>
+            const label for a 'value' attribute
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.Common.WriteableConfig.xmlParameter">
+            <summary>
+            const label for a 'parameter' which has name, and value attributes
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.Common.WriteableConfig.#ctor">
+            <summary>
+            Create a blank config
+            (which means, no filename, and default application name)
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.Common.WriteableConfig.#ctor(System.String)">
+            <summary>
+            Create a config with the given filename.
+            </summary>
+            <param name="fileName">Filename, null is OK.  File may or may not exist.</param>
+        </member>
+        <member name="M:Azavea.Utilities.Common.WriteableConfig.#ctor(System.String,System.String)">
+            <summary>
+            Creates a new WriteableConfig using a given file
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.Common.WriteableConfig.Clear">
+            <summary>
+            Clears the config bucket (components, parameters, values)
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Azavea.Utilities.Common.WriteableConfig.GetComponents">
+            <summary>
+            Returns a collection of the Component names for this config file
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.Common.WriteableConfig.PutComponent(System.String)">
+            <summary>
+            Adds a component to the config if it doesn't exist already
+            </summary>
+            <param name="component"></param>
+        </member>
+        <member name="M:Azavea.Utilities.Common.WriteableConfig.ClearComponent(System.String)">
+            <summary>
+            Clear any saved parameters and their values from a given component
+            </summary>
+            <param name="component"></param>
+        </member>
+        <member name="M:Azavea.Utilities.Common.WriteableConfig.PutParameter(System.String,System.String,System.String)">
+            <summary>
+            Creates or updates a parameter in the config (by component / parameter)
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.Common.WriteableConfig.RemoveParameter(System.String,System.String)">
+            <summary>
+            Attempts to remove the specified parameter from the component.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.Common.WriteableConfig.SaveConfigFile">
+            <summary>
+            Saves the config against the stored filename
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Azavea.Utilities.Common.WriteableConfig.SaveConfigFile(System.String,System.Boolean)">
+            <summary>
+            writes a standard 'config xml file' using values from _paramsByComponent
+            </summary>
+            <param name="filename">the destination file</param>
+            <param name="overwrite">true if you want to overwrite an existing file</param>
+            <returns>true if successful</returns>
+        </member>
+        <member name="M:Azavea.Utilities.Common.WriteableConfig.ContainsKey(System.String,System.String)">
+            <summary>
+            Checks to see whether or not a given component and parameter exist
+            </summary>
+            <param name="cat"></param>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Azavea.Utilities.Common.WriteableConfig.GetInternalDictionary(System.String)">
+            <summary>
+            Allows you to get the raw collection of parameters in order to manipulate
+            it on your own.  Remember: Changing this collection changes the contents of
+            this Config object!  This allows you to do things that would be inconvenient
+            through the normal interface (loading or modifying in bulk for example).
+            </summary>
+            <param name="component">The component or section of the config file, used to
+                                    locate the parameter.</param>
+            <returns>A dictionary of parameters that you can modify.</returns>
+        </member>
+        <member name="M:Azavea.Utilities.Common.WriteableConfig.MakeParameterCollection">
+            <summary>
+            This is a ugly hack at the moment.  This allows child classes to
+            override the internal type of collection we use.  This will be
+            removed when we refactor the architecture to have an abstract
+            base class so we can have a "writeable" version of Config that does not
+            conflict with the implementation of this "readonly" Config.
+            </summary>
+            <returns>A dictionary to use to hold parameters we've read from the
+                     config file.</returns>
+        </member>
+        <member name="M:Azavea.Utilities.Common.WriteableConfig.GetParametersAsList(System.String)">
+            <summary>
+            Gets you a list of all the parameters for the component as key-value-pairs.
+            This preserves the order of parameters from the config file.
+            </summary>
+            <param name="component">The component or section of the config file, used to
+                                    locate the parameter.</param>
+            <returns>A list of key-value-pairs, with string values keyed by string parameter names.</returns>
+        </member>
+        <member name="M:Azavea.Utilities.Common.WriteableConfig.GetConfigXml(System.String)">
+            <summary>
+            Not supported at this time because the Config base class does not provide
+            an elegant way for WriteableConfig to override the contents.
+            NOTE: It is in the plans to refactor the base class and clean this up.
+            </summary>
+            <param name="component">The component or section of the config file, used to
+                                    locate the parameter.</param>
+            <returns>An exception.</returns>
+        </member>
+        <member name="P:Azavea.Utilities.Common.WriteableConfig.Filename">
+            <summary>
+            The filename this configuration is stored in / will be saved to
+            </summary>
+        </member>
+        <member name="P:Azavea.Utilities.Common.WriteableConfig.Item(System.String,System.String)">
+            <summary>
+            Index operator
+            </summary>
+        </member>
+    </members>
+</doc>

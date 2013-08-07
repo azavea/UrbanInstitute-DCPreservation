@@ -1,0 +1,36 @@
+#pdp-map-geocode{
+    z-index: 3000;
+    float: none;
+    position: absolute;
+    border: Solid 1px #c0c0c0;
+    display: block;
+    background-color: #fff;
+    text-align: center;
+    padding: 0.1em 0.25em;
+    width: 65px;
+    cursor:pointer;    
+    right: 85px;
+    top: 10px;
+}
+
+#pdp-map-geocode-panel {
+    background-color: #fff;
+    display: block;
+    z-index: 9998;
+    float: none;
+    position: absolute;
+    border: Solid 1px #c0c0c0;
+    padding: 10px;
+    right: 85px;
+    top: 35px;
+}
+    #pdp-map-geocode-panel label { color:#2A4203; font-weight:bold; padding-bottom:10px; display:block; }
+    #pdp-map-geocode-input { width:200px; margin-right:10px; }
+    #pdp-map-geocode-submit { padding:0 6px; }
+
+    #pdp-map-geocode-failure {display:none; margin-top:10px; padding:0.3em; font-size:0.9em; }
+    
+    #pdp-map-geocode-results-container {display:none;  margin-top:10px}
+        #pdp-map-geocode-results-header {color:#2A4203;font-style:italic;}
+        #pdp-map-geocode-results-content { padding-left:15px; }
+        #pdp-map-geocode-results-content li {}

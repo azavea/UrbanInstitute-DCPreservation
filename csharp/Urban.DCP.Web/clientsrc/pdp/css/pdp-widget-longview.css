@@ -1,0 +1,35 @@
+.pdp-longview-value { padding:2px; }
+.pdp-longview-label, .pdp-shortview-label { padding:2px; font-weight:bold; }
+.pdp-longview-caption {font-weight: bold; font-size:x-large; padding: 3px 0px 10px;}
+.pdp-longview-street { 
+    float:none;
+    border-style: solid; 
+    border-color: #808080; 
+    border-width:thin; 
+    height: 300px;
+    overflow:hidden;
+}
+.pdp-longview-street-none{
+    font-size: 20px;
+    text-align: center;
+    color: #c0c0c0;
+    line-height: 30px;
+}
+
+.pdp-longview-list {
+    float: left;
+    padding: 7px;
+    width: 45%;
+    margin-right: 10px;
+}   
+
+.pdp-longview-list-item .pdp-rendered-list{
+    list-style: disc;
+    margin-left: 30px;
+}
+.pdp-shortview-list-item .pdp-rendered-list{
+   list-style: disc;
+    margin-left: 30px;
+}
+.pdp-shortview-caption {font-weight: bold; font-size:large; padding: 3px 0px 10px;}
+#pdp-streetview-title { padding-bottom: 3px; font-weight: bold;}

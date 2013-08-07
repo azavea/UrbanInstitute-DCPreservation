@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Azavea.Open.DAO.OleDb</id>
+    <version>1.0.9</version>
+    <title>Azavea.Open.DAO.OleDb</title>
+    <authors>Azavea</authors>
+    <owners>Azavea</owners>
+    <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+    <projectUrl>https://github.com/azavea/net-dao</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>OleDb adapter for FastDAO, an object-relational mapper for the .NET framework</description>
+    <releaseNotes />
+    <copyright>Copyright Azavea 2013</copyright>
+    <tags>orm database hibernate model oledb</tags>
+    <dependencies>
+      <dependency id="Azavea.Open.Common" version="2.1.5" />
+      <dependency id="Azavea.Open.DAO" version="1.0.1" />
+      <dependency id="GeoAPI" version="1.7.1" />
+      <dependency id="log4net" version="1.2.10" />
+      <dependency id="NUnit" version="2.6.2" />
+    </dependencies>
+  </metadata>
+</package>

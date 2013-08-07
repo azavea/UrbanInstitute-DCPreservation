@@ -1,0 +1,47 @@
+.ktable-colsizable{
+	table-layout: fixed; 
+	width : 100%;
+	}
+.ktable-colsizable td,
+.ktable-colsizable th{
+	overflow : hidden;
+	}
+.ktable-th{
+	/* Don't set "position: relative" in IE */
+	white-space: nowrap !important; /* Only works for THs in IE */
+	text-align: left;
+	height: 18px;		 /* value safe to change */
+	}
+.ktable-th-text{
+	height: 100%;
+	overflow: hidden;
+	}
+.ktable-colsizable-handler{
+	float: right;
+	cursor: e-resize;
+	height: 100%;
+	/*border-left:2px outset white;
+	border-right:2px inset white;*/
+
+	position: relative;
+	right: -3px;
+	}
+html > body .ktable-colsizable-handler{
+	border-right:2px solid;
+	}
+.ktable-colsizable-dragLine{
+	position: absolute;
+	width: 2px;
+	cursor: e-resize;
+	background-color: red;	/* value safe to change */
+	}
+.ktable-colsizable-dragArea{
+	position: absolute;
+	cursor: e-resize;
+	/*background-color:red;	 don't want a background, doesn't work with scroll bars 
+	background-color: #000;*/
+	}
+.ktable-colsizable-minimized{
+	background-color: #ffd; /* value safe to change */
+	color: #bbb;			/* value safe to change */
+}

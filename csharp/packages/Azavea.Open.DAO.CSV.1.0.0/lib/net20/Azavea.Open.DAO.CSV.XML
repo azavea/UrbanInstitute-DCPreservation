@@ -1,0 +1,744 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Azavea.Open.DAO.CSV</name>
+    </assembly>
+    <members>
+        <member name="T:Azavea.Open.DAO.CSV.CsvConnectionType">
+            <summary>
+            CSV descriptors may be configured with:
+            
+            1) a directory (in which case all mappings will be assumed to be to [ClassMapping.Table].csv)
+            
+            2) a filename (in which case ClassMapping.Table is ignored, using this descriptor with
+               DAOs of more than one type will result in undefined, but probably undesirable, behavior)
+            
+            3) a stream (programmatically only, the descriptor assumes the caller owns the stream,
+               in other words the descriptor and the DAO will not close the stream when they are done
+               using it).  Streams are also limited in that they can be used for querying OR inserting,
+               not both, also update and delete are not supported when using a stream.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.DAO.CSV.CsvConnectionType.Unknown">
+            <summary>
+            Used internally to indicate the type is not known.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.DAO.CSV.CsvConnectionType.Directory">
+            <summary>
+            The "Table" name in the mapping file will be assumed to be the filename
+            (without the extension), in the specified directory.  This way the connection works
+            with multiple DAOs at once.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.DAO.CSV.CsvConnectionType.FileName">
+            <summary>
+            The "Table" name in the mapping file is ignored, all IO goes to the
+            specified filename, and this connection should be used only with DAOs of a single
+            object type.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.DAO.CSV.CsvConnectionType.Reader">
+            <summary>
+            The "Table" name in the mapping file is ignored, all queries will run against
+            the specified TextReader (which means we'll need to seek back to the start
+            of the input for each query).  Insert, Update, Delete, etc will not work.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.DAO.CSV.CsvConnectionType.Writer">
+            <summary>
+            The "Table" name in the mapping file is ignored, all inserts will be written to
+            the specified TextWriter.  Query, Update, Delete, etc will not work.
+            </summary>
+        </member>
+        <member name="T:Azavea.Open.DAO.CSV.CsvDataReader">
+            <summary>
+            A datareader that reads CSV files.
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.CsvDataReader.#ctor(Azavea.Open.DAO.CSV.CsvDaLayer,Azavea.Open.DAO.ClassMapping,Azavea.Open.DAO.Criteria.DaoCriteria)">
+            <summary>
+            Create the data reader.
+            </summary>
+            <param name="layer">Data access layer that will give us the TextReader we need.</param>
+            <param name="mapping">ClassMapping for the type we're returning.</param>
+            <param name="criteria">Since there is no way to filter before we read the file,
+                                the reader checks each row read to see if it matches the
+                                criteria, if not, it is skipped.</param>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.CsvDataReader.GetColumnIndex(System.String)">
+            <summary>
+            Helper so the data access layer can be efficient in reading/rewriting CSVs.
+            </summary>
+            <param name="colName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.CsvDataReader.GetName(System.Int32)">
+            <summary>
+            Gets the name for the field to find.
+            </summary>
+            <returns>
+            The name of the field or the empty string (""), if there is no value to return.
+            </returns>
+            <param name="i">The index of the field to find. </param>
+            <exception cref="T:System.IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="P:System.Data.IDataRecord.FieldCount" />. </exception><filterpriority>2</filterpriority>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.CsvDataReader.GetFieldType(System.Int32)">
+            <summary>
+            Gets the <see cref="T:System.Type" /> information corresponding to the type of <see cref="T:System.Object" /> that would be returned from <see cref="M:System.Data.IDataRecord.GetValue(System.Int32)" />.
+            </summary>
+            <returns>
+            The <see cref="T:System.Type" /> information corresponding to the type of <see cref="T:System.Object" /> that would be returned from <see cref="M:System.Data.IDataRecord.GetValue(System.Int32)" />.
+            </returns>
+            <param name="i">The index of the field to find. </param>
+            <exception cref="T:System.IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="P:System.Data.IDataRecord.FieldCount" />. </exception><filterpriority>2</filterpriority>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.CsvDataReader.GetValues(System.Object[])">
+            <summary>
+            Gets all the attribute fields in the collection for the current record.
+            </summary>
+            <returns>
+            The number of instances of <see cref="T:System.Object" /> in the array.
+            </returns>
+            <param name="values">An array of <see cref="T:System.Object" /> to copy the attribute fields into. </param><filterpriority>2</filterpriority>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.CsvDataReader.GetBytes(System.Int32,System.Int64,System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Reads a stream of bytes from the specified column offset into the buffer as an array, starting at the given buffer offset.
+            </summary>
+            <returns>
+            The actual number of bytes read.
+            </returns>
+            <param name="i">The zero-based column ordinal. </param>
+            <param name="fieldOffset">The index within the field from which to start the read operation. </param>
+            <param name="buffer">The buffer into which to read the stream of bytes. </param>
+            <param name="bufferoffset">The index for <paramref name="buffer" /> to start the read operation. </param>
+            <param name="length">The number of bytes to read. </param>
+            <exception cref="T:System.IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="P:System.Data.IDataRecord.FieldCount" />. </exception><filterpriority>2</filterpriority>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.CsvDataReader.GetChars(System.Int32,System.Int64,System.Char[],System.Int32,System.Int32)">
+            <summary>
+            Reads a stream of characters from the specified column offset into the buffer as an array, starting at the given buffer offset.
+            </summary>
+            <returns>
+            The actual number of characters read.
+            </returns>
+            <param name="i">The zero-based column ordinal. </param>
+            <param name="fieldoffset">The index within the row from which to start the read operation. </param>
+            <param name="buffer">The buffer into which to read the stream of bytes. </param>
+            <param name="bufferoffset">The index for <paramref name="buffer" /> to start the read operation. </param>
+            <param name="length">The number of bytes to read. </param>
+            <exception cref="T:System.IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="P:System.Data.IDataRecord.FieldCount" />. </exception><filterpriority>2</filterpriority>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.CsvDataReader.GetGuid(System.Int32)">
+            <summary>
+            Returns the GUID value of the specified field.
+            </summary>
+            <returns>
+            The GUID value of the specified field.
+            </returns>
+            <param name="i">The index of the field to find. </param>
+            <exception cref="T:System.IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="P:System.Data.IDataRecord.FieldCount" />. </exception><filterpriority>2</filterpriority>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.CsvDataReader.GetData(System.Int32)">
+            <summary>
+            Returns an <see cref="T:System.Data.IDataReader" /> for the specified column ordinal.
+            </summary>
+            <returns>
+            An <see cref="T:System.Data.IDataReader" />.
+            </returns>
+            <param name="i">The index of the field to find. </param>
+            <exception cref="T:System.IndexOutOfRangeException">The index passed was outside the range of 0 through <see cref="P:System.Data.IDataRecord.FieldCount" />. </exception><filterpriority>2</filterpriority>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.CsvDataReader.Close">
+            <summary>
+            Closes the <see cref="T:System.Data.IDataReader" /> Object.
+            </summary>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.CsvDataReader.GetSchemaTable">
+            <summary>
+            Returns a <see cref="T:System.Data.DataTable" /> that describes the column metadata of the <see cref="T:System.Data.IDataReader" />.
+            </summary>
+            <returns>
+            A <see cref="T:System.Data.DataTable" /> that describes the column metadata.
+            </returns>
+            <exception cref="T:System.InvalidOperationException">The <see cref="T:System.Data.IDataReader" /> is closed. </exception><filterpriority>2</filterpriority>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.CsvDataReader.NextResult">
+            <summary>
+            Advances the data reader to the next result, when reading the results of batch SQL statements.
+            </summary>
+            <returns>
+            true if there are more rows; otherwise, false.
+            </returns>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.CsvDataReader.ReadRawRow">
+            <summary>
+            This reads the row from the CSV.  It basically just tokenizes it, it
+            does not verify that there are any particular number of values or anything
+            else.
+            </summary>
+            <returns>A list of the comma-separated strings from this row.</returns>
+        </member>
+        <member name="P:Azavea.Open.DAO.CSV.CsvDataReader.Depth">
+            <summary>
+            Gets a value indicating the depth of nesting for the current row.
+            </summary>
+            <returns>
+            The level of nesting.
+            </returns>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="P:Azavea.Open.DAO.CSV.CsvDataReader.IsClosed">
+            <summary>
+            Gets a value indicating whether the data reader is closed.
+            </summary>
+            <returns>
+            true if the data reader is closed; otherwise, false.
+            </returns>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="T:Azavea.Open.DAO.CSV.CsvDataReader.CsvDataReaderConfig">
+            <summary>
+            Adds extra config info necessary when setting up a CSV data reader.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.DAO.CSV.CsvDataReader.CsvDataReaderConfig.Reader">
+            <summary>
+            The reader we'll use to get data from the CSV file or stream.
+            </summary>
+        </member>
+        <member name="T:Azavea.Open.DAO.CSV.CsvParseErrorTolerance">
+            <summary>
+            What level of error tolerance do you want when parsing CSV files with
+            bad values in certain columns?  For example, a column that is mapped to
+            an integer field has a non-integer string value in it ("test").
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.DAO.CSV.CsvParseErrorTolerance.Fail">
+            <summary>
+            FastDAO will throw an exception as soon as it is unable to parse
+            the row.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.DAO.CSV.CsvParseErrorTolerance.IgnoreRow">
+            <summary>
+            The row with the offending value will be skipped (logging a Warning message) as
+            if the row was not there.  This is dangerous because the log
+            message may not be noticed.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.DAO.CSV.CsvParseErrorTolerance.IgnoreValue">
+            <summary>
+            The value that does not parse will be ignored, and the field on the result
+            object will be left with its default value.  This is dangerous because you
+            can wind up importing invalid data.
+            </summary>
+        </member>
+        <member name="T:Azavea.Open.DAO.CSV.CsvDescriptor">
+            <summary>
+            Connection descriptor representing a CSV file that you intend to read/write/modify/etc.
+            
+            For CSV files, your mapping may map either to column names (which assumes the first
+            row of the CSV is a header row) or column indexes (1-based, since that's what spreadsheets
+            use).
+            
+            See CsvConnectionType for more information on how CSV descriptors can be configured.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.DAO.CSV.CsvDescriptor.Type">
+            <summary>
+            How are we accessing the CSV, is it a single file, a directory full of files,
+            or a programmatically-specified Stream?
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.DAO.CSV.CsvDescriptor.Path">
+            <summary>
+            The name of the CSV file, or the directory with all the files,
+            that we're reading or writing to.  Will be null if a Stream was
+            directly specified.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.DAO.CSV.CsvDescriptor.Writer">
+            <summary>
+            The TextWriter that we were programmatically configured to use.  Will
+            be null if we were configured to use a file or directory or StreamReader.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.DAO.CSV.CsvDescriptor.Reader">
+            <summary>
+            The StreamReader that we were programmatically configured to use.  Will
+            be null if we were configured to use a file or directory or TextWriter.
+            Cannot be a TextReader because we need to be able to seek back to the
+            beginning for subsequent queries, so we need to use the underlying stream
+            for that operation.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.DAO.CSV.CsvDescriptor.OutputQuoteLevel">
+            <summary>
+            How verbosely do we quote values that we write to the file.
+            Default is to quote all strings.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.DAO.CSV.CsvDescriptor.HasBeenWrittenTo">
+            <summary>
+            This is a hack for the case where we're configured with someone else's
+            TextWriter... we need to know whether to output a header row or not, and
+            we only want to do that if we haven't written anything to the writer yet.
+            This becomes true after anything is written to the TextWriter.  If we
+            are not using the Writer type this parameter is unused.
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.CsvDescriptor.#ctor(Azavea.Open.Common.Config,System.String,Azavea.Open.DAO.ConnectionInfoDecryptionDelegate)">
+            <summary>
+            Populates the descriptor's values from a config file.
+            </summary>
+            <param name="config">Config to get params from.</param>
+            <param name="component">Section of the config XML to look in for db params.</param>
+            <param name="decryptionDelegate">Delegate to call to decrypt password fields.
+                                             May be null if passwords are in plain text.</param>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.CsvDescriptor.#ctor(System.String)">
+            <summary>
+            Creates a descriptor for the given path.  If the path may either be a file
+            or a directory, see CsvConnectionType for descriptions of the behavior in
+            either case.
+            </summary>
+            <param name="path">Path to the CSV file or directory.  Must exist.</param>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.CsvDescriptor.#ctor(System.String,Azavea.Open.DAO.CSV.CsvQuoteLevel)">
+            <summary>
+            Creates a descriptor for the given path.  If the path may either be a file
+            or a directory, see CsvConnectionType for descriptions of the behavior in
+            either case.
+            Allows you to specify the verbosity of quotes when we write the file.
+            </summary>
+            <param name="path">Path to the CSV file or directory.  Must exist.</param>
+            <param name="quoteLevel">How verbosely do we quote values we write.</param>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.CsvDescriptor.#ctor(Azavea.Open.DAO.CSV.CsvConnectionType,System.String)">
+            <summary>
+            Creates a descriptor for the given path.  If the path may either be a file
+            or a directory, see CsvConnectionType for descriptions of the behavior in
+            either case.
+            </summary>
+            <param name="type">Which type is it, a file or a directory.</param>
+            <param name="path">Path to the CSV file or directory.  Will be created if it does not exist.</param>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.CsvDescriptor.#ctor(Azavea.Open.DAO.CSV.CsvConnectionType,System.String,Azavea.Open.DAO.CSV.CsvQuoteLevel)">
+            <summary>
+            Creates a descriptor for the given path.  If the path may either be a file
+            or a directory, see CsvConnectionType for descriptions of the behavior in
+            either case.
+            Allows you to specify the verbosity of quotes when we write the file.
+            </summary>
+            <param name="type">Which type is it, a file or a directory.</param>
+            <param name="path">Path to the CSV file or directory.  Will be created if it does not exist.</param>
+            <param name="quoteLevel">How verbosely do we quote values we write.</param>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.CsvDescriptor.#ctor(System.IO.TextWriter)">
+            <summary>
+            Creates a descriptor using a TextWriter.  See CsvConnectionType for a description
+            of the behavior when using a TextWriter.
+            </summary>
+            <param name="writer">The writer to "insert" to.</param>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.CsvDescriptor.#ctor(System.IO.TextWriter,Azavea.Open.DAO.CSV.CsvQuoteLevel)">
+            <summary>
+            Creates a descriptor using a TextWriter.  See CsvConnectionType for a description
+            of the behavior when using a TextWriter.
+            Allows you to specify the verbosity of quotes when we write to the stream.
+            </summary>
+            <param name="writer">The writer to "insert" to.</param>
+            <param name="quoteLevel">How verbosely do we quote values we write.</param>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.CsvDescriptor.#ctor(System.IO.StreamReader)">
+            <summary>
+            Creates a descriptor using a StreamReader.  See CsvConnectionType for a description
+            of the behavior when using a StreamReader.
+            </summary>
+            <param name="reader">The reader to "query" against.</param>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.CsvDescriptor.#ctor(System.IO.StreamReader,Azavea.Open.DAO.CSV.CsvQuoteLevel)">
+            <summary>
+            Creates a descriptor using a StreamReader.  See CsvConnectionType for a description
+            of the behavior when using a StreamReader.
+            Allows you to specify the verbosity of quotes when we write to the stream.
+            </summary>
+            <param name="reader">The reader to "query" against.</param>
+            <param name="quoteLevel">How verbosely do we quote values we write.</param>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.CsvDescriptor.#ctor(Azavea.Open.DAO.CSV.CsvConnectionType,System.String,System.IO.TextWriter,System.IO.StreamReader,Azavea.Open.DAO.CSV.CsvQuoteLevel)">
+            <summary>
+            Creates a descriptor from any possible combination of inputs / configuration.
+            </summary>
+            <param name="type">May be InputStream or OutputStream if stream is not null, or
+                               Unknown if stream is null.</param>
+            <param name="path">Path to the CSV file or directory.  One of path, reader, writer
+                               must be set.</param>
+            <param name="writer">The writer to "insert" to.  One of path, reader, writer
+                               must be set.</param>
+            <param name="reader">The reader to "query" against.  One of path, reader, writer
+                               must be set.</param>
+            <param name="quoteLevel">How verbosely do we quote values we write.</param>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.CsvDescriptor.ToCompleteString">
+            <summary>
+            Since we often need to represent database connection info as strings,
+            child classes must implement ToCompleteString() such that this.Equals(that) and
+            this.ToCompleteString().Equals(that.ToCompleteString()) will behave the same.
+            </summary>
+            <returns>A string representation of all of the connection info.</returns>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.CsvDescriptor.ToCleanString">
+            <summary>
+            This method is similar to ToString, except it will not contain any
+            "sensitive" information, I.E. passwords.
+            
+            This method is intended to be used for logging or error handling, where
+            we do not want to display passwords to (potentially) just anyone, but
+            we do want to indicate what DB connection we were using.
+            </summary>
+            <returns>A string representation of most of the connection info, except
+                     passwords or similar items that shouldn't be shown.</returns>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.CsvDescriptor.CreateDataAccessLayer">
+            <summary>
+            Returns the appropriate data access layer for this connection.
+            </summary>
+        </member>
+        <member name="T:Azavea.Open.DAO.CSV.CsvQuoteLevel">
+            <summary>
+            When writing to a CSV file, how much should we quote the values?
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.DAO.CSV.CsvQuoteLevel.QuoteAlways">
+            <summary>
+            Every single value gets quotes, I.E.:
+            "5", "1/1/2009", "string", "one, two", "quote""quote"
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.DAO.CSV.CsvQuoteLevel.QuoteStrings">
+            <summary>
+            All strings get quotes, I.E.:
+            5, 1/1/2009, "string", "one, two", "quote""quote"
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.DAO.CSV.CsvQuoteLevel.QuoteBareMinimum">
+            <summary>
+            Only strings that need quotes (because they contain quotes or commas)
+            are quoted, I.E.:
+            5, 1/1/2009, string, "one, two", "quote""quote"
+            </summary>
+        </member>
+        <member name="T:Azavea.Open.DAO.CSV.CsvDaLayer">
+            <summary>
+            Data layer that implements reading/writing/modifying CSV files.
+            NOTE: Updates/Deletes will require re-writing the file, so expect some churn
+            if you're doing a lot of those.  Inserts will be appended to the end of the file.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.DAO.CSV.CsvDaLayer._connDesc">
+            <summary>
+            We want to treat it as a CSV descriptor rather than a generic connection descriptor.
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.CsvDaLayer.#ctor(Azavea.Open.DAO.CSV.CsvDescriptor)">
+            <summary>
+            Instantiates the data access layer with the connection descriptor for the DB.
+            </summary>
+            <param name="connDesc">The connection descriptor that is being used by this FastDaoLayer.</param>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.CsvDaLayer.Delete(Azavea.Open.DAO.ITransaction,Azavea.Open.DAO.ClassMapping,Azavea.Open.DAO.Criteria.DaoCriteria)">
+            <summary>
+            Deletes a data object record using the mapping and criteria for what's deleted.
+            </summary>
+            <param name="transaction">Should be null, transactions are not supported.</param>
+            <param name="crit">Criteria for deletion.  NOTE: Only the expressions are observed,
+                               other things (like "order" or start / limit) are ignored.
+                               WARNING: A null or empty (no expression) criteria will 
+                               delete ALL records!</param>
+            <param name="mapping">The mapping of the table from which to delete.</param>
+            <returns>The number of records affected.</returns>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.CsvDaLayer.Truncate(Azavea.Open.DAO.ClassMapping)">
+            <summary>
+            Blanks the file, leaving nothing but the header row (if there is one).
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.CsvDaLayer.MakeHeaderRow(Azavea.Open.DAO.ClassMapping)">
+            <summary>
+            Creates the first row of the CSV file, the header row.
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.CsvDaLayer.MakeDataRow(Azavea.Open.DAO.ClassMapping,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Creates a new row for the CSV file.  Will create blanks (",,") if using
+            numeric indexing and the numbers are not consecutive.
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.CsvDaLayer.QuoteValue(System.Object)">
+            <summary>
+            Uses the OutputQuoteLevel on the connection descriptor plus the value
+            itself to determine if we need to quote it, and if so quote it.  Also
+            converts the value to a string, and if it is already a string, escapes
+            internal quotes in it.
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.CsvDaLayer.UseNamedColumns(Azavea.Open.DAO.ClassMapping)">
+            <summary>
+            Checks whether this mapping is using column indexes or named columns.
+            If named columns, returns true (and there must be a header row).  If
+            numerically indexed columns, returns false (we assume there is not a header row).
+            </summary>
+            <param name="mapping">Mapping for this file.</param>
+            <returns>Whether or not we're using named columns.</returns>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.CsvDaLayer.Insert(Azavea.Open.DAO.ITransaction,Azavea.Open.DAO.ClassMapping,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Inserts a data object record using the "table" and a list of column/value pairs.
+            </summary>
+            <param name="transaction">Should be null, transactions are not supported.</param>
+            <param name="mapping">The mapping of the table or other data container we're dealing with.</param>
+            <param name="propValues">A dictionary of "column"/value pairs for the object to insert.</param>
+            <returns>The number of records affected.</returns>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.CsvDaLayer.InsertBatch(Azavea.Open.DAO.ITransaction,Azavea.Open.DAO.ClassMapping,System.Collections.Generic.List{System.Collections.Generic.IDictionary{System.String,System.Object}})">
+            <summary>
+            Inserts a list of data object records of the same type.
+            </summary>
+            <param name="transaction">Should be null, transactions are not supported.</param>
+            <param name="mapping">The mapping of the table or other data container we're dealing with.</param>
+            <param name="propValueDictionaries">A list of dictionaries of column/value pairs.  
+                                                Each item in the list should represent the dictionary of column/value pairs for 
+                                                each respective object being inserted.</param>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.CsvDaLayer.Update(Azavea.Open.DAO.ITransaction,Azavea.Open.DAO.ClassMapping,Azavea.Open.DAO.Criteria.DaoCriteria,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Updates a data object record using the "table" and a list of column/value pairs.
+            </summary>
+            <param name="transaction">Should be null, transactions are not supported.</param>
+            <param name="mapping">The mapping of the table or other data container we're dealing with.</param>
+            <param name="crit">All records matching this criteria will be updated per the dictionary of
+                               values.</param>
+            <param name="propValues">A dictionary of column/value pairs for all non-ID columns to be updated.</param>
+            <returns>The number of records affected.</returns>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.CsvDaLayer.UpdateBatch(Azavea.Open.DAO.ITransaction,Azavea.Open.DAO.ClassMapping,System.Collections.Generic.List{Azavea.Open.DAO.Criteria.DaoCriteria},System.Collections.Generic.List{System.Collections.Generic.IDictionary{System.String,System.Object}})">
+            <summary>
+            Updates a list of data object records of the same type.
+            NOTE: At the moment this just loops calling Update().
+            </summary>
+            <param name="transaction">Should be null, transactions are not supported.</param>
+            <param name="mapping">The mapping of the table or other data container we're dealing with.</param>
+            <param name="criteriaList">A list of DaoCriteria.
+                                       Each item in the list should represent the criteria for 
+                                       rows that will be updated per the accompanying dictionary.</param>
+            <param name="propValueDictionaries">A list of dictionaries of column/value pairs.
+                                              Each item in the list should represent the dictionary of non-ID column/value pairs for 
+                                              each respective object being updated.</param>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.CsvDaLayer.ExecuteQuery(Azavea.Open.DAO.ITransaction,Azavea.Open.DAO.ClassMapping,Azavea.Open.DAO.IDaQuery,Azavea.Open.DAO.Util.DataReaderDelegate,System.Collections.Hashtable)">
+            <summary>
+            Executes a query and invokes a method with a DataReader of results.
+            </summary>
+            <param name="transaction">Should be null, transactions are not supported.</param>
+            <param name="mapping">Class mapping for the table we're querying against.  Optional,
+                                  but not all columns may be properly typed if it is null.</param>
+            <param name="query">The query to execute, should have come from CreateQuery.</param>
+            <param name="invokeMe">The method to invoke with the IDataReader results.</param>
+            <param name="parameters">A hashtable containing any values that need to be persisted through invoked method.
+                                     The list of objects from the query will be placed here.</param>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.CsvDaLayer.GetLastAutoGeneratedId(Azavea.Open.DAO.ITransaction,Azavea.Open.DAO.ClassMapping,System.String)">
+            <summary>
+            Finds the last generated id number for a column.
+            </summary>
+            <param name="transaction">Should be null, transactions are not supported.</param>
+            <param name="mapping">The class mapping for the table being queried.</param>
+            <param name="idCol">The ID column for which to find the last-generated ID.</param>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.CsvDaLayer.GetNextSequenceValue(Azavea.Open.DAO.ITransaction,System.String)">
+            <summary>
+            Gets the next id number from a sequence in the data source.
+            </summary>
+            <param name="transaction">Should be null, transactions are not supported.</param>
+            <param name="sequenceName">The name of the sequence.</param>
+            <returns>The next number from the sequence.</returns>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.CsvDaLayer.GetCount(Azavea.Open.DAO.ITransaction,Azavea.Open.DAO.ClassMapping,Azavea.Open.DAO.Criteria.DaoCriteria)">
+            <summary>
+            Gets a count of records for the given criteria.
+            </summary>
+            <param name="transaction">Should be null, transactions are not supported.</param>
+            <param name="crit">The criteria to use for "where" comparisons.</param>
+            <param name="mapping">The mapping of the table for which to build the query string.</param>
+            <returns>The number of results found that matched the criteria.</returns>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.CsvDaLayer.GetCount(Azavea.Open.DAO.ITransaction,Azavea.Open.DAO.ClassMapping,Azavea.Open.DAO.Criteria.DaoCriteria,System.Collections.Generic.ICollection{Azavea.Open.DAO.Criteria.Grouping.AbstractGroupExpression})">
+            <summary>
+            Gets a count of records for the given criteria,
+            aggregated by the given grouping expressions.  This matches "GROUP BY" behavior
+            in SQL.
+            </summary>
+            <param name="transaction">The transaction to do this as part of.</param>
+            <param name="mapping">The mapping of the table for which to build the query string.</param>
+            <param name="crit">The criteria to use for "where" comparisons.</param>
+            <param name="groupExpressions">The fields/expressions to aggregate on when counting.</param>
+            <returns>The number of objects that match the criteria, plus the values of those objects
+                     for the fields that were aggregated on.</returns>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.CsvDaLayer.CoerceType(System.Type,System.Object)">
+            <summary>
+            Overridden to handle the case of converting an empty string to
+            a non-string datatype.  It's a slow check because you have to trim,
+            and check type, etc, which is why it isn't in the base class.  But CSV
+            files apparently frequently use "" for blank numerical values which causes
+            the base class implementation to error out.
+            </summary>
+            <param name="desiredType">Type we need the value to be.</param>
+            <param name="input">Input value, may or may not already be the right type.</param>
+            <returns>An object of type desiredType whose value is equal to the input.</returns>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.CsvDaLayer.GetReader(Azavea.Open.DAO.ClassMapping)">
+            <summary>
+            Gets a valid StreamReader that can be used to read CSV data.
+            If we were configured with a StreamReader, it may be that one.  If we
+            are accessing a file we will open a new reader.
+            
+            You should not close it yourself, instead you should call DoneWithReader
+            when you are done with it.
+            </summary>
+            <param name="mapping">The mapping for the object we intend to read.</param>
+            <returns>A reader that can be used to access the CSV data.  DO NOT CLOSE IT YOURSELF.</returns>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.CsvDaLayer.DoneWithReader(System.IO.StreamReader)">
+            <summary>
+            Returns the reader for closing (or not, if we were configured with it).
+            </summary>
+            <param name="reader">The StreamReader obtained from a GetReader call.</param>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.CsvDaLayer.GetWriter(Azavea.Open.DAO.ClassMapping,System.Boolean)">
+            <summary>
+            Gets a valid TextWriter that can be used to output CSV data.
+            If we were configured with a TextWriter, it may be that one.  If we
+            are accessing a file we will open a new writer.
+            
+            You should not close it yourself, instead you should call DoneWithWriter
+            when you are done with it.
+            </summary>
+            <param name="mapping">The mapping for the object we intend to write.</param>
+            <param name="append">Whether to append to, or overwrite, the file if it exists.
+                                 If it does not exist, this parameter doesn't matter and a new
+                                 file is created.</param>
+            <returns>A writer that can be used to output the CSV data.  DO NOT CLOSE IT YOURSELF.</returns>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.CsvDaLayer.DoneWithWriter(Azavea.Open.DAO.CSV.WriterInfo)">
+            <summary>
+            Returns the writer for closing (or not, if we were configured with it).
+            </summary>
+            <param name="info">The WriterInfo obtained from a GetWriter call.</param>
+        </member>
+        <member name="T:Azavea.Open.DAO.CSV.WriterInfo">
+            <summary>
+            We need the writer but we also need to know whether we should write a header to it
+            or not.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.DAO.CSV.WriterInfo.Writer">
+            <summary>
+            The writer to write CSV data to.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.DAO.CSV.WriterInfo.NeedsHeader">
+            <summary>
+            Whether we should write a header line (I.E. false if
+            there is already data there or we already wrote one).
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.WriterInfo.#ctor(System.IO.TextWriter,System.Boolean)">
+            <summary>
+            Create the info and initialize the fields.
+            </summary>
+            <param name="writer">The writer to write CSV data to.</param>
+            <param name="needsHeader">Whether we should write a header line (I.E. false if
+                                      there is already data there or we already wrote one).</param>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.WriterInfo.#ctor(System.String,System.Boolean,System.Boolean)">
+            <summary>
+            Create the info and initialize the fields.
+            </summary>
+            <param name="filePath">The path to the CSV file.</param>
+            <param name="append">True to append to an existing file, false to replace it.</param>
+            <param name="namedColumns">Are we using named columns or numerical indexes.</param>
+        </member>
+        <member name="T:Azavea.Open.DAO.CSV.Tests.CsvDaoTests">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.Tests.CsvDaoTests.#ctor">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.Tests.CsvDaoTests.Init">
+            <exclude/>
+        </member>
+        <member name="T:Azavea.Open.DAO.CSV.Tests.CsvJoinTests">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.Tests.CsvJoinTests.#ctor">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.Tests.CsvJoinTests.Init">
+            <exclude/>
+        </member>
+        <member name="T:Azavea.Open.DAO.CSV.Tests.MiscCsvTests">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.Tests.MiscCsvTests.Init">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.Tests.MiscCsvTests.TestWriteCsvWithQuotes">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.Tests.MiscCsvTests.TestWriteCsv">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.Tests.MiscCsvTests.TestMissingFirstColumnsWithHeader">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.Tests.MiscCsvTests.TestMissingMiddleColumnsWithHeader">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.Tests.MiscCsvTests.TestMissingLastColumnsWithHeader">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.Tests.MiscCsvTests.TestMissingFirstColumnsWithoutHeader">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.Tests.MiscCsvTests.TestMissingMiddleColumnsWithoutHeader">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.CSV.Tests.MiscCsvTests.TestMissingLastColumnsWithoutHeader">
+            <exclude/>
+        </member>
+        <member name="T:Azavea.Open.DAO.CSV.Tests.CsvTestObj">
+            <exclude/>
+        </member>
+        <member name="F:Azavea.Open.DAO.CSV.Tests.CsvTestObj.One">
+            <exclude/>
+        </member>
+        <member name="F:Azavea.Open.DAO.CSV.Tests.CsvTestObj.Two">
+            <exclude/>
+        </member>
+        <member name="F:Azavea.Open.DAO.CSV.Tests.CsvTestObj.Three">
+            <exclude/>
+        </member>
+        <member name="F:Azavea.Open.DAO.CSV.Tests.CsvTestObj.Four">
+            <exclude/>
+        </member>
+        <member name="F:Azavea.Open.DAO.CSV.Tests.CsvTestObj.Five">
+            <exclude/>
+        </member>
+    </members>
+</doc>

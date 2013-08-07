@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Azavea.Utilities.Common</id>
+    <version>3.2.2</version>
+    <title>Azavea.Utilities.Common</title>
+    <authors>Azavea Inc.</authors>
+    <owners>Azavea Inc.</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Azavea Utility Objects</description>
+    <releaseNotes />
+    <tags>utility collections cryptography email process</tags>
+    <dependencies>
+      <dependency id="Azavea.Open.Common" version="2.1.1" />
+      <dependency id="log4net" version="1.2.11" />
+      <dependency id="NUnit" />
+      <dependency id="NUnit.Mocks" version="2.6.2" />
+    </dependencies>
+  </metadata>
+</package>

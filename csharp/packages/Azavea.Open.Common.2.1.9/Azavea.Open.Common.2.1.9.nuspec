@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Azavea.Open.Common</id>
+    <version>2.1.9</version>
+    <title>Azavea.Open.Common</title>
+    <authors>Azavea</authors>
+    <owners>Azavea</owners>
+    <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+    <projectUrl>https://github.com/azavea/net-om-utils-common</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A set of common C# utility classes. Part of the Oatmeal Utilities library.</description>
+    <releaseNotes />
+    <tags>utility collections caching</tags>
+    <dependencies>
+      <dependency id="log4net" version="2.0.0" />
+      <dependency id="NUnit" version="2.6.2" />
+    </dependencies>
+  </metadata>
+</package>

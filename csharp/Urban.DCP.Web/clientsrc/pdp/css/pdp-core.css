@@ -1,0 +1,18 @@
+.left { float:left; }
+.right { float:right; }
+.clear { clear:both; }
+
+h1 { font-size:1.6em; padding:1.0em 0; color: #1d1d1d;}
+h2 { font-size:1.4em; padding:1.0em 0; color: #2a4203;}
+h3 { font-size:1.2em; padding:1.0em 0; color: #2a4203;}
+h4 { font-size:1.1em; padding:0.6em 0; color: #2a4203;}
+
+a {	border: 0; color:#2C3B0E}
+input, select { margin:0; }
+body { font-size: .8em; font-family: Arial, Helvetica, sans-serif; line-height:1.2em; }
+	
+/* Header div must have high zindex for IE7 panel rendering (signup + login)*/
+#header { background-color:#FFFFFF; position:relative; z-index: 3001;}
+#pdp-profile-header { 
+        padding-left: 5px; background: #fff; position:relative; background: #727A65; color: #fff;}   
+   

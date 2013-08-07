@@ -1,0 +1,14 @@
+
+/* IE7 will not take display:none for a col element.  It will take a vis: collapse, but FF will not.*/ 
+col.pdp-table-col-hide { display: none !important;}
+th.pdp-table-col-hide { display: inline !important;}
+td.pdp-table-col-hide { display: inline !important;}
+
+#pdp-map-layers-panel{width: 300px; }
+#pdp-map-layers-year-slider {width: 250px;}
+
+.pdp-table-data {width: 100%; }
+
+.pdp-table-col-selector {position: static; }
+#pdp-table-col-select-panel {}
+#pdp-column-select-panel-content {height: 80%; overflow: scroll;}

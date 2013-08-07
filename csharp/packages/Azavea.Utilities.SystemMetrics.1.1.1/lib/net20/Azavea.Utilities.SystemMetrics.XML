@@ -1,0 +1,931 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Azavea.Utilities.SystemMetrics</name>
+    </assembly>
+    <members>
+        <member name="T:Azavea.Utilities.SystemMetrics.AbstractASPNETAppMetric">
+            <summary>
+            Base class for metrics that look up info on a particular web app.
+            </summary>
+        </member>
+        <member name="T:Azavea.Utilities.SystemMetrics.AbstractSystemMetric">
+            <summary>
+            Base class that implements the methods and provides a couple
+            constructors for simple extension.
+            </summary>
+        </member>
+        <member name="T:Azavea.Utilities.SystemMetrics.ISystemMetric">
+            <summary>
+            A system metric
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.ISystemMetric.GetName">
+            <summary>
+            The name / ID of this metric.
+            </summary>
+            <returns>The name / ID of this metric.</returns>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.ISystemMetric.IsPersisted">
+            <summary>
+            Whether or not the value returned by this metric is being tracked over time.
+            </summary>
+            <returns>Whether or not the value returned by this metric is being tracked over time.</returns>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.ISystemMetric.GetValue">
+            <summary>
+            The current value of this metric.
+            </summary>
+            <returns>The current value of this metric.</returns>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.ISystemMetric.GetValueType">
+            <summary>
+            Returns what type of data the value is, which can be used for rendering.
+            A null means unspecified, which will always be rendered as a plain unformatted
+            string.  Return null if the value is already a formatted string.
+            </summary>
+            <returns>What type of data the value is.</returns>
+        </member>
+        <member name="F:Azavea.Utilities.SystemMetrics.AbstractSystemMetric._log">
+            <summary>
+            For logging errors.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.AbstractSystemMetric.#ctor(System.String)">
+            <summary>
+            Constructs a named metric, not persisted, that returns arbitrarily formatted strings.
+            </summary>
+            <param name="metricName">Name/ID of this metric.</param>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.AbstractSystemMetric.#ctor(System.String,System.Boolean)">
+            <summary>
+            Constructs a named metric that returns arbitrarily formatted strings.
+            </summary>
+            <param name="metricName">Name/ID of this metric.</param>
+            <param name="persisted">Whether this metric's values are stored in a database and tracked over time or not.</param>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.AbstractSystemMetric.#ctor(System.String,System.Nullable{Azavea.Utilities.SystemMetrics.SystemMetricValueType})">
+            <summary>
+            Constructs a named metric, not persisted, that returns values of the specified type.
+            </summary>
+            <param name="metricName">Name/ID of this metric.</param>
+            <param name="valueType">The type of value, may be null for a plain old string.</param>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.AbstractSystemMetric.#ctor(System.String,System.Boolean,System.Nullable{Azavea.Utilities.SystemMetrics.SystemMetricValueType})">
+            <summary>
+            Sets the parameters for the various get methods.
+            </summary>
+            <param name="metricName">Name/ID of this metric.</param>
+            <param name="persisted">Whether this metric's values are stored in a database and tracked over time or not.</param>
+            <param name="valueType">The type of value, may be null for a plain old string.</param>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.AbstractSystemMetric.GetName">
+            <summary>
+            The name / ID of this metric.
+            </summary>
+            <returns>The name / ID of this metric.</returns>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.AbstractSystemMetric.IsPersisted">
+            <summary>
+            Whether or not the value returned by this metric is being tracked over time.
+            </summary>
+            <returns>Whether or not the value returned by this metric is being tracked over time.</returns>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.AbstractSystemMetric.GetValue">
+            <summary>
+            The current value of this metric.
+            </summary>
+            <returns>The current value of this metric.</returns>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.AbstractSystemMetric.GetValueType">
+            <summary>
+            Returns what type of data the value is, which can be used for rendering.
+            A null means unspecified, which will always be rendered as a plain unformatted
+            string.  Return null if the value is already a formatted string.
+            </summary>
+            <returns>What type of data the value is.</returns>
+        </member>
+        <member name="F:Azavea.Utilities.SystemMetrics.AbstractASPNETAppMetric._appName">
+            <summary>
+            The name of the ASPNET web application.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.SystemMetrics.AbstractASPNETAppMetric._webRoot">
+            <summary>
+            A prefix applied to the web application name to get performance counters.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.AbstractASPNETAppMetric.#ctor(System.String,System.String,System.Nullable{Azavea.Utilities.SystemMetrics.SystemMetricValueType})">
+            <summary>
+            Base class for metrics that look up info on a particular web app.
+            </summary>
+        </member>
+        <member name="T:Azavea.Utilities.SystemMetrics.AbstractSystemInfoMetric">
+            <summary>
+            A base class for querying system-level or OS values like memory available, OS version, etc.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.SystemMetrics.AbstractSystemInfoMetric.SystemManagementObject">
+            <summary>
+             The object used for querying system / OS values.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.AbstractSystemInfoMetric.#ctor(System.String)">
+            <summary>
+            A base class for querying system-level or OS values like memory available, OS version, etc.
+            </summary>
+        </member>
+        <member name="T:Azavea.Utilities.SystemMetrics.ArcGisRunningMetric">
+            <summary>
+            Verifies that an ArcGIS Server service is running by querying its REST API.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.ArcGisRunningMetric.#ctor(System.String,System.String)">
+            <summary>
+            Initializes the metric with the URL and service to check.
+            </summary>
+            <param name="mapServerUrl">The REST API URL for the AGS Service up to the actual service name</param>
+            <param name="mapServiceName">The service name to check.</param>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.ArcGisRunningMetric.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Initializes the metric with the URL and service to check.
+            </summary>
+            <param name="metricName">Name to report this metric as.  Useful if you are checking more than one AGS service.</param>
+            <param name="mapServerUrl">The REST API URL for the AGS Service up to the actual service name</param>
+            <param name="mapServiceName">The service name to check.</param>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.ArcGisRunningMetric.GetValue">
+            <summary>
+            The current value of this metric.
+            </summary>
+            <returns>The current value of this metric.</returns>
+        </member>
+        <member name="T:Azavea.Utilities.SystemMetrics.ArcImsRunningMetric">
+            <summary>
+            Verifies that an ArcIMS service is running by querying its REST API.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.ArcImsRunningMetric.#ctor(System.String,System.String)">
+            <summary>
+            Initializes the metric with the URL and service to check.
+            </summary>
+            <param name="mapServerName">The name of the server running ArcIMS.</param>
+            <param name="mapServiceName">The service name to check.</param>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.ArcImsRunningMetric.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Initializes the metric with the URL and service to check.
+            </summary>
+            <param name="metricName">Name to report this metric as.  Useful if you are checking more than one map service.</param>
+            <param name="mapServerName">The name of the server running ArcIMS.</param>
+            <param name="mapServiceName">The service name to check.</param>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.ArcImsRunningMetric.GetValue">
+            <summary>
+            The current value of this metric.
+            </summary>
+            <returns>The current value of this metric.</returns>
+        </member>
+        <member name="T:Azavea.Utilities.SystemMetrics.ASPNETAppRequestsPerSecondMetric">
+            <summary>
+            http://msdn.microsoft.com/en-us/library/fxk122b4.aspx
+            "The number of requests executed per second. This represents the current throughput of the application. 
+            Under constant load, this number should remain within a certain range, barring other server work (such 
+            as garbage collection, cache cleanup thread, external server tools, and so on)."
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.ASPNETAppRequestsPerSecondMetric.#ctor(System.String)">
+            <summary>
+            Construct the metric class.
+            </summary>
+            <param name="appName">Name of the web app we're monitoring.</param>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.ASPNETAppRequestsPerSecondMetric.GetValue">
+            <exclude/>
+        </member>
+        <member name="T:Azavea.Utilities.SystemMetrics.ASPNETAppRequestsRejectedMetric">
+            <summary>
+            http://msdn.microsoft.com/en-us/library/fxk122b4.aspx
+            "The total number of requests not executed because of insufficient server 
+            resources to process them. This counter represents the number of requests that 
+            return a 503 HTTP status code, indicating that the server is too busy."
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.ASPNETAppRequestsRejectedMetric.#ctor(System.String)">
+            <summary>
+            Construct the metric class.
+            </summary>
+            <param name="appName">Name of the web app we're monitoring.</param>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.ASPNETAppRequestsRejectedMetric.GetValue">
+            <exclude/>
+        </member>
+        <member name="T:Azavea.Utilities.SystemMetrics.ASPNETAppRequestWaitTimeMetric">
+            <summary>
+            http://msdn.microsoft.com/en-us/library/fxk122b4.aspx
+            "The number of milliseconds that the most recent request waited in the queue for processing."
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.ASPNETAppRequestWaitTimeMetric.#ctor(System.String)">
+            <summary>
+            Construct the metric class.
+            </summary>
+            <param name="appName">Name of the web app we're monitoring.</param>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.ASPNETAppRequestWaitTimeMetric.GetValue">
+            <exclude/>
+        </member>
+        <member name="T:Azavea.Utilities.SystemMetrics.ASPNETAppTotalErrorsPerSecMetric">
+            <summary>
+            http://msdn.microsoft.com/en-us/library/fxk122b4.aspx
+            
+            "The number of errors per second that occur during the execution of HTTP requests, 
+            including any parser, compilation, or run-time errors."
+            
+            "The total number of errors that occur during the execution of HTTP requests, 
+            including any parser, compilation, or run-time errors. This counter is the sum of the
+            Errors During Compilation, Errors During Preprocessing, and Errors During Execution 
+            counters. A well-functioning Web server should not generate errors. If errors occur in 
+            your ASP.NET Web application, they may skew any throughput results because of very different 
+            code paths for error recovery. Investigate and fix any bugs in your application before performance testing."
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.ASPNETAppTotalErrorsPerSecMetric.#ctor(System.String)">
+            <summary>
+            Construct the metric class.
+            </summary>
+            <param name="appName">Name of the web app we're monitoring.</param>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.ASPNETAppTotalErrorsPerSecMetric.GetValue">
+            <exclude/>
+        </member>
+        <member name="T:Azavea.Utilities.SystemMetrics.ASPNETRequestsDisconnectedMetric">
+            <summary>
+            TODO: DAVID M: Please give a brief one-liner about what this means.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.ASPNETRequestsDisconnectedMetric.#ctor">
+            <summary>
+            Construct the metric class.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.ASPNETRequestsDisconnectedMetric.GetValue">
+            <exclude/>
+        </member>
+        <member name="T:Azavea.Utilities.SystemMetrics.ASPNETRequestsMetric">
+            <summary>
+            TODO: DAVID M: Please give a brief one-liner about what this means.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.ASPNETRequestsMetric.#ctor">
+            <summary>
+            Construct the metric class.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.ASPNETRequestsMetric.GetValue">
+            <exclude/>
+        </member>
+        <member name="T:Azavea.Utilities.SystemMetrics.ASPNETRequestsQueuedMetric">
+            <summary>
+            TODO: DAVID M: Please give a brief one-liner about what this means.
+            http://msdn.microsoft.com/en-us/library/fxk122b4.aspx
+            "The number of requests waiting for service from the queue. 
+            When this number starts to increment linearly with increased client load, 
+            the Web server computer has reached the limit of concurrent requests that 
+            it can process. The default maximum for this counter is 5,000. You can change 
+            this setting in the Machine.config file."
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.ASPNETRequestsQueuedMetric.#ctor">
+            <summary>
+            Construct the metric class.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.ASPNETRequestsQueuedMetric.GetValue">
+            <exclude/>
+        </member>
+        <member name="T:Azavea.Utilities.SystemMetrics.ASPNETWorkerProcessesRunningMetric">
+            <summary>
+            TODO: DAVID M: Please give a brief one-liner about what this means.
+            http://msdn.microsoft.com/en-us/library/fxk122b4.aspx
+            "The number of worker processes running on the server computer."
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.ASPNETWorkerProcessesRunningMetric.#ctor">
+            <summary>
+            Construct the metric class.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.ASPNETWorkerProcessesRunningMetric.GetValue">
+            <exclude/>
+        </member>
+        <member name="T:Azavea.Utilities.SystemMetrics.ASPNETWorkerProcessRestartMetric">
+            <summary>
+            http://msdn.microsoft.com/en-us/library/fxk122b4.aspx
+            "The number of times a worker process has been restarted on the server computer. 
+            A worker process can be restarted if it fails unexpectedly or when it is intentionally 
+            recycled. If this counter increases unexpectedly, you should investigate as soon as possible."
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.ASPNETWorkerProcessRestartMetric.#ctor">
+            <summary>
+            Construct the metric class.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.ASPNETWorkerProcessRestartMetric.GetValue">
+            <exclude/>
+        </member>
+        <member name="T:Azavea.Utilities.SystemMetrics.DbConnectionMetric">
+            <summary>
+            The metric attemps to create a database connection.  If it can, it returns true, if it fails
+            it returns false
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.DbConnectionMetric.#ctor(Azavea.Open.DAO.SQL.AbstractSqlConnectionDescriptor)">
+            <summary>
+            Create a connection using the provided descriptor
+            </summary>
+            <param name="conn">The connection descriptor to use</param>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.DbConnectionMetric.#ctor(System.String,Azavea.Open.DAO.SQL.AbstractSqlConnectionDescriptor)">
+            <summary>
+            Create a connection using the provided descriptor
+            </summary>
+            <param name="name">Name of this metric, in case you have multiple db connections to check you can name them different things.</param>
+            <param name="conn">The connection descriptor to use</param>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.DbConnectionMetric.GetName">
+            <summary>
+            The name of this metric
+            </summary>
+            <returns>The name of this metric</returns>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.DbConnectionMetric.IsPersisted">
+            <summary>
+            Is this metric value persisted to the database?
+            </summary>
+            <returns>false - it is not</returns>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.DbConnectionMetric.GetValueType">
+            <summary>
+            What value type does this metric return
+            </summary>
+            <returns>A boolean type, as a string</returns>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.DbConnectionMetric.GetValue">
+            <summary>
+            
+            </summary>
+            <returns>True or False, was I able to connect to the database</returns>
+        </member>
+        <member name="T:Azavea.Utilities.SystemMetrics.DiskFreeSpaceMetric">
+            <summary>
+            How much disk space is free on the drive the app is installed on.
+            Uses the InstalledDriveMetric to determine which disk to check.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.DiskFreeSpaceMetric.#ctor">
+            <summary>
+            Construct the metric class.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.DiskFreeSpaceMetric.GetValue">
+            <summary>
+            The current value of this metric.
+            </summary>
+            <returns>The current value of this metric.</returns>
+        </member>
+        <member name="T:Azavea.Utilities.SystemMetrics.DiskPercentMetric">
+            <summary>
+            TODO: DAVID M: Please give a brief one-liner about what this means.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.DiskPercentMetric.#ctor">
+            <summary>
+            Construct the metric class.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.DiskPercentMetric.GetValue">
+            <exclude/>
+        </member>
+        <member name="T:Azavea.Utilities.SystemMetrics.DiskPhysicalQueueMetric">
+            <summary>
+            TODO: DAVID M: Please give a brief one-liner about what this means.
+            http://msdn.microsoft.com/en-us/library/ms175903.aspx
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.DiskPhysicalQueueMetric.#ctor">
+            <summary>
+            Construct the metric class.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.DiskPhysicalQueueMetric.GetValue">
+            <exclude/>
+        </member>
+        <member name="T:Azavea.Utilities.SystemMetrics.GeoServerIsRunningMetric">
+            <summary>
+            The metric attemps to contact a GeoServer with a url "Describe Layer" request.  If
+            the request succeeds and does not contain an error response, the metric passes.  I chose
+            DescribeLayer because of its relatively few parameters required.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.GeoServerIsRunningMetric.#ctor(System.String,System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="geoServerAddress">The string which represents the geoserver address.  For example: "http://207.245.89.220:8080/geoserver/wms"</param>
+            <param name="qualifiedLayerName">The fully qualified name of the published GeoServer layer.  For example: topp:states</param>
+            <param name="version"></param>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.GeoServerIsRunningMetric.GetName">
+            <summary>
+            The name of this metric
+            </summary>
+            <returns>The name of this metric</returns>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.GeoServerIsRunningMetric.IsPersisted">
+            <summary>
+            Is this metric value persisted to the database?
+            </summary>
+            <returns>false - it is not</returns>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.GeoServerIsRunningMetric.GetValueType">
+            <summary>
+            What value type does this metric return
+            </summary>
+            <returns>A boolean type, as a string</returns>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.GeoServerIsRunningMetric.GetValue">
+            <summary>
+            Using parameters from the constructor, this method calls a GeoServer with a "RequestLayer"
+            WMS request.  If the call is recieved and a response is returned with no error, then the metric
+            has passed.
+            </summary>
+            <returns>True or False, was a valid response returned from GeoServer</returns>
+        </member>
+        <member name="T:Azavea.Utilities.SystemMetrics.HealthHandler">
+            <summary>
+             A generic AppHealth handler.  This class reports the values of a series of
+             system metrics whenever it is queried.
+             
+             An example implementation would look like this:
+             
+                 public MyHealthHandler : HealthHandler {
+                     public MyHealthHandler() : base("MyApp") {
+                         AddMetric(new SomeSystemMetricObject());
+                         AddMetric(new SomeOtherSystemMetricObject());
+                         etc...
+                     }
+                 }
+             
+             NOTE: The older implementation provided the following metrics by default.  Here are the
+                   new metric classes to use instead:
+             
+                 HostName                     - HostNameMetric
+                 OSVersion                    - OsVersionMetric
+                 ServicePack                  - OsServicePackMetric
+                 AppInstalledDrive            - InstalledDriveMetric
+                 SystemUptime                 - SystemUptimeMetric
+                 MemoryAvailable              - MemoryAvailableMetric
+                 MemoryPagesPerSecond         - MemoryPagesPerSecondMetric
+                 PercentProcessorTime         - ProcessorPercentMetric
+                 DiskFreeSpace                - DiskFreeSpaceMetric
+                 ASPNETRequestsPerSecond      - ASPNETAppRequestsPerSecondMetric
+                 ASPNETRequestsCurrent        - ASPNETRequestsMetric
+                 ASPNetWorkerProcessesRunning - ASPNETWorkerProcessesRunningMetric
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.SystemMetrics.HealthHandler.AppName">
+            <summary>
+            The name of the app we're checking the health of.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.SystemMetrics.HealthHandler.GetVersionMethod">
+            <summary>
+            How we get the version to report.  Defaults to WebUtil.GetBuildNumber, but you can
+            provide a different method if you choose.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.HealthHandler.#ctor(System.String)">
+            <summary>
+            Creates the base class, specifying the name of the app we're checking the health of.
+            This includes the most interesting of the old default metrics:
+                SystemUptimeMetric
+                MemoryAvailableMetric
+                ProcessorPercentMetric
+                DiskFreeSpaceMetric
+            </summary>
+            <param name="appName">Name of the app.</param>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.HealthHandler.#ctor(System.String,Azavea.Utilities.SystemMetrics.HealthHandler.VersionProvider)">
+            <summary>
+            Creates the base class, specifying the name of the app we're checking the health of.
+            This includes the most interesting of the old default metrics:
+                SystemUptimeMetric
+                MemoryAvailableMetric
+                ProcessorPercentMetric
+                DiskFreeSpaceMetric
+            </summary>
+            <param name="appName">Name of the app.</param>
+            <param name="versionMethod">Method to provide the current version number.  Null means use the default.</param>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.HealthHandler.#ctor(System.String,System.Boolean,System.Boolean)">
+            <summary>
+            Creates the base class, specifying the name of the app we're checking the health of.
+            </summary>
+            <param name="appName">Name of the app.</param>
+            <param name="includeMinimalDefaults">Include the most interesting of the old default metrics.
+                SystemUptimeMetric
+                MemoryAvailableMetric
+                ProcessorPercentMetric
+                DiskFreeSpaceMetric
+            </param>
+            <param name="includeExtraDefaults">Include all the other old default metrics:
+                HostNameMetric
+                OsVersionMetric
+                OsServicePackMetric
+                InstalledDriveMetric
+                MemoryPagesPerSecondMetric,
+                ASPNETAppRequestsPerSecondMetric,
+                ASPNETRequestsMetric,
+                ASPNETWorkerProcessesRunningMetric
+            </param>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.HealthHandler.#ctor(System.String,Azavea.Utilities.SystemMetrics.HealthHandler.VersionProvider,System.Boolean,System.Boolean)">
+            <summary>
+            Creates the base class, specifying the name of the app we're checking the health of.
+            </summary>
+            <param name="appName">Name of the app.</param>
+            <param name="versionMethod">Method to provide the current version number.  Null means use the default.</param>
+            <param name="includeMinimalDefaults">Include the most interesting of the old default metrics.
+                SystemUptimeMetric
+                MemoryAvailableMetric
+                ProcessorPercentMetric
+                DiskFreeSpaceMetric
+            </param>
+            <param name="includeExtraDefaults">Include all the other old default metrics:
+                HostNameMetric
+                OsVersionMetric
+                OsServicePackMetric
+                InstalledDriveMetric
+                MemoryPagesPerSecondMetric,
+                ASPNETAppRequestsPerSecondMetric,
+                ASPNETRequestsMetric,
+                ASPNETWorkerProcessesRunningMetric
+            </param>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.HealthHandler.AddMetric(Azavea.Utilities.SystemMetrics.ISystemMetric)">
+            <summary>
+            Call this to add a metric to the list of metrics to be checked every time
+            the handler is invoked.
+            </summary>
+            <param name="metric">A system metric to report on.</param>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.HealthHandler.AddMetric(System.String,Azavea.Utilities.SystemMetrics.SystemMetricValueFunction)">
+            <summary>
+            Adds a metric function rather than an object.
+            </summary>
+            <param name="name">Name/ID of the metric.</param>
+            <param name="metricFunc">Function to call to get the metric value.</param>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.HealthHandler.AddMetric(System.String,Azavea.Utilities.SystemMetrics.SystemMetricValueFunction,System.Boolean)">
+            <summary>
+            Adds a metric function rather than an object.
+            </summary>
+            <param name="name">Name/ID of the metric.</param>
+            <param name="metricFunc">Function to call to get the metric value.</param>
+            <param name="persist">Whether the value should be saved to the database to track over time.</param>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.HealthHandler.AddMetric(System.String,Azavea.Utilities.SystemMetrics.SystemMetricValueFunction,System.Nullable{Azavea.Utilities.SystemMetrics.SystemMetricValueType})">
+            <summary>
+            Adds a metric function rather than an object.
+            </summary>
+            <param name="name">Name/ID of the metric.</param>
+            <param name="metricFunc">Function to call to get the metric value.</param>
+            <param name="valueType">What type the value is, null for plain old string.</param>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.HealthHandler.AddMetric(System.String,Azavea.Utilities.SystemMetrics.SystemMetricValueFunction,System.Boolean,System.Nullable{Azavea.Utilities.SystemMetrics.SystemMetricValueType})">
+            <summary>
+            Adds a metric function rather than an object.
+            </summary>
+            <param name="name">Name/ID of the metric.</param>
+            <param name="metricFunc">Function to call to get the metric value.</param>
+            <param name="persist">Whether the value should be saved to the database to track over time.</param>
+            <param name="valueType">What type the value is, null for plain old string.</param>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.HealthHandler.InternalGET(System.Web.HttpContext,Azavea.Web.Handler.HandlerTimedCache)">
+            <summary>
+            Override this method to do the GET processing, however you don't need
+            good error handling as the base class will wrap this call with a try/catch.
+            
+            Throw AzaveaWebArgumentExceptions if there is bad input (bad or missing query string params
+            for example), or any other relevant AzaveaWeb...Exceptions.  Any other exceptions uncaught
+            exceptions will be turned into "internal server error" http result codes.
+            
+            You are responsible for calling context.Response.Write(...) with any response you
+            generate.  context.Response.ContentType will be set to text/plain, if you wish
+            a different type you need to set it.
+            </summary>
+            <param name="context">An <see cref="T:System.Web.HttpContext" /> object that provides references to the intrinsic server objects (for example, Request, Response, Session, and Server) used to service HTTP requests. </param>
+            <param name="cache">Cache that can be used to store any relevant data.</param>
+        </member>
+        <member name="T:Azavea.Utilities.SystemMetrics.HealthHandler.VersionProvider">
+            <summary>
+            A method that returns a version string for what version of the app this is.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Azavea.Utilities.SystemMetrics.HealthHandler.DelegateMetric">
+            <summary>
+            A metric object that wraps a delegate method.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.HealthHandler.DelegateMetric.#ctor(System.String,Azavea.Utilities.SystemMetrics.SystemMetricValueFunction,System.Boolean,System.Nullable{Azavea.Utilities.SystemMetrics.SystemMetricValueType})">
+            <summary>
+            Create the metric object from the delegate.
+            </summary>
+            <param name="name">Name/ID of the metric.</param>
+            <param name="function">Function to call to get the metric value.</param>
+            <param name="persist">Whether the value should be saved to the database to track over time.</param>
+            <param name="type">What type the value is, null for plain old string.</param>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.HealthHandler.DelegateMetric.GetValue">
+            <summary>
+            Invokes the delegate function to obtain the value.
+            </summary>
+            <returns>The current value of this metric.</returns>
+        </member>
+        <member name="T:Azavea.Utilities.SystemMetrics.HostNameMetric">
+            <summary>
+            Returns the host name of the server answering this request.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.HostNameMetric.#ctor">
+            <summary>
+            Returns the host name of the server answering this request.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.HostNameMetric.GetValue">
+            <summary>
+            The current value of this metric.
+            </summary>
+            <returns>The current value of this metric.</returns>
+        </member>
+        <member name="T:Azavea.Utilities.SystemMetrics.InstalledDriveMetric">
+            <summary>
+            Returns the drive letter the app is running off of.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.InstalledDriveMetric.#ctor">
+            <summary>
+            Construct the metric class.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.InstalledDriveMetric.GetValue">
+            <summary>
+            The current value of this metric.
+            </summary>
+            <returns>The current value of this metric.</returns>
+        </member>
+        <member name="T:Azavea.Utilities.SystemMetrics.MemoryAvailableMetric">
+            <summary>
+            Amount of system memory available.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.MemoryAvailableMetric.#ctor">
+            <summary>
+            Construct the metric class.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.MemoryAvailableMetric.GetValue">
+            <summary>
+            The current value of this metric.
+            </summary>
+            <returns>The current value of this metric.</returns>
+        </member>
+        <member name="T:Azavea.Utilities.SystemMetrics.MemoryPagesPerSecondMetric">
+            <summary>
+            The system "memory.pages/sec" performance counter.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.MemoryPagesPerSecondMetric.#ctor">
+            <summary>
+            Construct the metric class.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.MemoryPagesPerSecondMetric.GetValue">
+            <summary>
+            The current value of this metric.
+            </summary>
+            <returns>The current value of this metric.</returns>
+        </member>
+        <member name="T:Azavea.Utilities.SystemMetrics.NetworkOutputQueueMetric">
+            <summary>
+            TODO: DAVID M: Please give a brief one-liner about what this means.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.NetworkOutputQueueMetric.#ctor">
+            <summary>
+            Construct the metric class.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.NetworkOutputQueueMetric.GetValue">
+            <exclude/>
+        </member>
+        <member name="T:Azavea.Utilities.SystemMetrics.NetworkPercentMetric">
+            <summary>
+            TODO: DAVID M: Please give a brief one-liner about what this means.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.NetworkPercentMetric.#ctor">
+            <summary>
+            Construct the metric class.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.NetworkPercentMetric.GetValue">
+            <exclude/>
+        </member>
+        <member name="T:Azavea.Utilities.SystemMetrics.OsServicePackMetric">
+            <summary>
+            Returns the service pack string ("Service Pack 2"), which is not included in the OS version metric.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.OsServicePackMetric.#ctor">
+            <summary>
+            Construct the metric class.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.OsServicePackMetric.GetValue">
+            <summary>
+            The current value of this metric.
+            </summary>
+            <returns>The current value of this metric.</returns>
+        </member>
+        <member name="T:Azavea.Utilities.SystemMetrics.OsVersionMetric">
+            <summary>
+            Returns operating system version, such as "Microsoft(R) Windows(R) Server 2003, Standard Edition".
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.OsVersionMetric.#ctor">
+            <summary>
+            Construct the metric class.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.OsVersionMetric.GetValue">
+            <summary>
+            The current value of this metric.
+            </summary>
+            <returns>The current value of this metric.</returns>
+        </member>
+        <member name="T:Azavea.Utilities.SystemMetrics.ProcessorPercentMetric">
+            <summary>
+            Percentage of processor time currently used.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.ProcessorPercentMetric.#ctor">
+            <summary>
+            Construct the metric class.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.ProcessorPercentMetric.GetValue">
+            <summary>
+            The current value of this metric.
+            </summary>
+            <returns>The current value of this metric.</returns>
+        </member>
+        <member name="T:Azavea.Utilities.SystemMetrics.ServiceStatusMetric">
+            <summary>
+            TODO: DAVID M: Please give a brief one-liner about what this means.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.ServiceStatusMetric.#ctor(System.String)">
+            <summary>
+            Construct the metric class.
+            </summary>
+            <param name="serviceName">Name of the windows service to monitor.</param>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.ServiceStatusMetric.ShouldPersist">
+            <summary>
+            Should we persist this reading?
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.ServiceStatusMetric.GetValue">
+            <exclude/>
+        </member>
+        <member name="T:Azavea.Utilities.SystemMetrics.SystemMetricValueFunction">
+            <summary>
+            A function that behaves like the GetValue on an ISystemMetric.
+            </summary>
+            <returns>Some value to be reported on the app health page.</returns>
+        </member>
+        <member name="T:Azavea.Utilities.SystemMetrics.SystemMetricValueType">
+            <summary>
+            All the "special" types a value can be.  If not any of these, it is a plain string.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.SystemMetrics.SystemMetricValueType.Bytes">
+            <summary>
+            Expected numeric value, size in B.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.SystemMetrics.SystemMetricValueType.Kilobytes">
+            <summary>
+            Expected numeric value, size in KB.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.SystemMetrics.SystemMetricValueType.Megabytes">
+            <summary>
+            Expected numeric value, size in MB.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.SystemMetrics.SystemMetricValueType.Gigabytes">
+            <summary>
+            Expected numeric value, size in GB.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.SystemMetrics.SystemMetricValueType.Timestamp">
+            <summary>
+            Expected value that is parseable with a Date class.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.SystemMetrics.SystemMetricValueType.Milliseconds">
+            <summary>
+            Expected numeric value, duration in milliseconds.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.SystemMetrics.SystemMetricValueType.Seconds">
+            <summary>
+            Expected numeric value, duration in seconds.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.SystemMetrics.SystemMetricValueType.Minutes">
+            <summary>
+            Expected numeric value, duration in minutes.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.SystemMetrics.SystemMetricValueType.Hours">
+            <summary>
+            Expected numeric value, duration in hours.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.SystemMetrics.SystemMetricValueType.Days">
+            <summary>
+            Expected numeric value, duration in days.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.SystemMetrics.SystemMetricValueType.Boolean">
+            <summary>
+            Expected value of "true" or "false".
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.SystemMetrics.SystemMetricValueType.Percentage">
+            <summary>
+            Expected value of 0-100.
+            </summary>
+        </member>
+        <member name="T:Azavea.Utilities.SystemMetrics.SystemUptimeMetric">
+            <summary>
+            Reports on system uptime (time since last boot).
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.SystemUptimeMetric.#ctor">
+            <summary>
+            Construct the metric class.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.SystemUptimeMetric.GetValue">
+            <summary>
+            The current value of this metric.
+            </summary>
+            <returns>The current value of this metric.</returns>
+        </member>
+        <member name="T:Azavea.Utilities.SystemMetrics.Tests.AGSMetricsCheckerTest">
+            <summary>
+            Tests for ArcGIS metrics.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.Tests.AGSMetricsCheckerTest.TestArcGisRunningMetric">
+            <exclude />
+        </member>
+        <member name="T:Azavea.Utilities.SystemMetrics.Tests.SystemInfoMetricsCheckerTest">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.Tests.SystemInfoMetricsCheckerTest.GetMetric_HostName">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.Tests.SystemInfoMetricsCheckerTest.GetMetric_OSVersion">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.Tests.SystemInfoMetricsCheckerTest.GetMetric_ServicePack">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.Tests.SystemInfoMetricsCheckerTest.GetMetric_AppInstalledDrive">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.SystemMetrics.Tests.SystemInfoMetricsCheckerTest.GetMetric_DiskFreeSpace">
+            <exclude/>
+        </member>
+    </members>
+</doc>

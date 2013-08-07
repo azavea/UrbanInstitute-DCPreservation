@@ -1,0 +1,1970 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Azavea.Utilities.GeoUtilities</name>
+    </assembly>
+    <members>
+        <member name="T:Azavea.Utilities.GeoUtilities.Aggregator`1">
+            <summary>
+            Implementation of K-Means data clustering
+            Started with a copy of current implementation
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.Aggregator`1.AggregatePoints(System.Collections.Generic.IList{`0},System.Double,System.Double,System.Double,System.Double,System.Double,System.Double)">
+            <summary>
+             overload with default aggregation type and max iterations
+            </summary>
+            <param name="items"></param>
+            <param name="minX"></param>
+            <param name="maxX"></param>
+            <param name="minY"></param>
+            <param name="maxY"></param>
+            <param name="currentDisplayedArea"></param>
+            <param name="dimensionGridMultiplier"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.Aggregator`1.AggregatePoints(System.Collections.Generic.IList{`0},System.Double,System.Double)">
+            <summary>
+             overload with default aggregation type and no min/max X/Y and default max iterations
+            </summary>
+            <param name="items"></param>
+            <param name="currentDisplayedArea"></param>
+            <param name="dimensionGridMultiplier"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.Aggregator`1.AggregatePoints(System.Collections.Generic.IList{`0},System.Double,System.Double,System.Int32)">
+            <summary>
+            Overload that calculates point envelope for you
+            </summary>
+            <param name="items"></param>
+            <param name="currentDisplayedArea"></param>
+            <param name="dimensionGridMultiplier"></param>
+            <param name="maxIterations"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.Aggregator`1.AggregatePoints(System.Collections.Generic.IList{`0},System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,System.Int32)">
+             <summary>
+             This is an implementation of the k-means algorithm in
+             http://en.wikipedia.org/wiki/Data_clustering.
+            
+             Initial cluster points are chosen through putting a grid over the area
+             and seeing which grid cells have points in them. Those that do have the
+             centerpoints become the intial start points. The density of the initial grid
+             is determined by the view extent area.
+             </summary>
+             <param name="items">A list of X,Y coordinates, each with an integer key field that uniquely identifies the coordinate pair</param>
+             <param name="minX">Western-most coordinate in the pointset</param>
+             <param name="maxX">Eastern-most coordinate in the pointset</param>
+             <param name="minY">Southern-most coordinate in the pointset</param>
+             <param name="maxY">Northern-most coordinate in the pointset</param>
+             <param name="currentDisplayedArea">an approximation of the area displayed in the current extent of the map.  This and the dimensionGridMultiplier are multiplied together and then the square root is taken to get grid size.</param>
+             <param name="dimensionGridMultiplier">factor that influences the size of the grid cells (smaller number = finer grid).   This and the dimensionGridMultiplier are multiplied together and then the square root is taken to get grid size.</param>
+             <param name="maxIterations"></param>
+             <returns>An object containing two lists:
+             - one containing the remaining discrete (un-aggregated) points
+             - one containing the aggregated points with a coordinate pair and a list of key values at each point</returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.Aggregator`1.AggregateToPolygons(System.Collections.Generic.IList{`0},System.Double)">
+            <summary>
+            This is a much simpler clustering algorithm intended primarily for clustering large
+            numbers of points when you're zoomed out and can't display them all on the map.
+            It buffers all points into polygons, and any that touch 
+            </summary>
+            <param name="items"></param>
+            <param name="distance"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Azavea.Utilities.GeoUtilities.Aggregator`1.IKMeansItem">
+            <summary>
+            Points passed into the K-Means algorithm must implement the IKMeansItem interface
+            </summary>
+        </member>
+        <member name="P:Azavea.Utilities.GeoUtilities.Aggregator`1.IKMeansItem.X">
+            <summary>
+            Longitude
+            </summary>
+        </member>
+        <member name="P:Azavea.Utilities.GeoUtilities.Aggregator`1.IKMeansItem.Y">
+            <summary>
+            Latitude
+            </summary>
+        </member>
+        <member name="P:Azavea.Utilities.GeoUtilities.Aggregator`1.IKMeansItem.Key">
+            <summary>
+            Unique key to identify the point
+            </summary>
+        </member>
+        <member name="T:Azavea.Utilities.GeoUtilities.Aggregator`1.DisplayPoint">
+            <summary>
+            The DisplayPoint object is returned when multiple input points are clustered into a single location. 
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.Aggregator`1.DisplayPoint.Items">
+            <summary>
+            List of input point objects clustered at this location
+            </summary> 
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.Aggregator`1.DisplayPoint.ItemKeys">
+            <summary>
+            List of unique keys identifying the consolidated points at this location.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.Aggregator`1.DisplayPoint.X">
+            <summary>
+            Longitude
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.Aggregator`1.DisplayPoint.Y">
+            <summary>
+            Latitude
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.Aggregator`1.DisplayPoint.ItemCount">
+            <summary>
+            Number of points aggregated at this location
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.Aggregator`1.DisplayPoint.ClusterRadius">
+            <summary>
+            maximum distance from the center of the cluster (average X/Y) to a point in the cluster
+            </summary>
+        </member>
+        <member name="T:Azavea.Utilities.GeoUtilities.Aggregator`1.AggregationResult">
+            <summary>
+            The AggregatationResult object is used to return a list of the remaining discrete points
+            (points that have not been clustered by the K-Means formula)
+            along with a list of objects representing clustered points.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.Aggregator`1.AggregationResult.Singles">
+            <summary>
+            Return list of the remaining discrete (unconsolidated) points
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.Aggregator`1.AggregationResult.Multiples">
+            <summary>
+            Return list of the consolidated points, each item containing a list of point keys
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.Aggregator`1.AggregationResult.Iterations">
+            <summary>
+            Number of loops required to complete clustering
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.Aggregator`1.AggregationResult.GridCellDimension">
+            <summary>
+            size of each grid cell
+            </summary>
+        </member>
+        <member name="T:Azavea.Utilities.GeoUtilities.Aggregator`1.PolygonAggregationResult">
+            <summary>
+            This object is used to return a list of the remaining discrete points
+            (points that have not been clustered) along with a list of objects representing
+            clustered points and their polygons.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.Aggregator`1.PolygonAggregationResult.Singles">
+            <summary>
+            Return list of the remaining discrete (unconsolidated) points
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.Aggregator`1.PolygonAggregationResult.Multiples">
+            <summary>
+            Return list of the consolidated points, each item containing a list of point keys
+            </summary>
+        </member>
+        <member name="T:Azavea.Utilities.GeoUtilities.Aggregator`1.DisplayPolygon">
+            <summary>
+            Instead of a display point, this is a display polygon.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.Aggregator`1.DisplayPolygon.Polygon">
+            <summary>
+            The polygon to display.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.Aggregator`1.DisplayPolygon.Items">
+            <summary>
+            List of input point objects clustered at this location
+            </summary> 
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.Aggregator`1.DisplayPolygon.ItemKeys">
+            <summary>
+            List of unique keys identifying the consolidated points at this location.
+            </summary>
+        </member>
+        <member name="T:Azavea.Utilities.GeoUtilities.algorithm.Circumcircle">
+            <summary>
+            A class containing a brute force implementation of an algorithm to find the minimum spanning circle
+            for a polygon or a given set of points.  Not amazingly fast, but should be accurate.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.algorithm.Circumcircle._theCircle">
+            <summary>
+            Stores the circle generated by the various techniques
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.algorithm.Circumcircle._convexHull">
+            <summary>
+            stores the convex hull of the input geometry
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.algorithm.Circumcircle._points">
+            <summary>
+            stores the convex hull of the input geometry
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.algorithm.Circumcircle.#ctor">
+            <summary>
+            constructs a new empty circumcircle finder
+            points must be set before attempting to run the algorithm
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.algorithm.Circumcircle.#ctor(GeoAPI.Geometries.IGeometry)">
+            <summary>
+            constructs a new Circumcircle class based around the provided geometry
+            </summary>
+            <param name="theGeom">a polygon for which we wish to find the circumcircle</param>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.algorithm.Circumcircle.getCircle">
+            <summary>
+            Returns the generated circle around the provided geometry
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.algorithm.Circumcircle.FindSomeCircle">
+            <summary>
+            Experimental -- do not use
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.algorithm.Circumcircle.RegressCentroid">
+            <summary>
+            Experimental -- do not use
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.algorithm.Circumcircle.getMidPoint(GeoAPI.Geometries.Coordinate,GeoAPI.Geometries.Coordinate)">
+            <summary>
+            Finds a coordinate exactly halfway between two points
+            </summary>
+            <param name="iCoord"></param>
+            <param name="aCoord"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.algorithm.Circumcircle.CircleFromTwoPoints(GeoAPI.Geometries.Coordinate,GeoAPI.Geometries.Coordinate)">
+            <summary>
+            An important helper routine for finding a minimum spanning circle between two points
+            </summary>
+            <param name="a"></param>
+            <param name="b"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.algorithm.Circumcircle.CircleFromThreePoints(GeoAPI.Geometries.Coordinate,GeoAPI.Geometries.Coordinate,GeoAPI.Geometries.Coordinate)">
+            <summary>
+            An even more important helper routine for finding a minimum spanning circle for three points
+            
+            This math is based on an algorithm from 
+            "Numerical recipes: the art of scientific computing By William H. Press"
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.algorithm.Circumcircle.BruteForceCircle">
+            <summary>
+            check every 3 point set around the convex hull, generate a circumcircle point,
+            and check the distance between that point and the rest of the hull to see if they all fit.
+            keep the smallest surviving circle
+            </summary>
+        </member>
+        <member name="P:Azavea.Utilities.GeoUtilities.algorithm.Circumcircle.Points">
+            <summary>
+            The collection of points
+            </summary>
+        </member>
+        <member name="T:Azavea.Utilities.GeoUtilities.GeoMath">
+            <summary>
+            A class full of static methods for doing geometry-related math.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.GeoMath.FEET_PER_METER">
+            <summary>
+            How many feet make up a meter.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.GeoMath.MILES_PER_METER">
+            <summary>
+            How many miles make up a meter.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.GeoMath.KM_PER_METER">
+            <summary>
+            How many kilometers make up a meter. (Yeah it's easy, but we've got
+            the other constants, so why not?)
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.GeoMath.EARTH_RADIUS_AVERAGE_METERS">
+            <summary>
+            The approximate average radius of the Earth, in meters.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.GeoMath.EARTH_RADIUS_AT_EQUATOR_METERS">
+            <summary>
+            The "A" value for the WGS84 ellipsoid.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.GeoMath.WGS84_ELLIPSOID_A">
+            <summary>
+            The "A" value for the WGS84 ellipsoid.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.GeoMath.WGS84_ELLIPSOID_B">
+            <summary>
+            The "B" value for the WGS84 ellipsoid.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.GeoMath.WGS84_ELLIPSOID_F">
+            <summary>
+            The "F" value for the WGS84 ellipsoid.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.GeoMath.ConvertToDegrees(System.Double)">
+            <summary>
+            Converts a value in radians into degrees.
+            </summary>
+            <param name="radians">A value in radians.</param>
+            <returns>The equivilent value in degrees.</returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.GeoMath.ConvertToRadians(System.Double)">
+            <summary>
+            Converts a value in degrees into radians.
+            </summary>
+            <param name="degrees">A value in degrees.</param>
+            <returns>The equivilent value in radians.</returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.GeoMath.HaversineDistanceMeters(System.Double,System.Double,System.Double,System.Double)">
+            <summary>
+            Uses the Haversine formula, assuming a spherical Earth, to calculate
+            distance (in meters) between two lat/lon points.
+            
+            Haversine is faster but less accurate than Vicenty.
+            
+            You may multiply the results by the handy constants MILES_PER_METER,
+            FEET_PER_METER, etc. to get the distance in those units instead.
+            </summary>
+            <param name="lon1">First point's longitude</param>
+            <param name="lat1">First point's latitude</param>
+            <param name="lon2">Second point's longitude</param>
+            <param name="lat2">Second point's latitude</param>
+            <returns>The distance between the two points, in meters.</returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.GeoMath.HaversineDistanceMeters(GeoAPI.Geometries.Coordinate,GeoAPI.Geometries.Coordinate)">
+            <summary>
+            Uses the Haversine formula, assuming a spherical Earth, to calculate
+            distance (in meters) between two lat/lon coordinates.
+            
+            Haversine is faster but less accurate than Vicenty.
+            
+            You may multiply the results by the handy constants MILES_PER_METER,
+            FEET_PER_METER, etc. to get the distance in those units instead.
+            </summary>
+            <param name="coord1">First coordinate</param>
+            <param name="coord2">Second coordinate</param>
+            <returns>The distance between the two points, in meters.</returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.GeoMath.HaversineDistanceMeters(GeoAPI.Geometries.IPoint,GeoAPI.Geometries.IPoint)">
+            <summary>
+            Uses the Haversine formula, assuming a spherical Earth, to calculate
+            distance (in meters) between two lat/lon points.
+            
+            Haversine is faster but less accurate than Vicenty.
+            
+            You may multiply the results by the handy constants MILES_PER_METER,
+            FEET_PER_METER, etc. to get the distance in those units instead.
+            </summary>
+            <param name="point1">First point</param>
+            <param name="point2">Second point</param>
+            <returns>The distance between the two points, in meters.</returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.GeoMath.VicentyDistanceMeters(System.Double,System.Double,System.Double,System.Double)">
+            <summary>
+            Uses the Vicenty formula, assuming a ellopsoidal Earth, to calculate
+            distance (in meters) between two lat/lon points.
+            
+            Vicenty is slower but more accurate than Haversine.
+            
+            You may multiply the results by the handy constants MILES_PER_METER,
+            FEET_PER_METER, etc. to get the distance in those units instead.
+            </summary>
+            <param name="lon1">First point's longitude</param>
+            <param name="lat1">First point's latitude</param>
+            <param name="lon2">Second point's longitude</param>
+            <param name="lat2">Second point's latitude</param>
+            <returns>The distance between the two points, in meters.</returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.GeoMath.VicentyDistanceMeters(GeoAPI.Geometries.Coordinate,GeoAPI.Geometries.Coordinate)">
+            <summary>
+            Uses the Vicenty formula, assuming a ellopsoidal Earth, to calculate
+            distance (in meters) between two lat/lon coordinates.
+            
+            Vicenty is slower but more accurate than Haversine.
+            
+            You may multiply the results by the handy constants MILES_PER_METER,
+            FEET_PER_METER, etc. to get the distance in those units instead.
+            </summary>
+            <param name="coord1">First coordinate</param>
+            <param name="coord2">Second coordinate</param>
+            <returns>The distance between the two points, in meters.</returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.GeoMath.VicentyDistanceMeters(GeoAPI.Geometries.IPoint,GeoAPI.Geometries.IPoint)">
+            <summary>
+            Uses the Vicenty formula, assuming a ellopsoidal Earth, to calculate
+            distance (in meters) between two lat/lon points.
+            
+            Vicenty is slower but more accurate than Haversine.
+            
+            You may multiply the results by the handy constants MILES_PER_METER,
+            FEET_PER_METER, etc. to get the distance in those units instead.
+            </summary>
+            <param name="point1">First point</param>
+            <param name="point2">Second point</param>
+            <returns>The distance between the two points, in meters.</returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.GeoMath.ConvertDistance(System.String,System.String,System.Double)">
+            <summary>
+            Converts from one distance unit to another
+            </summary>
+            <param name="src"></param>
+            <param name="dest"></param>
+            <param name="val"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.GeoMath.GetInchesPer(System.String)">
+            <summary>
+            Returns constants for units of measurement to inches
+            </summary>
+            <param name="unit"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.GeoMath.SimpleTransform(System.Double,System.Double,System.Double,System.Double,System.Double)">
+            <summary>
+            Transforms a value 'bvalue' from the range [bmin,bmax] to the destination range [dmin,dmax]
+            </summary>
+            <param name="bmin">smallest value in range b</param>
+            <param name="bmax">largest in range b</param>
+            <param name="bvalue">the value to transform</param>
+            <param name="dmin">smallest value in destination range</param>
+            <param name="dmax">largest value in destination range</param>
+            <returns>bvalue scaled to fit into the destination range</returns>
+        </member>
+        <member name="T:Azavea.Utilities.GeoUtilities.MercatorTiles">
+             <summary>
+             This is a C# port of globalmaptiles.py, in case you couldn't tell.  The 
+             original Python documentation is below because it's incredibly useful.
+              
+             ###############################################################################
+             # $Id$
+             #
+             # Project:  GDAL2Tiles, Google Summer of Code 2007 and 2008
+             #           Global Map Tiles Classes
+             # Purpose:  Convert a raster into TMS tiles, create KML SuperOverlay EPSG:4326,
+             #           generate a simple HTML viewers based on Google Maps and OpenLayers
+             # Author:   Klokan Petr Pridal, klokan at klokan dot cz
+             # Web:      http://www.klokan.cz/projects/gdal2tiles/
+             #
+             ###############################################################################
+             # Copyright (c) 2008 Klokan Petr Pridal. All rights reserved.
+             #
+             # Permission is hereby granted, free of charge, to any person obtaining a
+             # copy of this software and associated documentation files (the "Software"),
+             # to deal in the Software without restriction, including without limitation
+             # the rights to use, copy, modify, merge, publish, distribute, sublicense,
+             # and/or sell copies of the Software, and to permit persons to whom the
+             # Software is furnished to do so, subject to the following conditions:
+             #
+             # The above copyright notice and this permission notice shall be included
+             # in all copies or substantial portions of the Software.
+             #
+             # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+             # OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+             # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+             # THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+             # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+             # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+             # DEALINGS IN THE SOFTWARE.
+             ###############################################################################
+            
+             """
+             globalmaptiles.py
+            
+             Global Map Tiles as defined in Tile Map Service (TMS) Profiles
+             ==============================================================
+            
+             Functions necessary for generation of global tiles used on the web.
+             It contains classes implementing coordinate conversions for:
+            
+               - GlobalMercator (based on EPSG:900913 = EPSG:3785)
+                    for Google Maps, Yahoo Maps, Microsoft Maps compatible tiles
+               - GlobalGeodetic (based on EPSG:4326)
+                    for OpenLayers Base Map and Google Earth compatible tiles
+            
+             More info at:
+            
+             http://wiki.osgeo.org/wiki/Tile_Map_Service_Specification
+             http://wiki.osgeo.org/wiki/WMS_Tiling_Client_Recommendation
+             http://msdn.microsoft.com/en-us/library/bb259689.aspx
+             http://code.google.com/apis/maps/documentation/overlays.html#Google_Maps_Coordinates
+            
+             Created by Klokan Petr Pridal on 2008-07-03.
+             Google Summer of Code 2008, project GDAL2Tiles for OSGEO.
+            
+             In case you use this class in your product, translate it to another language
+             or find it usefull for your project please let me know.
+             My email: klokan at klokan dot cz.
+             I would like to know where it was used.
+            
+             Class is available under the open-source GDAL license (www.gdal.org).
+             
+             TMS Global Mercator Profile
+             ---------------------------
+            
+             Functions necessary for generation of tiles in Spherical Mercator projection,
+             EPSG:900913 (EPSG:gOOglE, Google Maps Global Mercator), EPSG:3785, OSGEO:41001.
+            
+             Such tiles are compatible with Google Maps, Microsoft Virtual Earth, Yahoo Maps,
+             UK Ordnance Survey OpenSpace API, ...
+             and you can overlay them on top of base maps of those web mapping applications.
+            
+             Pixel and tile coordinates are in TMS notation (origin [0,0] in bottom-left).
+            
+             What coordinate conversions do we need for TMS Global Mercator tiles::
+            
+                  LatLon      ---       Meters      ---     Pixels    ---       Tile    
+            
+              WGS84 coordinates   Spherical Mercator  Pixels in pyramid  Tiles in pyramid
+                  lat/lon            XY in metres     XY pixels Z zoom      XYZ from TMS
+                 EPSG:4326           EPSG:900913                                        
+                  .----.              ---------               --                TMS      
+                 /      \     ---     |       |     ---     /----/    ---      Google    
+                 \      /             |       |           /--------/          QuadTree  
+                  -----               ---------         /------------/                  
+                KML, public         WebMapService         Web Clients      TileMapService
+            
+             What is the coordinate extent of Earth in EPSG:900913?
+            
+               [-20037508.342789244, -20037508.342789244, 20037508.342789244, 20037508.342789244]
+               Constant 20037508.342789244 comes from the circumference of the Earth in meters,
+               which is 40 thousand kilometers, the coordinate origin is in the middle of extent.
+               In fact you can calculate the constant as: 2 * Math.PI * PROJECTION_CONST / 2.0
+               $ echo 180 85 | gdaltransform -s_srs EPSG:4326 -t_srs EPSG:900913
+               Polar areas with abs(latitude) bigger then 85.05112878 are clipped off.
+            
+             What are zoom level constants (pixels/meter) for pyramid with EPSG:900913?
+            
+               whole region is on top of pyramid (zoom=0) covered by 256x256 pixels tile,
+               every lower zoom level resolution is always divided by two
+               initialResolution = 20037508.342789244 * 2 / 256 = 156543.03392804062
+            
+             What is the difference between TMS and Google Maps/QuadTree tile name convention?
+            
+               The tile raster itself is the same (equal extent, projection, pixel size),
+               there is just different identification of the same raster tile.
+               Tiles in TMS are counted from [0,0] in the bottom-left corner, id is XYZ.
+               Google placed the origin [0,0] to the top-left corner, reference is XYZ.
+               Microsoft is referencing tiles by a QuadTree name, defined on the website:
+               http://msdn2.microsoft.com/en-us/library/bb259689.aspx
+            
+             The lat/lon coordinates are using WGS84 datum, yeh?
+            
+               Yes, all lat/lon we are mentioning should use WGS84 Geodetic Datum.
+               Well, the web clients like Google Maps are projecting those coordinates by
+               Spherical Mercator, so in fact lat/lon coordinates on sphere are treated as if
+               the were on the WGS84 ellipsoid.
+            
+               From MSDN documentation:
+               To simplify the calculations, we use the spherical form of projection, not
+               the ellipsoidal form. Since the projection is used only for map display,
+               and not for displaying numeric coordinates, we don't need the extra precision
+               of an ellipsoidal projection. The spherical projection causes approximately
+               0.33 percent scale distortion in the Y direction, which is not visually noticable.
+            
+             How do I create a raster in EPSG:900913 and convert coordinates with PROJ.4?
+            
+               You can use standard GIS tools like gdalwarp, cs2cs or gdaltransform.
+               All of the tools supports -t_srs 'epsg:900913'.
+            
+               For other GIS programs check the exact definition of the projection:
+               More info at http://spatialreference.org/ref/user/google-projection/
+               The same projection is degined as EPSG:3785. WKT definition is in the official
+               EPSG database.
+            
+               Proj4 Text:
+                 +proj=merc +a=PROJECTION_CONST +b=PROJECTION_CONST +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0
+                 +k=1.0 +units=m +nadgrids=@null +no_defs
+            
+               Human readable WKT format of EPGS:900913:
+                  PROJCS["Google Maps Global Mercator",
+                      GEOGCS["WGS 84",
+                          DATUM["WGS_1984",
+                              SPHEROID["WGS 84",PROJECTION_CONST,298.2572235630016,
+                                  AUTHORITY["EPSG","7030"]],
+                              AUTHORITY["EPSG","6326"]],
+                          PRIMEM["Greenwich",0],
+                          UNIT["degree",0.0174532925199433],
+                          AUTHORITY["EPSG","4326"]],
+                      PROJECTION["Mercator_1SP"],
+                      PARAMETER["central_meridian",0],
+                      PARAMETER["scale_factor",1],
+                      PARAMETER["false_easting",0],
+                      PARAMETER["false_northing",0],
+                      UNIT["metre",1,
+                          AUTHORITY["EPSG","9001"]]]
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.MercatorTiles.#ctor(System.Int32)">
+            <summary>
+            The constructor.
+            </summary>
+            <param name="tileSize">The size of the tiles in pixels. Defaults to 256.</param>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.MercatorTiles.LatLonToMeters(System.Double,System.Double)">
+            <summary>
+            Converts given lat/lon in WGS84 Datum to XY in Spherical Mercator EPSG:900913
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.MercatorTiles.MetersToLatLon(System.Double,System.Double)">
+            <summary>
+            Converts XY point from Spherical Mercator EPSG:900913 to lat/lon in WGS84 Datum
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.MercatorTiles.PixelsToMeters(System.Double,System.Double,System.Int32)">
+            <summary>
+            Converts pixel coordinates in given zoom level of pyramid to EPSG:900913
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.MercatorTiles.MetersToPixels(System.Double,System.Double,System.Int32)">
+            <summary>
+            Converts EPSG:900913 to pyramid pixel coordinates in given zoom level
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.MercatorTiles.PixelsToTile(System.Double,System.Double)">
+            <summary>
+            Returns a tile covering region in given pixel coordinates
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.MercatorTiles.PixelsToRaster(System.Double,System.Double,System.Int32)">
+            <summary>
+            Move the origin of pixel coordinates to top-left corner
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.MercatorTiles.MetersToTile(System.Double,System.Double,System.Int32)">
+            <summary>
+            Returns tile for given mercator coordinates
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.MercatorTiles.TileBounds(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Returns bounds of the given tile in EPSG:900913 coordinates
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.MercatorTiles.TileLatLonBounds(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Returns bounds of the given tile in latutude/longitude using WGS84 datum
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.MercatorTiles.Resolution(System.Int32)">
+            <summary>
+            Resolution (meters/pixel) for given zoom level (measured at Equator)
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.MercatorTiles.ZoomForPixelSize(System.Int32)">
+            <summary>
+            Maximal scaledown zoom of the pyramid closest to the pixelSize.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.MercatorTiles.GoogleTile(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Converts TMS tile coordinates to Google Tile coordinates
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.MercatorTiles.QuadTree(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Converts TMS tile coordinates to Microsoft QuadTree
+            </summary>
+        </member>
+        <member name="T:Azavea.Utilities.GeoUtilities.shapes.Circle">
+            <summary>
+            A simple helper class for representing a circle
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.shapes.Circle._centerPoint">
+            <summary>
+            The center point of the circle
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.shapes.Circle._radius">
+            <summary>
+            The radius of the circle
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.shapes.Circle.#ctor">
+            <summary>
+            Constructs an empty circle
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.shapes.Circle.#ctor(GeoAPI.Geometries.Coordinate,System.Double)">
+            <summary>
+            Constructs a circle around a point with a given radius
+            </summary>
+            <param name="center"></param>
+            <param name="radius"></param>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.shapes.Circle.CheckPoints(GeoAPI.Geometries.Coordinate[])">
+            <summary>
+            A helper function for verifying whether or not a group of points
+            falls entirely within the current circle (inclusive)
+            </summary>
+            <param name="points"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Azavea.Utilities.GeoUtilities.shapes.Circle.Center">
+            <summary>
+            Gets the center point of the circle
+            </summary>
+        </member>
+        <member name="P:Azavea.Utilities.GeoUtilities.shapes.Circle.Radius">
+            <summary>
+            Gets the radius of the circle
+            </summary>
+        </member>
+        <member name="P:Azavea.Utilities.GeoUtilities.shapes.Circle.Area">
+            <summary>
+            Calculates the area of the circle
+            </summary>
+        </member>
+        <member name="T:Azavea.Utilities.GeoUtilities.ShapeUtils">
+            <summary>
+            Helper class with methods for performing calculations or manipulations on shapes.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.ShapeUtils.ToPolygon(GeoAPI.Geometries.IGeometry)">
+            <summary>
+            Strips any points or lines that may be in the geometry after an intersection
+            or whatever operation.
+            </summary>
+            <param name="source">Geometry that "should" be just a poly or multipoly.</param>
+            <returns>The geometry that actually is just a poly or multipoly.</returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.ShapeUtils.MakeSquare(System.Double,System.Double,System.Double,System.Double)">
+            <summary>
+            Create a square polygon from the given corner points.
+            </summary>
+            <param name="minx">Lower (western) X boundary.</param>
+            <param name="miny">Lower (southern) Y boundary.</param>
+            <param name="maxx">Upper (eastern) X boundary.</param>
+            <param name="maxy">Upper (northern) Y boundary.</param>
+            <returns>A square polygon.</returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.ShapeUtils.MakeSquare(GeoAPI.Geometries.Envelope)">
+            <summary>
+            Create a square polygon from the given envelope.
+            </summary>
+            <param name="env">Envelope that defines the square.</param>
+            <returns>A square polygon.</returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.ShapeUtils.MakeSquare(GeoAPI.Geometries.IPoint,System.Double,System.Double)">
+            <summary>
+            Create a rectangular polygon with the given width and height, centered
+            on the given point.
+            </summary>
+            <param name="centerPoint">The center point of the rectangle.</param>
+            <param name="width">The width of the rectangle.</param>
+            <param name="height">The length of the rectangle.</param>
+            <returns>A rectangular polygon.</returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.ShapeUtils.MakeCircle(System.Double,System.Double,System.Double)">
+            <summary>
+            Creates a "circle" polygon for given center point and radius.  Defaults to use 45 points.
+            </summary>
+            <param name="centerX">Center point X coordinate.</param>
+            <param name="centerY">Center point Y coordinate.</param>
+            <param name="radius">Circle radius.  Must be in the same units as the center point.</param>
+            <returns>A circle polygone represented by points along the circumference around the center point.</returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.ShapeUtils.MakeCircle(System.Double,System.Double,System.Double,System.Int32)">
+            <summary>
+            Creates a "circle" polygon for given center point and radius.
+            </summary>
+            <param name="centerX">Center point X coordinate.</param>
+            <param name="centerY">Center point Y coordinate.</param>
+            <param name="radius">Circle radius.  Must be in the same units as the center point.</param>
+            <param name="numberOfPoints">The number of points to use to make the polygon.</param>
+            <returns>A circle polygone represented by points along the circumference around the center point.</returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.ShapeUtils.MakePointedRectangle(GeoAPI.Geometries.Coordinate,System.Double,System.Double,System.Double,System.Double)">
+            <summary>
+            Draws a pointed rectangle starting at the startpoint, heading out at the given angle, for the given length.
+            </summary>
+            <param name="start">Coordinate to start from, this will be the point of the pointed rectangle.</param>
+            <param name="totalLength">How far out from the start point should it extend?  If less than pointLength,
+                                      the resulting polygon will actually be a triangle.</param>
+            <param name="pointLength">How long should the sides of the point be?</param>
+            <param name="lineAngle">What direction to head out from the start point.  IN RADIANS!</param>
+            <param name="pointWidthHalfAngle">How wide should each side of the point be?  For example, if you want
+                                              the point to be a 90* angle, you'd pass pi/4 (45*).  IN RADIANS!</param>
+            <returns>A polygon that looks like this:
+                      __________________
+                     /                  |
+                     \__________________|
+            </returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.ShapeUtils.MakeCoordAtAngle(GeoAPI.Geometries.Coordinate,System.Double,System.Double)">
+            <summary>
+            Given a starting point, angle, and distance, create a point out at that angle.
+            </summary>
+            <param name="startCoord">Point we're using as a reference.</param>
+            <param name="angle">Absolute angle in radians.</param>
+            <param name="distance">Distance from the starting coordinate to create the new point.</param>
+            <returns>A new coordinate, 'distance' away from 'startCoord' at 'angle'.</returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.ShapeUtils.ComputeOrientation(GeoAPI.Geometries.IPoint,GeoAPI.Geometries.ILineString)">
+            <summary>
+            Take a coordinate and determines if it is on the LEFT or RIGHT of 
+            the ILineString
+            </summary>
+            <param name="testPoint">The coord to query</param>
+            <param name="line">The line to compare to</param>
+            <returns>CGAlgorithms.Left or CGAlgorithms.Right</returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.ShapeUtils.ShiftLine(GeoAPI.Geometries.ILineString,System.Boolean,System.Double)">
+            <summary>
+            Moves a line the given distance to either the "left" or
+            "right" of the line.  The average angle of the line is calculated
+            via the endpoints and "left" and "right" are 90 degrees to either direction.
+            </summary>
+            <param name="input">The line to shift.</param>
+            <param name="toTheRight">If true, move to the right. 
+                                     If false, move to the left.</param>
+            <param name="distance">How far to shift the line.</param>
+            <returns>A new line, identical to the input except all points in it are
+                     moved to the left or right.</returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.ShapeUtils.PoorSingleSidedBuffer(GeoAPI.Geometries.ILineString,System.Boolean,System.Double)">
+            <summary>
+            Creates a poor attempt at a single-sided buffer.  End cap style is "butt" (meaning
+            the end is not extended).
+            </summary>
+            <param name="input">The line to buffer.</param>
+            <param name="toTheRight">If true, move to the right. 
+                                     If false, move to the left.</param>
+            <param name="distance">How far out to buffer.</param>
+            <returns>A polygon made from the original line plus our buffer line.</returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.ShapeUtils.PoorBufferLine(GeoAPI.Geometries.ILineString,System.Boolean,System.Double)">
+            <summary>
+            Creates a poor attempt at a single-sided buffer outer line.
+            Meaning, this is a "buffered" line that tracks the current line, but 'distance'
+            out at all points (as opposed to ShiftLine, which merely moves the current line.
+            NOTE: This may be a self-intersecting line!
+            </summary>
+            <param name="input">The line to create a 'buffer' line on one side of.</param>
+            <param name="toTheRight">If true, move to the right. 
+                                     If false, move to the left.</param>
+            <param name="distance">How far out to buffer.</param>
+            <returns>A buffer line.  Note that this is intended for creating polygons, so
+                     it will go the opposite direction of the input line.</returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.ShapeUtils.bufferLineSingleSided(GeoAPI.Geometries.ILineString,System.Boolean,System.Double)">
+            <summary>
+            This is an early attempt at porting the GEOS real single-sided-buffer logic.
+            It does not work yet.
+            </summary>
+            <param name="l"></param>
+            <param name="rightSide"></param>
+            <param name="distance"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.ShapeUtils.GetPerpendicularVector(GeoAPI.Geometries.ILineString,System.Boolean,System.Double@,System.Double@)">
+            <summary>
+            Given a line string, calculates the perpendicular vector in an amount per 
+            unit.  I.E. if your units are in feet, then to move 1 foot perpendicular
+            you need to shift X by xOffsetPerUnit and Y by yOffsetPerUnit.
+            </summary>
+            <param name="input">The line to get a perpendicular vector to.</param>
+            <param name="toTheRight">If true, look to the right. 
+                                     If false, look to the left.</param>
+            <param name="xOffsetPerUnit">How far to shift X for every unit of total shift.</param>
+            <param name="yOffsetPerUnit">How far to shift Y for every unit of total shift.</param>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.ShapeUtils.GetPerpendicularVector(GeoAPI.Geometries.IPoint,GeoAPI.Geometries.IPoint,System.Boolean,System.Double@,System.Double@)">
+            <summary>
+            Given an imaginary line from one point to another, calculates the perpendicular
+            vector in an amount per unit.  I.E. if your units are in feet, then to move 1
+            foot perpendicular you need to shift X by xOffsetPerUnit and Y by yOffsetPerUnit.
+            </summary>
+            <param name="from">First point.</param>
+            <param name="to">Second point.</param>
+            <param name="toTheRight">If true, look to the right. 
+                                     If false, look to the left.</param>
+            <param name="xOffsetPerUnit">How far to shift X for every unit of total shift.</param>
+            <param name="yOffsetPerUnit">How far to shift Y for every unit of total shift.</param>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.ShapeUtils.GetPerpendicularAngleR(GeoAPI.Geometries.Coordinate,GeoAPI.Geometries.Coordinate,System.Boolean)">
+            <summary>
+            Given an imaginary line from one coordinate to another, calculates the perpendicular
+            angle.
+            </summary>
+            <param name="from">First point.</param>
+            <param name="to">Second point.</param>
+            <param name="toTheRight">If true, turn to the right. 
+                                     If false, turn to the left.</param>
+            <returns>The perpendicular angle, in radians.</returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.ShapeUtils.GetPerpendicularVector(GeoAPI.Geometries.Coordinate,GeoAPI.Geometries.Coordinate,System.Boolean,System.Double@,System.Double@)">
+            <summary>
+            Given an imaginary line from one coordinate to another, calculates the perpendicular
+            vector in an amount per unit.  I.E. if your units are in feet, then to move 1
+            foot perpendicular you need to shift X by xOffsetPerUnit and Y by yOffsetPerUnit.
+            </summary>
+            <param name="from">First point.</param>
+            <param name="to">Second point.</param>
+            <param name="toTheRight">If true, look to the right. 
+                                     If false, look to the left.</param>
+            <param name="xOffsetPerUnit">How far to shift X for every unit of total shift.</param>
+            <param name="yOffsetPerUnit">How far to shift Y for every unit of total shift.</param>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.ShapeUtils.GetAngleR(GeoAPI.Geometries.IPoint,GeoAPI.Geometries.IPoint)">
+            <summary>
+            Returns the angle of a line defined by two points.
+            </summary>
+            <param name="from">Point 1</param>
+            <param name="to">Point 2</param>
+            <returns>The angle in radians.</returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.ShapeUtils.GetAngle(GeoAPI.Geometries.IPoint,GeoAPI.Geometries.IPoint)">
+            <summary>
+            Returns the angle of a line defined by two points.
+            </summary>
+            <param name="from">Point 1</param>
+            <param name="to">Point 2</param>
+            <returns>The angle in degrees.</returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.ShapeUtils.GetAngleR(GeoAPI.Geometries.Coordinate,GeoAPI.Geometries.Coordinate)">
+            <summary>
+            Returns the angle of a line defined by two points.
+            </summary>
+            <param name="from">Point 1</param>
+            <param name="to">Point 2</param>
+            <returns>The angle in radians.</returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.ShapeUtils.GetAngle(GeoAPI.Geometries.Coordinate,GeoAPI.Geometries.Coordinate)">
+            <summary>
+            Returns the angle of a line defined by two points.
+            </summary>
+            <param name="from">Point 1</param>
+            <param name="to">Point 2</param>
+            <returns>The angle in degrees.</returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.ShapeUtils.GetAngleR(System.Double,System.Double,System.Double,System.Double)">
+            <summary>
+            Returns the angle of a line defined by two points.
+            </summary>
+            <param name="x1">Point 1's X value</param>
+            <param name="y1">Point 1's Y value</param>
+            <param name="x2">Point 2's X value</param>
+            <param name="y2">Point 2's Y value</param>
+            <returns>The angle in radians.</returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.ShapeUtils.GetAngle(System.Double,System.Double,System.Double,System.Double)">
+            <summary>
+            Returns the angle of a line defined by two points.
+            </summary>
+            <param name="x1">Point 1's X value</param>
+            <param name="y1">Point 1's Y value</param>
+            <param name="x2">Point 2's X value</param>
+            <param name="y2">Point 2's Y value</param>
+            <returns>The angle in degrees.</returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.ShapeUtils.GetClockwiseAngleR(GeoAPI.Geometries.Coordinate,GeoAPI.Geometries.Coordinate,GeoAPI.Geometries.Coordinate)">
+            <summary>
+            Uses three points to calculate an angle, moving clockwise from "one" to "two" assuming "center" is the center
+            of the circle.
+            </summary>
+            <param name="one">Start point.</param>
+            <param name="center">Point to rotate on.</param>
+            <param name="two">End point.</param>
+            <returns>Angle in radians.</returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.ShapeUtils.GetCounterClockwiseAngleR(GeoAPI.Geometries.Coordinate,GeoAPI.Geometries.Coordinate,GeoAPI.Geometries.Coordinate)">
+            <summary>
+            Uses three points to calculate an angle, moving counterclockwise from "one" to "two" assuming "center" is the center
+            of the circle.
+            </summary>
+            <param name="one">Start point.</param>
+            <param name="center">Point to rotate on.</param>
+            <param name="two">End point.</param>
+            <returns>Angle in radians.</returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.ShapeUtils.ScaleEnvelope(GeoAPI.Geometries.Envelope,System.Double,System.Double)">
+            <summary>
+            Enlarges either the width or height to ensure the envelope dimensions
+            have the same ratio as the given width:height dimensions.
+            I.E. If you pass ratioWidth = 1.0 and ratioHeight = 2.0, the envelope
+            will be expanded as necessary such that the height is double the width.
+            The values do not actually matter, so radioWidth = 500 and ratioHeight = 1000
+            will produce the exact same results.
+            </summary>
+            <param name="env">The base envelope to scale</param>
+            <param name="ratioWidth">Value for the width part of the ratio. Must be greater than zero.</param>
+            <param name="ratioHeight">Value for the height part of the ratio. Must be greater than zero.</param>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.ShapeUtils.SimplifyForQueryString(GeoAPI.Geometries.IGeometry)">
+            <summary>
+             Simplifies an IGeometry until its WKT value is short enough that it will probably
+             fit nicely in a query string (max length of 2000). This is similar to the REST API
+             logic in AgsRestFastDaoLayer.cs
+            </summary>
+            <param name="shape">The IGeometry to simply</param>
+            <returns>A simpler IGeometry</returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.ShapeUtils.GetPolygons(GeoAPI.Geometries.IGeometry)">
+            <summary>
+            Get a list of polygons by extracting individual polygons from a multipolygon
+            </summary>
+            <param name="shape">The multiplygon to be split up.</param>
+            <returns>A list of the component polygons that make up the specified multipolygon.</returns>
+            <remarks>This method used the NTS PolygonExtracter to do the work. Passing a simple
+            polygon will simply return a list containing that polygon.</remarks>
+        </member>
+        <member name="T:Azavea.Utilities.GeoUtilities.ShapeUtils.ExtendedOffsetCurveBuilder">
+            <summary>
+            This is an early attempt at porting the GEOS real single-sided-buffer logic.
+            It does not work yet.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.ShapeUtils.ExtendedOffsetCurveBuilder.#ctor(GeoAPI.Geometries.IPrecisionModel)">
+            <summary>
+            This is an early attempt at porting the GEOS real single-sided-buffer logic.
+            It does not work yet.
+            </summary>
+            <param name="model"></param>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.ShapeUtils.ExtendedOffsetCurveBuilder.getSingleSidedLineCurve(GeoAPI.Geometries.Coordinate[],System.Double,System.Collections.Generic.ICollection{GeoAPI.Geometries.Coordinate[]},System.Boolean,System.Boolean)">
+            <summary>
+            This is an early attempt at porting the GEOS real single-sided-buffer logic.
+            It does not work yet.
+            
+            This method handles single points as well as lines. 
+            Lines are assumed to NOT be closed (the function will not 
+            fail for closed lines, but will generate superfluous line caps). 
+            </summary>
+            <param name="inputPts"></param>
+            <param name="distance"></param>
+            <param name="lineList"></param>
+            <param name="leftSide">indicates that the left side buffer will be obtained/skipped</param>
+            <param name="rightSide">indicates that the right side buffer will be obtained/skipped </param>
+        </member>
+        <member name="T:Azavea.Utilities.GeoUtilities.Tests.AggregatorTests">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.Tests.AggregatorTests.Aggregate01">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.Tests.AggregatorTests.Aggregate02">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.Tests.AggregatorTests.Aggregate03">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.Tests.AggregatorTests.Aggregate03a">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.Tests.AggregatorTests.Aggregate04">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.Tests.AggregatorTests.Aggregate05">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.Tests.AggregatorTests.Aggregate06">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.Tests.AggregatorTests.Aggregate07">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.Tests.AggregatorTests.Aggregate08">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.Tests.AggregatorTests.Aggregate09">
+            <exclude/>
+        </member>
+        <member name="T:Azavea.Utilities.GeoUtilities.Tests.algorithm.CircumcircleTests">
+            <summary>
+            A suite of basic validity / functionality tests for the Circumcircle class
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.Tests.algorithm.CircumcircleTests.Circumcircle_Poly01">
+            <summary>
+            Tests to ensure a circumcircle can be brute forced given an input polygon
+            </summary>
+        </member>
+        <member name="T:Azavea.Utilities.GeoUtilities.Tests.GeoMathTests">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.Tests.GeoMathTests.TestFeetToMeters">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.Tests.GeoMathTests.TestMetersToMiles">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.Tests.GeoMathTests.TestSameToSame">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.Tests.GeoMathTests.TestSimpleTransform">
+            <exclude/>
+        </member>
+        <member name="T:Azavea.Utilities.GeoUtilities.Tests.UtilsTests">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.Tests.UtilsTests.TestSimpleLineShift">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.Tests.UtilsTests.TestBentLineShift">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.Tests.UtilsTests.TestScaleEnvelope">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.Tests.UtilsTests.TestMakeSquare">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.Tests.UtilsTests.TestPerpendicularVectorYeq1">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.Tests.UtilsTests.TestPerpendicularVectorXeq5">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.Tests.UtilsTests.TestPerpendicularVectorYeqX">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.Tests.UtilsTests.TestPerpendicularVectorYeq2X">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.Tests.UtilsTests.TestPerpendicularVectorYeqHalfX">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.Tests.UtilsTests.TestPerpendicularVectorYeqNegX">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.Tests.UtilsTests.TestPerpendicularVectorYeqNeg2X">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.Tests.UtilsTests.TestPerpendicularVectorYeqNegHalfX">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.Tests.UtilsTests.TestPerpendicularVectorYeq1Backwards">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.Tests.UtilsTests.TestPerpendicularVectorXeq5Backwards">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.Tests.UtilsTests.TestPerpendicularVectorYeqXBackwards">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.Tests.UtilsTests.TestPerpendicularVectorYeq2XBackwards">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.Tests.UtilsTests.TestPerpendicularVectorYeqHalfXBackwards">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.Tests.UtilsTests.TestPerpendicularVectorYeqNegXBackwards">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.Tests.UtilsTests.TestPerpendicularVectorYeqNeg2XBackwards">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.Tests.UtilsTests.TestPerpendicularVectorYeqNegHalfXBackwards">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.Tests.UtilsTests.AssertPerpendicularVector(GeoAPI.Geometries.IPoint,GeoAPI.Geometries.IPoint,System.Double,System.Double)">
+            <summary>
+            Asserts that the perpendicular vector logic is correct.
+            </summary>
+            <param name="p1">"from" point.</param>
+            <param name="p2">"to" point.</param>
+            <param name="expectedX">Expected X vector for a perpendicular-to-the-right line.</param>
+            <param name="expectedY">Expected Y vector for a perpendicular-to-the-right line.</param>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.Tests.UtilsTests.TestGetPolygons">
+            <exclude/>
+        </member>
+        <member name="T:Azavea.Utilities.GeoUtilities.Tests.RenderingTests">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.Tests.RenderingTests.SetUp">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.Tests.RenderingTests.TestSinglePoint">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.Tests.RenderingTests.TestPolygon">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.Tests.RenderingTests.TestLabel">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.Tests.RenderingTests.TestSmoothingSetting">
+            <exclude/>
+        </member>
+        <member name="T:Azavea.Utilities.GeoUtilities.VectorRenderer">
+            <summary>
+            This class supports rendering vector data (NTS data) into an image.
+            NOTE: This works by assuming the geographic coordinates are roughly
+                  linear, I.E. a small area of a state plane coordinate system.
+                  If you try to use this with say the eastern hemisphere in
+                  lat/long, results will almost certainly be badly distorted.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.VectorRenderer.RenderImage(System.Drawing.Image,System.Byte[],System.Collections.Generic.IList{Azavea.Utilities.GeoUtilities.MapLabel},System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            Given a base image, geometry, bounds, etc, will render some WKB to an image.
+            </summary>
+            <param name="baseImage">Image to render vectors on top of.</param>
+            <param name="geometryWKB">Bytes representing a geometry in well-known-binary format.</param>
+            <param name="labels">Textual labels to render onto the image.</param>
+            <param name="xMinStr">Lower x (west) bound of the image envelope.</param>
+            <param name="xMaxStr">Upper x (east) bound of the image envelope.</param>
+            <param name="yMinStr">Lower y (south) bound of the image envelope.</param>
+            <param name="yMaxStr">Upper y (north) bound of the image envelope.</param>
+            <param name="lineColorStr">Hex string representation of the color to use for drawing lines.</param>
+            <param name="fillColorStr">Hex string representation of the color to use for filling polygons.</param>
+            <param name="fillOpacityStr">String representation of the number (0.0 to 1.0) for how opaque the fill should be.</param>
+            <returns>An image with the geometry drawn onto it.</returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.VectorRenderer.RenderImage(System.Drawing.Image,System.Collections.Generic.IEnumerable{Azavea.Utilities.GeoUtilities.MapGeometry},System.Collections.Generic.IList{Azavea.Utilities.GeoUtilities.MapLabel},System.Double,System.Double,System.Double,System.Double)">
+            <summary>
+            Given a base image, geometry, bounds, etc, will render some WKB to an image.
+            </summary>
+            <param name="baseImage">Image to render vectors on top of.</param>
+            <param name="geometries">Geometry to render onto the image.</param>
+            <param name="labels">Textual labels to render onto the image.</param>
+            <param name="xMin">Lower x (west) bound of the image envelope.</param>
+            <param name="xMax">Upper x (east) bound of the image envelope.</param>
+            <param name="yMin">Lower y (south) bound of the image envelope.</param>
+            <param name="yMax">Upper y (north) bound of the image envelope.</param>
+            <returns>An image with the geometry drawn onto it.</returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.VectorRenderer.#ctor(System.Int32,System.Int32,GeoAPI.Geometries.Envelope,System.Drawing.Drawing2D.SmoothingMode)">
+            <summary>
+            Creates a new blank image with the given width/height.
+            </summary>
+            <param name="imageWidth">How wide (in pixels) is the image.</param>
+            <param name="imageHeight">How tall (in pixels) is the image.</param>
+            <param name="envelope">Geographic bounds of the image.</param>
+            <param name="smoothingMode">Smoothing mode</param>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.VectorRenderer.#ctor(System.Int32,System.Int32,GeoAPI.Geometries.Envelope)">
+            <summary>
+            Creates a new blank image with the given width/height.
+            </summary>
+            <param name="imageWidth">How wide (in pixels) is the image.</param>
+            <param name="imageHeight">How tall (in pixels) is the image.</param>
+            <param name="envelope">Geographic bounds of the image.</param>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.VectorRenderer.#ctor(System.Int32,System.Int32,GeoAPI.Geometries.Envelope,System.Drawing.Color)">
+            <summary>
+            Creates a new blank image with the given width/height.
+            </summary>
+            <param name="imageWidth">How wide (in pixels) is the image.</param>
+            <param name="imageHeight">How tall (in pixels) is the image.</param>
+            <param name="envelope">Geographic bounds of the image.</param>
+            <param name="background">Sets a background color</param>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.VectorRenderer.#ctor(System.Drawing.Image,GeoAPI.Geometries.Envelope)">
+            <summary>
+            Starts with the given image.
+            </summary>
+            <param name="baseImage">Image to render vectors on top of.  May not be null.</param>
+            <param name="envelope">Geographic bounds of the image.</param>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.VectorRenderer.Finalize">
+            <summary>
+            Finalize method
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.VectorRenderer.Clear(System.Drawing.Color)">
+            <summary>
+            Clears the image
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.VectorRenderer.DrawImage(System.Drawing.Image,System.Int32,System.Int32)">
+            <summary>
+            Renders the given image onto the working image.
+            </summary>
+            <param name="img">Image to render on top our current working image.  May not be null.</param>
+            <param name="xPixelLocation">X value, in pixels, of where to draw.  0 means left edge.</param>
+            <param name="yPixelLocation">Y value, in pixels, of where to draw.  0 means upper edge.</param>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.VectorRenderer.GetImage">
+            <summary>
+            Returns the image as it currently looks, based on whatever draw 
+            methods have been called.
+            </summary>
+            <returns>An image, presumably with some vectors rendered to it.</returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.VectorRenderer.SetEnvelope(GeoAPI.Geometries.Envelope)">
+            <summary>
+            Helper that checks everything about the envelope is valid before setting it.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.VectorRenderer.DrawGeometry(Azavea.Utilities.GeoUtilities.MapGeometry)">
+            <summary>
+            Draws any of the following types of geometry:
+            IPoint
+            IMultiPoint
+            ILineString
+            IMultiLineString
+            IPolygon
+            IMultiPolygon
+            IGeometryCollection (containing any of these types).
+            </summary>
+            <param name="geom">Geometry to draw plus its rendering info</param>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.VectorRenderer.DrawGeometry(GeoAPI.Geometries.IGeometry,System.Drawing.Image,System.Drawing.Pen,System.Drawing.Brush)">
+            <summary>
+            Draws any of the following types of geometry:
+            IPoint
+            IMultiPoint
+            ILineString
+            IMultiLineString
+            IPolygon
+            IMultiPolygon
+            IGeometryCollection (containing any of these types).
+            </summary>
+            <param name="geom">Geometry to draw.</param>
+            <param name="pointImage">Image to be used as point symbols.  If null, points will not
+                                     be drawn.</param>
+            <param name="linePen">Pen (color) to be used to draw both lines and polygon outlines.
+                                  If null, lines and polygon outlines will not be drawn.</param>
+            <param name="polygonFill">Brush (color) to be used to fill polygon interiors.  If
+                                      null, polygons will not be filled.</param>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.VectorRenderer.DrawMultiLineString(GeoAPI.Geometries.IMultiLineString,System.Drawing.Pen)">
+            <summary>
+            Renders a MultiLineString to the image.
+            </summary>
+            <param name="lines">MultiLineString to be rendered</param>
+            <param name="pen">Pen style used for rendering</param>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.VectorRenderer.DrawLineString(GeoAPI.Geometries.ILineString,System.Drawing.Pen)">
+            <summary>
+            Renders a LineString to the image.
+            </summary>
+            <param name="line">LineString to render</param>
+            <param name="pen">Pen style used for rendering</param>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.VectorRenderer.DrawMultiPolygon(GeoAPI.Geometries.IMultiPolygon,System.Drawing.Brush,System.Drawing.Pen)">
+            <summary>
+            Renders a multipolygon by rendering each polygon in the collection by calling DrawPolygon.
+            </summary>
+            <param name="pols">MultiPolygon to render</param>
+            <param name="brush">Brush used for filling (null or transparent for no filling)</param>
+            <param name="pen">Outline pen style (null if no outline)</param>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.VectorRenderer.DrawPolygon(GeoAPI.Geometries.IPolygon,System.Drawing.Brush,System.Drawing.Pen)">
+            <summary>
+            Renders a polygon to the image.
+            </summary>
+            <param name="pol">Polygon to render</param>
+            <param name="brush">Brush used for filling (null or transparent for no filling)</param>
+            <param name="pen">Outline pen style (null if no outline)</param>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.VectorRenderer.DrawLabel(Azavea.Utilities.GeoUtilities.MapLabel)">
+            <summary>
+            Renders a label to the image, centered on the given map point.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.VectorRenderer.DrawPoint(GeoAPI.Geometries.IPoint,System.Drawing.Image,System.Single,System.Drawing.PointF,System.Single)">
+            <summary>
+            Renders a point to the image.
+            </summary>
+            <param name="point">Point to render</param>
+            <param name="symbol">Symbol to place over point</param>
+            <param name="symbolscale">The amount that the symbol should be scaled. A scale of '1' equals to no scaling</param>
+            <param name="offset">Symbol offset at scale=1</param>
+            <param name="rotation">Symbol rotation in degrees</param>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.VectorRenderer.DrawMultiPoint(GeoAPI.Geometries.IMultiPoint,System.Drawing.Image,System.Single,System.Drawing.PointF,System.Single)">
+            <summary>
+            Renders an IMultiPoint to the image.
+            </summary>
+            <param name="points">MultiPoint to render</param>
+            <param name="symbol">Symbol to place over point</param>
+            <param name="symbolscale">The amount that the symbol should be scaled. A scale of '1' equals to no scaling</param>
+            <param name="offset">Symbol offset af scale=1</param>
+            <param name="rotation">Symbol rotation in degrees</param>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.VectorRenderer.TransformLineToImage(GeoAPI.Geometries.ILineString)">
+            <summary>
+            Transforms the linestring to image coordinates, based on the envelope
+            </summary>
+            <param name="line">LineString to render</param>
+            <returns>Linestring in image coordinates</returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.VectorRenderer.WorldtoMap(GeoAPI.Geometries.IPoint)">
+            <summary>
+            Transforms from geographic coordinates to image coordinates
+            </summary>
+            <param name="p">Point in geographic coords</param>
+            <returns>Point in image coordinates</returns>
+        </member>
+        <member name="T:Azavea.Utilities.GeoUtilities.MapLabel">
+            <summary>
+            A label to be drawn on the image.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.MapLabel.Location">
+            <summary>
+            The X/Y coords in map units.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.MapLabel.Background">
+            <summary>
+            The background color/fill to use.
+            Null means none.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.MapLabel.Rotation">
+            <summary>
+            The rotation, in degrees (0 = horizontal, I.E. normal).
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.MapLabel.Orientation">
+            <summary>
+            The relationship of the text to the coordinate.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.MapLabel.Lines">
+            <summary>
+            All the pieces of formatted text that make up this label.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.MapLabel.#ctor(GeoAPI.Geometries.IPoint)">
+            <summary>
+            Construct a label at a point, you'll be adding text later.
+            </summary>
+            <param name="location"></param>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.MapLabel.#ctor(System.String,GeoAPI.Geometries.IPoint)">
+            <summary>
+            Construct a basic label with the given text and location.
+            </summary>
+            <param name="text">The text of the label.</param>
+            <param name="location">The X/Y coords in map units.</param>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.MapLabel.#ctor(System.String,GeoAPI.Geometries.IPoint,System.Drawing.Font,System.Drawing.Color,System.Drawing.Brush)">
+            <summary>
+            Construct a label with custom font and colors.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.MapLabel.ToString">
+            <summary>
+            
+                                Returns a <see cref="T:System.String" /> that represents the current <see cref="T:System.Object" />.
+                            
+            </summary>
+            
+            <returns>
+            
+                                A <see cref="T:System.String" /> that represents the current <see cref="T:System.Object" />.
+                            
+            </returns>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.MapLabel.Equals(Azavea.Utilities.GeoUtilities.MapLabel)">
+            <summary>
+            Internal shortcut generated by resharper.
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.MapLabel.Equals(System.Object)">
+            <summary>
+                                Determines whether the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />.
+            </summary>
+            <returns>
+            true if the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />; otherwise, false.
+            </returns>
+            <param name="obj">
+                                The <see cref="T:System.Object" /> to compare with the current <see cref="T:System.Object" />. 
+                            </param>
+            <exception cref="T:System.NullReferenceException">
+                                The <paramref name="obj" /> parameter is null.
+                            </exception><filterpriority>2</filterpriority>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.MapLabel.GetHashCode">
+            <summary>
+                                Serves as a hash function for a particular type. 
+            </summary>
+            <returns>
+                                A hash code for the current <see cref="T:System.Object" />.
+            </returns>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="T:Azavea.Utilities.GeoUtilities.MapLabelSize">
+            <summary>
+            Describes the size of a label and all its lines.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.MapLabelSize.Height">
+            <summary>
+            The height of the entire label.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.MapLabelSize.Width">
+            <summary>
+            The width of the entire label.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.MapLabelSize.LineSizes">
+            <summary>
+            The size of each line in the label.
+            </summary>
+        </member>
+        <member name="T:Azavea.Utilities.GeoUtilities.MapLabelOrientation">
+            <summary>
+            Defines how the text of a Map Label is oriented relative to the coordinate.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.MapLabelOrientation.Center">
+            <summary>
+            The text is centered on the point.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.MapLabelOrientation.CenterRight">
+            <summary>
+            The text is centered vertically, but to the right of the point.
+            The point is in the center of the left edge of the text.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.MapLabelOrientation.CenterLeft">
+            <summary>
+            The text is centered vertically, but to the left of the point.
+            The point is in the center of the right edge of the text.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.MapLabelOrientation.LowerCenter">
+            <summary>
+            The text is below the point, but centered horizontally.
+            The point is in the center of the top edge of the text.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.MapLabelOrientation.LowerRight">
+            <summary>
+            The text is below and to the right of the point.
+            The point is at the upper left corner of the text.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.MapLabelOrientation.LowerLeft">
+            <summary>
+            The text is below and to the left of the point.
+            The point is at the upper right corner of the text.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.MapLabelOrientation.UpperCenter">
+            <summary>
+            The text is above the point, but centered horizontally.
+            The point is in the center of the bottom edge of the text.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.MapLabelOrientation.UpperRight">
+            <summary>
+            The text is above and to the right of the point.
+            The point is at the lower left corner of the text.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.MapLabelOrientation.UpperLeft">
+            <summary>
+            The text is above and to the left of the point.
+            The point is at the lower right corner of the text.
+            </summary>
+        </member>
+        <member name="T:Azavea.Utilities.GeoUtilities.MapLabelFont">
+            <summary>
+            Basically just a system Font plus a color.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.MapLabelFont.Font">
+            <summary>
+            The font to use, defaults to generic 10-pt sans serif.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.MapLabelFont.Color">
+            <summary>
+            The foreground text color, defaults to black.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.MapLabelFont.#ctor">
+            <summary>
+            Default constructor, if you want to set the text later.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.MapLabelFont.#ctor(System.Drawing.Font,System.Drawing.Color)">
+            <summary>
+            This constructor lets you specify font and color.
+            </summary>
+            <param name="font">The font for this piece of the label.</param>
+            <param name="color">The color for this piece of the label.</param>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.MapLabelFont.#ctor(Azavea.Utilities.GeoUtilities.MapLabelFont,System.Drawing.Font)">
+            <summary>
+            Inherit the color, but set the font.
+            </summary>
+            <param name="other">The MapLabelFont to get the color from.</param>
+            <param name="font">The font for this piece of the label.</param>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.MapLabelFont.#ctor(Azavea.Utilities.GeoUtilities.MapLabelFont,System.Drawing.Color)">
+            <summary>
+            Inherit the font, but set the color.
+            </summary>
+            <param name="other">The MapLabelFont to get the font from.</param>
+            <param name="color">The color for this piece of the label.</param>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.MapLabelFont.Bolded">
+            <summary>
+            Returns a new version of this font.
+            </summary>
+            <returns>This font, except bold.</returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.MapLabelFont.Italicized">
+            <summary>
+            Returns a new version of this font.
+            </summary>
+            <returns>This font, except italicized.</returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.MapLabelFont.Underlined">
+            <summary>
+            Returns a new version of this font.
+            </summary>
+            <returns>This font, except underlined.</returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.MapLabelFont.ResizeToNumber(System.Int32)">
+            <summary>
+            Returns a new version of this font.
+            </summary>
+            <param name="newSize">The "html size" (I.E. "3" = 16)</param>
+            <returns>This font, except in a different size.</returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.MapLabelFont.ChangeColor(System.Drawing.Color)">
+            <summary>
+            Returns a new version of this font.
+            </summary>
+            <param name="newColor">The new color for the font.</param>
+            <returns>This font, except in a different color.</returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.MapLabelFont.ChangeFamily(System.String)">
+            <summary>
+            Returns a new version of this font.
+            </summary>
+            <param name="newFontFamily">The new font family to use.</param>
+            <returns>The new font, but with the same size, styling, and color.</returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.MapLabelFont.ApplyStyle(Azavea.Utilities.GeoUtilities.MapLabelFont)">
+            <summary>
+            Starts with the other font, then copies the styles of this font onto it.
+            </summary>
+            <param name="other">Font to take fontfamily, </param>
+            <returns></returns>
+        </member>
+        <member name="T:Azavea.Utilities.GeoUtilities.MapLabelTextLine">
+            <summary>
+            With html styling, the text can be spread over multiple lines all with
+            different fonts, etc.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.MapLabelTextLine.Font">
+            <summary>
+            Font on the line is only used if the line is blank, in order to tell
+            how tall the line should be.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.MapLabelTextLine.Fragments">
+            <summary>
+            All the pieces of formatted text that make up this line.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.MapLabelTextLine.#ctor(System.Drawing.Font)">
+            <summary>
+            Construct a line that will be populated with fragments later.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.MapLabelTextLine.#ctor(Azavea.Utilities.GeoUtilities.MapLabelTextFragment)">
+            <summary>
+            Construct a line with one fragment on it.
+            </summary>
+            <param name="fragment">The description of the text of the line.</param>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.MapLabelTextLine.ToString">
+            <summary>
+            
+                                Returns a <see cref="T:System.String" /> that represents the current <see cref="T:System.Object" />.
+                            
+            </summary>
+            
+            <returns>
+            
+                                A <see cref="T:System.String" /> that represents the current <see cref="T:System.Object" />.
+                            
+            </returns>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.MapLabelTextLine.Equals(Azavea.Utilities.GeoUtilities.MapLabelTextLine)">
+            <summary>
+            Autogenerated by resharper.
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.MapLabelTextLine.Equals(System.Object)">
+            <summary>
+                                Determines whether the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />.
+            </summary>
+            <returns>
+            true if the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />; otherwise, false.
+            </returns>
+            <param name="obj">
+                                The <see cref="T:System.Object" /> to compare with the current <see cref="T:System.Object" />. 
+                            </param>
+            <exception cref="T:System.NullReferenceException">
+                                The <paramref name="obj" /> parameter is null.
+                            </exception><filterpriority>2</filterpriority>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.MapLabelTextLine.GetHashCode">
+            <summary>
+                                Serves as a hash function for a particular type. 
+            </summary>
+            <returns>
+                                A hash code for the current <see cref="T:System.Object" />.
+            </returns>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="T:Azavea.Utilities.GeoUtilities.MapLabelTextLineSize">
+            <summary>
+            Describes the size of a line and all its fragments.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.MapLabelTextLineSize.Height">
+            <summary>
+            The height of the line.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.MapLabelTextLineSize.Width">
+            <summary>
+            The width of the entire line.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.MapLabelTextLineSize.FragmentSizes">
+            <summary>
+            The size of each fragment on the line in order.
+            </summary>
+        </member>
+        <member name="T:Azavea.Utilities.GeoUtilities.MapLabelTextFragment">
+            <summary>
+            If a map label has html styling, one piece of text may actually
+            be a series of chunks of text in various colors, fonts, etc.
+            This represents one of those chunks.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.MapLabelTextFragment.Text">
+            <summary>
+            The text of the label.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.MapLabelTextFragment.Font">
+            <summary>
+            The font to use
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.MapLabelTextFragment.Color">
+            <summary>
+            The foreground text color, defaults to black.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.MapLabelTextFragment.#ctor">
+            <summary>
+            Default constructor, if you want to set the text later.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.MapLabelTextFragment.#ctor(System.String)">
+            <summary>
+            This constructor assumes default font and color.
+            </summary>
+            <param name="text">Text for this piece of the label.</param>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.MapLabelTextFragment.#ctor(System.Drawing.Font,System.Drawing.Color)">
+            <summary>
+            This constructor lets you specify just font and color.
+            </summary>
+            <param name="font">The font for this piece of the label.</param>
+            <param name="color">The color for this piece of the label.</param>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.MapLabelTextFragment.#ctor(System.String,System.Drawing.Font,System.Drawing.Color)">
+            <summary>
+            This constructor lets you specify font and color.
+            </summary>
+            <param name="text">Text for this piece of the label.</param>
+            <param name="font">The font for this piece of the label.</param>
+            <param name="color">The color for this piece of the label.</param>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.MapLabelTextFragment.#ctor(System.String,Azavea.Utilities.GeoUtilities.MapLabelFont)">
+            <summary>
+            This constructor lets you specify font and color.
+            </summary>
+            <param name="text">Text for this piece of the label.</param>
+            <param name="font">The font and color for this piece of the label.</param>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.MapLabelTextFragment.#ctor(System.String,Azavea.Utilities.GeoUtilities.MapLabelTextFragment)">
+            <summary>
+            Copies the styling from the other fragement but lets you specify new text.
+            </summary>
+            <param name="text">Text for this piece of the label.</param>
+            <param name="other">Fragment to copy font/color from.</param>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.MapLabelTextFragment.ToString">
+            <summary>
+            
+                                Returns a <see cref="T:System.String" /> that represents the current <see cref="T:System.Object" />.
+                            
+            </summary>
+            
+            <returns>
+            
+                                A <see cref="T:System.String" /> that represents the current <see cref="T:System.Object" />.
+                            
+            </returns>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.MapLabelTextFragment.Equals(Azavea.Utilities.GeoUtilities.MapLabelTextFragment)">
+            <summary>
+            Autogenerated by resharper.
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.MapLabelTextFragment.Equals(System.Object)">
+            <summary>
+                                Determines whether the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />.
+            </summary>
+            <returns>
+            true if the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />; otherwise, false.
+            </returns>
+            <param name="obj">
+                                The <see cref="T:System.Object" /> to compare with the current <see cref="T:System.Object" />. 
+                            </param>
+            <exception cref="T:System.NullReferenceException">
+                                The <paramref name="obj" /> parameter is null.
+                            </exception><filterpriority>2</filterpriority>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.MapLabelTextFragment.GetHashCode">
+            <summary>
+                                Serves as a hash function for a particular type. 
+            </summary>
+            <returns>
+                                A hash code for the current <see cref="T:System.Object" />.
+            </returns>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="T:Azavea.Utilities.GeoUtilities.MapGeometry">
+            <summary>
+            Information about a geometry to be drawn on the image.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.MapGeometry.Shape">
+            <summary>
+            The shape to render.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.MapGeometry.LineColor">
+            <summary>
+            The color to use for linestrings or polygon outlines.
+            Defaults to black.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.MapGeometry.LineWidth">
+            <summary>
+            The width to us for linestrings or polygon outlines.
+            Defaults to 1.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.MapGeometry.Fill">
+            <summary>
+            The color to use to fill polygons.
+            Null means no fill.
+            </summary>
+        </member>
+        <member name="F:Azavea.Utilities.GeoUtilities.MapGeometry.PointImage">
+            <summary>
+            The image to use to render a point.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.MapGeometry.#ctor(GeoAPI.Geometries.IGeometry)">
+            <summary>
+            Construct a basic geometry with default colors.
+            </summary>
+            <param name="shape">The shape to render.</param>
+        </member>
+        <member name="T:Azavea.Utilities.GeoUtilities.WfsFeature">
+            <summary>
+            Would someone who knows how this stuff works please document this?
+            This message is just to get rid of the compiler warning.
+            </summary>
+        </member>
+        <member name="P:Azavea.Utilities.GeoUtilities.WfsFeature.Geom">
+            <summary>
+            Would someone who knows how this stuff works please document this?
+            This message is just to get rid of the compiler warning.
+            </summary>
+        </member>
+        <member name="P:Azavea.Utilities.GeoUtilities.WfsFeature.Name">
+            <summary>
+            Would someone who knows how this stuff works please document this?
+            This message is just to get rid of the compiler warning.
+            </summary>
+        </member>
+        <member name="P:Azavea.Utilities.GeoUtilities.WfsFeature.ListName">
+            <summary>
+            Would someone who knows how this stuff works please document this?
+            This message is just to get rid of the compiler warning.
+            </summary>
+        </member>
+        <member name="P:Azavea.Utilities.GeoUtilities.WfsFeature.Extents">
+            <summary>
+            Would someone who knows how this stuff works please document this?
+            This message is just to get rid of the compiler warning.
+            </summary>
+        </member>
+        <member name="T:Azavea.Utilities.GeoUtilities.WfsReader">
+            <summary>
+            Would someone who knows how this stuff works please document this?
+            This message is just to get rid of the compiler warning.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.WfsReader.#ctor(System.String)">
+            <summary>
+            Would someone who knows how this stuff works please document this?
+            This message is just to get rid of the compiler warning.
+            </summary>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.WfsReader.GetFeatures(System.String)">
+            <summary>
+            Gets all of the features in a layer.
+            </summary>
+            <param name="typeName">The name of the layer for which to retrieve all features.</param>
+            <returns>An array of the features.</returns>
+        </member>
+        <member name="M:Azavea.Utilities.GeoUtilities.WfsReader.GetIntersectingFeatures(System.String,NetTopologySuite.Geometries.Point)">
+            <summary>
+            Gets all features intersecting a point.
+            </summary>
+            <param name="typeName">?????????????</param>
+            <param name="p">The point to use for intersection test.</param>
+            <returns>An array of features who intersect with the point.</returns>
+        </member>
+    </members>
+</doc>

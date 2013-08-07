@@ -1,0 +1,564 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Azavea.Database</name>
+    </assembly>
+    <members>
+        <member name="T:Azavea.Database.Azavea_DBException">
+            <summary>
+            This is basically the same as Azavea_Exception, but may be thrown for
+            database-specific errors.
+            </summary>
+        </member>
+        <member name="M:Azavea.Database.Azavea_DBException.#ctor(System.String,System.Exception)">
+            <summary>
+            When rethrowing because you caught an exception, use this signature.
+            This way the stack trace of the original exception will not be lost.
+            </summary>
+            <param name="message">What went wrong.</param>
+            <param name="e">The exception that was originally thrown.</param>
+        </member>
+        <member name="M:Azavea.Database.Azavea_DBException.#ctor(System.String,System.String,System.Exception)">
+            <summary>
+            When rethrowing because you caught an exception, use this signature.
+            This way the stack trace of the original exception will not be lost.
+            </summary>
+            <param name="message">What went wrong.</param>
+            <param name="errorType">What category of error is it, or what component is it from.</param>
+            <param name="e">The exception that was originally thrown.</param>
+        </member>
+        <member name="M:Azavea.Database.Azavea_DBException.#ctor(System.String)">
+            <summary>
+            When throwing a NEW exception, use this constructor.  If you've caught an exception
+            and are re-throwing, use the constructor that takes an inner exception.
+            </summary>
+            <param name="message">What went wrong.</param>
+        </member>
+        <member name="M:Azavea.Database.Azavea_DBException.#ctor(System.String,System.String)">
+            <summary>
+            When throwing a NEW exception, use this constructor.  If you've caught an exception
+            and are re-throwing, use the constructor that takes an inner exception.
+            </summary>
+            <param name="errorType">What category of error is it, or what component is it from.</param>
+            <param name="message">What went wrong.</param>
+        </member>
+        <member name="T:Azavea.Database.BufferedDaoWriter`1">
+            <summary>
+            This class can wrap a FastDAO and "batch up" inserts or updates for you.
+            It acts like a buffered stream, meaning it will write whenever it has queued
+            up enough objects, or whenever you call flush.
+            
+            Note: You MUST call Flush when you are done using this object!  Since having
+            records not get inserted is virtually always a critical data error, and having
+            them get inserted at some random later point in time (I.E. if it tried to
+            "cover" for your failure to flush and auto-flushed when garbage collected)
+            can be almost as bad, this does not auto-flush.  Instead it logs a fatal message.
+            
+            You can either call Flush manually in a finally block, or you may use the
+            'using' keyword like so:
+            using (BufferedDaoWriter&lt;SomeType&gt; writer = new BufferedDaoWriter&lt;SomeType&gt;(_aDao)) {
+                ...
+            }
+            </summary>
+            <typeparam name="T">Type of object to store.</typeparam>
+        </member>
+        <member name="F:Azavea.Database.BufferedDaoWriter`1.DEFAULT_BUFFER_SIZE">
+            <summary>
+            How many records we will buffer if you do not specify a different number.
+            </summary>
+        </member>
+        <member name="F:Azavea.Database.BufferedDaoWriter`1._log">
+            <summary>
+            log4net logger for logging any appropriate messages.
+            </summary>
+        </member>
+        <member name="M:Azavea.Database.BufferedDaoWriter`1.#ctor(Azavea.Open.DAO.IFastDaoBase{`0})">
+            <summary>
+            Creates a Buffered Dao with a default buffer size.
+            </summary>
+            <param name="dao">Dao to wrap inserts/updates for.</param>
+        </member>
+        <member name="M:Azavea.Database.BufferedDaoWriter`1.#ctor(Azavea.Open.DAO.IFastDaoBase{`0},System.Int32)">
+            <summary>
+            Creates a Buffered Dao with a default buffer size.
+            </summary>
+            <param name="dao">Dao to wrap inserts/updates for.</param>
+            <param name="bufferSize">How many inserts/updates to save up before writing.</param>
+        </member>
+        <member name="M:Azavea.Database.BufferedDaoWriter`1.#ctor(Azavea.Open.DAO.ITransaction,Azavea.Open.DAO.IFastDaoBase{`0})">
+            <summary>
+            Creates a Buffered Dao with a default buffer size.
+            </summary>
+            <param name="transaction">The transaction to do this as part of. May be null.</param>
+            <param name="dao">Dao to wrap inserts/updates for.</param>
+        </member>
+        <member name="M:Azavea.Database.BufferedDaoWriter`1.#ctor(Azavea.Open.DAO.ITransaction,Azavea.Open.DAO.IFastDaoBase{`0},System.Int32)">
+            <summary>
+            Creates a Buffered Dao with a default buffer size.
+            </summary>
+            <param name="transaction">The transaction to do this as part of. May be null.</param>
+            <param name="dao">Dao to wrap inserts/updates for.</param>
+            <param name="bufferSize">How many inserts/updates to save up before writing.</param>
+        </member>
+        <member name="M:Azavea.Database.BufferedDaoWriter`1.Finalize">
+            <summary>
+            The destructor logs a huge warning if you have not flushed the writer.
+            </summary>
+        </member>
+        <member name="M:Azavea.Database.BufferedDaoWriter`1.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing,
+            or resetting unmanaged resources.
+            </summary>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="M:Azavea.Database.BufferedDaoWriter`1.Flush">
+            <summary>
+            Inserts all the records that have not yet been inserted, and
+            updates all the records that have not yet been updated.
+            </summary>
+        </member>
+        <member name="M:Azavea.Database.BufferedDaoWriter`1.CheckAndFlushIfNecessary">
+            <summary>
+            Internal helper that flushes the inserts or updates if they
+            have piled up greater than the buffer size.
+            </summary>
+        </member>
+        <member name="M:Azavea.Database.BufferedDaoWriter`1.Insert(`0,System.Boolean)">
+            <summary>
+            NOTE: Getting generated IDs is NOT supported on BufferedDaoWriter.  This is because
+            the buffered writer doesn't write the object immediately, so it is unable to
+            guarauntee that the generated ID will be set on it by any particular time.
+            </summary>
+            <param name="obj">The object to save.</param>
+            <param name="setGeneratedId">Update the object with its new ID if the ID was 
+                                         autogenerated by the database.  That requires a 
+                                         second DB query to retrieve the ID and "most" of the 
+                                         time we are inserting and then discarding the object 
+                                         from memory.
+                                         If setGeneratedId is false, this ONLY Updates the 
+                                         object's ID field(s) IF the mapping contains a sequence, 
+                                         meaning that FastDAO must query the sequence for the next 
+                                         value anyway.</param>
+        </member>
+        <member name="M:Azavea.Database.BufferedDaoWriter`1.Insert(Azavea.Open.DAO.ITransaction,`0,System.Boolean)">
+            <summary>
+            NOTE: NOT SUPPORTED.  If you wish the buffered writer to use a transaction, you must pass the transaction
+                                  in the constructor.
+            </summary>
+            <param name="transaction">The transaction to do this as part of. May be null.</param>
+            <param name="obj">The object to write.</param>
+            <param name="setGeneratedId">Update the object with its new ID if the ID was 
+                                         autogenerated by the database.  Depending on the implementation,
+                                         that may requires a query to retrieve the ID, and "most" of the 
+                                         time you don't need the ID (you insert the object and then are
+                                         done with it) so there is an advantage to not retrieving the ID
+                                         if not necessary.  Not all data sources support retrieving a
+                                         generated ID.
+                                         If setGeneratedId is false, this ONLY sets the 
+                                         object's ID field(s) IF the implementation of the auto-generation
+                                         requires us to obtain the ID before writing to the data source.</param>
+        </member>
+        <member name="M:Azavea.Database.BufferedDaoWriter`1.Insert(`0)">
+            <summary>
+            Same as calling Insert(obj, false);
+            </summary>
+            <param name="obj">The object to write.</param>
+        </member>
+        <member name="M:Azavea.Database.BufferedDaoWriter`1.Insert(Azavea.Open.DAO.ITransaction,`0)">
+            <summary>
+            NOTE: NOT SUPPORTED.  If you wish the buffered writer to use a transaction, you must pass the transaction
+                                  in the constructor.
+            </summary>
+            <param name="transaction">The transaction to do this as part of. May be null.</param>
+            <param name="obj">The object to write.</param>
+        </member>
+        <member name="M:Azavea.Database.BufferedDaoWriter`1.Insert(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Inserts a bunch of records in one transaction, hopefully faster than
+            separate calls to Insert().  Whether it is actually faster depends on
+            the implementation.
+            </summary>
+            <param name="insertUs">List of objects to insert.</param>
+        </member>
+        <member name="M:Azavea.Database.BufferedDaoWriter`1.Insert(Azavea.Open.DAO.ITransaction,System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            NOTE: NOT SUPPORTED.  If you wish the buffered writer to use a transaction, you must pass the transaction
+                                  in the constructor.
+            </summary>
+            <param name="transaction">The transaction to do this as part of. May be null.</param>
+            <param name="insertUs">List of objects to insert.</param>
+        </member>
+        <member name="M:Azavea.Database.BufferedDaoWriter`1.Update(`0)">
+            <summary>
+            Updates this object's record in the data source.
+            </summary>
+            <param name="obj">The object to save.</param>
+        </member>
+        <member name="M:Azavea.Database.BufferedDaoWriter`1.Update(Azavea.Open.DAO.ITransaction,`0)">
+            <summary>
+            NOTE: NOT SUPPORTED.  If you wish the buffered writer to use a transaction, you must pass the transaction
+                                  in the constructor.
+            </summary>
+            <param name="transaction">The transaction to do this as part of. May be null.</param>
+            <param name="obj">The object to save.</param>
+        </member>
+        <member name="M:Azavea.Database.BufferedDaoWriter`1.Update(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Updates a bunch of records in one transaction, hopefully faster than
+            separate calls to Update().  Whether it is actually faster depends on
+            the implementation.
+            </summary>
+            <param name="updateUs">List of objects to save.</param>
+        </member>
+        <member name="M:Azavea.Database.BufferedDaoWriter`1.Update(Azavea.Open.DAO.ITransaction,System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            NOTE: NOT SUPPORTED.  If you wish the buffered writer to use a transaction, you must pass the transaction
+                                  in the constructor.
+            </summary>
+            <param name="transaction">The transaction to do this as part of. May be null.</param>
+            <param name="updateUs">List of objects to save.</param>
+        </member>
+        <member name="P:Azavea.Database.BufferedDaoWriter`1.ClassMap">
+            <summary>
+            The ClassMapping object representing the class-to-record mapping 
+            to use with the data source.
+            </summary>
+        </member>
+        <member name="P:Azavea.Database.BufferedDaoWriter`1.ConnDesc">
+            <summary>
+            The object describing how to connect to and/or interact with the data
+            source we're reading objects from.
+            </summary>
+        </member>
+        <member name="T:Azavea.Database.DictionaryDao">
+            <summary>
+            A FastDAO that returns Dictionaries instead of objects.  This is a more
+            basica DAO that is useful in cases where you don't actually care much about
+            the object (I.E. are just going to drop it into XML or JSON anyway or
+            something like that).
+            </summary>
+        </member>
+        <member name="M:Azavea.Database.DictionaryDao.#ctor(System.String)">
+            <summary>
+            Loads the database configuration and class mapping.  By default we steal the config info
+            from the NHibernate configuration.
+            </summary>
+            <param name="mappedType">The type name we're mapping.  Since this class doesn't
+                                     actually instantiate it, it can just be the key to the
+                                     config file and doesn't have to be a real class.</param>
+        </member>
+        <member name="M:Azavea.Database.DictionaryDao.#ctor(System.String,System.String)">
+            <summary>
+            This allows you to specify the config name used to get the database config info.  This
+            allows you to name it something other than Azavea.NHibernate.Config and also allows
+            you to have multiple FastDAOs (for example, if you have more than one database you're
+            connecting to).
+            </summary>
+            <param name="mappedType">The type name we're mapping.  Since this class doesn't
+                                     actually instantiate it, it can just be the key to the
+                                     config file and doesn't have to be a real class.</param>
+            <param name="configName">Name used to get the configuration.</param>
+        </member>
+        <member name="M:Azavea.Database.DictionaryDao.#ctor(System.String,Azavea.Open.Common.Config)">
+            <summary>
+            This allows you to specify the config used to get the database config info.  This
+            allows you to name it something other than Azavea.NHibernate.Config and also allows
+            you to have multiple FastDAOs (for example, if you have more than one database you're
+            connecting to).
+            </summary>
+            <param name="mappedType">The type name we're mapping.  Since this class doesn't
+                                     actually instantiate it, it can just be the key to the
+                                     config file and doesn't have to be a real class.</param>
+            <param name="config">The configuration.</param>
+        </member>
+        <member name="M:Azavea.Database.DictionaryDao.#ctor(System.String,System.String,System.String)">
+            <summary>
+            This allows you to specify the config name and the section in the config file
+            used to get the database config info.  This
+            allows you to name it something other than Azavea.NHibernate.Config and also allows
+            you to have multiple FastDAOs (for example, if you have more than one database you're
+            connecting to) configured in a single file.
+            </summary>
+            <param name="mappedType">The type name we're mapping.  Since this class doesn't
+                                     actually instantiate it, it can just be the key to the
+                                     config file and doesn't have to be a real class.</param>
+            <param name="configName">Name used to get the configuration.</param>
+            <param name="sectionName">Name of the section within the config file.</param>
+        </member>
+        <member name="M:Azavea.Database.DictionaryDao.#ctor(System.String,Azavea.Open.Common.Config,System.String)">
+            <summary>
+            This allows you to give the config object and the section in the config
+            used to get the database config info.
+            </summary>
+            <param name="mappedType">The type name we're mapping.  Since this class doesn't
+                                     actually instantiate it, it can just be the key to the
+                                     config file and doesn't have to be a real class.</param>
+            <param name="config">Configuration object loaded somewhere else.</param>
+            <param name="sectionName">Name of the section within the config.</param>
+        </member>
+        <member name="M:Azavea.Database.DictionaryDao.#ctor(System.String,Azavea.Open.DAO.IConnectionDescriptor,System.String)">
+            <summary>
+            This allows you to manually specify the DB connection and the mapping file.
+            </summary>
+            <param name="mappedType">The type name we're mapping.  Since this class doesn't
+                                     actually instantiate it, it can just be the key to the
+                                     config file and doesn't have to be a real class.</param>
+            <param name="connDesc">DB Connection information.</param>
+            <param name="mappingFileName">Filename (with path) to the mapping file.</param>
+        </member>
+        <member name="M:Azavea.Database.DictionaryDao.#ctor(Azavea.Open.DAO.IConnectionDescriptor,Azavea.Open.DAO.ClassMapping)">
+            <summary>
+            If you already have the DB connection and the mapping file, you may use
+            this constructor.
+            </summary>
+            <param name="connDesc">DB Connection information.</param>
+            <param name="mapping">ClassMapping describing the class to be mapped and
+                                  the table to map it to.</param>
+        </member>
+        <member name="T:Azavea.Database.FastDAO`1">
+            <summary>
+            This class is built to be a "fast and easy" way of reading/writing objects to/from a
+            data source.  It meant to have high performance on throughput of large numbers of objects.
+            It does not support every possible sophistication that an ORM system can have.
+            </summary>
+        </member>
+        <member name="M:Azavea.Database.FastDAO`1.#ctor">
+            <summary>
+            Loads the database configuration and class mapping.  By default we steal the config info
+            from the NHibernate configuration.
+            </summary>
+        </member>
+        <member name="M:Azavea.Database.FastDAO`1.#ctor(System.String)">
+            <summary>
+            This allows you to specify the config name used to get the database config info.  This
+            allows you to name it something other than Azavea.NHibernate.Config and also allows
+            you to have multiple FastDAOs (for example, if you have more than one database you're
+            connecting to).
+            </summary>
+            <param name="configName">Name used to get the configuration.</param>
+        </member>
+        <member name="M:Azavea.Database.FastDAO`1.#ctor(Azavea.Open.Common.Config)">
+            <summary>
+            This allows you to specify the config used to get the database config info.  This
+            allows you to name it something other than Azavea.NHibernate.Config and also allows
+            you to have multiple FastDAOs (for example, if you have more than one database you're
+            connecting to).
+            </summary>
+            <param name="config">The configuration.</param>
+        </member>
+        <member name="M:Azavea.Database.FastDAO`1.#ctor(System.String,System.String)">
+            <summary>
+            This allows you to specify the config name and the section in the config file
+            used to get the database config info.  This
+            allows you to name it something other than Azavea.NHibernate.Config and also allows
+            you to have multiple FastDAOs (for example, if you have more than one database you're
+            connecting to) configured in a single file.
+            </summary>
+            <param name="configName">Name used to get the configuration.</param>
+            <param name="sectionName">Name of the section within the config file.</param>
+        </member>
+        <member name="M:Azavea.Database.FastDAO`1.#ctor(Azavea.Open.Common.Config,System.String)">
+            <summary>
+            This allows you to give the config object and the section in the config
+            used to get the database config info.
+            </summary>
+            <param name="config">Configuration object loaded somewhere else.</param>
+            <param name="sectionName">Name of the section within the config.</param>
+        </member>
+        <member name="M:Azavea.Database.FastDAO`1.#ctor(Azavea.Open.DAO.IConnectionDescriptor,System.String)">
+            <summary>
+            This allows you to manually specify the DB connection and the mapping file.
+            </summary>
+            <param name="connDesc">DB Connection information.</param>
+            <param name="mappingFileName">Filename (with path) to the mapping file.</param>
+        </member>
+        <member name="M:Azavea.Database.FastDAO`1.#ctor(Azavea.Open.DAO.IConnectionDescriptor,Azavea.Open.DAO.ClassMapping)">
+            <summary>
+            If you already have the DB connection and the mapping file, you may use
+            this constructor.
+            </summary>
+            <param name="connDesc">DB Connection information.</param>
+            <param name="mapping">ClassMapping describing the class to be mapped and
+                                  the table to map it to.</param>
+        </member>
+        <member name="M:Azavea.Database.FastDAO`1.IterateOverQuery``1(Azavea.Open.DAO.IDaQuery,Azavea.Open.DAO.DaoIterationDelegate{`0,``0},``0,System.Int32,System.String)">
+            <summary>
+            Helper that does the work once the query is created.
+            </summary>
+            <param name="query">The query to execute that is expected to return a large
+                                 number of rows.</param>
+            <param name="invokeMe">The method to invoke for each object returned by the query.</param>
+            <param name="parameters">Any parameters that you want to pass to the invokeMe method.
+                                       This may be null.</param>
+            <param name="max">maximum number of records to iterate over, int.MaxValue will mean no limit.</param>
+            <param name="desc">Description of the loop for logging purposes.</param>
+            <returns>the number of records iterated over.</returns>
+        </member>
+        <member name="M:Azavea.Database.FastDAO`1.ToString">
+            <summary>
+            ToString implementation.
+            </summary>
+            <returns>The type name and what table it is mapped to.</returns>
+        </member>
+        <member name="M:Azavea.Database.FastDAO`1.QueryAndIterateOverObjects``1(System.String,System.Collections.IEnumerable,Azavea.Open.DAO.DaoIterationDelegate{`0,``0},``0,System.Int32,System.String)">
+            <summary>
+            This method is to allow object-oriented access to queries that return large numbers
+            of rows, where all objects can't reasonably be held in memory at one time.  This
+            method will iterate over the results, constructing one object at a time and passing
+            it to the method 'invokeMe'.
+            
+            NOTE: Since this takes a string query, presumably SQL, not all FastDAOs are required
+            to implemented this function.
+            </summary>
+            <param name="query">The sql statement to execute that is expected to return a large
+                                 number of rows.</param>
+            <param name="queryParams">The parameters for the sql statement.  If there are none, this
+                                       can be null.</param>
+            <param name="invokeMe">The method to invoke for each object returned by the query.</param>
+            <param name="parameters">Any parameters that you want to pass to the invokeMe method.
+                                       This may be null.</param>
+            <param name="max">maximum number of records to iterate over, int.MaxValue will mean no limit.</param>
+            <param name="desc">Description of the loop for logging purposes.</param>
+            <returns>the number of records iterated over.</returns>
+        </member>
+        <member name="M:Azavea.Database.FastDAO`1.QueryForObjects(System.String,System.Collections.IEnumerable)">
+            <summary>
+            Executes the query, with the parameters, and converts the rows into data objects.
+            Note that the query must select all mapped columns from Table. (extra columns are OK)
+            
+            NOTE: Since this takes a string query, presumably SQL, not all FastDAOs are required
+            to implemented this function.
+            </summary>
+            <param name="query">A string query, possibly SQL.</param>
+            <param name="queryParams">Parameters (if any) for the query.</param>
+            <returns>A list of data objects, or an empty list, but not null.</returns>
+        </member>
+        <member name="M:Azavea.Database.FastDAO`1.QueryForObjectsWithStartLimit(System.String,System.Collections.IEnumerable,System.Int32,System.Int32)">
+            <summary>
+            Executes the query, with the parameters, and converts the rows into data objects.
+            Note that the query must select all mapped columns from Table. (extra columns are OK)
+            
+            NOTE: Since this takes a string query, presumably SQL, not all FastDAOs are required
+            to implemented this function.
+            </summary>
+            <param name="query">A string query, possibly SQL.</param>
+            <param name="queryParams">Parameters (if any) for the query.</param>
+            <param name="start">The first object you want back (0-indexed).</param>
+            <param name="limit">The maximum number of objects to return.</param>
+            <returns>A list of data objects, or an empty list, but not null.</returns>
+        </member>
+        <member name="M:Azavea.Database.FastDAO`1.QueryForObjectsWithStart(System.String,System.Collections.IEnumerable,System.Int32)">
+            <summary>
+            Executes the query, with the parameters, and converts the rows into data objects.
+            Note that the query must select * from Table.
+            
+            NOTE: Since this takes a string query, presumably SQL, not all FastDAOs are required
+            to implemented this function.
+            </summary>
+            <param name="query">A string query, possibly SQL.</param>
+            <param name="queryParams">Parameters (if any) for the query.</param>
+            <param name="start">The first object you want back (0-indexed).</param>
+            <returns>A list of data objects, or an empty list, but not null.</returns>
+        </member>
+        <member name="M:Azavea.Database.FastDAO`1.QueryForObjectsWithLimit(System.String,System.Collections.IEnumerable,System.Int32)">
+            <summary>
+            Executes the query, with the parameters, and converts the rows into data objects.
+            Note that the query must select all mapped columns from Table. (extra columns are OK)
+            
+            NOTE: Since this takes a string query, presumably SQL, not all FastDAOs are required
+            to implemented this function.
+            </summary>
+            <param name="query">A string query, possibly SQL.</param>
+            <param name="queryParams">Parameters (if any) for the query.</param>
+            <param name="limit">The maximum number of objects to return.</param>
+            <returns>A list of data objects, or an empty list, but not null.</returns>
+        </member>
+        <member name="T:Azavea.Database.Tests.BufferedWriterTests">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Database.Tests.BufferedWriterTests.TestBatchPerformance">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Database.Tests.BufferedWriterTests.AssertBufferedPerformance``1(Azavea.Database.FastDAO{``0},Azavea.Database.BufferedDaoWriter{``0},System.Collections.Generic.IList{``0},System.Boolean)">
+            <summary>
+            Tests that using the buffered dao writer is faster than using the
+            unbuffered one.
+            </summary>
+            <typeparam name="T">Type of objects to insert/update.</typeparam>
+            <param name="unbuffered">Dao that is not buffered.</param>
+            <param name="buffered">Dao that is buffered.</param>
+            <param name="subjects">Test objects to insert.</param>
+            <param name="insert">Whether to insert or update.</param>
+        </member>
+        <member name="T:Azavea.Database.Tests.NoAutoIdClass">
+            <exclude/>
+        </member>
+        <member name="F:Azavea.Database.Tests.NoAutoIdClass.ID">
+            <exclude/>
+        </member>
+        <member name="F:Azavea.Database.Tests.NoAutoIdClass.Prop1">
+            <exclude/>
+        </member>
+        <member name="F:Azavea.Database.Tests.NoAutoIdClass.Prop2">
+            <exclude/>
+        </member>
+        <member name="T:Azavea.Database.Tests.OddballTests">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Database.Tests.OddballTests.TestNonUnicodeVarchars">
+            <exclude/>
+        </member>
+        <member name="T:Azavea.Database.Tests.UnicodeStringClass">
+            <exclude/>
+        </member>
+        <member name="F:Azavea.Database.Tests.UnicodeStringClass.StringVal">
+            <exclude/>
+        </member>
+        <member name="T:Azavea.Database.Tests.UtilitiesTests">
+            <exclude/>
+        </member>
+        <member name="F:Azavea.Database.Tests.UtilitiesTests.desiredConnStr">
+            <summary>
+            The pre-build command copies the test database to c:\temp so even if we screw it up,
+            the next unit test run will start clean.
+            </summary>
+        </member>
+        <member name="M:Azavea.Database.Tests.UtilitiesTests.Init">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Database.Tests.UtilitiesTests.TestMakeConnStr">
+            <exclude/>  
+        </member>
+        <member name="M:Azavea.Database.Tests.UtilitiesTests.TestQueryForDataSet">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Database.Tests.UtilitiesTests.TestQueryIntoDataSet">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Database.Tests.UtilitiesTests.TestXSafeQuery">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Database.Tests.UtilitiesTests.TestXSafeNumberQuery">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Database.Tests.UtilitiesTests.TestWildcard">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Database.Tests.UtilitiesTests.TestXSafeCommand">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Database.Tests.UtilitiesTests.TestXSafeStringListQuery">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Database.Tests.UtilitiesTests.TestReport">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Database.Tests.UtilitiesTests.TestConnectionCache">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Database.Tests.UtilitiesTests.TestConnectionCacheErrors">
+            <exclude/>
+        </member>
+    </members>
+</doc>

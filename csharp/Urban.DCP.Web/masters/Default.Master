@@ -1,0 +1,52 @@
+﻿<%@ Import Namespace="Azavea.Web"%>
+<%@ Import Namespace="Azavea.Open.Common"%>
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Default.master.cs" Inherits="Furman.PDP.Web.masters.Default" %>
+<!DOCTYPE html>
+
+<html>
+<head id="Head" runat="server">
+    <title id="titleElement" runat="server">Furman Center Data Search Tool</title>
+    <link rel="icon" type="image/ico" href="~/client/css/images/favicon.ico" runat="server"/>
+    <!-- Enable Chrome Frame in IE if available -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <asp:ContentPlaceHolder ID="headPlaceHolder" runat="server" />    
+<!-- Google Analytics code -->    
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18996382-2']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+    
+</head>
+<body>
+    <form id="form1" runat="server"></form>
+    <noscript>
+        <div id="pdp-browser-warning">JavaScript must be enabled on your Internet Browser to use this website.</div>
+    </noscript>
+    <div id="header">
+        <a href="http://www.furmancenter.org"><img id="Img1" width="220" height="88" class="pdp-header-logo" runat="server" src="~/client/css/images/header.png" alt="Preservation Database Project" /></a>
+        <div id="login" class="pdp-login-container"></div>
+        <div id="signup" class="pdp-signup-container"></div>
+        <div id="pdp-header-linkbar">
+            <a href="http://www.furmancenter.org">Furman Center</a>
+            <a href="http://www.furmancenter.org/data/">Data</a>
+            <a href="http://www.furmancenter.org/data/disclaimer/">Disclaimer</a>
+            <a href="http://www.furmancenter.org/data/search/guide/">Help</a>
+            <a href="http://www.furmancenter.org/data/search/guide/definitions/">Definitions & Acronyms</a>
+        </div>
+    </div>
+    <div id="content">
+        <asp:ContentPlaceHolder ID="contentPlaceHolder" runat="server" />
+    </div>
+
+    <asp:ContentPlaceHolder ID="executeScriptPlaceHolder" runat="server" />
+</body>
+</html>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" default-lazy="false">
+  <class name="Furman.PDP.Data.PDB.PdbAttribute,Furman.PDP.Data" table="PDP_Attributes">
+    <property name="EntityType" column="Entity" type="string"/>
+    <property name="Name" column="Attribute" />
+    <property name="AllowFiltering" column="IsFilter" />
+    <property name="Category" column="Category" />
+    <property name="SubCategory" column="SubCategory" />
+    <property name="FilterCatOrder" column="CategoryOrder" />
+    <property name="FilterSubCatOrder" column="OrderWithinSubcategory" />
+    <property name="FilterAttrOrder" column="OrderWithinCategory" />
+    <property name="InPrimaryTable" column="IsNative" type="int"/>
+    <property name="DisplayName" column="TableDisplayName" />
+    <property name="FilterName" column="FilterDisplayName" />
+    <property name="Description" column="Description" />
+    <property name="UiType" column="UiType" type="string"/>
+    <property name="ValueType" column="ValueType" type="string"/>
+    <property name="MinValue" column="MinValue" />
+    <property name="MaxValue" column="MaxValue" />
+    <property name="AllowGroupBy" column="GroupBy" />
+    <property name="RequiredRole" column="RequiredRole" type="string"/>
+    <property name="ShowByDefault" column="DefaultTableDisplay" />
+    <property name="TableViewOrder" column="TableColumnOrder" />
+    <property name="ShortViewOrder" column="ShortViewOrder" />
+    <property name="LongViewOrder" column="LongViewOrder" />
+    <property name="Difficulty" column="Difficulty" type="string"/>
+  </class>
+  <class name="Furman.PDP.Data.PDB.PdbAttributeValue,Furman.PDP.Data" table="PDP_Attribute_Values">
+    <property name="AttributeName" column="Attribute" />
+    <property name="Value" column="AttributeValue" />
+    <property name="Group" column="AttributeGrouping" />
+  </class>
+  <class name="Furman.PDP.Data.User,Furman.PDP.Data" table="Users">
+	<id name="Id" column="Id">
+		<generator class="native" />
+	</id>
+	<property column="UserName" name="UserName" />
+	<property column="Pass" name="Password" />
+	<property column="Email" name="Email" />
+	<property column="Name" name="Name" />
+	<property column="Roles" name="Roles" />
+   </class>
+</hibernate-mapping>

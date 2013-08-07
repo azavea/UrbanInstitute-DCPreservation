@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Azavea.Open.Reprojection</id>
+    <version>1.1.1</version>
+    <title>Azavea.Open.Reprojection</title>
+    <authors>Azavea Inc.</authors>
+    <owners>Azavea Inc.</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Reprojection tools</description>
+    <releaseNotes>Package for NuGet</releaseNotes>
+    <dependencies>
+      <dependency id="Azavea.Open.Common" version="2.1.8" />
+    </dependencies>
+  </metadata>
+</package>

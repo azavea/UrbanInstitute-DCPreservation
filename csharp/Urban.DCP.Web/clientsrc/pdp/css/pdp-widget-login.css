@@ -1,0 +1,40 @@
+.pdp-header-panel {
+    width: 240px;
+    display: block;
+    float: none;
+    position: absolute;
+    right:10px; 
+    top: 10px;
+    background-color:White;
+    border: solid thin Gray;
+    margin: 7px;
+    padding: 10px;
+    z-index: 1;
+}
+    .pdp-header-panel li{ margin: 2px;}
+    
+.pdp-header-link {width: 20px; padding: 3px; }
+
+#signup { 
+    position:absolute; 
+    right:50px; top:10px; 
+}
+#login { 
+    position:absolute; 
+    right:10px; top:10px; 
+}
+#pdp-signup-panel-close { 
+    position:absolute; top:3px; 
+    right:3px; 
+    cursor:pointer; 
+    
+}
+#pdp-login-panel-close { 
+    position:absolute; top:3px; 
+    right:3px; 
+    cursor:pointer; 
+    
+}
+
+.pdp-header-panel-title {padding: 5px; }
+.pdp-header-panel-desc {font-size: .9em; padding-top: 6px}

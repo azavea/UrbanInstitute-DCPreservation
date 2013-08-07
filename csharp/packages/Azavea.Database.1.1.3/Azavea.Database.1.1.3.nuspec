@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Azavea.Database</id>
+    <version>1.1.3</version>
+    <title>Azavea.Database</title>
+    <authors>Azavea Inc.</authors>
+    <owners>Azavea Inc.</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Azavea Database Utility Objects</description>
+    <releaseNotes />
+    <tags>orm database hibernate model oledb</tags>
+    <dependencies>
+      <dependency id="Azavea.Open.DAO.OleDb" version="1.0.5" />
+      <dependency id="Azavea.Utilities.Common" version="3.2.0" />
+    </dependencies>
+  </metadata>
+</package>

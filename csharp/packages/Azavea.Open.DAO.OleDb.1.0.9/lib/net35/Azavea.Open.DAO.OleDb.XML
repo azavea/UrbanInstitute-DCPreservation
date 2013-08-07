@@ -1,0 +1,470 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Azavea.Open.DAO.OleDb</name>
+    </assembly>
+    <members>
+        <member name="T:Azavea.Open.DAO.OleDb.OleDbOracleDaLayer">
+            <summary>
+            Implements a FastDao layer customized for PostGreSQL (optionally with PostGIS installed).
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbOracleDaLayer.#ctor(Azavea.Open.DAO.OleDb.OleDbDescriptor)">
+            <summary>
+            Construct the layer.  Should typically be called only by the appropriate
+            ConnectionDescriptor.
+            </summary>
+            <param name="connDesc">Connection to the Firebird DB we'll be using.</param>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbOracleDaLayer.GetAutoType(System.Type)">
+            <summary>
+            Returns the DDL for the type of an automatically incrementing column.
+            Some databases only store autonums in one col type so baseType may be
+            ignored.
+            </summary>
+            <param name="baseType">The data type of the column (nominally).</param>
+            <returns>The autonumber definition string.</returns>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbOracleDaLayer.GetByteArrayType">
+            <summary>
+            Returns the SQL type used to store a byte array in the DB.
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbOracleDaLayer.GetLongType">
+            <summary>
+            Returns the SQL type used to store a long in the DB.
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbOracleDaLayer.GetStringType">
+            <summary>
+            Returns the SQL type used to store a "normal" (unicode) string in the DB.
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbOracleDaLayer.GetAsciiStringType">
+            <summary>
+            Oracle doesn't seem to have a varchar type that is limited to ASCII characters.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbOracleDaLayer.SequenceExists(System.String)">
+            <summary>
+            Returns whether a sequence with this name exists or not.
+            Firebird doesn't appear to support the SQL standard information_schema.
+            </summary>
+            <param name="name">Name of the sequence to check for.</param>
+            <returns>Whether a sequence with this name exists in the data source.</returns>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbOracleDaLayer.StoreRoomMissing(Azavea.Open.DAO.ClassMapping)">
+            <summary>
+            Returns true if you need to call "CreateStoreRoom" before storing any
+            data.  This method is "Missing" not "Exists" because implementations that
+            do not use a store room can return "false" from this method without
+            breaking either a user's app or the spirit of the method.
+            
+            Store room typically corresponds to "table".
+            </summary>
+            <returns>Returns true if you need to call "CreateStoreRoom"
+                     before storing any data.</returns>
+        </member>
+        <member name="T:Azavea.Open.DAO.OleDb.OleDbAccessDaLayer">
+            <summary>
+            Implements a FastDao layer customized for PostGreSQL (optionally with PostGIS installed).
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbAccessDaLayer.#ctor(Azavea.Open.DAO.OleDb.OleDbDescriptor)">
+            <summary>
+            Construct the layer.  Should typically be called only by the appropriate
+            ConnectionDescriptor.
+            </summary>
+            <param name="connDesc">Connection to the Firebird DB we'll be using.</param>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbAccessDaLayer.GetAutoType(System.Type)">
+            <summary>
+            Returns the DDL for the type of an automatically incrementing column.
+            Some databases only store autonums in one col type so baseType may be
+            ignored.
+            </summary>
+            <param name="baseType">The data type of the column (nominally).</param>
+            <returns>The autonumber definition string.</returns>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbAccessDaLayer.GetByteArrayType">
+            <summary>
+            Returns the SQL type used to store a byte array in the DB.
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbAccessDaLayer.GetLongType">
+            <summary>
+            Returns the SQL type used to store a long in the DB.
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbAccessDaLayer.GetDateTimeType">
+            <summary>
+            Returns the SQL type used to store a DateTime in the DB.
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbAccessDaLayer.GetStringType">
+            <summary>
+            Returns the SQL type used to store a "normal" (unicode) string in the DB.
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbAccessDaLayer.GetAsciiStringType">
+            <summary>
+            Returns the SQL type used to store an ascii string in the DB.
+            MS Access does not seem to differentiate between encodings.
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbAccessDaLayer.StoreRoomMissing(Azavea.Open.DAO.ClassMapping)">
+            <summary>
+            Returns true if you need to call "CreateStoreRoom" before storing any
+            data.  This method is "Missing" not "Exists" because implementations that
+            do not use a store room can return "false" from this method without
+            breaking either a user's app or the spirit of the method.
+            
+            Store room typically corresponds to "table".
+            </summary>
+            <returns>Returns true if you need to call "CreateStoreRoom"
+                     before storing any data.</returns>
+        </member>
+        <member name="T:Azavea.Open.DAO.OleDb.OleDbDescriptor">
+            <summary>
+            This class represents the info necessary to connect to an OleDb data source.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.DAO.OleDb.OleDbDescriptor.Type">
+            <summary>
+            The type of database (Oracle, SQL Server, etc).
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.DAO.OleDb.OleDbDescriptor._connectionStr">
+            <exclude/>
+        </member>
+        <member name="F:Azavea.Open.DAO.OleDb.OleDbDescriptor._cleanConnStr">
+            <exclude/>
+        </member>
+        <member name="F:Azavea.Open.DAO.OleDb.OleDbDescriptor.Provider">
+            <summary>
+            The "Provider", meaning the value for the provider field in the OleDB connection string.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.DAO.OleDb.OleDbDescriptor.Server">
+            <summary>
+            The server name, meaningful for some databases (Oracle, SQL Server) but not others (Access).
+            May be null depending on the database.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.DAO.OleDb.OleDbDescriptor.Database">
+            <summary>
+            The database name, meaningful for some databases (Access (filename), SQL Server)
+            but not others (Oracle).  May be null depending on the database.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.DAO.OleDb.OleDbDescriptor.User">
+            <summary>
+            The user name, if necessary to log into the database.  May be null.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.DAO.OleDb.OleDbDescriptor.Password">
+            <summary>
+            The password for the User.  May be null.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.DAO.OleDb.OleDbDescriptor.ConnectTimeout">
+            <summary>
+            The connection timeout, in seconds.  May be null, meaning use the default.
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbDescriptor.#ctor(Azavea.Open.Common.Config,System.String,Azavea.Open.DAO.ConnectionInfoDecryptionDelegate)">
+            <summary>
+            This constructor reads all the appropriate values from a config file.
+            </summary>
+            <param name="config">Config to get params from.</param>
+            <param name="component">Section of the config XML to look in for db params.</param>
+            <param name="decryptionDelegate">Delegate to call to decrypt password fields.
+                                             May be null if passwords are in plain text.</param>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbDescriptor.#ctor(System.String,System.String,System.String,System.String,System.String,System.Nullable{System.Int32})">
+            <summary>
+            Constructor that lets you pass everything as parameters rather than requiring a config.
+            </summary>
+            <param name="provider">Database provider string.  May not be null.</param>
+            <param name="server">Server (or in the case of access, .mdb file) May be null, but you
+                                 probably won't be able to connect to anything.</param>
+            <param name="database">database name on that server, if applicable.  May be null.</param>
+            <param name="user">Database user name, may be null.</param>
+            <param name="password">Password for the user. May be null.</param>
+            <param name="timeout">Connection timeout, in seconds.  May be null.</param>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbDescriptor.#ctor(Azavea.Open.DAO.OleDb.OleDbDescriptor.DatabaseType,System.String,System.String,System.String,System.String,System.Nullable{System.Int32})">
+            <summary>
+            Constructor that lets you pass everything as parameters rather than requiring a config.
+            </summary>
+            <param name="type">Type of database to connect to.  May not be null.  This parameter
+                               will be used to determine what OleDb provider to use.</param>
+            <param name="server">Server (or in the case of access, .mdb file) May be null, but you
+                                 probably won't be able to connect to anything.</param>
+            <param name="database">database name on that server, if applicable.  May be null.</param>
+            <param name="user">Database user name, may be null.</param>
+            <param name="password">Password for the user. May be null.</param>
+            <param name="timeout">Connection timeout, in seconds.  May be null.</param>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbDescriptor.#ctor(Azavea.Open.DAO.OleDb.OleDbDescriptor.DatabaseType,System.String,System.String,System.String,System.String,System.String,System.Nullable{System.Int32})">
+            <summary>
+            Constructor that lets you pass everything as parameters rather than requiring a config.
+            </summary>
+            <param name="provider">Database provider string.  May be null.  If null, we will use a
+                                   provider value based on the type, if not null, we will use this
+                                   provider.</param>
+            <param name="type">Type of database to connect to.  May not be null.  This parameter
+                               will be used to determine what OleDb provider to use.</param>
+            <param name="server">Server (or in the case of access, .mdb file) May be null, but you
+                                 probably won't be able to connect to anything.</param>
+            <param name="database">database name on that server, if applicable.  May be null.</param>
+            <param name="user">Database user name, may be null.</param>
+            <param name="password">Password for the user. May be null.</param>
+            <param name="timeout">Connection timeout, in seconds.  May be null.</param>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbDescriptor.CreateDataAccessLayer">
+            <summary>
+            Returns the appropriate data access layer for this connection.  The default
+            implementation returns a normal SQL data access layer, but this may be
+            overridden in particular DB connection descriptors.
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbDescriptor.BeginTransaction">
+            <summary>
+            Begins the transaction.  Returns a NEW ConnectionDescriptor that you should
+            use for operations you wish to be part of the transaction.
+            
+            NOTE: You MUST call Commit or Rollback on the returned ITransaction when you are done.
+            </summary>
+            <returns>The ConnectionDescriptor object to pass to calls that you wish to have
+                     happen as part of this transaction.</returns>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbDescriptor.GetTypeFromConfig(Azavea.Open.Common.Config,System.String)">
+            <summary>
+            Gets the type based on a couple optional parameters in the DB config file.
+            </summary>
+            <param name="config">Config to get params from.</param>
+            <param name="component">Section of the config XML to look in for db params.</param>
+            <returns>The type as specified in the config file, or throws an exception if
+                     there is no type correctly specified.</returns>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbDescriptor.GuessTypeFromProvider(System.String)">
+            <summary>
+            Attempts to parse the provider string and determine what database type we're connecting to.
+            </summary>
+            <param name="provider">OleDB "provider" piece of the connection string.</param>
+            <returns>The DatabaseVendorName identifying the database (an exception will be thrown
+                     if we cannot determine the type).</returns>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbDescriptor.MakeConnectionString(Azavea.Open.DAO.OleDb.OleDbDescriptor.DatabaseType,System.String,System.String,System.String,System.String,System.Nullable{System.Int32})">
+            <summary>
+            Assembles a OLEDB connection string that can be used to get a database connection.
+            All the parameters are optional for the purposes of this method, although obviously
+            it would be possible to create a useless connection string if you leave out important
+            parameters.
+            </summary>
+            <param name="providerType">Database type, will be used to determine provider string.</param>
+            <param name="server">Server name that is hosting the database</param>
+            <param name="database">Database name, if necessary to specify</param>
+            <param name="user">User name to use when accessing the db</param>
+            <param name="password">Password for above user.</param>
+            <param name="connectionTimeout">How long to wait before giving up on a command, in seconds.</param>
+            <returns>A connection string that can be used to create OleDbConnections.</returns>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbDescriptor.MakeConnectionString(System.String,System.String,System.String,System.String,System.String,System.Nullable{System.Int32})">
+            <summary>
+            Assembles a OLEDB connection string that can be used to get a database connection.
+            All the parameters are optional for the purposes of this method, although obviously
+            it would be possible to create a useless connection string if you leave out important
+            parameters.
+            </summary>
+            <param name="provider">Database driver/type/something, for example "SQLOLEDB"</param>
+            <param name="server">Server name that is hosting the database</param>
+            <param name="database">Database name, if necessary to specify</param>
+            <param name="user">User name to use when accessing the db</param>
+            <param name="password">Password for above user.</param>
+            <param name="connectionTimeout">How long to wait before giving up on a command, in seconds.</param>
+            <returns>A connection string that can be used to create OleDbConnections.</returns>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbDescriptor.ToCleanString">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbDescriptor.ToCompleteString">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbDescriptor.CreateNewConnection">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbDescriptor.SetParametersOnCommand(System.Data.IDbCommand,System.Collections.IEnumerable)">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbDescriptor.CreateNewAdapter(System.Data.IDbCommand)">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbDescriptor.UsePooling">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbDescriptor.MakeModulusClause(System.String)">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbDescriptor.MakeSequenceValueQuery(System.String)">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbDescriptor.MakeBitwiseAndClause(System.String)">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbDescriptor.MakeCreateIndexCommand(System.String,System.Boolean,System.String,System.Collections.Generic.IEnumerable{System.String})">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbDescriptor.SupportsTruncate">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbDescriptor.TableAliasPrefix">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbDescriptor.TableAliasSuffix">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbDescriptor.NeedToAliasColumns">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbDescriptor.NeedAsForColumnAliases">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbDescriptor.CanUseAliasInOrderClause">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbDescriptor.HasCaseInsensitiveLikeOperator">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbDescriptor.CaseInsensitiveLikeOperator">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbDescriptor.ColumnAliasPrefix">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbDescriptor.ColumnAliasSuffix">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbDescriptor.FullOuterJoinKeyword">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbDescriptor.LowerCaseFunction">
+            <exclude/>
+        </member>
+        <member name="T:Azavea.Open.DAO.OleDb.OleDbDescriptor.DatabaseType">
+            <summary>
+            These are the database types for which support has been implemented via OleDB.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.DAO.OleDb.OleDbDescriptor.DatabaseType.ORACLE">
+            <summary>
+            Oracle (tested on 10g and 11g), uses the Oracle driver not the MS one.
+            This requires you to have installed the Oracle client drivers.  You can
+            use the MS drivers (though not recommended) by explicitly passing a provider
+            string to the constructor / config.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.DAO.OleDb.OleDbDescriptor.DatabaseType.SQLSERVER">
+            <summary>
+            MS SQL Server (2000, 2005, 2008 tested).
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.DAO.OleDb.OleDbDescriptor.DatabaseType.ACCESS">
+            <summary>
+            MS Access (most versions).
+            </summary>
+        </member>
+        <member name="T:Azavea.Open.DAO.OleDb.OleDbSqlServerDaLayer">
+            <summary>
+            Implements a FastDao layer customized for PostGreSQL (optionally with PostGIS installed).
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbSqlServerDaLayer.#ctor(Azavea.Open.DAO.OleDb.OleDbDescriptor)">
+            <summary>
+            Construct the layer.  Should typically be called only by the appropriate
+            ConnectionDescriptor.
+            </summary>
+            <param name="connDesc">Connection to the Firebird DB we'll be using.</param>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbSqlServerDaLayer.GetAutoType(System.Type)">
+            <summary>
+            Returns the DDL for the type of an automatically incrementing column.
+            Some databases only store autonums in one col type so baseType may be
+            ignored.
+            </summary>
+            <param name="baseType">The data type of the column (nominally).</param>
+            <returns>The autonumber definition string.</returns>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbSqlServerDaLayer.GetByteArrayType">
+            <summary>
+            Returns the SQL type used to store a byte array in the DB.
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbSqlServerDaLayer.GetLongType">
+            <summary>
+            Returns the SQL type used to store a long in the DB.
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.OleDbSqlServerDaLayer.GetDateTimeType">
+            <summary>
+            Returns the SQL type used to store a DateTime in the DB.
+            </summary>
+        </member>
+        <member name="T:Azavea.Open.DAO.OleDb.Tests.AccessDaoTests">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.Tests.AccessDaoTests.#ctor">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.Tests.AccessDaoTests.Init">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.Tests.AccessDaoTests.TestGetMappingFromSchema">
+            <exclude/>
+        </member>
+        <member name="T:Azavea.Open.DAO.OleDb.Tests.AccessJoinTests">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.Tests.AccessJoinTests.#ctor">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.Tests.AccessJoinTests.Init">
+            <exclude/>
+        </member>
+        <member name="T:Azavea.Open.DAO.OleDb.Tests.OracleDaoTests">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.Tests.OracleDaoTests.#ctor">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.Tests.OracleDaoTests.TestGetMappingFromSchema">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.Tests.OracleDaoTests.TestCheckStoreRoomMissing">
+            <exclude/>
+        </member>
+        <member name="T:Azavea.Open.DAO.OleDb.Tests.OracleJoinTests">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.Tests.OracleJoinTests.#ctor">
+            <exclude/>
+        </member>
+        <member name="T:Azavea.Open.DAO.OleDb.Tests.SqlServerDaoTests">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.Tests.SqlServerDaoTests.#ctor">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.Tests.SqlServerDaoTests.TestGetMappingFromSchema">
+            <exclude/>
+        </member>
+        <member name="T:Azavea.Open.DAO.OleDb.Tests.SqlServerJoinTests">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.OleDb.Tests.SqlServerJoinTests.#ctor">
+            <exclude/>
+        </member>
+    </members>
+</doc>

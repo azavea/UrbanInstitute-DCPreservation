@@ -1,0 +1,37 @@
+/*.pdp-input { font-family:Trebuchet MS,Helvetica,Arial,Sans-serif; }*/
+select, input { font-size:12px; }
+optgroup {font-style: normal;}
+.pdp-form {padding: 5px; margin-left: 5px;}
+
+.pdp-input-text { border:1px solid #777;padding:4px 4px;font-size:1.1em;width:300px;background-color:#f3f3f3;margin-right:6px;
+    background-image:-moz-linear-gradient(center top, #ebebeb, #fff 55%);
+    background-image:-webkit-gradient(linear, 0% 0%, 0% 55%, from(#ebebeb), to(#fff)); }
+.pdp-input-text:focus { background-color:#fff;background-image:none; }
+.pdp-input-text-second { margin-top:2px;display:block; }
+.pdp-input-text-default { color:#777;font-style:italic; }
+.pdp-input-shorttext { width:220px; }
+.pdp-input-tinytext { width:180px; }
+.pdp-input-textarea { height:64px; }
+.pdp-input-select { border:1px solid #777;padding:7px 4px;font-size:1.1em;-moz-border-radius:4px;margin-right:6px; }
+.pdp-input-checkbox { margin:0;vertical-align:middle; margin-right: 2px;}
+.pdp-input-invalid { border-width: 2px; border-color:#b44;background-color:#fbdfdf;
+    background-image:-moz-linear-gradient(center top, #fbdada, #fbe0e0 55%);
+    background-image:-webkit-gradient(linear, 0% 0%, 0% 55%, from(#fbdada), to(#fbe0e0)); }
+.pdp-input-readonly { padding:0 8px;font-size:1.1em; }
+
+.pdp-input-button, .pdp-button { border:1px solid #999;padding:4px 8px;font-size:1.1em;font-weight:bold;margin:0 8px 0 0;cursor:pointer;color:#363636;background-color:#ccc;
+    -moz-border-radius:6px;
+    -webkit-border-radius:6px;
+    background-image:-moz-linear-gradient(center top, #eee, #aaa);
+    background-image:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#eee), to(#aaa));
+    text-shadow:rgba(240, 240, 240, 0.6) 1px 1px 0px; }
+.pdp-input-button:hover { color:#363636;background-image:-moz-linear-gradient(center top, #ddd, #999);background-image:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#ddd), to(#999)); }
+.pdp-input-button:active { color:#363636;background-image:-moz-linear-gradient(center top, #ccc, #ddd);background-image:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#ccc), to(#ddd)); }
+
+.pdp-form-label { font-weight:bold;color:#444; }
+.pdp-form-ctrl { margin-top:1px; }
+.pdp-form { margin:12px 8px 8px;max-width:350px;border: solid 1px #c0c0c0; padding: 10px;}
+    .pdp-form h2 { font-size:1.4em;font-weight:bold;color:#777;margin-left:8px; }
+    .pdp-form ul { padding:4px 8px; }
+        .pdp-form li { margin:2px 0 6px;padding:6px 0; }
+

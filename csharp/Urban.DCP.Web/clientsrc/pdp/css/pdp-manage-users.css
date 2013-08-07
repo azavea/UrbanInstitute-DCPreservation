@@ -1,0 +1,9 @@
+.pdp-user-table-pager{
+    padding: 5px;
+    margin-top: 15px;
+    position: relative;
+}
+.pdp-table-pager{ position:relative !important; }
+
+#pdp-admin-user-table{ overflow: auto; height: 500px; border: 1px solid #C0C0C0; padding: 3px; }
+#pdp-pdb-table-content {margin-top:15px;}
