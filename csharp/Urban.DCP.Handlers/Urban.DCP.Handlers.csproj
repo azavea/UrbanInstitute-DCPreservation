@@ -58,6 +58,9 @@
     <Reference Include="Azavea.Open.DAO">
       <HintPath>..\packages\Azavea.Open.DAO.1.1.6\lib\net20\Azavea.Open.DAO.dll</HintPath>
     </Reference>
+    <Reference Include="Azavea.Open.DAO.SQLServer">
+      <HintPath>..\packages\Azavea.Open.DAO.SQLServer.1.0.0\lib\net20\Azavea.Open.DAO.SQLServer.dll</HintPath>
+    </Reference>
     <Reference Include="Azavea.Utilities.Common">
       <HintPath>..\packages\Azavea.Utilities.Common.3.2.2\lib\net20\Azavea.Utilities.Common.dll</HintPath>
     </Reference>
@@ -96,6 +99,7 @@
   <ItemGroup>
     <Compile Include="AttributesHandler.cs" />
     <Compile Include="AppHealth.cs" />
+    <Compile Include="EmailConfirmationHandler.cs" />
     <Compile Include="ReportDownloadHandler.cs" />
     <Compile Include="PropertyLocationHandler.cs" />
     <Compile Include="PropertyDetailsHandler.cs" />

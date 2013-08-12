@@ -65,7 +65,14 @@ namespace Urban.DCP.Data
             // Check for an empty/null string, we don't want them in the db.
             if (StringHelper.IsNonBlank(email))
             {
-                userAccount.Email = email;
+                Boolean isEmailUpdate = ! userAccount.Email.Equals(email);
+                if (isEmailUpdate)
+                {
+                    userAccount.EmailConfirmed = 'f';
+                    userAccount.EmailConfirmationToken = null;
+                    userAccount.Email = email;
+                }
+
             }
             if (StringHelper.IsNonBlank(name))
             {
@@ -338,6 +345,11 @@ namespace Urban.DCP.Data
             retVal.Add(new UserResultMetadata("Roles", "Roles", "text", true));
             
             return retVal;
+        }
+
+        public static void Save(User user)
+        {
+            _userDao.Save(user);
         }
     }
 }

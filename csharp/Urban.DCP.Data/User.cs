@@ -37,6 +37,16 @@ namespace Urban.DCP.Data
         /// </summary>
         public string Roles;
         /// <summary>
+        /// The GUID used for email confirmation
+        /// </summary>
+        public string EmailConfirmationToken;
+        /// <summary>
+        /// Is the user's email confirmed?
+        /// </summary>
+        public char EmailConfirmed;
+        
+
+        /// <summary>
         /// A list of role enums
         /// </summary>
         public IList<SecurityRole> RolesList
@@ -62,6 +72,7 @@ namespace Urban.DCP.Data
             }
         }
 
+
         /// <summary>
         /// Is this user a SysAdmin?
         /// </summary>
@@ -81,6 +92,44 @@ namespace Urban.DCP.Data
         public override string ToString()
         {
             return Name;
+        }
+
+        /// <summary>
+        /// Lazily instantiate and return an email confirmation token.
+        /// </summary>
+        /// <returns></returns>
+        public string GetConfirmationToken()
+        {
+            if (EmailConfirmationToken == null)
+            {
+                EmailConfirmationToken = Guid.NewGuid().ToString();
+                Save();
+            }
+            return EmailConfirmationToken;
+        }
+
+        /// <summary>
+        /// Check incoming conf token, and if match, set user has confirmed email address.
+        /// </summary>
+        /// <param name="token">The incoming token, IE from the confirmation request.</param>
+        /// <returns></returns>
+        public Boolean ConfirmEmail(String token)
+        {
+            if (EmailConfirmationToken != null && token != null && EmailConfirmationToken.Equals(token))
+            {
+                EmailConfirmed = 't';
+                Save();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public void Save()
+        {
+            UserHelper.Save(this);
         }
     }
 }

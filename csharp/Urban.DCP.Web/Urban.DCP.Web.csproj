@@ -83,6 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Web.config" />
+    <Content Include="confirmEmail.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\manage-users.aspx.cs">
@@ -116,6 +117,13 @@
     </Compile>
     <Compile Include="user\profile.aspx.designer.cs">
       <DependentUpon>profile.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="confirmEmail.aspx.cs">
+      <DependentUpon>confirmEmail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="confirmEmail.aspx.designer.cs">
+      <DependentUpon>confirmEmail.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -232,6 +240,7 @@
     <Content Include="handlers\property-locations.ashx" />
     <Content Include="handlers\app-health.ashx" />
     <Content Include="handlers\report-download.ashx" />
+    <Content Include="handlers\email-confirmation.ashx" />
     <None Include="minifier.conf" />
     <Content Include="packages.config" />
   </ItemGroup>
