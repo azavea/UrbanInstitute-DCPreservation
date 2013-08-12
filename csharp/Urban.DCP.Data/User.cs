@@ -43,7 +43,20 @@ namespace Urban.DCP.Data
         /// <summary>
         /// Is the user's email confirmed?
         /// </summary>
-        public char EmailConfirmed;
+
+        // Hack around SQLServer's lack of a boolean datatype.
+        public char _EmailConfirmed;
+        public Boolean EmailConfirmed
+        {
+            get
+            {
+                return _EmailConfirmed.Equals('t') ? true : false;
+            }
+            set 
+            {
+                _EmailConfirmed = value ? 't' : 'f';
+            }
+        }
         
 
         /// <summary>
@@ -117,8 +130,7 @@ namespace Urban.DCP.Data
         {
             if (EmailConfirmationToken != null && token != null && EmailConfirmationToken.Equals(token))
             {
-                EmailConfirmed = 't';
-                Save();
+                EmailConfirmed = true;
                 return true;
             }
             else
@@ -131,5 +143,7 @@ namespace Urban.DCP.Data
         {
             UserHelper.Save(this);
         }
+
+
     }
 }

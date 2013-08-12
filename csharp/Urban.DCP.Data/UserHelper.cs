@@ -68,7 +68,7 @@ namespace Urban.DCP.Data
                 Boolean isEmailUpdate = ! userAccount.Email.Equals(email);
                 if (isEmailUpdate)
                 {
-                    userAccount.EmailConfirmed = 'f';
+                    userAccount.EmailConfirmed = false;
                     userAccount.EmailConfirmationToken = null;
                     userAccount.Email = email;
                 }
@@ -351,5 +351,6 @@ namespace Urban.DCP.Data
         {
             _userDao.Save(user);
         }
+
     }
 }

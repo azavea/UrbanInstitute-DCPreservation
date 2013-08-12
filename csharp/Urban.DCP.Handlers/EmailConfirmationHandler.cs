@@ -14,12 +14,31 @@ namespace Urban.DCP.Handlers
 {
     public class EmailConfirmationHandler : BaseHandler
     {
+
+        protected override void InternalGET(HttpContext context, HandlerTimedCache cache)
+        {
+
+            if (context.User.Identity.IsAuthenticated)
+            {
+                // We are currently logged in
+                User user = UserHelper.GetUser(context.User.Identity.Name);
+                context.Response.StatusCode = (int)HttpStatusCode.OK;
+                context.Response.Write(user.EmailConfirmed.ToString());
+            }
+            else
+            {
+                context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return;
+            }
+            
+        }
+
         /// <summary>
         /// GET this handler with a valid user object to send a confirmation email for that user.
         /// </summary>
         /// <param name="context"></param>
         /// <param name="cache"></param>
-        protected override void InternalGET(HttpContext context, HandlerTimedCache cache)
+        protected override void InternalPOST(HttpContext context, HandlerTimedCache cache)
         {
             if (context.User.Identity.IsAuthenticated)
             {
