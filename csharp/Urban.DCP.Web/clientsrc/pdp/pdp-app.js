@@ -23,7 +23,7 @@
             
         });
 
-        //Helper to update the data (PDB/Nychanis) type state and update the UI
+        //Helper to update the data  type state and update the UI
         var _setDataTypeState = Azavea.tryCatch('set data type state', function(dataId) {
             
             // To get the border around the main content, add a dataType class
@@ -112,12 +112,6 @@
         });
         
         var _initNoDataAlert = Azavea.tryCatch('init no data alerts', function(){
-            $(P.Nychanis).bind('pdp-data-response', function(event, data) {
-                if (!data.Values || !data.Values.length) {
-                    P.Util.quickAlert('No results matched your search');
-                }
-            });
-            
             $(P.Pdb).bind('pdp-data-response', function(event, data) {
                 if (!data.TotalResults) {
                     P.Util.quickAlert('No results matched your search');
@@ -132,7 +126,6 @@
         _self.init = Azavea.tryCatch('init app', function() {
             _$main = $('#pdp-main');
             _$tabContainer = $('#pdp-tab-container');
-            _$tabContent = $('.pdp-tab-content-container');
             
             //A widget to show that something is happening.
             P.Widget.LoadingIndicator({
@@ -178,20 +171,6 @@
                 target: '#pdp-pdb-view'
             }).init();
             
-            //Dark lord of all Nychanis searches
-            PDP.Nychanis.Search({ 
-                target: '#pdp-nychanis-view'
-            }).init();
-
-            //Dark lord of all Nychanis results
-            PDP.Nychanis.Results({ 
-                tableTarget: '#pdp-nychanis-table-data',
-                tablePagerTarget: '#pdp-nychanis-table-pager',
-                exportTarget: '#pdp-nychanis-table-export',
-                mapTitleTarget: '#pdp-map-title-content',
-                tableTitleTarget: '#pdp-nychanis-table-toolbar'
-            }).init();
-
             // If google is gone, tell the user the map isn't working.  Tables are ok though.
             try{
                 //Lord of the Map - both Nychanis and PDB
@@ -210,18 +189,6 @@
             //A nifty little widget to make sure that panels are
             //mutually exclusive.
             P.Widget.PanelCloser().init();
-                        
-            // Setup Feedbacker of doom
-            var f = Feedbacker.init({
-                    orientation: 'left',
-                    css: {
-                        'z-index': 9999, 
-                        bottom: '40px'
-                         },
-                    onSuccess: function(){
-                        P.Util.quickAlert('Thank you for sending your feedback!', 'Feedback Submitted');
-                    } 
-                });
             
             // A bit of magic here, to ensure that everything is lined up correctly
             $(window).resize();

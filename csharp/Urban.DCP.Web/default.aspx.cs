@@ -7,6 +7,7 @@ namespace Urban.DCP.Web
     {
         protected override void InternalGET(System.Web.HttpContext context)
         {
+
             Master.SetTitle("Home");
 
             // OpenLayers css
@@ -20,7 +21,7 @@ namespace Urban.DCP.Web
             Master.RegisterCssFile("client/css/pdp-ie-lte7.css", "lte IE 7", true);
 
             // Google maps
-            Master.RegisterJavascriptFile("http://maps.google.com/maps/api/js?key=AIzaSyCrmukm7Y-ioKmlKDSL7MYMdzsK0BQ_1Q0&sensor=false&v=3.6");
+            Master.RegisterJavascriptFile("http://maps.google.com/maps/api/js?key=AIzaSyDHOAuglMot0ksK700_wU6xGT-3FXi9-no&sensor=false&");
             
             // OpenLayers Javascript: This is a PATCHED version of openalayers, build with
             // a custom config file (checked into scripts)

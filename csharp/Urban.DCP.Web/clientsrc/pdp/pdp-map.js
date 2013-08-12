@@ -39,68 +39,6 @@
              }
         });
         
-        // Add a nychanis layer to the map, using the index from the current reponse
-        var _updateNychanisLayer = Azavea.tryCatch('add nychanis layer', function(data, layerIndex){
-            
-            // Make sure we have layer at this position
-            if (data.MapInfo && data.MapInfo.Layers && data.MapInfo.Layers.length && data.MapInfo.Layers.length > layerIndex) {
-                if (_nychanisLayer) {
-                    // Merge the new layer params into the nychanis layer currently displayed on the map
-                    _nychanisLayer.mergeNewParams(data.MapInfo.Layers[layerIndex].Config);
-                } else {
-                    //Init the nychanis layer with the params from the data response
-                    _nychanisLayer = new OpenLayers.Layer.WMS(
-                        'nychanis', data.MapInfo.Server,
-                        data.MapInfo.Layers[layerIndex].Config,
-                            {
-                                isBaseLayer: false,
-                                tileSize: new OpenLayers.Size(500,500),
-                                buffer: 0,
-                                displayOutsideMaxExtent: true
-                            } 
-                        );
-                    _map.addLayer(_nychanisLayer);
-                    // This is a bit hacky.  We need to make sure the pdb marker layer is on top
-                    // of the nychanis layer, but the nychanis layer is being added dynamicly and
-                    // the pdb layer is not.  So for now when we add the nychanis layer, make sure
-                    // the pdb layer is pushed to the top.
-                    if (_pdbLayer) {
-                        _map.raiseLayer(_pdbLayer, 50);
-                    }
-                }
-            } else {
-                // Can't add requested layer, remove the previously added one so the title/display matches
-                if (_nychanisLayer){
-                    _map.removeLayer(_nychanisLayer);
-                    _nychanisLayer = null;
-                } 
-            }
-        });
-              
-        // The base layer has changed, update map using the index of the response layer
-        var _handleNychanisLayerChange = Azavea.tryCatch('nychanis layer changed', function(event, nychanisData, layerIndex){
-            _updateNychanisLayer(nychanisData, layerIndex);            
-        });
-        
-        // Add a nychanis layer to the map, using the index from the current reponse
-        var _updateOutlineLayer = Azavea.tryCatch('change outline layer', function(layerIndex){
-            // See if there is such a layer config.
-            var layerConfig = P.Config.Outlines.Layers[layerIndex];
-            if (layerConfig) {
-                // Reconfigure the layer and make sure it's visible.
-                _outlineLayer.mergeNewParams(layerConfig.Config);
-                if (!_outlineLayer.getVisibility()) {
-                    _outlineLayer.setVisibility(true);
-                }
-            } else {
-                // Just hide the layer, they presumably selected "none".
-                _outlineLayer.setVisibility(false);
-            }
-        });
-        // The base layer has changed, update map using the index of the response layer
-        var _handleOutlineLayerChange = Azavea.tryCatch('outline layer changed', function(event, layerIndex){
-            _updateOutlineLayer(layerIndex);            
-        });
 
         // Remove any info popup bubble on the map
         var _removePopup = Azavea.tryCatch('remove popup', function() {
@@ -437,12 +375,6 @@
             // Handles event for changing of base layer for layer control
             $(_options.bindTo).bind('pdp-map-base-layer-changed', _handleBaseLayerChange);
             
-            // Handles event for changing the current nychanis layer from the layer control slider
-            $(P.Nychanis).bind('pdp-nychanis-layer-change', _handleNychanisLayerChange);
-            
-            // Handles event for changing the current outline layer from the outline layer control
-            $(_options.bindTo).bind('pdp-map-outline-layer-changed', _handleOutlineLayerChange);
-
             // Handles event for changing the current outline layer from the outline layer control
             $(_options.bindTo).bind('pdp-map-zoom-to', _handleMapZoomTo);
             
@@ -515,21 +447,6 @@
             // Set up map defaults
             _map.addLayers(_options.layers);
 
-            // Create and add a layer for the area outlines (like boroughs, etc).
-            _outlineLayer = new OpenLayers.Layer.WMS(
-                'outlines', P.Config.Outlines.Server,
-                    { /* before one is chosen, no layer config is available. */ },
-                    {
-                        isBaseLayer: false,
-                        tileSize: new OpenLayers.Size(500,500),
-                        buffer: 0,
-                        displayOutsideMaxExtent: true
-                    }
-                );
-            // It starts out invisibile.
-            _outlineLayer.setVisibility(false);
-            _map.addLayer(_outlineLayer);
-            
             // Create and add a pdb marker layer
             _pdbLayer = new OpenLayers.Layer.Markers('pdb');
             _map.addLayer(_pdbLayer);

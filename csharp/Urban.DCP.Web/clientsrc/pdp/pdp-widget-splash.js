@@ -61,35 +61,18 @@
         var _render = Azavea.tryCatch('render splash', function(){
             $('<div id="pdp-splash-overlay"></div>' + 
             '<div id="pdp-splash-screen" class="ui-corner-all pdp-shadow-dark-all">' + 
-                '<h2>Welcome to the Furman Center\'s Data Search Tool</h2>' + 
+                '<h2>Urban Institute DC Preservation</h2>' +
                 '<div id="pdp-splash-screen-content">' +
-                    '<div id="pdp-splash-search-descriptions">' +   
-                        '<div><span><strong>Neighborhood Info:</strong> View or download tables and maps of historic and contemporary housing, demographic, and community information at a variety of neighborhood sizes in New York City.</span></div>' +
-                        '<div><span><strong>Affordable Housing (SHIP):</strong> View or download tables and  maps of thousands of New York City properties in the Furman Center\'s SHIP (Subsidized Housing Information Project) database.</span></div>' +
-                    '</div>' +
-                    '<table id="pdp-splash-table">' + 
-                        '<tr class="pdp-splash-image-row">' + 
-                            '<td><img width="190px" height="240px" src="client/css/images/splash/splash-nychanis.png"></td>' + 
-                            '<td><img width="190px" height="240px" src="client/css/images/splash/splash-property.png"></td>' +
-                        '<tr class="pdp-splash-link-row">' + 
-                            '<td><a id="pdp-splash-nychanis" class="pdp-splash-link" href="javascript:void(0);">Neighborhood Search</a></td>' + 
-                            '<td><a id="pdp-splash-property" class="pdp-splash-link" href="javascript:void(0);">Housing (SHIP) Search</a></td>' + 
-                    '</table>' +
-                    '<div id="pdp-splash-search-instructions">' +   
-                        '<div>You may switch between Neighborhood Info and Housing (SHIP) using their tabs, and display both on the same map.  Choices made beneath one tab do not modify the other\'s results.</div>' +
-                    '</div>' +                    
+                            
                 '</div>' + 
                 '<div id="pdp-splash-buttonbar">' + 
                     '<div id="pdp-splash-linkbar">' +
-                        '<a href="http://www.furmancenter.org/data/">Furman Center Data</a>' +
-                        '<a href="http://www.furmancenter.org/data/search/guide/">How-to Guide</a>' + 
-                        '<a href="http://www.furmancenter.org/data/disclaimer/">Disclaimer</a>' + 
+                        '<a href="http://google.com">Disclaimer</a>' +
                     '</div>' + 
                     '<a id="pdp-splash-skip" href="javascript:void(0);">Skip</a>' +
                     '<input id="pdp-splash-no-show" type="checkbox" class="pdp-input pdp-input-checkbox left"/>' + 
                     '<label for="pdp-splash-no-show" class="left">Do not show again</label>' +                
                 '</div>' + 
-                '<div id="pdp-splash-support">This site supports Firefox 3+, Internet Explorer 7+ and Chrome 4+.</div>' + 
             '</div>').appendTo(_options.target);
         });
 

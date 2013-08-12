@@ -35,30 +35,19 @@
                 <div id="pdp-pdb-table-data" class="pdp-table-data"></div>
                 <div id="pdp-pdb-table-pager" class="pdp-table-pager"></div>
             </div>
-            <div id="pdp-nychanis-table-content" class="pdp-main-content pdp-table-view pdp-nychanis-view">
-                <div id="pdp-nychanis-table-toolbar" class="pdp-table-toolbar">
-                    <div id="pdp-nychanis-table-export" class="pdp-table-export"></div>
-                </div>
-                <div id="pdp-nychanis-table-data" class="pdp-table-data"></div>
-                <div id="pdp-nychanis-table-pager" class="pdp-table-pager"></div>
-            </div>
         </div>
     </div>
     <div id="left">
         <div id="pdp-tab-container">
             <div class="pdp-toolbar">
                 <ul class="pdp-tab-header">
-		            <li class="pdp-tab pdp-tab-pdb ui-corner-top"><a href="#pdp-pdb-view">Housing (SHIP)</a></li>
-		            <li class="pdp-tab pdp-tab-nyc ui-corner-top"><a href="#pdp-nychanis-view">Neighborhood Info</a></li>
+		            <li class="pdp-tab pdp-tab-pdb ui-corner-top"><a href="#pdp-pdb-view">Properties</a></li>
 	            </ul>
 	        </div>
 
             <div class="pdp-tab-content-container">
                 <div id="pdp-pdb-view" class="pdp-tab-content"></div>
-                <div id="pdp-nychanis-view" class="pdp-tab-content"></div>
             </div>
         </div>
     </div>
-    <div id="pdp-app-copyright"><a href="http://www.furmancenter.org/data/disclaimer/">&copy; Furman Center for Real Estate and Urban Policy 2010.</a></div>
-    
 </asp:Content>

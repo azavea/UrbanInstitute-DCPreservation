@@ -32,7 +32,8 @@
         <div id="pdp-browser-warning">JavaScript must be enabled on your Internet Browser to use this website.</div>
     </noscript>
     <div id="header">
-        <a href="http://www.furmancenter.org"><img id="Img1" width="220" height="88" class="pdp-header-logo" runat="server" src="~/client/css/images/header.png" alt="Preservation Database Project" /></a>
+        <a href="http://www.furmancenter.org"><img src="http://placehold.it/220x88" class="pdp-header-logo" ></a>
+        
         <div id="login" class="pdp-login-container"></div>
         <div id="signup" class="pdp-signup-container"></div>
         <div id="pdp-header-linkbar">

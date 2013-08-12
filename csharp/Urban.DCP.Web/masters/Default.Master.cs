@@ -12,6 +12,11 @@ namespace Urban.DCP.Web.masters
 
         protected override void OnInit(EventArgs e)
         {
+#if DEBUG
+            UseMinifiedFiles = false;
+#else
+            UseMinifiedFiles = true;
+#endif
             base.OnInit(e);
 
             string appUrl = WebUtil.GetApplicationUrl(Request);
