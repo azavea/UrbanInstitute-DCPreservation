@@ -110,7 +110,8 @@ namespace Urban.DCP.Handlers
                 User newUser = UserHelper.CreateUser(userName, hashPass, email, name, roles);
 
                 // Send an email to notify that a user has signed up and is requesting new permissions
-                SendNewUserMail(newUser);
+                SendNewUserMailToAdmin(newUser);
+                SendNewUserMailToUser(newUser);
             }
             else
             {
@@ -202,7 +203,7 @@ namespace Urban.DCP.Handlers
         /// Sends an email 
         /// </summary>
         /// <param name="newUser">The user who has just registered.</param>
-        private void SendNewUserMail(User newUser)
+        private void SendNewUserMailToAdmin(User newUser)
         {
             // Get the mailer values from the config
             Config config = Config.GetConfig("PDP.Web");
@@ -234,5 +235,46 @@ namespace Urban.DCP.Handlers
 
             _log.Debug("Reset Email message sent, returned: [" + sent.ToString() + "]");
         }
+
+
+        /// <summary>
+        /// Sends an email 
+        /// </summary>
+        private void SendNewUserMailToUser(User user)
+        {
+            // Get the mailer values from the config
+            Config config = Config.GetConfig("PDP.Web");
+
+            // SMTP config
+            string smtpServer = config.GetParameter("Mailer", "SmtpServer");
+            int smtpPort = Convert.ToInt32(config.GetParameter("Mailer", "SmtpPort"));
+            string smtpUser = config.GetParameter("Mailer", "SmtpUser");
+            string smtpHashedPassword = config.GetParameter("Mailer", "SmtpHashedPassword");
+
+            //Email settings
+            string link = String.Format(config.GetParameter("EmailVerification", "ConfirmationURI"), user.UserName, user.EmailConfirmationToken);
+            string emailBody = String.Format(config.GetParameter("EmailVerification", "Body"), user.Name,
+                user.Email, link, link);
+            string emailFromAddress = config.GetParameter("EmailVerification", "FromEmail");
+            string emailFromName = config.GetParameter("EmailVerification", "FromName");
+            string emailTo = user.Email;
+            string emailSubject = config.GetParameter("EmailVerification", "Subject");
+
+
+            // Setup the mailer and message
+            Mailer mailer = new Mailer(smtpServer, smtpPort, smtpUser, smtpHashedPassword);
+            MailMessage msg = new MailMessage(new MailAddress(emailFromAddress, emailFromName), new MailAddress(emailTo));
+            msg.Subject = emailSubject;
+            msg.Body = emailBody;
+            msg.IsBodyHtml = true;
+            // Send it
+            bool sent = mailer.SendMessageObject(msg);
+
+            _log.Debug("Confirmation Email message sent, returned: [" + sent.ToString() + "]");
+        }
+    
+    
     }
+
+
 }
