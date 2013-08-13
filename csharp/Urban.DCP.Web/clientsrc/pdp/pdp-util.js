@@ -151,14 +151,17 @@
             }
         },
         
-        alert: function(message, title) {
+        alert: function (message, title, callback) {
+            if (!callback) {
+                callback = function () {
+                    $(this).dialog('close');
+                }
+            };
             $('<div>' + message + '</div>').dialog({
 			    modal: true,
 			    title: title,
 			    buttons: {
-				    Ok: function() {
-					    $(this).dialog('close');
-				    }
+				    Ok: callback
 			    }
 		    });
         },
