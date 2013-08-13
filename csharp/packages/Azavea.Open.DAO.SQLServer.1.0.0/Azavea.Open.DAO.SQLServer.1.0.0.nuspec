@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Azavea.Open.DAO.SQLServer</id>
+    <version>1.0.0</version>
+    <title>Azavea.Open.DAO.SQLServer</title>
+    <authors>Azavea</authors>
+    <owners>Azavea</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Data Access Object for SQL Server</description>
+    <releaseNotes>Package for NuGet</releaseNotes>
+    <dependencies>
+      <dependency id="Azavea.Open.DAO" version="1.1.6" />
+    </dependencies>
+  </metadata>
+</package>

@@ -1,0 +1,169 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Azavea.Open.DAO.SQLServer</name>
+    </assembly>
+    <members>
+        <member name="T:Azavea.Open.DAO.SQLServer.SQLServerDaLayer">
+            <summary>
+            Implements a FastDao layer customized for PostGreSQL (optionally with PostGIS installed).
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.DAO.SQLServer.SQLServerDaLayer.#ctor(Azavea.Open.DAO.SQLServer.SQLServerDescriptor)">
+            <summary>
+            Construct the layer.  Should typically be called only by the appropriate
+            ConnectionDescriptor.
+            </summary>
+            <param name="connDesc">Connection to the Firebird DB we'll be using.</param>
+        </member>
+        <member name="M:Azavea.Open.DAO.SQLServer.SQLServerDaLayer.GetAutoType(System.Type)">
+            <summary>
+            Returns the DDL for the type of an automatically incrementing column.
+            Some databases only store autonums in one col type so baseType may be
+            ignored.
+            </summary>
+            <param name="baseType">The data type of the column (nominally).</param>
+            <returns>The autonumber definition string.</returns>
+        </member>
+        <member name="M:Azavea.Open.DAO.SQLServer.SQLServerDaLayer.GetByteArrayType">
+            <summary>
+            Returns the SQL type used to store a byte array in the DB.
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.DAO.SQLServer.SQLServerDaLayer.GetLongType">
+            <summary>
+            Returns the SQL type used to store a long in the DB.
+            </summary>
+        </member>
+        <member name="T:Azavea.Open.DAO.SQLServer.SQLServerDescriptor">
+            <summary>
+            This class represents the info necessary to connect to a SQL Server database.
+            TODO: Add support for SQL Server Spatial.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.DAO.SQLServer.SQLServerDescriptor._connectionStr">
+            <exclude/>
+        </member>
+        <member name="F:Azavea.Open.DAO.SQLServer.SQLServerDescriptor._cleanConnStr">
+            <exclude/>
+        </member>
+        <member name="F:Azavea.Open.DAO.SQLServer.SQLServerDescriptor.Server">
+            <summary>
+            The server name. May not be null.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.DAO.SQLServer.SQLServerDescriptor.Database">
+            <summary>
+            The database name.  May not be null.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.DAO.SQLServer.SQLServerDescriptor.User">
+            <summary>
+            The user name, if necessary to log into the database.  May be null.
+            </summary>
+        </member>
+        <member name="F:Azavea.Open.DAO.SQLServer.SQLServerDescriptor.Password">
+            <summary>
+            The password for the User.  May be null.
+            </summary>
+        </member>
+        <member name="M:Azavea.Open.DAO.SQLServer.SQLServerDescriptor.#ctor(Azavea.Open.Common.Config,System.String,Azavea.Open.DAO.ConnectionInfoDecryptionDelegate)">
+            <summary>
+            This constructor reads all the appropriate values from a config file.
+            </summary>
+            <param name="config">Config to get params from.</param>
+            <param name="component">Section of the config XML to look in for db params.</param>
+            <param name="decryptionDelegate">Delegate to call to decrypt password fields.
+                                             May be null if passwords are in plain text.</param>
+        </member>
+        <member name="M:Azavea.Open.DAO.SQLServer.SQLServerDescriptor.#ctor(System.String,System.String,System.String,System.String)">
+            <summary>
+            Constructor that lets you pass everything as parameters rather than requiring a config.
+            </summary>
+            <param name="server">Server name.  May not be null.</param>
+            <param name="database">Database name on that server.  May not be null.</param>
+            <param name="user">Database user name, may be null.</param>
+            <param name="password">Password for the user. May be null.</param>
+        </member>
+        <member name="M:Azavea.Open.DAO.SQLServer.SQLServerDescriptor.BeginTransaction">
+            <summary>
+            Begins the transaction.  Returns a NEW ConnectionDescriptor that you should
+            use for operations you wish to be part of the transaction.
+            
+            NOTE: You MUST call Commit or Rollback on the returned ITransaction when you are done.
+            </summary>
+            <returns>The ConnectionDescriptor object to pass to calls that you wish to have
+                     happen as part of this transaction.</returns>
+        </member>
+        <member name="M:Azavea.Open.DAO.SQLServer.SQLServerDescriptor.MakeConnectionString(System.String,System.String,System.String,System.String)">
+            <summary>
+            Assembles a connection string that can be used to get a database connection.
+            All the parameters are optional for the purposes of this method, although obviously
+            it would be possible to create a useless connection string if you leave out important
+            parameters.
+            </summary>
+            <param name="server">Server name that is hosting the database</param>
+            <param name="database">Database name on the server.</param>
+            <param name="user">User name to use when accessing the db.</param>
+            <param name="password">Password for above user.</param>
+            <returns>A connection string that can be used to create SqlConnections.</returns>
+        </member>
+        <member name="M:Azavea.Open.DAO.SQLServer.SQLServerDescriptor.ToCleanString">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.SQLServer.SQLServerDescriptor.ToCompleteString">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.SQLServer.SQLServerDescriptor.CreateNewConnection">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.SQLServer.SQLServerDescriptor.SetParametersOnCommand(System.Data.IDbCommand,System.Collections.IEnumerable)">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.SQLServer.SQLServerDescriptor.CreateNewAdapter(System.Data.IDbCommand)">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.SQLServer.SQLServerDescriptor.UsePooling">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.SQLServer.SQLServerDescriptor.MakeModulusClause(System.String)">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.SQLServer.SQLServerDescriptor.MakeBitwiseAndClause(System.String)">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.SQLServer.SQLServerDescriptor.TableAliasPrefix">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.SQLServer.SQLServerDescriptor.TableAliasSuffix">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.SQLServer.SQLServerDescriptor.NeedToAliasColumns">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.SQLServer.SQLServerDescriptor.NeedAsForColumnAliases">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.SQLServer.SQLServerDescriptor.ColumnAliasPrefix">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.SQLServer.SQLServerDescriptor.ColumnAliasSuffix">
+            <exclude/>
+        </member>
+        <member name="T:Azavea.Open.DAO.SQLServer.Tests.SqlServerDaoTests">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.SQLServer.Tests.SqlServerDaoTests.#ctor">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.SQLServer.Tests.SqlServerDaoTests.TestGetMappingFromSchema">
+            <exclude/>
+        </member>
+        <member name="T:Azavea.Open.DAO.SQLServer.Tests.SqlServerJoinTests">
+            <exclude/>
+        </member>
+        <member name="M:Azavea.Open.DAO.SQLServer.Tests.SqlServerJoinTests.#ctor">
+            <exclude/>
+        </member>
+    </members>
+</doc>
