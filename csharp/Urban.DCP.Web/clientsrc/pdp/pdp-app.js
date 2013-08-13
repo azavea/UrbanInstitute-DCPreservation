@@ -11,7 +11,8 @@
                 uiType: 'pdp-map-view'
             },
             _$main,
-            _$tabContainer;
+            _$tabContainer,
+            _$tabContent;
 
         //Toggles what functionality is currently visible, based on the state.
         //This works by using multiple classes on elements in the DOM. You can
@@ -126,6 +127,7 @@
         _self.init = Azavea.tryCatch('init app', function() {
             _$main = $('#pdp-main');
             _$tabContainer = $('#pdp-tab-container');
+            _$tabContent = $('.pdp-tab-content-container');
             
             //A widget to show that something is happening.
             P.Widget.LoadingIndicator({
