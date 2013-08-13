@@ -77,13 +77,13 @@ namespace Urban.DCP.Handlers
             string smtpHashedPassword = config.GetParameter("Mailer", "SmtpHashedPassword");
 
             //Email settings
-            String link = String.Format(config.GetParameter("appSettings", "ConfirmationEmailURI"), user.UserName, confirmationToken);
-            String emailBody = String.Format(config.GetParameter("appSettings", "ConfirmationEmailBody"), user.Name,
+            string link = String.Format(config.GetParameter("EmailVerification", "ConfirmationURI"), user.UserName, confirmationToken);
+            string emailBody = String.Format(config.GetParameter("EmailVerification", "Body"), user.Name,
                 user.Email, link, link);
-            string emailFromAddress = config.GetParameter("NewUserNotification", "FromEmail");
-            string emailFromName = config.GetParameter("NewUserNotification", "FromName");
+            string emailFromAddress = config.GetParameter("EmailVerification", "FromEmail");
+            string emailFromName = config.GetParameter("EmailVerification", "FromName");
             string emailTo = user.Email;
-            string emailSubject = config.GetParameter("AppSettings", "ConfirmationEmailSubject");
+            string emailSubject = config.GetParameter("EmailVerification", "Subject");
        
       
             // Setup the mailer and message
@@ -91,7 +91,7 @@ namespace Urban.DCP.Handlers
             MailMessage msg = new MailMessage(new MailAddress(emailFromAddress, emailFromName), new MailAddress(emailTo));
             msg.Subject = emailSubject;
             msg.Body = emailBody;
-
+            msg.IsBodyHtml = true;
             // Send it
             bool sent = mailer.SendMessageObject(msg);
 
