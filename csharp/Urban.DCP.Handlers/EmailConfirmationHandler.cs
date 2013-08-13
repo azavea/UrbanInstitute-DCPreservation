@@ -44,18 +44,21 @@ namespace Urban.DCP.Handlers
             {
                 // We are currently logged in
                 User user = UserHelper.GetUser(context.User.Identity.Name);
-                
-                String confirmationToken = user.GetConfirmationToken();
-                SendUserMail(user, confirmationToken);
-             
-                context.Response.StatusCode = (int)HttpStatusCode.OK;
-                return;
-            }
-            else
-            {
-                // Nobody was logged in
-                context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return;
+
+                if (user.EmailConfirmed)             
+                {
+                    //email is already confirmed, don't send another link.
+                    context.Response.StatusCode = (int)HttpStatusCode.Created;
+                    return;
+                }
+                else
+                {
+                    //generate confirmation token and email link.
+                    String confirmationToken = user.GetConfirmationToken();
+                    SendUserMail(user, confirmationToken);
+                    context.Response.StatusCode = (int)HttpStatusCode.OK;
+                    return;
+                }
             }
         }
 
