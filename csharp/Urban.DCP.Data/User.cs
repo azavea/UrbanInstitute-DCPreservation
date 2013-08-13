@@ -131,6 +131,8 @@ namespace Urban.DCP.Data
             if (EmailConfirmationToken != null && token != null && EmailConfirmationToken.Equals(token))
             {
                 EmailConfirmed = true;
+                EmailConfirmationToken = null;
+                Save();
                 return true;
             }
             else
