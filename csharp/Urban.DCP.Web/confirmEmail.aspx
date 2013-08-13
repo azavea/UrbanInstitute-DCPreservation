@@ -9,7 +9,7 @@
 <body>
     <%
         Response.Write(Confirm_Email(
-            Request.QueryString.Get("userName"),
+            Request.QueryString.Get("username"),
             Request.QueryString.Get("token")
            ));
          %>
