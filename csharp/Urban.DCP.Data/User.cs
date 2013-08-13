@@ -113,7 +113,7 @@ namespace Urban.DCP.Data
         /// <returns></returns>
         public string GetConfirmationToken()
         {
-            if (EmailConfirmationToken == null)
+            if (EmailConfirmationToken == null || EmailConfirmationToken.Length == 0 )
             {
                 EmailConfirmationToken = Guid.NewGuid().ToString();
                 Save();
