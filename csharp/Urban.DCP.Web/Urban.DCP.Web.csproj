@@ -82,11 +82,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="admin\data.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="admin\data.aspx.cs">
+      <DependentUpon>data.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\data.aspx.designer.cs">
+      <DependentUpon>data.aspx</DependentUpon>
+    </Compile>
     <Compile Include="admin\manage-users.aspx.cs">
       <DependentUpon>manage-users.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -234,6 +242,7 @@
     <Content Include="handlers\property-locations.ashx" />
     <Content Include="handlers\app-health.ashx" />
     <Content Include="handlers\report-download.ashx" />
+    <Content Include="handlers\upload.ashx" />
     <None Include="minifier.conf" />
     <Content Include="packages.config" />
   </ItemGroup>
