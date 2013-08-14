@@ -10,8 +10,8 @@
                     new OpenLayers.Layer.Google("Hybrid", {type: google.maps.MapTypeId.HYBRID, numZoomLevels: 20}),
                     new OpenLayers.Layer.Google("Terrain", {type: google.maps.MapTypeId.TERRAIN})                
                 ],
-                defaultBbox: new OpenLayers.Bounds(-8266466, 4936833, -8204248, 5000206),
-                maxBbox: new OpenLayers.Bounds(-8306466, 4896833, -8164248, 5040206)
+                defaultBbox: new OpenLayers.Bounds(-8592401.00507909, 4693042.444139108, -8559494.86440232, 4720636.211350055),
+                maxBbox: new OpenLayers.Bounds(-8592401.00507909, 4693042.444139108, -8559494.86440232, 4720636.211350055)
             }, options),
             $target,
             _map,
