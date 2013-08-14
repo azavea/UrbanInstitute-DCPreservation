@@ -55,6 +55,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Azavea.Web.1.1.2\lib\net20\Azavea.Web.dll</HintPath>
     </Reference>
+    <Reference Include="FileHelpers, Version=2.9.9.0, Culture=neutral, PublicKeyToken=3e0c08d59cc3d657, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Bin\FileHelpers.dll</HintPath>
+    </Reference>
     <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\log4net.2.0.0\lib\net35-full\log4net.dll</HintPath>
@@ -242,7 +246,6 @@
     <Content Include="handlers\property-locations.ashx" />
     <Content Include="handlers\app-health.ashx" />
     <Content Include="handlers\report-download.ashx" />
-    <Content Include="handlers\upload.ashx" />
     <None Include="minifier.conf" />
     <Content Include="packages.config" />
   </ItemGroup>

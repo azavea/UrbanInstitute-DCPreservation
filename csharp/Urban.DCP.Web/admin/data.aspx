@@ -5,10 +5,15 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="contentPlaceHolder" runat="server">
      <h2 id="pdp-profile-header">Upload Data Sets</h2>
      <div id="pdp-main">
-         <form id="upload"action="<%=WebUtil.GetApplicationUrl(Request) %>handlers/upload.ashx" method="POST" enctype="multipart/form-data">
+         <form id="upload" method="POST" enctype="multipart/form-data">
              <input id="dataset" name="dataset" type="file"/>
              <input id="type" name="type" type="text" value="project"/>
              <input type="submit" value="Upload"/>
+         </form>
+         
+         <form id="uploadResult" runat="server">
+             <asp:Label runat="server" ID="resultLabel"></asp:Label>
+             <asp:GridView runat="server" ID="resultTable" class="admin-result-table"></asp:GridView>
          </form>
     </div>   
    
