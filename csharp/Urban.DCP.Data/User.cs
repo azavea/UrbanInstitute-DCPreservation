@@ -111,14 +111,9 @@ namespace Urban.DCP.Data
         /// Lazily instantiate and return an email confirmation token.
         /// </summary>
         /// <returns></returns>
-        public string GetConfirmationToken()
+        public void SetConfirmationToken()
         {
-            if (EmailConfirmationToken == null || EmailConfirmationToken.Length == 0 )
-            {
-                EmailConfirmationToken = Guid.NewGuid().ToString();
-                Save();
-            }
-            return EmailConfirmationToken;
+            EmailConfirmationToken = Guid.NewGuid().ToString();
         }
 
         /// <summary>

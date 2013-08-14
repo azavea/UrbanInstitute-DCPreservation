@@ -111,7 +111,7 @@ namespace Urban.DCP.Handlers
 
                 // Send an email to notify that a user has signed up and is requesting new permissions
                 SendNewUserMailToAdmin(newUser);
-                SendNewUserMailToUser(newUser, newUser.GetConfirmationToken());
+                SendNewUserMailToUser(newUser);
             }
             else
             {
@@ -240,7 +240,7 @@ namespace Urban.DCP.Handlers
         /// <summary>
         /// Sends an email 
         /// </summary>
-        private void SendNewUserMailToUser(User user, String confirmationToken)
+        private void SendNewUserMailToUser(User user)
         {
             // Get the mailer values from the config
             Config config = Config.GetConfig("PDP.Web");
@@ -252,7 +252,7 @@ namespace Urban.DCP.Handlers
             string smtpHashedPassword = config.GetParameter("Mailer", "SmtpHashedPassword");
 
             //Email settings
-            string link = String.Format(config.GetParameter("EmailVerification", "ConfirmationURI"), user.UserName, confirmationToken);
+            string link = String.Format(config.GetParameter("EmailVerification", "ConfirmationURI"), user.UserName, user.EmailConfirmationToken);
             string emailBody = String.Format(config.GetParameter("EmailVerification", "Body"), user.Name,
                 user.Email, link, link);
             string emailFromAddress = config.GetParameter("EmailVerification", "FromEmail");

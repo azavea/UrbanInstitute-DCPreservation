@@ -65,14 +65,7 @@ namespace Urban.DCP.Data
             // Check for an empty/null string, we don't want them in the db.
             if (StringHelper.IsNonBlank(email))
             {
-                Boolean isEmailUpdate = ! userAccount.Email.Equals(email);
-                if (isEmailUpdate)
-                {
-                    userAccount.EmailConfirmed = false;
-                    userAccount.EmailConfirmationToken = null;
-                    userAccount.Email = email;
-                }
-
+                userAccount.Email = email;
             }
             if (StringHelper.IsNonBlank(name))
             {
@@ -121,7 +114,7 @@ namespace Urban.DCP.Data
             {
                 user.Roles = SecurityRole.@public.ToString("G");
             }
-
+            user.SetConfirmationToken();
             _userDao.Insert(user);
 
             return user;
