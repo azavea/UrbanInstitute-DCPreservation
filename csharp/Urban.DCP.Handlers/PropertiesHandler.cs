@@ -7,6 +7,7 @@ using Azavea.Open.Common;
 using Azavea.Open.DAO.Criteria;
 using Azavea.Web;
 using Azavea.Web.Handler;
+using Newtonsoft.Json.Linq;
 using Urban.DCP.Data;
 using Urban.DCP.Data.PDB;
 
@@ -94,13 +95,18 @@ namespace Urban.DCP.Handlers
              *   ]
              */
             IList<IExpression> expressions = new List<IExpression>();
-            IList<IDictionary<string, object>> criteria = null; // Do do, convert jaray to ilist<dict>
-                WebUtil.GetJsonObjectArrayParam(context, "criteria", true);
+            var criteria = WebUtil.GetJsonObjectArrayParam(context, "criteria", true);
+            
             if (criteria != null)
             {
-                foreach (IDictionary<string, object> criterion in criteria)
+                foreach (var criterion in criteria)
                 {
-                    expressions.Add(DictionaryToExpression(criterion));
+                    expressions.Add(DictionaryToExpression(new Dictionary<string, object>
+                        {
+                            {"attr", criterion["attr"].Value<String>()},
+                            {"oper", criterion["oper"].Value<String>()},
+                            {"val", criterion["val"].Value<String>()},
+                        }));
                 }
             }
             return expressions;
