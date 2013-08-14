@@ -63,7 +63,7 @@
             //Bind or TOS link
             $('#pdp-signup-terms-display').click(function(){
                 // Dialog the TOS
-                $('<iframe id="tos" class="" src="http://furmancenter.org/" />').dialog({
+                $('<iframe id="tos" class="" src="http://urban.org/" />').dialog({
                             title: 'Terms of Service',
                             autoResize: true,
                             autoOpen: true,
@@ -163,7 +163,7 @@
                                 '<button id="pdp-signup-button" class="pdp-button" tabindex="7">Sign Up</button>' +
                             '</div>' +
                         '</fieldset>' + 
-                        '<div class="pdp-header-panel-desc">* Signing up allows you to view and filter by extra property characteristics in SHIP (Subsidized Housing Information Project).  This special access is granted to agency partners and others who have made arrangements with the Furman Center.</div>' +                                                 
+                        '<div class="pdp-header-panel-desc">* Signing up allows you to view and filter by extra property characteristics.</div>' +                                                 
                         '</div>';
                         
             return html;

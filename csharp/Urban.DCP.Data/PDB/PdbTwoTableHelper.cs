@@ -46,9 +46,7 @@ namespace Urban.DCP.Data.PDB
         /// </summary>
         private readonly IList<KeyValuePair<string, string>> _aggregateColumns;
 
-        private const string _csvHeaderText = "Subsidized Housing Information Project property-level data provided by " +
-                                          "the Furman Center, retrieved from http://www.furmancenter.org/data/search on <%DATE%>. " +
-                                          "Terms can be found at http://www.furmancenter.org/data/disclaimer/.";
+        private const string _csvHeaderText = "";
 
         public PdbTwoTableHelper(Config cfg, string section, PdbEntityType type)
         {
