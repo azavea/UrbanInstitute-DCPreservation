@@ -125,7 +125,6 @@
     <Compile Include="PropertiesHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResetPasswordHandler.cs" />
-    <Compile Include="UploadHandler.cs" />
     <Compile Include="UsersHandler.cs" />
   </ItemGroup>
   <ItemGroup>
