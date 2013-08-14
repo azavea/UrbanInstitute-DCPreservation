@@ -79,6 +79,8 @@ namespace Urban.DCP.Data.Uploadable
                 var trans = new SqlTransaction((AbstractSqlConnectionDescriptor)_projectDao.ConnDesc);
                 try
                 {
+                    // Refresh the project data if successfull 
+                    _projectDao.DeleteAll(trans);
                     _projectDao.Insert(trans, results.Records);
                     trans.Commit();
                 }
