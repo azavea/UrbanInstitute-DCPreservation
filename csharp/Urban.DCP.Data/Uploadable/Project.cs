@@ -28,9 +28,9 @@ namespace Urban.DCP.Data.Uploadable
         public string City;
         public string State;
         public string Zip;
-        public int TotalUnits;
-        public int MinAssistedUnits;
-        public int MaxAssistedUnits;
+        public int? TotalUnits;
+        public int? MinAssistedUnits;
+        public int? MaxAssistedUnits;
 
         [FieldConverter(ConverterKind.Date, "MM/dd/yyyy")] 
         public DateTime? OwnershipEffectiveDate;
@@ -56,10 +56,11 @@ namespace Urban.DCP.Data.Uploadable
         [FieldQuoted('"', QuoteMode.OptionalForRead)]
         public string ClusterName;
         public string CensusTract;
-        public double X;
-        public double Y;
-        public double Lat;
-        public double Lon;
+        public double? X;
+        public double? Y;
+        public double? Lat;
+        public double? Lon;
+        [FieldQuoted('"', QuoteMode.OptionalForRead)]
         public string StreetViewUrl;
         public string ImageUrl;
         
