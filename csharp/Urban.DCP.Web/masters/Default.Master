@@ -27,7 +27,6 @@
     
 </head>
 <body>
-    <form id="form1" runat="server"></form>
     <noscript>
         <div id="pdp-browser-warning">JavaScript must be enabled on your Internet Browser to use this website.</div>
     </noscript>
