@@ -75,7 +75,7 @@
         var _updateMapDisplayTitle = Azavea.tryCatch('update pdb map title', function(resultCount, countMode) {
             
             if (countMode){ 
-                var propLabel = resultCount === 1 ? ' SHIP property' : ' SHIP properties';
+                var propLabel = resultCount === 1 ? ' property' : ' properties';
                 _$mapCountTitle.hide();
                 _$mapDisplayTitle.html('Displaying ' + P.Util.renderers.integer(resultCount) + propLabel);
             }else{
@@ -100,7 +100,7 @@
             if (countMode){   
                // Work out our plural
                 recLabel = ' records';
-                propLabel = ' SHIP properties';
+                propLabel = ' properties';
                 if (data.TotalResults === 1 ){
                     recLabel = ' record';
                 }
@@ -122,10 +122,10 @@
                 mapCount = P.Util.renderers.integer(data.TotalResults);
                 
                 recLabel = ' records';
-                propLabel = ' SHIP properties';
+                propLabel = ' properties';
                 
                 if (data.TotalResults === 1 ){
-                    propLabel = ' SHIP property';
+                    propLabel = ' property';
                 }
                 // Work out the titles for count and description
                 title = mapCount + propLabel + ' meet your criteria';
