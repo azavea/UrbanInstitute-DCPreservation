@@ -116,6 +116,7 @@
   <ItemGroup>
     <Compile Include="AttributesHandler.cs" />
     <Compile Include="AppHealth.cs" />
+    <Compile Include="EmailConfirmationHandler.cs" />
     <Compile Include="ReportDownloadHandler.cs" />
     <Compile Include="PropertyLocationHandler.cs" />
     <Compile Include="PropertyDetailsHandler.cs" />
