@@ -67,6 +67,9 @@
     <Reference Include="Azavea.Open.DAO.OleDb">
       <HintPath>..\packages\Azavea.Open.DAO.OleDb.1.0.9\lib\net35\Azavea.Open.DAO.OleDb.dll</HintPath>
     </Reference>
+    <Reference Include="Azavea.Open.DAO.SQLServer">
+      <HintPath>..\packages\Azavea.Open.DAO.SQLServer.1.0.0\lib\net20\Azavea.Open.DAO.SQLServer.dll</HintPath>
+    </Reference>
     <Reference Include="Azavea.Open.Reprojection">
       <HintPath>..\packages\Azavea.Open.Reprojection.1.1.1\lib\net35\Azavea.Open.Reprojection.dll</HintPath>
     </Reference>
@@ -76,8 +79,25 @@
     <Reference Include="Azavea.Utilities.GeoUtilities">
       <HintPath>..\packages\Azavea.Utilities.GeoUtilities.1.2.1\lib\net35\Azavea.Utilities.GeoUtilities.dll</HintPath>
     </Reference>
+    <Reference Include="FileHelpers">
+      <HintPath>..\packages\FileHelpers-Stable.2.9.9\lib\2.0\FileHelpers.dll</HintPath>
+    </Reference>
+    <Reference Include="FileHelpers.DataLink">
+      <HintPath>..\packages\FileHelpers-Stable.2.9.9\lib\2.0\FileHelpers.DataLink.dll</HintPath>
+    </Reference>
+    <Reference Include="FileHelpers.ExcelStorage">
+      <HintPath>..\packages\FileHelpers-Stable.2.9.9\lib\2.0\FileHelpers.ExcelStorage.dll</HintPath>
+    </Reference>
     <Reference Include="GeoAPI">
       <HintPath>..\packages\GeoAPI.1.7.1.1\lib\net35-client\GeoAPI.dll</HintPath>
+    </Reference>
+    <Reference Include="Interop.Excel">
+      <HintPath>..\packages\FileHelpers-Stable.2.9.9\lib\2.0\Interop.Excel.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Interop.Office">
+      <HintPath>..\packages\FileHelpers-Stable.2.9.9\lib\2.0\Interop.Office.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -113,11 +133,14 @@
     <Compile Include="PDB\PdbResultsWithMetadata.cs" />
     <Compile Include="PDB\PdbSubCategory.cs" />
     <Compile Include="AbstractTableColumnMetadata.cs" />
+    <Compile Include="Uploadable\ImportResult.cs" />
+    <Compile Include="Uploadable\Project.cs" />
     <Compile Include="ResultsWithMetadata.cs" />
     <Compile Include="PDB\PdbCriteriaAttributeMetadata.cs" />
     <Compile Include="PDB\PdbResultAttributeMetadata.cs" />
     <Compile Include="Tests\PropertyLocationTests.cs" />
     <Compile Include="Tests\UserTests.cs" />
+    <Compile Include="Uploadable\UploadTypes.cs" />
     <Compile Include="User.cs" />
     <Compile Include="PDB\PdbAttributesHelper.cs" />
     <Compile Include="PDB\PdbAttributeValue.cs" />
@@ -141,8 +164,6 @@
     <None Include="Tests\test.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Azavea.Open.DAO.CSV.LICENSE.txt" />
-    <Content Include="Azavea.Open.DAO.CSV.NamespaceDocs.xml" />
     <Content Include="Tests\Mapping.xml" />
     <Content Include="Tests\PdbMapping.xml" />
   </ItemGroup>
