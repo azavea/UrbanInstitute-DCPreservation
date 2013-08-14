@@ -61,6 +61,10 @@
     <Reference Include="Azavea.Open.DAO.SQLServer">
       <HintPath>..\packages\Azavea.Open.DAO.SQLServer.1.0.0\lib\net20\Azavea.Open.DAO.SQLServer.dll</HintPath>
     </Reference>
+    <Reference Include="Azavea.Open.Reprojection, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Azavea.Open.Reprojection.1.1.1\lib\net35\Azavea.Open.Reprojection.dll</HintPath>
+    </Reference>
     <Reference Include="Azavea.Utilities.Common">
       <HintPath>..\packages\Azavea.Utilities.Common.3.2.2\lib\net20\Azavea.Utilities.Common.dll</HintPath>
     </Reference>
