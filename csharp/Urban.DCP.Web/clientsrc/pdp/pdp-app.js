@@ -134,7 +134,8 @@
                 delay: 100
             }).init();
             
-            $(_options.bindTo).trigger('pdp-loading-indicator-request');
+            // TEMP: disable loading throbber
+            //$(_options.bindTo).trigger('pdp-loading-indicator-request');
             
             // Sign-up widget setup
             PDP.Widget.Signup({
