@@ -59,6 +59,13 @@ namespace Urban.DCP.Handlers
                 return;
             }
 
+            if (!user.EmailConfirmed)
+            {
+                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                context.Response.Write("User has not confirmed email address.");
+                return;                
+            }
+
             SetAuthCookie(context, username, user.Roles);
 
             context.Response.Write(WebUtil.ObjectToJson(new { Name = user.Name, Admin = user.IsSysAdmin(), Limited = user.IsLimited() }));

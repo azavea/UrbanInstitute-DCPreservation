@@ -93,7 +93,13 @@
                             email = $('#pdp-signup-email').val();
                             roles = '';
                         
-                        P.Data.createUser(username, name, email, password, roles, function() {
+                            P.Data.createUser(username, name, email, password, roles,
+
+                                /*
+                                In the future we may come back to this if email ver isn't applicable
+                                to all classes of user.
+
+                                function () {
                             //Redirect to the default page
                             P.Data.login(username, password, function(user) {
                                 $(_options.bindTo).trigger('pdp-login-success', [user]);
@@ -103,6 +109,11 @@
                             });
                         }, function(respText) {
                             _displayErrorMsg(respText);
+                        }*/
+                        function () {
+                            P.Util.alert("Please check your email for verification instructions", "Registration Successfull",
+                                function () { window.location.href = _options.landingUrl; }
+                            );
                         });
                     } else {
                         _displayErrorMsg(P.Form.validationMsg);

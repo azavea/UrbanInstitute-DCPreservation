@@ -114,7 +114,7 @@ namespace Urban.DCP.Data
             {
                 user.Roles = SecurityRole.@public.ToString("G");
             }
-
+            user.SetConfirmationToken();
             _userDao.Insert(user);
 
             return user;
@@ -339,5 +339,11 @@ namespace Urban.DCP.Data
             
             return retVal;
         }
+
+        public static void Save(User user)
+        {
+            _userDao.Save(user);
+        }
+
     }
 }
