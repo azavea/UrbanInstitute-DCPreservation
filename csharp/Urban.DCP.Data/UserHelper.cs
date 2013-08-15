@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Azavea.Database;
 using Azavea.Open.Common;
 using Azavea.Open.DAO.Criteria;
+using Azavea.Open.DAO.SQLServer;
 using log4net;
 
 namespace Urban.DCP.Data
@@ -14,6 +15,10 @@ namespace Urban.DCP.Data
     /// </summary>
     public class UserHelper
     {
+        // Forces a compiler referece to the class which is later loaded dynamically.
+        // Should not be necessary, but is unwise to remove.
+        private SQLServerDescriptor _sqlDesc = null;
+
         protected static ILog _log = LogManager.GetLogger(
             new System.Diagnostics.StackTrace().GetFrame(0).GetMethod().DeclaringType.Namespace);
 

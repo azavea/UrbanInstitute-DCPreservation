@@ -11,7 +11,7 @@ namespace Urban.DCP.Data.Uploadable
         /// <summary>
         /// The successfully parsed <T> records
         /// </summary>
-        public T[] Records;
+        public T[] Records;     
 
         /// <summary>
         /// Errors reported in the import process
