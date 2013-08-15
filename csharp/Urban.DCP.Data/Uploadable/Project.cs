@@ -84,7 +84,7 @@ namespace Urban.DCP.Data.Uploadable
                     _projectDao.Insert(trans, results.Records);
                     trans.Commit();
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     trans.Rollback();
                     throw;

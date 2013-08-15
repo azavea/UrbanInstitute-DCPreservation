@@ -972,7 +972,7 @@ namespace Urban.DCP.Data.PDB
                     else
                     {
                         PdbClusterLocation loc = new PdbClusterLocation();
-                        loc.Keys = cluster.ItemKeys.Select(KeyToNlihc).ToList();
+                        loc.Keys = cluster.ItemKeys.Select(k => KeyToNlihc(k)).ToList();
                         loc.X = cluster.X;
                         loc.Y = cluster.Y;
 
