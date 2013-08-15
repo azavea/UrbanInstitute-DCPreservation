@@ -1,8 +1,8 @@
-[Urban Institute](http://urban.org): DC Preservation 
+Urban Institute: DC Preservation 
 =============================
 
 
-The Urban Institute has developed the DC Preservation Catalog, which is a database of affordable rental
+The [Urban Institute](http://urban.org) has developed the DC Preservation Catalog, which is a database of affordable rental
 properties in Washington, DC. Information on each property is drawn from a range of local and national
 databases and information provided by partners in the DC Preservation Network, and is used to develop
 strategies to preserve affordable housing options.
