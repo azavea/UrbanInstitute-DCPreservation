@@ -258,14 +258,14 @@
             
             var marker = new OpenLayers.Marker(new OpenLayers.LonLat(property.X, property.Y), icon);
             marker.events.register('click', marker, function() {
-                _addPopup(marker, [ property.Key ]);
+                _addPopup(marker, [ property.Id]);
             });
             
             _pdbLayer.addMarker(marker);
             
            // If this is the marker that contains our property that had a popup before, add the popup back
-            if (_trackPopup === true && _popupPropertyId === property.Key ) {
-                _addPopup(marker, [ property.Key ]);
+            if (_trackPopup === true && _popupPropertyId === property.Id ) {
+                _addPopup(marker, [ property.Id]);
             }           
                         
             $('#' + icon.imageDiv.id).addClass('pdp-map-icon');

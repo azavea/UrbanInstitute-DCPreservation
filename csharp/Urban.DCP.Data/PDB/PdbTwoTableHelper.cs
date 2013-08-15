@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Azavea.Open.Common;
 using Azavea.Open.Common.Collections;
 using Azavea.Open.DAO;
@@ -929,8 +930,6 @@ namespace Urban.DCP.Data.PDB
                 //  a subset based on the bbox, but we want to know how many were returned and could be displayed on the map
                 retVal.TotalMapResults = primaryDao.GetCount(crit);
 
- 
-                
                 // Expressions for actual search bounding area
                 crit.Expressions.Add(new GreaterExpression("Lat", minLatLonPoint.Y));
                 crit.Expressions.Add(new GreaterExpression("Lon", minLatLonPoint.X));
@@ -973,10 +972,10 @@ namespace Urban.DCP.Data.PDB
                     else
                     {
                         PdbClusterLocation loc = new PdbClusterLocation();
-                        loc.Keys = cluster.ItemKeys;
+                        loc.Keys = cluster.ItemKeys.Select(KeyToNlihc).ToList();
                         loc.X = cluster.X;
                         loc.Y = cluster.Y;
-                        //loc.RadiusInMeters = cluster.ClusterRadius;
+
                         retVal.Clusters.Add(loc);
                     }
                 }
@@ -997,11 +996,37 @@ namespace Urban.DCP.Data.PDB
                 IPoint webMercPoint = Reprojector.ReprojectWGS84ToWebMercator(
                     Convert.ToDouble(lonObj), Convert.ToDouble(latObj));
                 PdbPropertyLocation loc = new PdbPropertyLocation();
-                loc.Key = Convert.ToInt32(dataobject["UID"]);
+                loc.Key = KeyFromNlihc(dataobject["UID"].ToString());
+                loc.Id = dataobject["UID"].ToString();
                 loc.Y = webMercPoint.Y;
                 loc.X = webMercPoint.X;
                 putEmHere.Add(loc);
             }
+        }
+
+        /// <summary>
+        /// Converts an integer key portion of an NLIHC id to 
+        /// a properly formatted NLIHC.  The KMeans aggregator
+        /// requires the key to be an int, so this conversion is necessary.
+        /// "NL00000"
+        /// </summary>
+        /// <param name="key">Int portion of NLIHC key</param>
+        /// <returns></returns>
+        public static string KeyToNlihc(int key)
+        {
+            return "NL" + key.ToString().PadLeft(6, '0');
+        }
+
+        /// <summary>
+        /// Return an int representation of an NLIHC
+        /// essentially just with the "NL" portion and
+        /// padded 0's removed.
+        /// </summary>
+        /// <param name="nlihc"></param>
+        /// <returns></returns>
+        public static int KeyFromNlihc(string nlihc)
+        {
+            return Convert.ToInt32(nlihc.Substring(2));
         }
     }
     public class PdbResultLocations
@@ -1025,14 +1050,16 @@ namespace Urban.DCP.Data.PDB
 
         public int Key { get; set; }
 
+        public string Id { get; set; }
+
         public override string ToString()
         {
-            return "Property at (" + Y + "," + X + "): " + Key;
+            return "Property at (" + Y + "," + X + "): " + PdbTwoTableHelper.KeyToNlihc(Key);
         }
     }
     public class PdbClusterLocation : IComparable<PdbClusterLocation>
     {
-        public IList<int> Keys;
+        public IList<string> Keys;
         /// <summary>
         /// This should be in web mercator.
         /// </summary>
