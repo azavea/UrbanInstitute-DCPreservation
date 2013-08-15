@@ -7,7 +7,14 @@
 
     // Helper to more easily call jQuery.ajax function.  Provides for parameterized
     // form method, handler url, data to include as query params and success/fail callbacks
-    var _callHandler = function(type, url, data, callback, error) {       
+    var _callHandler = function (type, url, data, callback, error) {
+        if (type === 'DELETE') {
+            type = 'POST';
+
+            // Add to the data parameter
+            $.extend(data, { _method: 'DELETE' });
+        }
+        
         $.ajax({
             url: url,
             data: data,
