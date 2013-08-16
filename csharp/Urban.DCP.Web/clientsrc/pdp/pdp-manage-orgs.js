@@ -1,23 +1,25 @@
 ﻿(function (P) {
+    var ENTER_KEY = 13;
 
     function throwIfSettingsInvalid(settings) {
-        //TODO is there a magic Azavea.util.throw that logs?
-        if (!settings.rowContainerId) {
-            throw new Error("rowContainerId required");
-        }
-        if (!settings.rowClass) {
-            throw new Error("rowClass required");
-        }
-        if (!settings.handler) {
-            throw new Error("Handler required");
-        }
-        if (!settings.rowTemplateId) {
-            throw new Error("rowTemplateId missing");
-        }
-        if (!settings.addRowInputId) {
-            throw new Error("addRowInputId missing");
-        }
-        return settings;
+        return Azavea.tryCatch("org manager settings", function () {
+            if (!settings.rowContainerId) {
+                throw new Error("rowContainerId required");
+            }
+            if (!settings.rowClass) {
+                throw new Error("rowClass required");
+            }
+            if (!settings.handler) {
+                throw new Error("Handler required");
+            }
+            if (!settings.rowTemplateId) {
+                throw new Error("rowTemplateId missing");
+            }
+            if (!settings.addRowInputId) {
+                throw new Error("addRowInputId missing");
+            }
+            return settings;
+        });
     }
 
     function handleDelete(row) {
@@ -48,8 +50,14 @@
     function handleUpdate(row) {
         var self = this;
         var id = $(row).find('input').attr("data-id");
-        var newName = $(row).find('input').val();
-        var callback = function () { /*no-op*/ }
+        var $input = $(row).find('input')
+        var newName = $input.val();
+        var callback = function () {
+            $input.addClass("saved");
+            setTimeout( function() {
+                $input.removeClass("saved");
+            }, 500);
+        }
         var errback = function () {
             PDP.Util.alert("There was an error updating that organization.", "Error");
         }
@@ -57,8 +65,9 @@
     }
 
     P.ManageOrgs = function (opts) {
-        var self = this;        
-        self._settings = throwIfSettingsInvalid(opts);
+        var self = this;
+        throwIfSettingsInvalid(opts);
+        self._settings = opts;
         self._orgs = [];
         self._rowTemplate = _.template($(self._settings.rowTemplateId).html());
     };
@@ -67,6 +76,9 @@
         var self = this;
         P.Data.path = "../";
         $("button[data-action=add]").click(_.bind(handleAddition, self));
+        $(self._settings.addRowInputId).keyup(function (e) {
+            if (e.keyCode == ENTER_KEY) { handleAddition.call(self) }
+        });
         self._fetch();
     }
 
@@ -94,8 +106,15 @@
             //bind delete handlers
             $(row).find("button[data-action=delete]").click(_.bind(handleDelete, self, row));
             //bind update handlers
-            $(row).find("input").bind("blur change", _.bind(handleUpdate, self, row));
+            $(row).find("input")
+                .bind("change", _.bind(handleUpdate, self, row))
+                .keyup(function(e) {
+                    if (e.keyCode == ENTER_KEY) {
+                        handleUpdate.call(self, row);
+                    }
+                });
         });
+        $(self._settings.addRowInputId).val("");;
     };
 
 }(PDP));
