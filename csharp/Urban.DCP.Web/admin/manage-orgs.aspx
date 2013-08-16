@@ -25,7 +25,7 @@
             rowClass: ".org",
             rowTemplateId: "#org-template",
             addRowInputId: "#new-org-name",
-            handler: '/handlers/organizations.ashx' //TODO...handler: '<%=WebUtil.GetApplicationUrl(Request) %>'
+            handler: '<%=WebUtil.GetApplicationUrl(Request) %>'
         });
         orgManager.init();
     </script>

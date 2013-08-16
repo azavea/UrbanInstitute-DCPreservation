@@ -26,25 +26,34 @@
         var callback = function () {
             self._fetch();
         }
-        self._delete(id, _.bind(callback, self));
+        var errback = function () {
+            PDP.Util.alert("There was an error deleting that organization");
+        }
+        P.Data.deleteOrganization(id, _.bind(callback, self), errback);
     }
 
     function handleAddition() {
         var self = this;
         var name = $(self._settings.addRowInputId).val();
-        if (name) {
-            var callback = function () {
-                self._fetch();
-            }
-            self._add(name, _.bind(callback, self));
+        if (!name) { return };
+        var callback = function () {
+            self._fetch();
         }
+        var errback = function () {
+            PDP.Util.alert("There was an error adding that organization.", "Error");
+        }
+        P.Data.addOrganization(name, name, _.bind(callback, self), errback);
     }
 
     function handleUpdate(row) {
         var self = this;
         var id = $(row).find('input').attr("data-id");
-        var name = $(row).find('input').val();
-        self._update(id, name);
+        var newName = $(row).find('input').val();
+        var callback = function () { /*no-op*/ }
+        var errback = function () {
+            PDP.Util.alert("There was an error updating that organization.", "Error");
+        }
+        P.Data.updateOrganization(id, newName, callback, errback);
     }
 
     P.ManageOrgs = function (opts) {
@@ -56,67 +65,23 @@
 
     P.ManageOrgs.prototype.init = function () {
         var self = this;
+        P.Data.path = "../";
         $("button[data-action=add]").click(_.bind(handleAddition, self));
         self._fetch();
-    };
-
-    P.ManageOrgs.prototype._add = function (name, callback) {
-        var self = this;
-        $.ajax({
-            url: self._settings.handler,
-            data: { "name": name },
-            success: callback,
-            error: function () {
-                PDP.Util.alert("There was an error adding that organization.", "Error");
-            },
-            type: "POST"
-        });
-    };
-
-    P.ManageOrgs.prototype._delete = function (id, callback) {
-        var self = this;
-        $.ajax({
-            url: self._settings.handler,
-            data: { "Id": id },
-            success: callback,
-            error: function () {
-                PDP.Util.alert("There was an error deleting that organization");
-            },
-            type: "DELETE"
-        });
-    };
-
+    }
 
     P.ManageOrgs.prototype._fetch = function () {
         var self = this;
         self._orgs = [];
-        $.ajax({
-            url: self._settings.handler,
-            success : function(data) {
-                self._orgs = data;
-                self._render();
-            },
-            error : function() {
-                PDP.Util.alert("There was an error fetching registered organizations", "Error");
-            },
-            type: "GET",
-            dataType: "json"
-        });
+        var callback = function (data) {
+            self._orgs = data;
+            self._render();
+        };
+        var errback = function () {
+            PDP.Util.alert("There was an error fetching registered organizations", "Error");
+        };
+        P.Data.getOrganizations(callback, errback);
     };
-
-    P.ManageOrgs.prototype._update = function (id, newName) {
-        var self = this;
-        self._orgs = [];
-        $.ajax({
-            data: {"Id":id, "Name": newName},
-            url: self._settings.handler,
-            error: function () {
-                PDP.Util.alert("There was an error updating that organization.", "Error");
-            },
-            type: "PUT"
-        });
-    };
-
 
     P.ManageOrgs.prototype._render = function () {
         var self = this;

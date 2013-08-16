@@ -98,7 +98,7 @@ namespace Urban.DCP.Handlers
                 {
                     int id = Int32.Parse(WebUtil.GetParam(context, "id", true));
                     Organization.Delete(id);
-                    context.Response.Write("deleted");
+                    context.Response.Write("\"{'result':'deleted'}\"");
                     context.Response.StatusCode = (int)HttpStatusCode.OK;
                     return;
                 }
@@ -130,7 +130,7 @@ namespace Urban.DCP.Handlers
                     string name = WebUtil.GetParam(context, "name", true);
                     int id = Int32.Parse(WebUtil.GetParam(context, "id", true));
                     Organization.Update(id, name);
-                    context.Response.Write("updated");
+                    context.Response.Write("\"{'result':'updated'}\"");
                     context.Response.StatusCode = (int)HttpStatusCode.OK;
                     return;
                 }

@@ -9,12 +9,10 @@
     // form method, handler url, data to include as query params and success/fail callbacks
     var _callHandler = function (type, url, data, callback, error) {
 
-        
         if (type === 'PUT' || type === 'DELETE') {
-            type = 'POST';
-
             // Add to the data parameter
             $.extend(data, { _method: type });
+            type = 'POST';
         }
         
         $.ajax({
@@ -199,5 +197,29 @@
             borough: scope, subborough: subscope };
             
         window.location.href = url + _objectToQueryString(data);
+    });
+
+    // Query Nychanis database
+    P.Data.addOrganization = Azavea.tryCatch('data add organization', function (name, callback, error) {
+        var url = P.Data.path + 'handlers/organizations.ashx';
+        var data = { "name": name };
+        _callHandler('POST', url, data, callback, error);
+    });
+
+    //* REST client for organizations **/
+    P.Data.deleteOrganization = Azavea.tryCatch('data delete organiation', function(id, callback, error) {
+        var url = P.Data.path + 'handlers/organizations.ashx';
+        var data = { "Id": id };
+        _callHandler('DELETE', url, data, callback, error); 
+    });
+    P.Data.updateOrganization = Azavea.tryCatch('data update organiation', function (id, newName, callback, error) {
+        var url = P.Data.path + 'handlers/organizations.ashx';
+        var data = { "Id": id, "Name": newName };
+        _callHandler('PUT', url, data, callback, error);
+    });
+    P.Data.getOrganizations = Azavea.tryCatch('data get organiations', function (callback, error) {
+        var url = P.Data.path + 'handlers/organizations.ashx';
+        var data = "";
+        _callHandler('GET', url, data, callback, error);
     });
 }(PDP));
