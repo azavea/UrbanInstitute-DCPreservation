@@ -86,7 +86,8 @@
                             roles = '';
                         
                         // Send the data to be updated
-                        P.Data.updateUser( _options.userName, name, email, password, roles, function(user) {
+                        var NO_ORG_UPDATE = -1;
+                        P.Data.updateUser( _options.userName, name, email, password, roles, NO_ORG_UPDATE, function(user) {
                                 //Success
                                 P.Util.quickAlert('Your profile has been updated.');
                                 

@@ -36,6 +36,15 @@
                         <input id="pdp-email" type="text" class="pdp-input pdp-input-text" tabindex="2" />
                     </div>
                 </li>
+                <li>
+                    <label class="pdp-form-label" for="pdp-select-org">Organization</label>
+                    <div class="pdp-form-ctrl">
+                         <select id="pdp-select-org" class="pdp-input" />
+                            <option >test</option>
+                        </select>
+                     </div>
+                </li>
+                
                 <input id="pdp-change-password" type="checkbox" tabindex="3" class="pdp-input" />
                 <label for="pdp-change-password" class="pdp-form-list-label">Change Password</label>
                 <div id="pdp-password-container">
@@ -54,6 +63,8 @@
                         </li>
                     </ul>
                 </div>
+                
+                </select>
                 <fieldset class="pdp-form">
                     <legend>User Privileges</legend>
                     <li>
@@ -74,6 +85,7 @@
                             <input id="pdp-role-sysadmin" type="checkbox" value="SysAdmin" class="pdp-input pdp-input-checkbox pdp-role-input" tabindex="8" />
                         </div>
                     </li>
+                    <p>The Network priveledge wil be automatically addded if an organization is selected.</p>
                 </fieldset>
             </ul>
 	    
