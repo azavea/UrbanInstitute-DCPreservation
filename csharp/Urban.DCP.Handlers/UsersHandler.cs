@@ -143,6 +143,18 @@ namespace Urban.DCP.Handlers
                     string name = WebUtil.GetParam(context, "name", true);
                     string roles = WebUtil.GetParam(context, "roles", true);
 
+                    int organization = WebUtil.ParseIntParam(context, "organization");
+                    int NO_ORG_UPDATE = -1;
+                    if (organization != NO_ORG_UPDATE)
+                    {
+                        if (!authUser.IsSysAdmin())
+                        {
+                            context.Response.Write("not authorized");
+                            context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                            return;
+                        }
+                    }
+
                     // If the password is coming through here (we haven't passed it out to
                     // be able to pass it back in), we assume it's clear text and needs to be hashed.
                     string hashPass = null;
@@ -151,7 +163,7 @@ namespace Urban.DCP.Handlers
                         hashPass = Hasher.Encrypt(pass);
                     }
 
-                    User user = UserHelper.UpdateUser(userName, hashPass, email, name, roles);
+                    User user = UserHelper.UpdateUser(userName, hashPass, email, name, roles, organization);
                     
                     if (user != null)
                     {
