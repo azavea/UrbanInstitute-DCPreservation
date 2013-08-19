@@ -131,9 +131,11 @@
   <ItemGroup>
     <Compile Include="AbstractNamedSortable.cs" />
     <Compile Include="AbstractSortable.cs" />
+    <Compile Include="CommentAccessLevel.cs" />
     <Compile Include="Organization.cs" />
     <Compile Include="MultipleColumnListComparer.cs" />
     <Compile Include="MultipleDictionaryValueComparer.cs" />
+    <Compile Include="Comment.cs" />
     <Compile Include="PDB\PdbCategory.cs" />
     <Compile Include="PDB\PdbResultsWithMetadata.cs" />
     <Compile Include="PDB\PdbSubCategory.cs" />
