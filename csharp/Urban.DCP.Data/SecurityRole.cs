@@ -17,7 +17,10 @@ namespace Urban.DCP.Data
         /// SysAdmin users have access to everything.
         /// </summary>
         SysAdmin = 4,//0x7FFFFFFF
-
+        /// <summary>
+        /// Network users are assigned to a recognized organization
+        /// and may have special permissions.
+        /// </summary>
         Network = 5
     }
 }

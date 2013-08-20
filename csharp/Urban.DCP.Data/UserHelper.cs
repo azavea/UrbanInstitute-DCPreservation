@@ -55,7 +55,7 @@ namespace Urban.DCP.Data
         /// <param name="name">The actual name of this user.</param>
         /// <param name="roles">A comma seperated list of roles assigned to this user.</param>
         public static User UpdateUser(string userName, string hashedPassword, string email, 
-                                            string name, string roles, int organization = 0)
+                                            string name, string roles, int organization)
         {
             // Determine if this is new user or an update 
             User userAccount = GetUser(userName);
@@ -87,7 +87,10 @@ namespace Urban.DCP.Data
                 userAccount.Password = hashedPassword;
             }
 
-            userAccount.SetOrganization(organization);
+            if (organization != Organization.NO_UPDATE)
+            {
+                userAccount.SetOrganization(organization);
+            }
             
             // Save the information to the database
             _userDao.Update(userAccount);
@@ -237,7 +240,7 @@ namespace Urban.DCP.Data
         /// <param name="hashedPassword"></param>
         public static void SavePassword(string userName, string hashedPassword)
         {
-            UpdateUser(userName, hashedPassword, null, null, null);
+            UpdateUser(userName, hashedPassword, null, null, null, Organization.NO_UPDATE);
         }
 
         /// <summary>
@@ -364,9 +367,7 @@ namespace Urban.DCP.Data
             IList<User> users = _userDao.Get("Organization", organizationId);
             for (int i = 0; i < users.Count; i++)
             {
-            
-                //TODO clear org permission.
-                users[i].Organization = 0;
+                 users[i].Organization = 0;
                 _userDao.Save(users[i]);
             }
         }

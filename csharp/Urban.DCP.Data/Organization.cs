@@ -12,6 +12,9 @@ namespace Urban.DCP.Data
     public class Organization
     {
 
+        public static readonly int NO_ORG = 0; //conveted to null in DB.
+        public static readonly int NO_UPDATE = -1;
+
         private static readonly FastDAO<Organization> _orgDao =
            new FastDAO<Organization>(Config.GetConfig("PDP.Data"), "PDB");
 

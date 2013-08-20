@@ -47,7 +47,7 @@ namespace Urban.DCP.Data
         /// <summary>
         /// The organization id.
         /// </summary>
-        public int Organization;
+        public int? Organization;
 
 
         /// <summary>
@@ -145,23 +145,26 @@ namespace Urban.DCP.Data
             UserHelper.Save(this);
         }
 
-        public void SetOrganization(int organization)
+        /// <summary>
+        /// Set organization.  Null or Organization.NO_ORG clears the org
+        /// and removes the Network role.  
+        /// </summary>
+        /// <param name="organization">the idx in the org table, null or Org.NO_ORG</param>
+        public void SetOrganization(int? organization)
         {
-            // NO_ORG_UPDATE gives modes that don't know about organzations (IE profile)
-            // a way to call the same updateUser endpoint with an int value for org.
-            int NO_ORG_UPDATE = -1;
-            int NO_ORG = 0;
-            if (organization != NO_ORG_UPDATE)
-            {
-                if (organization == NO_ORG)
+            if (organization == null || organization == Urban.DCP.Data.Organization.NO_ORG) {
                 {
                     RemoveRole(SecurityRole.Network);
                 }
-                else
-                {
-                    Organization = organization;
-                    AddRole(SecurityRole.Network);
-                }
+                Organization = null;
+            }
+            else if (organization == Urban.DCP.Data.Organization.NO_UPDATE)
+            {
+                // do nothing
+            }
+            else
+            {
+                AddRole(SecurityRole.Network);
                 Organization = organization;
             }
         }
