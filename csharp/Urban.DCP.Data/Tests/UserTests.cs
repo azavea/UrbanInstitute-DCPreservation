@@ -64,7 +64,7 @@ namespace Urban.DCP.Data.Tests
         {
             User testUser =UserHelper.GetUser("testUser");
             
-            UserHelper.UpdateUser(testUser.UserName, testUser.Password, "new.test@example.com", testUser.Name, testUser.Roles);
+            UserHelper.UpdateUser(testUser.UserName, testUser.Password, "new.test@example.com", testUser.Name, testUser.Roles, Organization.NO_UPDATE);
             testUser = UserHelper.GetUser("testUser");
 
             Assert.AreEqual("new.test@example.com", testUser.Email, "User's email did not get updated.");
