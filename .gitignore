@@ -9,4 +9,5 @@ _ReSharper*
 csharp/Urban.DCP.Web/client/*
 csharp/*/Web.config
 csharp/Urban.DCP.Data/Tests/Test_User.mdb
+csharp/Urban.DCP.Data/Tests/Pdb.config
 build/
