@@ -44,7 +44,11 @@ namespace Urban.DCP.Data
         /// Is the user's email confirmed?
         /// </summary>
         public Boolean EmailConfirmed;
-        
+        /// <summary>
+        /// The organization id.
+        /// </summary>
+        public int? Organization;
+
 
         /// <summary>
         /// A list of role enums
@@ -80,6 +84,15 @@ namespace Urban.DCP.Data
         {
             return RolesList.Contains(SecurityRole.SysAdmin);
         }
+
+        /// <summary>
+        /// Is this user a Newtwork user?
+        /// </summary>
+        public bool IsNetworked()
+        {
+            return RolesList.Contains(SecurityRole.Network);
+        }
+
 
         /// <summary>
         /// Does this user have limited data access?
@@ -132,6 +145,56 @@ namespace Urban.DCP.Data
             UserHelper.Save(this);
         }
 
+        /// <summary>
+        /// Set organization.  Null or Organization.NO_ORG clears the org
+        /// and removes the Network role.  
+        /// </summary>
+        /// <param name="organization">the idx in the org table, null or Org.NO_ORG</param>
+        public void SetOrganization(int? organization)
+        {
+            if (organization == null || organization == Urban.DCP.Data.Organization.NO_ORG) {
+                {
+                    RemoveRole(SecurityRole.Network);
+                }
+                Organization = null;
+            }
+            else if (organization == Urban.DCP.Data.Organization.NO_UPDATE)
+            {
+                // do nothing
+            }
+            else
+            {
+                AddRole(SecurityRole.Network);
+                Organization = organization;
+            }
+        }
 
+        private void AddRole(SecurityRole role)
+        {
+            if (! RolesList.Contains(role))
+            {
+                _roleList.Add(role);
+                Roles = RenderRoleList(_roleList);
+            }
+        }
+
+        private void RemoveRole(SecurityRole role)
+        {
+            if (RolesList.Contains(role))
+            {
+                _roleList.Remove(role);
+                Roles = RenderRoleList(_roleList);
+            }
+        }
+
+        private string RenderRoleList(IList<SecurityRole> roles)
+        {
+            List<String> roleStrings = new List<String>();
+            for (int i = 0; i < _roleList.Count; i++)
+            {
+                roleStrings.Add(_roleList[i].ToString());
+            }
+            return string.Join(",", roleStrings.ToArray());
+        }
     }
 }

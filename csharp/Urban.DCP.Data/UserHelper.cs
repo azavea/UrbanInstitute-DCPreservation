@@ -55,7 +55,7 @@ namespace Urban.DCP.Data
         /// <param name="name">The actual name of this user.</param>
         /// <param name="roles">A comma seperated list of roles assigned to this user.</param>
         public static User UpdateUser(string userName, string hashedPassword, string email, 
-                                            string name, string roles)
+                                            string name, string roles, int organization)
         {
             // Determine if this is new user or an update 
             User userAccount = GetUser(userName);
@@ -85,6 +85,11 @@ namespace Urban.DCP.Data
             if (StringHelper.IsNonBlank(hashedPassword))
             {
                 userAccount.Password = hashedPassword;
+            }
+
+            if (organization != Organization.NO_UPDATE)
+            {
+                userAccount.SetOrganization(organization);
             }
             
             // Save the information to the database
@@ -235,7 +240,7 @@ namespace Urban.DCP.Data
         /// <param name="hashedPassword"></param>
         public static void SavePassword(string userName, string hashedPassword)
         {
-            UpdateUser(userName, hashedPassword, null, null, null);
+            UpdateUser(userName, hashedPassword, null, null, null, Organization.NO_UPDATE);
         }
 
         /// <summary>
@@ -262,6 +267,7 @@ namespace Urban.DCP.Data
                 retVal.Add(user.Name);
                 retVal.Add(user.Email);
                 retVal.Add(user.Roles);
+                retVal.Add(user.Organization);
             }
             else
             {
@@ -341,6 +347,7 @@ namespace Urban.DCP.Data
             retVal.Add(new UserResultMetadata("Name", "Full Name", "text", true));
             retVal.Add(new UserResultMetadata("Email", "Email", "text", true));
             retVal.Add(new UserResultMetadata("Roles", "Roles", "text", true));
+            retVal.Add(new UserResultMetadata("Organization", "Organization", "organization", true));
             
             return retVal;
         }
@@ -349,6 +356,22 @@ namespace Urban.DCP.Data
         {
             _userDao.Save(user);
         }
+
+        /// <summary>
+        /// Clear organization byte for all users at a given org id.  Called
+        /// when org is deleted.
+        /// </summary>
+        /// <param name="organizationId">The org id to search.</param>
+        public static void ClearOrganizationForUsers(int organizationId)
+        {
+            IList<User> users = _userDao.Get("Organization", organizationId);
+            for (int i = 0; i < users.Count; i++)
+            {
+                 users[i].Organization = 0;
+                _userDao.Save(users[i]);
+            }
+        }
+
 
     }
 }

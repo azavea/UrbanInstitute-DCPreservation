@@ -98,10 +98,10 @@
     });
         
     // Update user details    
-    P.Data.updateUser = Azavea.tryCatch('data create user', function(username, name, email, password, roles, callback, error) {
+    P.Data.updateUser = Azavea.tryCatch('data create user', function(username, name, email, password, roles, organization, callback, error) {
         var url = P.Data.path + 'handlers/users.ashx';
-        var data = { username: username, name: name, email: email, password: password, roles: roles, _method: 'PUT' };
-        _callHandler('POST', url, data, callback, error);
+        var data = { username: username, name: name, email: email, password: password, roles: roles, organization: organization == null ? 0 : organization };
+        _callHandler('PUT', url, data, callback, error);
     });
     
     // Gets pdb search attributes

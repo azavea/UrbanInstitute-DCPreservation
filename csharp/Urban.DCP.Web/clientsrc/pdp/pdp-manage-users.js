@@ -1,6 +1,8 @@
 (function(P) {
     P.ManageUsers = function(options) {
-        var _self = {},
+        var _self = {
+            orgMap: {}
+        },
             _options = $.extend({
                 target: 'body',
                 bindTo: P,
@@ -74,9 +76,10 @@
                         name = $('#pdp-name').val(),
                         email = $('#pdp-email').val();
                         roles = _getSelectedRoles();
-                        
+                        organization = $("#pdp-select-org").val();
+
                     // Send the data to be updated
-                    P.Data.updateUser( username, name, email, password, roles, function() {
+                    P.Data.updateUser( username, name, email, password, roles, organization, function() {
                             //Success - Reload the user table
                             $(_options.bindTo).trigger('pdp-data-force-update');
                             
@@ -101,11 +104,18 @@
         
         // For ExtraCol "Edit" configure link click to display dialog with user info for edit.
         var _overrideRenderer = Azavea.tryCatch('override edit renderer', function(){
-            P.Util.renderers.userEdit = function(value, index, record, attrs) {
+
+            P.Util.renderers.organization = function (value, index, record, attrs) {
+                return _self.orgMap[value];
+            }
+
+
+            P.Util.renderers.userEdit = function (value, index, record, attrs) {
                 
                 $('#pdp-edit-user-' + index).live('click', function(event) {
                     var rolesIdx = -1;
-                        
+                    var organizationIdx = -1;
+                    
                     // Clear form fields
                     $('.pdp-input', '#pdp-form').val('');
                     $('#pdp-change-password').attr('checked', false);
@@ -128,7 +138,10 @@
                                 break;
                             case 'Roles':
                                 rolesIdx = i;
-                                break;  
+                                break;
+                            case 'Organization':
+                                $("#pdp-select-org").val(record[i]);
+                                break
                             default:
                                 Azavea.log('An unknown user field was not accounted for: [' + attrs[i].UID + ']');  
                                 break;                              
@@ -171,6 +184,16 @@
             };
         });
         
+        function _renderOrganizationSelect(data) {
+            var $select = $("#pdp-select-org").empty();
+            var optionTemplate = "<option value='{{id}}'>{{org_name}}</option>";
+            var NO_ORG = 0;
+            data.unshift({ "Id": NO_ORG, "Name": "no organization" });
+            _.each(data, function (org) {
+                $select.append(optionTemplate.replace("{{id}}", org.Id)
+                                             .replace("{{org_name}}", org.Name));
+            });
+        }
         
         // Initialization routines for user admin page
         _self.init = Azavea.tryCatch('init profile', function() {
@@ -202,24 +225,24 @@
             
             // Configure the dialog that will be used for editing
             $(_options.dialogTarget).dialog({
-		        autoOpen: false,
-		        resizable: false,
-		        height: 500,
-		        width: 400,
-		        modal: true,
-		        buttons: {
-	                'Save': _updateUser,
-	                Cancel: function() {
-		                $(this).dialog('close');
-	                }},
-	                close: function() {
-                    }
-                });
+                autoOpen: false,
+                resizable: false,
+                height: 500,
+                width: 400,
+                modal: true,
+                buttons: {
+                    'Save': _updateUser,
+                    Cancel: function() {
+                        $(this).dialog('close');
+                    }},
+                close: function() {
+                }
+            });
             
             // Bind to the table widget data request event
             $(_options.bindTo).bind('pdp-data-request', function(event, page, pageSize, colIndex, sortAsc) {
-                 _getUserData(page, pageSize, colIndex, sortAsc);
-             });
+                _getUserData(page, pageSize, colIndex, sortAsc);
+            });
 
             // Enable the table widget for this page
             P.Widget.Table({
@@ -229,8 +252,19 @@
             }).init();
             
             // Initiate a data request for users
-            $(_options.bindTo).trigger('pdp-data-force-update');
-            
+            P.Data.getOrganizations(
+                function callback(data) {
+                    _renderOrganizationSelect(data);
+                    _.map(data, function (org) {
+                        _self.orgMap[org.Id] = org.Name;
+                    });
+                    $(_options.bindTo).trigger('pdp-data-force-update');
+                },
+                function errback() {
+                    P.Util.alert("There was an error fetching organizations.", "Error");
+                }
+            );
+
             return _self;
         });
         

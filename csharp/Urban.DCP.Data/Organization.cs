@@ -12,6 +12,9 @@ namespace Urban.DCP.Data
     public class Organization
     {
 
+        public static readonly int NO_ORG = 0; //conveted to null in DB.
+        public static readonly int NO_UPDATE = -1;
+
         private static readonly FastDAO<Organization> _orgDao =
            new FastDAO<Organization>(Config.GetConfig("PDP.Data"), "PDB");
 
@@ -50,9 +53,9 @@ namespace Urban.DCP.Data
         /// <param name="organizationId">the id of the org to delete.</param>
         public static void Delete(int organizationId)
         {
+            UserHelper.ClearOrganizationForUsers(organizationId);
             var crit = new DaoCriteria();
             crit.Expressions.Add(new EqualExpression("Id", organizationId));
-            // TODO clear foreign key references in users table.
             _orgDao.Delete(crit);
         }
 

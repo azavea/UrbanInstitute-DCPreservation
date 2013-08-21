@@ -114,7 +114,7 @@
     <Content Include="admin\data.aspx" />
     <Content Include="clientsrc\pdp\css\pdp-manage-orgs.css" />
     <Content Include="clientsrc\pdp\pdp-manage-orgs.js" />
-    <Content Include="clientsrc\underscore-min.js" />
+    <Content Include="clientsrc\underscore.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
