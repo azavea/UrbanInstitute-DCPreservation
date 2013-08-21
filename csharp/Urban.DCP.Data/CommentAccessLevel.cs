@@ -4,6 +4,6 @@
     {
         SameOrg,
         Network,
-        All
+        Public
     }
 }
