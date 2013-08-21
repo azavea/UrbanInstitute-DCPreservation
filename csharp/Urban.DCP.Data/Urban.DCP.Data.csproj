@@ -140,6 +140,7 @@
     <Compile Include="PDB\PdbResultsWithMetadata.cs" />
     <Compile Include="PDB\PdbSubCategory.cs" />
     <Compile Include="AbstractTableColumnMetadata.cs" />
+    <Compile Include="Tests\CommentTests.cs" />
     <Compile Include="Uploadable\ImportResult.cs" />
     <Compile Include="Uploadable\Project.cs" />
     <Compile Include="ResultsWithMetadata.cs" />

@@ -30,14 +30,41 @@
     <property name="Value" column="AttributeValue" />
     <property name="Group" column="AttributeGrouping" />
   </class>
-  <class name="Urban.DCP.Data.User,Urban.DCP.Data" table="Users">
-	<id name="Id" column="Id">
-		<generator class="native" />
-	</id>
-	<property column="UserName" name="UserName" />
-	<property column="Pass" name="Password" />
-	<property column="Email" name="Email" />
-	<property column="Name" name="Name" />
-	<property column="Roles" name="Roles" />
-   </class>
+
+
+  <class name="Urban.DCP.Data.User,Urban.DCP.Data" table="dbo.Users">
+    <id name="Id" column="Id">
+      <generator class="native" />
+    </id>
+    <property column="UserName" name="UserName" />
+    <property column="Password" name="Password" />
+    <property column="Email" name="Email" />
+    <property column="Name" name="Name" />
+    <property column="Roles" name="Roles" />
+    <property column="EmailConfirmationToken" name="EmailConfirmationToken" />
+    <property column="EmailConfirmed" name="EmailConfirmed" type="int" />
+    <property column="Organization" name="Organization" type="int" />
+  </class>
+  <class name="Urban.DCP.Data.Organization,Urban.DCP.Data" table="Organizations">
+    <id name="Id" column="Id">
+      <generator class="native" />
+    </id>
+    <property column="Name" name="Name" />
+  </class>
+
+  <class name="Urban.DCP.Data.Comment,Urban.DCP.Data" table="Comment">
+    <id name="Id" column="Id">
+      <generator class="native" />
+    </id>
+    <property name="NlihcId" column="NLIHCID" />
+    <property name="Username" column="Username"/>
+    <property name="AccessLevel" column="AccessLevel" type="string" />
+    <property name="AssociatedOrgId" column="Org" />
+    <property name="Created" column="Created"/>
+    <property name="Modified" column="Modified" />
+    <property name="LastEditorId" column="LastEditorId"/>
+    <property name="Image" column="Image"/>
+    <property name="Text" column="Text"/>
+  </class>
+
 </hibernate-mapping>
