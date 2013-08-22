@@ -4,6 +4,7 @@ using Azavea.Database;
 using Azavea.Open.Common;
 using Azavea.Open.DAO.Criteria;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Urban.DCP.Data
 {
@@ -33,6 +34,7 @@ namespace Urban.DCP.Data
         /// <summary>
         /// Access level which this comment is viewable
         /// </summary>
+        [JsonConverter(typeof(StringEnumConverter))]
         public CommentAccessLevel AccessLevel;
 
         /// <summary>
