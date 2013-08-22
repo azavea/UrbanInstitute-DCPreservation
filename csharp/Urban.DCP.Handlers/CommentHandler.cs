@@ -49,18 +49,8 @@ namespace Urban.DCP.Handlers
             var id = WebUtil.GetParam(context, "id", false);
             var level = WebUtil.ParseEnumParam<CommentAccessLevel>(context, "level");
             var text = WebUtil.GetParam(context, "text", true);
-            byte[] image = null;
+            byte[] image = InputStreamToByteArray(context);
 
-            if (context.Request.Files.Count == 1)
-            {
-                var stream = context.Request.Files[0].InputStream;
-                using (var br = new BinaryReader(stream))
-                {
-                    image = br.ReadBytes((int)stream.Length);
-                }
-            }
-
-            context.Response.Clear();
             if (text == null && image == null)
             {
                 context.Response.StatusCode = (int) HttpStatusCode.BadRequest;
@@ -73,5 +63,68 @@ namespace Urban.DCP.Handlers
             ));
         }
 
+        /// <summary>
+        /// Partial edits to a comment, if authorized
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="cache"></param>
+        protected override void InternalPOST(HttpContext context, HandlerTimedCache cache)
+        {
+            var user = UserHelper.GetUser(context.User.Identity.Name);
+            var commentId = WebUtil.ParseIntParam(context, "commentId");
+            var text = WebUtil.GetParam(context, "text", true);
+            var removeImage = WebUtil.ParseBoolParam(context, "removeImage");
+            var image = InputStreamToByteArray(context);
+
+            Action doEdit = () => Comment.ById(commentId).Update(user, text, image, removeImage);
+            ModifyComment(context, doEdit);
+        }
+
+        /// <summary>
+        /// Delete a comment
+        /// </summary>
+        protected override void InternalDELETE(HttpContext context, HandlerTimedCache cache)
+        {
+            var user = UserHelper.GetUser(context.User.Identity.Name);
+            var commentId = WebUtil.ParseIntParam(context, "commentId");
+            Action doDelete = () => Comment.ById(commentId).Delete(user);
+            ModifyComment(context, doDelete);
+        }
+
+        private static void ModifyComment(HttpContext context, Delegate modifyFunc)
+        {
+            try
+            {
+                modifyFunc.DynamicInvoke();
+                context.Response.StatusCode = (int)HttpStatusCode.OK;
+            }
+            catch (CommentNotFoundException)
+            {
+                context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                context.Response.Write("Comment not found");
+            }
+            catch (UnauthorizedToEditCommentException)
+            {
+                context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                context.Response.Write("Not authorized to edit comment");
+            }
+        }
+        /// <summary>
+        /// Return the form upload image, if it exists
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        private static byte[] InputStreamToByteArray(HttpContext context)
+        {
+            if (context.Request.Files.Count == 1)
+            {
+                var stream = context.Request.Files[0].InputStream;
+                using (var br = new BinaryReader(stream))
+                {
+                    return br.ReadBytes((int)stream.Length);
+                }
+            }
+            return null;
+        }
     }
 }

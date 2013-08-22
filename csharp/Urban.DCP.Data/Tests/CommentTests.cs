@@ -123,5 +123,88 @@ namespace Urban.DCP.Data.Tests
             var c = Comment.AddComment("test", org1, CommentAccessLevel.Public, "My Comment", ms.ToArray());
             Assert.IsTrue(c.HasPicture);
         }
+
+        [Test]
+        public void TestAnonymousUserCannotEdit()
+        {
+            User user = null;
+            TestUserAuthorized(user, false);
+        }
+
+        [Test]
+        public void TestNonAuthorCannotEdit()
+        {
+            TestUserAuthorized(org2, false);    
+        }
+
+        [Test]
+        public void TestAuthorCanEdit()
+        {
+            TestUserAuthorized(org1, true);
+        }
+
+        [Test]
+        public void TestSysAdminCanEdit()
+        {
+            TestUserAuthorized(sys, true);
+        }
+
+        [Test]
+        public void TestEditReplacesImage()
+        {
+            var orig = new byte[10];
+            var update = new byte[42];
+
+            var comment = Comment.AddComment("NL00x", org1, CommentAccessLevel.Public, "JOHN RAMBO", null);
+            comment.Update(org1, null, update);
+            var updatedComment = _commentDao.GetFirst("Id", comment.Id);
+            Assert.AreEqual(42, updatedComment.Image.Length, "New image failed to save");
+        }
+
+        [Test]
+        public void TestUpdateTextNotImage()
+        {
+            string orig = "First text",
+                    upd = "Second text";
+            var img = new byte[14];
+
+            var c = Comment.AddComment("NL0001", org1, CommentAccessLevel.SameOrg, orig, img);
+            c.Update(org1, upd, null);
+
+            var updatedComment = _commentDao.GetFirst("Id", c.Id);
+            Assert.AreEqual(upd, updatedComment.Text, "Text failed to save");
+            Assert.AreEqual(14, updatedComment.Image.Length, "Image was improperly updated");
+        }
+
+        [Test]
+        public void TestImageRemoved()
+        {
+            var img = new byte[14];
+
+            var c = Comment.AddComment("NL0001", org1, CommentAccessLevel.SameOrg, null, img);
+            c.Update(org1, null, null, true);
+
+            var updatedComment = _commentDao.GetFirst("Id", c.Id);
+            Assert.IsFalse(updatedComment.HasPicture, "Image was not removed");
+        }
+
+        private void TestUserAuthorized(User user, bool canEdit)
+        {
+            TestDelegate edit = delegate
+            {
+                var comment = Comment.AddComment("2x3", org1, CommentAccessLevel.Public, "JOHN RAMBO", null);
+                comment.Update(user, "This may or may not be allowed", null);
+            };
+
+            if (canEdit)
+            {
+                Assert.DoesNotThrow(edit);
+            }
+            else
+            {
+                Assert.Throws<UnauthorizedToEditCommentException>(edit);    
+            }
+            
+        }
     }
 }
