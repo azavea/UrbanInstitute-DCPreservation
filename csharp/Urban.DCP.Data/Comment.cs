@@ -39,6 +39,13 @@ namespace Urban.DCP.Data
         /// If AccessLevel is set to Org mode, the org in question
         /// </summary>
         public int? AssociatedOrgId;
+        public string AssociatedOrgName
+        {
+            get { return AssociatedOrgId.HasValue 
+                    ? Organization.getOrgById(AssociatedOrgId.Value).Name 
+                    : null; 
+            }
+        }
 
         public DateTime Created;
         public DateTime Modified;
