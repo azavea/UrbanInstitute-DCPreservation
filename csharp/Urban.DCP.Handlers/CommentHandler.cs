@@ -26,7 +26,9 @@ namespace Urban.DCP.Handlers
         {
             var user = UserHelper.GetUser(context.User.Identity.Name);
             var id = WebUtil.GetParam(context, "id", false);
-            context.Response.Write(Comment.GetAuthorizedComments(id, user));
+            context.Response.Write(JToken.FromObject(
+                Comment.GetAuthorizedComments(id, user)
+            ));
         }
 
         /// <summary>
