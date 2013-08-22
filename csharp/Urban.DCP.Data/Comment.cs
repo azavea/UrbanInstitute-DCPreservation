@@ -1,20 +1,31 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Azavea.Database;
 using Azavea.Open.Common;
 using Azavea.Open.DAO.Criteria;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Urban.DCP.Data
 {
+    public class CommentNotFoundException : Exception
+    {
+        public CommentNotFoundException() {}
+        public CommentNotFoundException(string msg):base(msg){}
+    }
+    public class UnauthorizedToEditCommentException: Exception
+    {
+        public UnauthorizedToEditCommentException() { }
+        public UnauthorizedToEditCommentException(string msg) : base(msg) { }
+    }
+
     public class Comment
     {
         private static readonly FastDAO<Comment> _dao =
             new FastDAO<Comment>(Config.GetConfig("PDP.Data"), "PDB");
 
         public int Id;
+
         /// <summary>
         /// Property this comment is attached to
         /// </summary>
@@ -23,12 +34,21 @@ namespace Urban.DCP.Data
         /// <summary>
         /// Access level which this comment is viewable
         /// </summary>
+        [JsonConverter(typeof(StringEnumConverter))]
         public CommentAccessLevel AccessLevel;
 
         /// <summary>
         /// If AccessLevel is set to Org mode, the org in question
         /// </summary>
         public int? AssociatedOrgId;
+        public string AssociatedOrgName
+        {
+            get { return AssociatedOrgId.HasValue 
+                    ? Organization.getOrgById(AssociatedOrgId.Value).Name 
+                    : null; 
+            }
+        }
+
         public DateTime Created;
         public DateTime Modified;
         public string Username;
@@ -42,6 +62,7 @@ namespace Urban.DCP.Data
         /// <summary>
         /// Optional Image attached to comment
         /// </summary>
+        [JsonIgnore]
         public byte[] Image;
 
         /// <summary>
@@ -49,7 +70,9 @@ namespace Urban.DCP.Data
         /// </summary>
         public string Text;
 
-        public User User {
+        [JsonIgnore]
+        public User User
+        {
             get { return UserHelper.GetUser(Username); }
         }
 
@@ -59,6 +82,53 @@ namespace Urban.DCP.Data
         }
 
         /// <summary>
+        /// Update the comment, if authorized
+        /// </summary>
+        /// <param name="user">Editing user</param>
+        /// <param name="text">The new text.  If the text is unchanged, provide
+        /// the original text.  This lets you take whatever is in the user text box</param>
+        /// <param name="image">New image to use (null if no change, don't need to reupload orig) </param>
+        /// <param name="removeImage">Flag to indicate the image was removed, since null image is no-op</param>
+        public void Update(User user, string text, byte[] image, bool removeImage = false)
+        {
+            AssertModifyAuthorization(user);
+            if (removeImage) Image = new byte[0];
+            Text = text;
+
+            // Only update the image if there was one passed and there is
+            // no instruction to remove it.  If the image edit was a no-op,
+            // it won't have been submitted and will be null, otherwise it's new
+            if (image != null && !removeImage)
+            {
+                Image = image;
+            }
+
+            LastEditorId = user.UserName;
+            Modified = DateTime.Now;
+
+            _dao.Save(this);
+        }
+
+        /// <summary>
+        /// Removes a comment from 
+        /// </summary>
+        /// <param name="user"></param>
+        public void Delete(User user)
+        {
+            AssertModifyAuthorization(user);
+            _dao.Delete(this);
+        }
+
+        private void AssertModifyAuthorization(User user)
+        {
+            // Comment authors or admins can edit/delete a comment
+            if (user == null || (user.UserName != Username && !user.IsSysAdmin()))
+            {
+                throw new UnauthorizedToEditCommentException();
+            }
+        }
+
+    /// <summary>
         /// Non images are stored as emtpy byte arrays, this
         /// is a convenience method for that.  Property so it
         /// can be serialized to the client
@@ -133,7 +203,19 @@ namespace Urban.DCP.Data
             }
 
             return authComments;
+        }
 
+        /// <summary>
+        /// Returns a comment by its Id
+        /// </summary>
+        /// <param name="commentId"></param>
+        /// <returns>Comment or null if not found</returns>
+        public static Comment ById(int commentId)
+        {
+            var user = _dao.GetFirst("Id", commentId);
+            if (user == null) throw new CommentNotFoundException();
+            return user;
         }
     }
+
 }
