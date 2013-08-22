@@ -39,7 +39,7 @@ namespace Urban.DCP.Handlers
         protected override void InternalPUT(HttpContext context, HandlerTimedCache cache)
         {
             var user = UserHelper.GetUser(context.User.Identity.Name);
-            if (user == null)
+            if (user == null || !user.CanAddComments())
             {
                 context.Response.StatusCode = (int) HttpStatusCode.Forbidden;
                 context.Response.Write("Must be logged in to leave a comment");

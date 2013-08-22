@@ -93,6 +93,15 @@ namespace Urban.DCP.Data
             return RolesList.Contains(SecurityRole.Network);
         }
 
+        /// <summary>
+        /// The user is authorized to add comments if they are
+        /// in rolse sysadmin or network
+        /// </summary>
+        /// <returns></returns>
+        public bool CanAddComments()
+        {
+            return IsSysAdmin() || IsNetworked();
+        }
 
         /// <summary>
         /// Does this user have limited data access?
