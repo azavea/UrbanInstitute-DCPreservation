@@ -65,6 +65,7 @@ namespace Urban.DCP.Handlers
             {
                 context.Response.StatusCode = (int) HttpStatusCode.BadRequest;
                 context.Response.Write("Must include either text or image comment (or both).");
+                return;
             }
 
             context.Response.Write(JToken.FromObject(
