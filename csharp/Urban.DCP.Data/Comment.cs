@@ -58,9 +58,23 @@ namespace Urban.DCP.Data
             get { return UserHelper.GetUser(LastEditorId); }
         }
 
-        public static void AddComment(string nlihcId, User user, 
+        /// <summary>
+        /// Non images are stored as emtpy byte arrays, this
+        /// is a convenience method for that.  Property so it
+        /// can be serialized to the client
+        /// </summary>
+        /// <returns></returns>
+        public bool HasPicture 
+        {
+            get { return Image != null && Image.Length > 0; }
+            
+        }
+
+        public static Comment AddComment(string nlihcId, User user, 
             CommentAccessLevel level, string text, byte[] image)
         {
+            var imageVal = image ?? new byte[] {};
+
             var created = DateTime.Now;
             var comment = new Comment
                 {
@@ -71,10 +85,11 @@ namespace Urban.DCP.Data
                     Modified = created,
                     Username = user.UserName,
                     Text = text,
-                    Image = image
+                    Image = imageVal
                 };
 
-            _dao.Insert(comment);
+            _dao.Insert(comment, true);
+            return comment;
         }
 
         public static IList<Comment> GetAuthorizedComments(string nlihcId, User user)
