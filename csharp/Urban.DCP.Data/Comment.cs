@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Azavea.Database;
 using Azavea.Open.Common;
 using Azavea.Open.DAO.Criteria;
+using Newtonsoft.Json;
 
 namespace Urban.DCP.Data
 {
@@ -55,6 +53,7 @@ namespace Urban.DCP.Data
         /// <summary>
         /// Optional Image attached to comment
         /// </summary>
+        [JsonIgnore]
         public byte[] Image;
 
         /// <summary>
@@ -62,6 +61,7 @@ namespace Urban.DCP.Data
         /// </summary>
         public string Text;
 
+        [JsonIgnore]
         public User User
         {
             get { return UserHelper.GetUser(Username); }
