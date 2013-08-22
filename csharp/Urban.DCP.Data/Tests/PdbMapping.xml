@@ -63,7 +63,7 @@
     <property name="Created" column="Created"/>
     <property name="Modified" column="Modified" />
     <property name="LastEditorId" column="LastEditorId"/>
-    <property name="Image" column="Image"/>
+    <property name="Image" column="Image" type="bytearray" />
     <property name="Text" column="Text"/>
   </class>
 

@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Text;
 using Azavea.Database;
@@ -56,9 +59,9 @@ namespace Urban.DCP.Data.Tests
             UserHelper.Save(sys);
             UserHelper.Save(org1);
 
-            Comment.AddComment("1a", sys, CommentAccessLevel.Network, "Network folks only", new byte[1]);
-            Comment.AddComment("1a", sys, CommentAccessLevel.Public, "Hello, everyone", new byte[1]);
-            Comment.AddComment("1a", org1, CommentAccessLevel.SameOrg, "Hello, co-workers", new byte[1]);
+            Comment.AddComment("1a", sys, CommentAccessLevel.Network, "Network folks only", null);
+            Comment.AddComment("1a", sys, CommentAccessLevel.Public, "Hello, everyone", null);
+            Comment.AddComment("1a", org1, CommentAccessLevel.SameOrg, "Hello, co-workers", null);
         }
 
         [Test]
@@ -84,7 +87,6 @@ namespace Urban.DCP.Data.Tests
             Assert.AreEqual(2, comments.Count(), "Network users should only see public and Network comments, not org only");
             Assert.AreEqual(1, comments.Count(c => c.AccessLevel == CommentAccessLevel.Public), "Should have 1 public comment");
             Assert.AreEqual(1, comments.Count(c => c.AccessLevel == CommentAccessLevel.Network), "Should have 1 network comment");
-            
         }
 
         [Test]
@@ -92,6 +94,34 @@ namespace Urban.DCP.Data.Tests
         {
             var comments = Comment.GetAuthorizedComments("1a", sys);
             Assert.AreEqual(3, comments.Count(), "SysAdmin should see all comments");            
+        }
+
+        [Test]
+        public void AddCommentSansImage()
+        {
+            var c = Comment.AddComment("test", org1, CommentAccessLevel.Public, "My Comment", null);
+            Assert.AreNotEqual(0, c.Id);
+
+        }
+
+        [Test]
+        public void TestHasNoPicture()
+        {
+            var c = Comment.AddComment("test", org1, CommentAccessLevel.Public, "My Comment", null);
+            Assert.IsFalse(c.HasPicture);            
+        }
+
+        [Test]
+        public void TestHasPicture()
+        {
+            var image = new Bitmap(200, 200);
+            var g = Graphics.FromImage(image);
+            g.DrawLine(new Pen(Color.Black), 1, 1, 2, 2 );
+            g.Save();
+            var ms = new MemoryStream();
+            image.Save(ms, ImageFormat.Png);
+            var c = Comment.AddComment("test", org1, CommentAccessLevel.Public, "My Comment", ms.ToArray());
+            Assert.IsTrue(c.HasPicture);
         }
     }
 }
