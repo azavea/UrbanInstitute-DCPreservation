@@ -140,6 +140,30 @@ namespace Urban.DCP.Data
             
         }
 
+        /// <summary>
+        /// Checks if a user is authorized to view a comment/image
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public bool IsAuthorizedToView(User user)
+        {
+            if (user == null && AccessLevel != CommentAccessLevel.Public) return false;
+            if (user != null && user.IsSysAdmin()) return true;
+            if (user != null)
+            {
+                switch (AccessLevel)
+                {
+                    case CommentAccessLevel.Public:
+                        return true;
+                    case CommentAccessLevel.Network:
+                        return user.IsNetworked();    
+                    case CommentAccessLevel.SameOrg:
+                        return user.Organization == AssociatedOrgId;
+                }
+            }
+            return false;
+        }
+
         public static Comment AddComment(string nlihcId, User user, 
             CommentAccessLevel level, string text, byte[] image)
         {
