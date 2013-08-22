@@ -222,4 +222,34 @@
         var data = "";
         _callHandler('GET', url, data, callback, error);
     });
+    P.Data.getComments = Azavea.tryCatch('data get comments', function (id, callback, error) {
+        var url = P.Data.path + 'handlers/comments.ashx';
+        var data = { "id": id };
+        _callHandler('GET', url, data, callback, error);
+    });
+    P.Data.putComment = Azavea.tryCatch('data put comment', function (id, text, accessLevel, callback, error) {
+        var url = P.Data.path + 'handlers/comments.ashx';
+        var data = {
+            "id": id,
+            "text": text,
+            "level": accessLevel
+        };
+        _callHandler('PUT', url, data, callback, error);
+    });
+    P.Data.deleteComment = Azavea.tryCatch('data delete comment', function (id, callback, error) {
+        var url = P.Data.path + 'handlers/comments.ashx';
+        var data = {
+            "commentId": id
+        };
+        _callHandler('DELETE', url, data, callback, error);
+    });
+    P.Data.postComment = Azavea.tryCatch('data post comment', function (id, text,removeImage, callback, error) {
+        var url = P.Data.path + 'handlers/comments.ashx';
+        var data = {
+            "commentId": id,
+            "text": text,
+            "removeImage": removeImage
+        };
+        _callHandler('POST', url, data, callback, error);
+    });
 }(PDP));

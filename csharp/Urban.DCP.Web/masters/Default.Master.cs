@@ -21,11 +21,12 @@ namespace Urban.DCP.Web.masters
 
             string appUrl = WebUtil.GetApplicationUrl(Request);
 
-            RegisterCssFile(appUrl + "client/jqueryui/css/custom/jquery-ui-1.8.5.custom.css");
+            RegisterCssFile("http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css");
             RegisterCssFile(appUrl + "client/pdp-core.css", true);
+            RegisterJavascriptFile("http://code.jquery.com/jquery-1.9.1.js");
+            RegisterJavascriptFile("http://code.jquery.com/jquery-migrate-1.1.0.js");
+            RegisterJavascriptFile("http://code.jquery.com/ui/1.10.3/jquery-ui.js");
 
-            RegisterJavascriptFile(appUrl + "client/jqueryui/jquery-1.4.2.min.js");
-            RegisterJavascriptFile(appUrl + "client/jqueryui/jquery-ui-1.8.4.custom.min.js");
             RegisterJavascriptFile(appUrl + "client/pdp-core.js", true);
         }
 

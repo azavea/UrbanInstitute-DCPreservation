@@ -112,7 +112,9 @@
   <ItemGroup>
     <Content Include="admin\manage-orgs.aspx" />
     <Content Include="admin\data.aspx" />
+    <Content Include="clientsrc\jquery.fileupload.js" />
     <Content Include="clientsrc\pdp\css\pdp-manage-orgs.css" />
+    <Content Include="clientsrc\pdp\pdp-comment-controller.js" />
     <Content Include="clientsrc\pdp\pdp-manage-orgs.js" />
     <Content Include="clientsrc\underscore.js" />
     <Content Include="Web.config">
