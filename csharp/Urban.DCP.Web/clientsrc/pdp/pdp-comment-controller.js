@@ -67,7 +67,7 @@
                                { "name": "removeImage", "value": false },
                                { "name": "text", "value": $newComment.find(".edited-comment").val() }],
                     done: function () { P.Util.alert("File uploaded.") },
-                    fail: function (e, data) { Azavea.log(e); Azavea.log(data); P.Util.alert("Problem uploading file.") }
+                    fail: function (e, data) { Azavea.logError(e + " " + data); P.Util.alert("Problem uploading file.") }
                 });
 
             });
@@ -97,8 +97,7 @@
         }
 
         var error = function (resp, status, err) {
-            Azavea.log(status);
-            Azavea.log(err);
+            Azavea.logError(status + " " + err);
             P.Util.alert(STRINGS.errorPuttingComment);
         }
 
@@ -126,7 +125,7 @@
             type: 'POST',
             formData: getFormDataForFileUpload,
             done: function () { P.Util.alert("File uploaded."); self._reloadComments(); },
-            fail: function (e, data) { Azavea.log(e); Azavea.log(data); P.Util.alert("Problem uploading file.") }
+            fail: function (e, data) { Azavea.logError(e + " " + data); P.Util.alert("Problem uploading file.") }
         });
 
     };
@@ -138,8 +137,7 @@
             self._reloadComments.call(self, settings.propId);
         };
         var onError = function (resp, status, err) {
-            Azavea.log(status);
-            Azavea.log(err);
+            Azavea.logError(status + " " + err);
             self._reloadComments.call(self, settings.propId);
         }
         P.Data.deleteComment(commentId, onSuccess, onError);
@@ -181,8 +179,7 @@
         }
 
         var error = function (resp, status, err) {
-            Azavea.log(status);
-            Azavea.log(err);
+            Azavea.logError(err + " " + status);
             self._reloadComments();
         }
 
