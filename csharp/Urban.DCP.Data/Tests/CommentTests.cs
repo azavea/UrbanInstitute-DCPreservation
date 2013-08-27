@@ -66,6 +66,47 @@ namespace Urban.DCP.Data.Tests
         }
 
         [Test]
+        public void AnonUsersNotAuthorizedToViewNonPublicComments()
+        {
+            var c = new Comment {AccessLevel = CommentAccessLevel.Network};
+            Assert.IsFalse(c.IsAuthorizedToView(null));
+        }
+
+        [Test]
+        public void AnonUsersAuthorizedToViewNonPublicComments()
+        {
+            var c = new Comment { AccessLevel = CommentAccessLevel.Public };
+            Assert.IsTrue(c.IsAuthorizedToView(null));
+        }
+
+        [Test]
+        public void SysUsersAuthorizedToViewAllComments()
+        {
+            var comments = new List<Comment>
+                {
+                    new Comment {AccessLevel = CommentAccessLevel.Public},
+                    new Comment {AccessLevel = CommentAccessLevel.Network},
+                    new Comment {AccessLevel = CommentAccessLevel.SameOrg}
+                };
+            Assert.IsTrue(comments.All(c => c.IsAuthorizedToView(sys)));
+        }
+
+        [Test]
+        public void NetworkUsersAuthorizedToViewAnyNetworked()
+        {
+            var c = new Comment {AccessLevel = CommentAccessLevel.Network};
+            Assert.IsTrue(c.IsAuthorizedToView(org1));
+            Assert.IsTrue(c.IsAuthorizedToView(org2));  
+        }
+
+        [Test]
+        public void OtherNetworkUserNotAuthroizedToViewSameOrg()
+        {
+            var c = new Comment { AccessLevel = CommentAccessLevel.SameOrg, AssociatedOrgId = 99};
+            Assert.IsFalse(c.IsAuthorizedToView(org1));
+        }
+
+        [Test]
         public void TestSysAdminGetsAll()
         {
             var comments = Comment.GetAuthorizedComments("1a", sys);
