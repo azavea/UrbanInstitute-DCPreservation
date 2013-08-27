@@ -46,8 +46,10 @@ namespace Urban.DCP.Handlers
 
                 if (comment.IsAuthorizedToView(user))
                 {
-                    context.Response.ContentType = "image/jpeg";
                     var img = comment.Image;
+                    var format = GetImageFormat(img);
+                    context.Response.ContentType = String.Format("image/{0}", format);
+
                     if (thumb)
                     {
                         var ms = new MemoryStream();
@@ -55,7 +57,7 @@ namespace Urban.DCP.Handlers
                         var b = new Bitmap(ms);
                         var thumbnail = b.GetThumbnailImage(width, height, () => false, IntPtr.Zero);
                         var outStream = new MemoryStream();
-                        thumbnail.Save(outStream, ImageFormat.Jpeg);
+                        thumbnail.Save(outStream, format);
                         img = outStream.ToArray();
                     }
                     context.Response.BinaryWrite(img);
@@ -68,5 +70,33 @@ namespace Urban.DCP.Handlers
                 context.Response.StatusCode = (int) HttpStatusCode.NotFound;
             }
         }
+
+        private static ImageFormat GetImageFormat(byte[] image)
+        {
+            var format = Image.FromStream(new MemoryStream(image)).RawFormat;
+   
+            if (format.Equals(ImageFormat.Jpeg))
+            {
+                return ImageFormat.Jpeg;
+            }
+            if (format.Equals(ImageFormat.Png))
+            {
+                return ImageFormat.Png;
+            }
+            if (format.Equals(ImageFormat.Gif))
+            {
+                return ImageFormat.Gif;
+            }
+            if (format.Equals(ImageFormat.Tiff))
+            {
+                return ImageFormat.Tiff;
+            }
+
+            // If we can't figure out the type, try it as a jpeg
+            return ImageFormat.Jpeg;
+            
+        }
     }
+
+ 
 }
