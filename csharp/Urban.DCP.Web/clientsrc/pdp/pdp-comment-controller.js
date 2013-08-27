@@ -6,7 +6,6 @@
         "currUser"];
     var STRINGS = {
         noComments: "There are currently no comments for this property.",
-        commentSectionHeader: "<h1>Comments</h1>",
         errorDownloadingComment: "There was an error downloading the comments.",
         commentPosted: "Comment Posted",
         errorPuttingComment: "Error posting comment."
@@ -49,7 +48,6 @@
         if (data.length == 0) {
             $comments.append(STRINGS.noComments);
         } else {
-            $comments.append(STRINGS.commentSectionHeader);
 
             var template = _.template($(settings.commentTemplate).html());
             _.each(data, function (comment) {
@@ -69,7 +67,7 @@
                                { "name": "removeImage", "value": false },
                                { "name": "text", "value": $newComment.find(".edited-comment").val() }],
                     done: function () { P.Util.alert("File uploaded.") },
-                    fail: function () { P.Util.alert("Problem uploading file.") }
+                    fail: function (e, data) { Azavea.log(e); Azavea.log(data); P.Util.alert("Problem uploading file.") }
                 });
 
             });
@@ -98,7 +96,9 @@
             P.Util.alert(STRINGS.commentPosted);
         }
 
-        var error = function () {
+        var error = function (resp, status, err) {
+            Azavea.log(status);
+            Azavea.log(err);
             P.Util.alert(STRINGS.errorPuttingComment);
         }
 
@@ -126,7 +126,7 @@
             type: 'POST',
             formData: getFormDataForFileUpload,
             done: function () { P.Util.alert("File uploaded."); self._reloadComments(); },
-            fail: function () { P.Util.alert("Problem uploading file.") }
+            fail: function (e, data) { Azavea.log(e); Azavea.log(data); P.Util.alert("Problem uploading file.") }
         });
 
     };
@@ -137,7 +137,9 @@
             P.Util.alert("comment deleted");
             self._reloadComments.call(self, settings.propId);
         };
-        var onError = function () {
+        var onError = function (resp, status, err) {
+            Azavea.log(status);
+            Azavea.log(err);
             self._reloadComments.call(self, settings.propId);
         }
         P.Data.deleteComment(commentId, onSuccess, onError);
@@ -178,7 +180,9 @@
             self._reloadComments();
         }
 
-        var error = function () {
+        var error = function (resp, status, err) {
+            Azavea.log(status);
+            Azavea.log(err);
             self._reloadComments();
         }
 
