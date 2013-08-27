@@ -147,20 +147,19 @@ namespace Urban.DCP.Data
         /// <returns></returns>
         public bool IsAuthorizedToView(User user)
         {
-            if (user == null && AccessLevel != CommentAccessLevel.Public) return false;
-            if (user != null && user.IsSysAdmin()) return true;
-            if (user != null)
+            if (user == null) return AccessLevel == CommentAccessLevel.Public;
+            if (user.IsSysAdmin()) return true;
+
+            switch (AccessLevel)
             {
-                switch (AccessLevel)
-                {
-                    case CommentAccessLevel.Public:
-                        return true;
-                    case CommentAccessLevel.Network:
-                        return user.IsNetworked();    
-                    case CommentAccessLevel.SameOrg:
-                        return user.Organization == AssociatedOrgId;
-                }
+                case CommentAccessLevel.Public:
+                    return true;
+                case CommentAccessLevel.Network:
+                    return user.IsNetworked();    
+                case CommentAccessLevel.SameOrg:
+                    return user.Organization == AssociatedOrgId;
             }
+        
             return false;
         }
 
