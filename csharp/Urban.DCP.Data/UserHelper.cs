@@ -354,7 +354,7 @@ namespace Urban.DCP.Data
 
         public static void Save(User user)
         {
-            _userDao.Save(user);
+            _userDao.Save(user, true);
         }
 
         /// <summary>
