@@ -58,6 +58,7 @@ namespace Urban.DCP.Data.Tests
             };        
             UserHelper.Save(sys);
             UserHelper.Save(org1);
+            UserHelper.Save(org2);
 
             Comment.AddComment("1a", sys, CommentAccessLevel.Network, "Network folks only", null);
             Comment.AddComment("1a", sys, CommentAccessLevel.Public, "Hello, everyone", null);
@@ -205,6 +206,39 @@ namespace Urban.DCP.Data.Tests
                 Assert.Throws<UnauthorizedToEditCommentException>(edit);    
             }
             
+        }
+
+        [Test]
+        public void TestAuthorCanModifyIndicatorSet()
+        {
+            TestModifyIndicatorTrue(org1);
+        }
+
+        [Test]
+        public void TestSysAdminCanModifyIndicatorSet()
+        {
+            TestModifyIndicatorTrue(sys);
+        }
+
+        private void TestModifyIndicatorTrue(User user)
+        {
+            var c = new Comment();
+            c.Username = org1.UserName;
+            var ui = UiComment.FromComment(c, user);
+
+            Assert.IsTrue(ui.CanDelete);
+            Assert.IsTrue(ui.CanEdit);
+        }
+
+        [Test]
+        public void TestNonAuthorCanModifyIndicatorSet()
+        {
+            var c = new Comment();
+            c.Username = org1.UserName;
+            var ui = UiComment.FromComment(c, org2);
+
+            Assert.IsFalse(ui.CanDelete);
+            Assert.IsFalse(ui.CanEdit);
         }
     }
 }
