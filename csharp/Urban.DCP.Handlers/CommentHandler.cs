@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Net;
-using System.Text;
+using System.Linq;
 using System.Web;
 using Azavea.Open.Common;
 using Azavea.Utilities.Common;
@@ -27,7 +27,7 @@ namespace Urban.DCP.Handlers
             var user = UserHelper.GetUser(context.User.Identity.Name);
             var id = WebUtil.GetParam(context, "id", false);
             context.Response.Write(JToken.FromObject(
-                Comment.GetAuthorizedComments(id, user)
+                new PropertyCommentInfo(id, user)
             ));
         }
 
