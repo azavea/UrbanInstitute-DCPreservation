@@ -25,14 +25,15 @@
                 $(_options.bindTo).trigger('pdp-export-request');
             });
            
-            // Bind to results ready event, and show thyself
-            $(_options.bindTo).bind('pdp-data-response', function(){
+            $(_options.bindTo).bind('pdp-enable-extras', function () {
                 $container.show();
             });
-            
-            $(_options.bindTo).bind('pdp-criteria-reset', function() {
+
+            $(_options.bindTo).bind('pdp-disable-extras', function () {
                 $container.hide();
             });
+
+
            
             return _self;
         });
