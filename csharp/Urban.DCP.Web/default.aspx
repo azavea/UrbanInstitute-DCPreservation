@@ -71,10 +71,9 @@
         <div class="comment" >
             <div class="display">
                 {% if (HasPicture) { %}<img src="/handlers/comment-image.ashx?id={{ Id }}&amp;thumb=true" />{% } %}
-                <p>{{ Text }}</p>
-                <p>posted by: {{ Username }}</p>
-                <p>posted on: {{ Modified }}</p>
-                <p>for: {{ forwho }}</p>
+                <p class="comment-text">{{ Text }}</p>
+                <p class="comment-poster">posted by {{ Username }} on {{ Modified }}</p>
+                <p class="comment-vis-label">visible to: {{ forwho }}</p>
                 <p>{% if (CanDelete) { %}<button class="trash-comment">trash</button>{% } %}
                    {% if (CanEdit) { %}<button class="edit-comment">edit</button></p>{% } %}
              

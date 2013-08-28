@@ -163,32 +163,33 @@
 
     function _commentForField(comment) {
         if (comment.AccessLevel == 'Public') {
-            return "everyone";
+            return "Everyone";
         } else if (comment.AccessLevel == 'SameOrg') {
-            return comment.AssociatedOrg;
+            return comment.AssociatedOrgName + " members only";
         } else if (comment.AccessLevel == 'Network') {
-            return "network members only";
+            return "Network Members only";
         } else {
             return "";
         }
     }
 
     controller.prototype._doCommentEdit = function ($comment, id) {
-        var self = this;
-        var newText = $comment.find(".edited-comment").val();
-        var removeImage = $comment.find(".remove-image").attr("checked") == "checked";
+        var self = this,
+            newText = $comment.find(".edited-comment").val(),
+            removeImage = $comment.find(".remove-image").attr("checked") == "checked",
+            accessLevel = $comment.find("select.comment-access-level-edit").val();
 
-        var success = function () {
+        var success = function() {
             P.Util.alert("comment edited");
             self._reloadComments();
-        }
+        };
 
-        var error = function (resp, status, err) {
+        var error = function(resp, status, err) {
             Azavea.logError(err + " " + status);
             self._reloadComments();
-        }
+        };
 
-        P.Data.postComment(id, newText, removeImage, success, error);
+        P.Data.postComment(id, newText, removeImage, accessLevel, success, error);
         
 
     }
