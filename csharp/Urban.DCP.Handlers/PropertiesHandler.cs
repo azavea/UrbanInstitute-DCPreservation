@@ -45,7 +45,7 @@ namespace Urban.DCP.Handlers
             {
                 if (authUser == null || !authUser.EmailConfirmed)
                 {
-                    throw new AzaveaWebNotAuthorizedException("Insuffient privileges.");
+                    throw new AzaveaWebNotAuthorizedException("Insuffient privileges (User must have email confirmed to export csv.)");
                 }
             }
 
