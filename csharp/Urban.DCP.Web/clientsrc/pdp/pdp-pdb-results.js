@@ -397,13 +397,13 @@
                 bindTo: P.Pdb
             }).init();   
 
-            //In the table export widget. Gets a CSV version of the table data.
-            //Doesn't actually interact with the table widget.
+         
             P.Widget.Export({
                 target: _options.exportTarget,
                 bindTo: P.Pdb
             }).init();
-            
+        
+
             return _self;
         });
         
