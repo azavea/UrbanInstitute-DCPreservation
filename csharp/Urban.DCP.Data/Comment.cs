@@ -76,6 +76,7 @@ namespace Urban.DCP.Data
             get { return UserHelper.GetUser(Username); }
         }
 
+        [JsonIgnore]
         public User LastEditor
         {
             get { return UserHelper.GetUser(LastEditorId); }
