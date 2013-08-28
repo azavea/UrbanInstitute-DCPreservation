@@ -89,7 +89,7 @@ namespace Urban.DCP.Data
         /// the original text.  This lets you take whatever is in the user text box</param>
         /// <param name="image">New image to use (null if no change, don't need to reupload orig) </param>
         /// <param name="removeImage">Flag to indicate the image was removed, since null image is no-op</param>
-        public void Update(User user, string text, byte[] image, bool removeImage = false)
+        public void Update(User user, string text, byte[] image, bool removeImage)
         {
             AssertModifyAuthorization(user);
             if (removeImage) Image = new byte[0];

@@ -198,7 +198,7 @@ namespace Urban.DCP.Data.Tests
             var update = new byte[42];
 
             var comment = Comment.AddComment("NL00x", org1, CommentAccessLevel.Public, "JOHN RAMBO", null);
-            comment.Update(org1, null, update);
+            comment.Update(org1, null, update, false);
             var updatedComment = _commentDao.GetFirst("Id", comment.Id);
             Assert.AreEqual(42, updatedComment.Image.Length, "New image failed to save");
         }
@@ -211,7 +211,7 @@ namespace Urban.DCP.Data.Tests
             var img = new byte[14];
 
             var c = Comment.AddComment("NL0001", org1, CommentAccessLevel.SameOrg, orig, img);
-            c.Update(org1, upd, null);
+            c.Update(org1, upd, null, false);
 
             var updatedComment = _commentDao.GetFirst("Id", c.Id);
             Assert.AreEqual(upd, updatedComment.Text, "Text failed to save");
@@ -235,7 +235,7 @@ namespace Urban.DCP.Data.Tests
             TestDelegate edit = delegate
             {
                 var comment = Comment.AddComment("2x3", org1, CommentAccessLevel.Public, "JOHN RAMBO", null);
-                comment.Update(user, "This may or may not be allowed", null);
+                comment.Update(user, "This may or may not be allowed", null, false);
             };
 
             if (canEdit)
