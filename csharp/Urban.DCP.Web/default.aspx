@@ -80,6 +80,11 @@
              
             </div>
             <div class="edit" style="display:none">
+                <select class="comment-access-level-edit">
+                    <option value="Public">Public</option>
+                    <option value="SameOrg">Same Organization</option>
+                    <option value="Network">Network</option>
+                </select>
                 <input type="file" class="edited-image" name="files[]" /><br />
                 <textarea class="edited-comment">{{ Text }}</textarea><br />
                 <p><input type="checkbox" class="remove-image" />remove image</p>

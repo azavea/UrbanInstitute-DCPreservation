@@ -57,6 +57,7 @@
                 $newComment.find(".edit-comment").click(_.bind(self._showCommentEditor, self, $newComment));
                 $newComment.find(".cancel-edit").click(_.bind(self._hideCommentEditors, self));
                 $newComment.find(".save-edit").click(_.bind(self._doCommentEdit, self, $newComment, comment.Id));
+                $newComment.find(".comment-access-level-edit").find('option[value="' + comment.AccessLevel + '"]').attr('selected', 'selected');
 
                 $newComment.find(".edited-image").fileupload({
                     autoUpload: true,

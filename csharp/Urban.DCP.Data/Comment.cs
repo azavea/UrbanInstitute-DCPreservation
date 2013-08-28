@@ -81,6 +81,11 @@ namespace Urban.DCP.Data
             get { return UserHelper.GetUser(LastEditorId); }
         }
 
+        public void Update(User user, string text, byte[] image, bool removeImage)
+        {
+            Update(user, text, image, removeImage, AccessLevel);    
+        }
+
         /// <summary>
         /// Update the comment, if authorized
         /// </summary>
@@ -89,12 +94,13 @@ namespace Urban.DCP.Data
         /// the original text.  This lets you take whatever is in the user text box</param>
         /// <param name="image">New image to use (null if no change, don't need to reupload orig) </param>
         /// <param name="removeImage">Flag to indicate the image was removed, since null image is no-op</param>
-        public void Update(User user, string text, byte[] image, bool removeImage)
+        /// <param name="level"></param>
+        public void Update(User user, string text, byte[] image, bool removeImage, 
+            CommentAccessLevel level)
         {
             AssertModifyAuthorization(user);
             if (removeImage) Image = new byte[0];
-            Text = text;
-
+            
             // Only update the image if there was one passed and there is
             // no instruction to remove it.  If the image edit was a no-op,
             // it won't have been submitted and will be null, otherwise it's new
@@ -103,8 +109,11 @@ namespace Urban.DCP.Data
                 Image = image;
             }
 
+            Text = text;
             LastEditorId = user.UserName;
             Modified = DateTime.Now;
+            AccessLevel = level;
+            AssociatedOrgId = GetAssociatedOrgId(user, level);
 
             _dao.Save(this);
         }
@@ -173,7 +182,7 @@ namespace Urban.DCP.Data
                 {
                     NlihcId = nlihcId,
                     AccessLevel = level,
-                    AssociatedOrgId = level == CommentAccessLevel.Network ? user.Organization : null,
+                    AssociatedOrgId = GetAssociatedOrgId(user, level),
                     Created = created,
                     Modified = created,
                     Username = user.UserName,
@@ -183,6 +192,18 @@ namespace Urban.DCP.Data
 
             _dao.Insert(comment, true);
             return comment;
+        }
+
+        /// <summary>
+        /// Set the comment's associated organization if the access
+        /// level is restricted to a users organization
+        /// </summary>
+        /// <param name="user">User modifying the comment</param>
+        /// <param name="level">Access Level of comment</param>
+        /// <returns></returns>
+        private static int? GetAssociatedOrgId(User user, CommentAccessLevel level)
+        {
+            return level == CommentAccessLevel.SameOrg ? user.Organization : null;
         }
 
         public static IList<Comment> GetAuthorizedComments(string nlihcId, User user)
