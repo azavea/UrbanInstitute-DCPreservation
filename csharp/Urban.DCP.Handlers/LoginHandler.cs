@@ -23,7 +23,7 @@ namespace Urban.DCP.Handlers
                 // We are currently logged in
                 User user = UserHelper.GetUser(context.User.Identity.Name);
                 context.Response.StatusCode = (int)HttpStatusCode.OK;
-                context.Response.Write(WebUtil.ObjectToJson(new {Name = user.Name, Admin = user.IsSysAdmin(), Limited = user.IsLimited()}));
+                context.Response.Write(WebUtil.ObjectToJson(new {Name = user.Name, Admin = user.IsSysAdmin(), Limited = user.IsLimited(), EmailConfirmed = user.EmailConfirmed}));
                 return;
             }
 

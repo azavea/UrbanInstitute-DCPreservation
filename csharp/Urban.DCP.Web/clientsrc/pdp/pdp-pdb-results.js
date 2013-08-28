@@ -262,15 +262,27 @@
                 }        
                 _userRole = 'Public';
         });
+
+        var _setupExtras = Azavea.tryCatch('set up extra features that req special auth', function (user) {
+            if (user && user.EmailConfirmed) {
+                $(_options.bindTo).trigger('pdp-enable-extras');
+            } else {
+                $(_options.bindTo).trigger('pdp-disable-extras');
+            }
+        });
+
+
                 
         var _bindEvents = Azavea.tryCatch('bind pdb result events', function(){
             
             // Login status            
             $(P).bind('pdp-login-status-refresh', function(event, user){
                 _setUserRole(user);
+                _setupExtras(user);
             });
              $(P).bind('pdp-login-success', function(event, user){
-                _setUserRole(user);
+                 _setUserRole(user);
+                 _setupExtras(user);
             });
 
             // Bind to get a call with max bbox so we can get a count of properties available on the map
@@ -385,13 +397,13 @@
                 bindTo: P.Pdb
             }).init();   
 
-            //In the table export widget. Gets a CSV version of the table data.
-            //Doesn't actually interact with the table widget.
+         
             P.Widget.Export({
                 target: _options.exportTarget,
                 bindTo: P.Pdb
             }).init();
-            
+        
+
             return _self;
         });
         

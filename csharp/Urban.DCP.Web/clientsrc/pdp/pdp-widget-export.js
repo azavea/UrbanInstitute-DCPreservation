@@ -7,7 +7,8 @@
                 defaultText: 'Export To CSV'
             }, options),
             _manager = {},
-            _curCriteria = {};
+            _curCriteria = {},
+            _extrasEnabled = false;
                     
         _self.init = Azavea.tryCatch('init app', function() {
             var $link = {}, $container;
@@ -25,14 +26,24 @@
                 $(_options.bindTo).trigger('pdp-export-request');
             });
            
-            // Bind to results ready event, and show thyself
-            $(_options.bindTo).bind('pdp-data-response', function(){
-                $container.show();
+            $(_options.bindTo).bind('pdp-data-response', function () {
+                if (_extrasEnabled) {
+                    $container.show();
+                }
             });
-            
-            $(_options.bindTo).bind('pdp-criteria-reset', function() {
+
+            $(_options.bindTo).bind('pdp-criteria-reset', function () {
                 $container.hide();
             });
+
+            $(_options.bindTo).bind('pdp-enable-extras', function () {
+                _extrasEnabled = true;
+            });
+
+            $(_options.bindTo).bind('pdp-disable-extras', function () {
+                _extrasEnabled = false;
+            });
+
            
             return _self;
         });

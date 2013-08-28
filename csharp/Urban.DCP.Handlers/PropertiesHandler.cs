@@ -10,6 +10,7 @@ using Azavea.Web.Handler;
 using Newtonsoft.Json.Linq;
 using Urban.DCP.Data;
 using Urban.DCP.Data.PDB;
+using Azavea.Web.Exceptions;
 
 namespace Urban.DCP.Handlers
 {
@@ -39,6 +40,15 @@ namespace Urban.DCP.Handlers
             bool csv = false;
             WebUtil.ParseOptionalBoolParam(context, "csv", ref csv);
             
+            User authUser = UserHelper.GetUser(context.User.Identity.Name);
+            if (csv)
+            {
+                if (authUser == null || !authUser.EmailConfirmed)
+                {
+                    throw new AzaveaWebNotAuthorizedException("Insuffient privileges (User must have email confirmed to export csv.)");
+                }
+            }
+
             // If this is csv, we want all data - override any paging
             if (csv)
             {
