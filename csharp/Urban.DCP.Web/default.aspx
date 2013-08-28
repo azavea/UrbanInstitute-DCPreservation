@@ -50,4 +50,45 @@
             </div>
         </div>
     </div>
+    <script type="text/template" id="comment-form-template">
+        <h1>Add Comment</h1>
+       <p>
+         <label for="comment-access-level">Access Level</label>
+        <select id="comment-access-level">
+            <option value="Public">Public</option>
+            <option value="SameOrg">Same Organization</option>
+            <option value="Network">Network</option>
+        </select>
+         </p>
+        <label for="comment-image">Comment Image</label><br />
+        <input type="file" name="files[]" id="comment-image"/><br />
+        <label for="new-comment">New Comment</label><br />
+        <textarea id="new-comment"></textarea><br />
+        <button id="submit-new-comment">Submit Comment</button>
+    </script>
+
+    <script type="text/template" id="comment-template">
+        <div class="comment" >
+            <div class="display">
+                {% if (HasPicture) { %}<img src="/handlers/comment-image.ashx?id={{ Id }}&amp;thumb=true" />{% } %}
+                <p>{{ Text }}</p>
+                <p>posted by: {{ Username }}</p>
+                <p>posted on: {{ Modified }}</p>
+                <p>for: {{ forwho }}</p>
+                <p>{% if (CanDelete) { %}<button class="trash-comment">trash</button>{% } %}
+                   {% if (CanEdit) { %}<button class="edit-comment">edit</button></p>{% } %}
+             
+            </div>
+            <div class="edit" style="display:none">
+                <input type="file" class="edited-image" name="files[]" /><br />
+                <textarea class="edited-comment">{{ Text }}</textarea><br />
+                <p><input type="checkbox" class="remove-image" />remove image</p>
+                <p>
+                    <button class="cancel-edit">cancel</button>
+                    <button class="save-edit">save</button>
+                </p>
+            </div>
+            <hr />
+    </script>
+
 </asp:Content>

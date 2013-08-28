@@ -13,7 +13,7 @@
             }, options),
             _$container = {},
             _panorama,
-            _sv, 
+            _sv,
             _$street,
             _userRole;
        
@@ -122,10 +122,20 @@
             } else {
                _displayNoData();
             }
-            
+          
+
+            new P.CommentController({
+                propId: propId,
+                commentFormTemplate: "#comment-form-template",
+                commentTemplate: "#comment-template",
+                commentContainer: "#pdp-longview-comments",
+                newCommentFormContainer: ".pdp-longview-comment-form"
+            }).init();
+
             // Show the dialog
             _$container.dialog('open');
             
+           
         });
         
         // Determines the yaw between two lat/longs
@@ -151,6 +161,7 @@
           });
 
         // Caches the highest role of the current user, for analytics only
+        // TODO rename this and cache user info.
         var _setUserRole = Azavea.tryCatch('set user role nychanis', function(user){
                 if (user){
                     if (user.Admin || user.Limited){
@@ -208,9 +219,9 @@
         // Create the dialog that will show longview details, including space for streetview and title
         var _createLongviewDialog = Azavea.tryCatch('create dialog container', function(){            
             // Create div container for caption, the list, and GSV
-            _$container = $('<div class="pdp-longview"><div class="pdp-longview-caption"></div><table id="pdp-longview-table" class="pdp-longview-list"></table><div id="pdp-streetview-title">Approximate View</div><div class="pdp-longview-street"></div></div>');
+            _$container = $('<div class="pdp-longview"><div class="pdp-longview-caption"></div><table id="pdp-longview-table" class="pdp-longview-list"></table><div id="pdp-streetview-title">Approximate View</div><div class="pdp-longview-street"></div><div id="pdp-longview-comments"></div><div class="pdp-longview-comment-form"></div></div>');
             _$street = $('.pdp-longview-street', _$container);
-            
+           
             // Create a link to report download link
             _$container.append('<a id="pdp-download-report" style="display=none;" href="javascript:void(0)">' + _options.linkText + '</a>');
             
@@ -241,9 +252,15 @@
             // Return the link markup
             return '<a class="pdp-property-details-' + id + '" href="javascript:void(0);">'+value+'</a>';
         };
-                    
+
         // Initialize and render dialog
         _self.init = Azavea.tryCatch('init longview widget', function() {
+            _.templateSettings = {
+                interpolate: /\{\{(.+?)\}\}/g,      // print value: {{ value_name }}
+                evaluate: /\{%([\s\S]+?)%\}/g,   // excute code: {% code_to_execute %}
+                escape: /\{%-([\s\S]+?)%\}/g     // excape HTML: {%- <script> %} prints &lt;script&gt;
+            }; 
+            
             // Login status            
             $(P).bind('pdp-login-status-refresh', function(event, user){
                 _setUserRole(user);
