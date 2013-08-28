@@ -30,7 +30,6 @@
     controller.prototype.init = function () {
         var self = this;
         self._reloadComments();
-        self._renderCommentForm(settings.propId);
     };
 
     controller.prototype._reloadComments = function () {
@@ -50,7 +49,7 @@
         } else {
 
             var template = _.template($(settings.commentTemplate).html());
-            _.each(data, function (comment) {
+            _.each(data.Comments, function (comment) {
                 comment["forwho"] = _commentForField(comment);
                 var $newComment = $(template(comment));
                 $comments.append($newComment);
@@ -74,6 +73,11 @@
 
             
         }
+
+        if (data.CanAdd) {
+            self._renderCommentForm(settings.propId);
+        }
+
     };
 
     controller.prototype._renderCommentForm = function () {

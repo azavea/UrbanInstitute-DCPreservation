@@ -75,8 +75,8 @@
                 <p>posted by: {{ Username }}</p>
                 <p>posted on: {{ Modified }}</p>
                 <p>for: {{ forwho }}</p>
-                <p><button class="trash-comment">trash</button>
-                   <button class="edit-comment">edit</button></p>
+                <p>{% if (CanDelete) { %}<button class="trash-comment">trash</button>{% } %}
+                   {% if (CanEdit) { %}<button class="edit-comment">edit</button></p>{% } %}
              
             </div>
             <div class="edit" style="display:none">
