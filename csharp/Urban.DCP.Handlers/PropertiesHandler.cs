@@ -113,9 +113,9 @@ namespace Urban.DCP.Handlers
                 {
                     expressions.Add(DictionaryToExpression(new Dictionary<string, object>
                         {
-                            {"attr", criterion["attr"].Value<String>()},
-                            {"oper", criterion["oper"].Value<String>()},
-                            {"val", criterion["val"].Value<String>()},
+                            {"attr", criterion["attr"].Value<string>()},
+                            {"oper", criterion["oper"].Value<string>()},
+                            {"val", criterion["val"]},
                         }));
                 }
             }
@@ -161,11 +161,12 @@ namespace Urban.DCP.Handlers
                 case "eq":
                     if (val is IList)
                     {
-                        retVal = new PropertyInListExpression(attr, (IEnumerable)val);
+                        var typedVal = ((JArray) val).Select(v => ((JValue) v).Value);
+                        retVal = new PropertyInListExpression(attr, typedVal);
                     }
                     else 
                     {
-                        retVal = new EqualExpression(attr, val);
+                        retVal = new EqualExpression(attr, ((JValue)val).Value);
                     }
                     break;
                 case "gt":
