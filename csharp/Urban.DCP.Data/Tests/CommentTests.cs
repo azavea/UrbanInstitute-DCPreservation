@@ -230,6 +230,15 @@ namespace Urban.DCP.Data.Tests
             Assert.IsFalse(updatedComment.HasPicture, "Image was not removed");
         }
 
+        [Test]
+        public void TestAccessLevelChagned()
+        {
+            var c = Comment.AddComment("NL0001", org1, CommentAccessLevel.Public, null, null);
+            c.Update(org1, null, null, false, CommentAccessLevel.SameOrg);
+
+            Assert.AreEqual(c.AccessLevel, CommentAccessLevel.SameOrg);
+        }
+
         private void TestUserAuthorized(User user, bool canEdit)
         {
             TestDelegate edit = delegate
