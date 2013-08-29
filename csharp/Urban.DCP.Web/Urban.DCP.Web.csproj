@@ -279,10 +279,7 @@
     <Content Include="user\profile.aspx" />
     <Content Include="handlers\users.ashx" />
     <Content Include="handlers\reset-password.ashx" />
-    <Content Include="handlers\nyc-meta.ashx" />
-    <Content Include="handlers\nychanis.ashx" />
     <Content Include="handlers\logout.ashx" />
-    <Content Include="handlers\nyc-sld.ashx" />
     <Content Include="handlers\feedbacker\authenticate.ashx" />
     <Content Include="handlers\feedbacker\configuration.ashx" />
     <Content Include="handlers\feedbacker\database.ashx" />
