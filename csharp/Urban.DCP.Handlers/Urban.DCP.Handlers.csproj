@@ -127,6 +127,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -134,6 +135,7 @@
     <Compile Include="AppHealth.cs" />
     <Compile Include="CommentHandler.cs" />
     <Compile Include="CommentImageHandler.cs" />
+    <Compile Include="LoggerHandler.cs" />
     <Compile Include="OrganizationHandler.cs" />
     <Compile Include="EmailConfirmationHandler.cs" />
     <Compile Include="ReportDownloadHandler.cs" />

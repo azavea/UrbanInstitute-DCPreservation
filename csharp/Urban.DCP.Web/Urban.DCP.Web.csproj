@@ -292,6 +292,7 @@
     <Content Include="handlers\organizations.ashx" />
     <Content Include="handlers\comments.ashx" />
     <Content Include="handlers\comment-image.ashx" />
+    <Content Include="handlers\logger.ashx" />
     <None Include="minifier.conf" />
     <Content Include="packages.config" />
   </ItemGroup>
