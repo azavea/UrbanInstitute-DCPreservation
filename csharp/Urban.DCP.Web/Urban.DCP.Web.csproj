@@ -206,16 +206,11 @@
     <Content Include="clientsrc\pdp\pdp-widget-map-layers.js" />
     <Content Include="clientsrc\pdp\css\pdp-pdb-search.css" />
     <Content Include="clientsrc\pdp\css\pdp-widget-export.css" />
-    <Content Include="clientsrc\pdp\pdp-nychanis-results.js" />
-    <Content Include="clientsrc\pdp\pdp-nychanis-search.js" />
     <Content Include="clientsrc\pdp\pdp-widget-export.js" />
     <Content Include="clientsrc\pdp\css\pdp-widget-column-selector.css" />
     <Content Include="clientsrc\pdp\pdp-widget-column-selector.js" />
     <Content Include="clientsrc\pdp\pdp-pdb-search.js" />
     <Content Include="clientsrc\pdp\pdp-pdb-results.js" />
-    <Content Include="clientsrc\pdp\pdp-widget-nychanis-resolution.js" />
-    <Content Include="clientsrc\pdp\pdp-widget-nychanis-indicator.js" />
-    <Content Include="clientsrc\pdp\pdp-widget-nychanis-time.js" />
     <Content Include="clientsrc\pdp\pdp-widget-panel-closer.js" />
     <Content Include="clientsrc\pdp\pdp-widget-pdb-aggregations.js" />
     <Content Include="clientsrc\pdp\pdp-widget-pdb-controls.js" />
