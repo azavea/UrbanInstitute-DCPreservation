@@ -154,6 +154,18 @@ namespace Urban.DCP.Handlers
             string attr = (string)expressionParts[ATTRIBUTE_KEY];
             string oper = (string)expressionParts[OPERATOR_KEY];
             object val = expressionParts[VALUE_KEY];
+            object typedVal = null;
+            IEnumerable<object> typedValList = null;
+
+            if (val is IList)
+            {
+                typedValList = ((JArray)val).Select(v => ((JValue)v).Value);
+                
+            }
+            else
+            {
+                typedVal = ((JValue) val).Value;
+            }
 
             // Supported Operator Values: gt, lt, ge, le, eq, lk
             switch (oper)
@@ -161,28 +173,25 @@ namespace Urban.DCP.Handlers
                 case "eq":
                     if (val is IList)
                     {
-                        var typedVal = ((JArray) val).Select(v => ((JValue) v).Value);
-                        retVal = new PropertyInListExpression(attr, typedVal);
+                        retVal = new PropertyInListExpression(attr, typedValList);
+                        break;
                     }
-                    else 
-                    {
-                        retVal = new EqualExpression(attr, ((JValue)val).Value);
-                    }
+                    retVal = new EqualExpression(attr, typedVal);
                     break;
                 case "gt":
-                    retVal = new GreaterExpression(attr, val);
+                    retVal = new GreaterExpression(attr, typedVal);
                     break;
                 case "lt":
-                    retVal = new LesserExpression(attr, val);
+                    retVal = new LesserExpression(attr, typedVal);
                     break;
                 case "ge":
-                    retVal = new LesserExpression(attr, val, false);
+                    retVal = new LesserExpression(attr, typedVal, false);
                     break;
                 case "le":
-                    retVal = new GreaterExpression(attr, val, false);
+                    retVal = new GreaterExpression(attr, typedVal, false);
                     break;
                 case "lk":
-                    retVal = new LikeExpression(attr, "%" + val + "%");
+                    retVal = new LikeExpression(attr, "%" + typedVal + "%");
                     break;
                 default:
                     throw new ArgumentException("Cannot convert unsupported operator to SQL expression: " + oper);
