@@ -10,18 +10,21 @@
         //  a .pdp-closable-panel class.  If it does, the element with that class will close
         _self.init = Azavea.tryCatch('init app', function() {
 
-            $(document).bind('mouseup', function(event){
+            $(document).bind('mouseup', function (event) {
+                var $target = $(event.target);
                 // An absurdly long list of classes that do not cause the panel closer to close
-                if ($(event.target).closest('.pdp-closable-panel').length <= 0) {
-                    if ($(event.target).closest('.pdp-closable-panel-button').length <= 0) {
-                        if ($(event.target).closest('.ui-dialog').length <= 0) {
-                            if ($(event.target).closest('.ui-autocomplete').length <= 0){
-                                if ($(event.target).closest('.pdp-pdb-control-tooltip').length <= 0){
-                                    // Hide any closable panels
-                                    $('.pdp-closable-panel').hide();
-                                    
-                                    // Tell anyone that we did
-                                    $(_options.bindTo).trigger('pdp-panel-close-event');
+                if ($target.closest('.pdp-closable-panel').length <= 0) {
+                    if ($target.closest('.pdp-closable-panel-button').length <= 0) {
+                        if ($target.closest('.ui-dialog').length <= 0) {
+                            if ($target.closest('.ui-autocomplete').length <= 0) {
+                                if ($target.closest('.ui-datepicker').length <= 0) {
+                                    if ($target.closest('.pdp-pdb-control-tooltip').length <= 0) {
+                                        // Hide any closable panels
+                                        $('.pdp-closable-panel').hide();
+
+                                        // Tell anyone that we did
+                                        $(_options.bindTo).trigger('pdp-panel-close-event');
+                                    }
                                 }
                             }
                         }
