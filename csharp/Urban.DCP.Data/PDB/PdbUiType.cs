@@ -14,7 +14,7 @@ namespace Urban.DCP.Data.PDB
         /// </summary>
         free,
         /// <summary>
-        /// Combination min and max control(s).
+        /// Combination min and max control(s) for numeric types.
         /// </summary>
         range,
         /// <summary>
@@ -24,6 +24,10 @@ namespace Urban.DCP.Data.PDB
         /// <summary>
         /// Similar to free, but uses %wildcards% on whatever is entered in text box.
         /// </summary>
-        wildcard
+        wildcard,
+        /// <summary>
+        /// Range for date types.
+        /// </summary>
+        daterange
     }
 }
