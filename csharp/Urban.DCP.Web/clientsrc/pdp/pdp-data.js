@@ -243,12 +243,13 @@
         };
         _callHandler('DELETE', url, data, callback, error);
     });
-    P.Data.postComment = Azavea.tryCatch('data post comment', function (id, text,removeImage, callback, error) {
+    P.Data.postComment = Azavea.tryCatch('data post comment', function (id, text, removeImage, accessLevel, callback, error) {
         var url = P.Data.path + 'handlers/comments.ashx';
         var data = {
             "commentId": id,
             "text": text,
-            "removeImage": removeImage
+            "removeImage": removeImage,
+            "level": accessLevel
         };
         _callHandler('POST', url, data, callback, error);
     });

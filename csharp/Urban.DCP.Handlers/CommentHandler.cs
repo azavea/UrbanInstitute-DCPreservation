@@ -74,11 +74,12 @@ namespace Urban.DCP.Handlers
         {
             var user = UserHelper.GetUser(context.User.Identity.Name);
             var commentId = WebUtil.ParseIntParam(context, "commentId");
+            var accessLevel = WebUtil.ParseEnumParam<CommentAccessLevel>(context, "level");
             var text = WebUtil.GetParam(context, "text", true);
             var removeImage = WebUtil.ParseBoolParam(context, "removeImage");
             var image = InputStreamToByteArray(context);
 
-            Action doEdit = () => Comment.ById(commentId).Update(user, text, image, removeImage);
+            Action doEdit = () => Comment.ById(commentId).Update(user, text, image, removeImage, accessLevel);
             ModifyComment(context, doEdit);
         }
 

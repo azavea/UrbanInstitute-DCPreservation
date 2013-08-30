@@ -71,15 +71,19 @@
         <div class="comment" >
             <div class="display">
                 {% if (HasPicture) { %}<img src="/handlers/comment-image.ashx?id={{ Id }}&amp;thumb=true" />{% } %}
-                <p>{{ Text }}</p>
-                <p>posted by: {{ Username }}</p>
-                <p>posted on: {{ Modified }}</p>
-                <p>for: {{ forwho }}</p>
+                <p class="comment-text">{{ Text }}</p>
+                <p class="comment-poster">posted by {{ Username }} on {{ Modified }}</p>
+                <p class="comment-vis-label">visible to: {{ forwho }}</p>
                 <p>{% if (CanDelete) { %}<button class="trash-comment">trash</button>{% } %}
                    {% if (CanEdit) { %}<button class="edit-comment">edit</button></p>{% } %}
              
             </div>
             <div class="edit" style="display:none">
+                <select class="comment-access-level-edit">
+                    <option value="Public">Public</option>
+                    <option value="SameOrg">Same Organization</option>
+                    <option value="Network">Network</option>
+                </select>
                 <input type="file" class="edited-image" name="files[]" /><br />
                 <textarea class="edited-comment">{{ Text }}</textarea><br />
                 <p><input type="checkbox" class="remove-image" />remove image</p>
