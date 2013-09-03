@@ -51,6 +51,7 @@
             var template = _.template($(settings.commentTemplate).html());
             _.each(data.Comments, function (comment) {
                 comment["forwho"] = _commentForField(comment);
+                comment["formattedDate"] = moment(comment.Modified).format('MMMM Do YYYY, h:mm:ss a');
                 var $newComment = $(template(comment));
                 $comments.append($newComment);
                 $newComment.find(".trash-comment").click(_.bind(self._trashComment, self, comment.Id));

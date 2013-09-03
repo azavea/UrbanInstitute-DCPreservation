@@ -73,7 +73,7 @@
             <div class="display">
                 {% if (HasPicture) { %}<img src="<% Response.Write(ResolveUrl("~/handlers/comment-image.ashx")); %>?id={{ Id }}&amp;thumb=true" />{% } %}
                 <p class="comment-text">{{ Text }}</p>
-                <p class="comment-poster">posted by {{ Username }} on {{ Modified }}</p>
+                <p class="comment-poster">posted by {{ Username }} on {{ formattedDate }}</p>
                 <p class="comment-vis-label">visible to: {{ forwho }}</p>
                 <p>{% if (CanDelete) { %}<button class="trash-comment">trash</button>{% } %}
                    {% if (CanEdit) { %}<button class="edit-comment">edit</button></p>{% } %}
