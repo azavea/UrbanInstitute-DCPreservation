@@ -80,6 +80,7 @@
              
             </div>
             <div class="edit" style="display:none">
+                {% if (HasPicture) { %}<img src="<% Response.Write(ResolveUrl("~/handlers/comment-image.ashx")); %>?id={{ Id }}&amp;thumb=true" />{% } %}
                 <select class="comment-access-level-edit">
                     <option value="Public">Public</option>
                     <option value="SameOrg">Same Organization</option>
