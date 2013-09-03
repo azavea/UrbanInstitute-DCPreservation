@@ -87,8 +87,11 @@
                 </select>
                 <input type="file" class="edited-image" name="files[]" /><br />
                 <textarea class="edited-comment">{{ Text }}</textarea><br />
+                
+                {% if (HasPicture) { %}
                 <p><input type="checkbox" class="remove-image" />remove image</p>
-                <p>
+                {% } %}
+                  <p>
                     <button class="cancel-edit">cancel</button>
                     <button class="save-edit">save</button>
                 </p>
