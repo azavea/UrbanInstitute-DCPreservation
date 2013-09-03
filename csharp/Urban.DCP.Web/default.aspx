@@ -68,9 +68,10 @@
     </script>
 
     <script type="text/template" id="comment-template">
+        <div style=""clear:both"></div>
         <div class="comment" >
             <div class="display">
-                {% if (HasPicture) { %}<img src="/handlers/comment-image.ashx?id={{ Id }}&amp;thumb=true" />{% } %}
+                {% if (HasPicture) { %}<img src="<% Response.Write(ResolveUrl("~/handlers/comment-image.ashx")); %>?id={{ Id }}&amp;thumb=true" />{% } %}
                 <p class="comment-text">{{ Text }}</p>
                 <p class="comment-poster">posted by {{ Username }} on {{ Modified }}</p>
                 <p class="comment-vis-label">visible to: {{ forwho }}</p>
