@@ -66,8 +66,9 @@
                     type: 'POST',
                     formData: [{ "name": "commentId", "value": comment.Id },
                                { "name": "removeImage", "value": false },
-                               { "name": "text", "value": $newComment.find(".edited-comment").val() }],
-                    done: function () { P.Util.alert("File uploaded.") },
+                               { "name": "text", "value": $newComment.find(".edited-comment").val() },
+                               { "name": "level", "value": $newComment.find(".comment-access-level-edit").val() }],
+                    done: function () { P.Util.alert("File uploaded."); self._reloadComments(); },
                     fail: function (e, data) { Azavea.logError(e + " " + data); P.Util.alert("Problem uploading file.") }
                 });
 
