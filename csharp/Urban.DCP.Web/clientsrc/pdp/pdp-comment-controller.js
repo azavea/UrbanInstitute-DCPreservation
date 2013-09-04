@@ -80,6 +80,7 @@
                     add: function (e, data) {
                         submitButton.off();
                         submitButton.click(function () {
+                            //TODO- could switch existing image to upload icon as visual indicator if necesary.
                             data.formData = formData();
                             data.submit();
                         });
@@ -132,22 +133,33 @@
         }
         $submitButton.click(onSubmit);
 
-        var getFormDataForFileUpload = function() {
+        var formData = function() {
             var level = $accessLevel.val();
-            var formData = [ { "name": "_method", "value" : "PUT"},
-                { "name": "id", "value": settings.propId },
-                { "name": "text", "value": level },
-                { "name": "level", "value": "Public" }];
+            var formData = { 
+                "_method" : "PUT",
+                "id": settings.propId,
+                "text": $comment.val(),
+                "level": level 
+            };
             return formData;
         };
 
         $image.fileupload({
-            autoUpload: true,
+            autoUpload: false,
             url: P.Data.path + 'handlers/comments.ashx',
             type: 'POST',
-            formData: getFormDataForFileUpload,
             done: function () { P.Util.alert("File uploaded."); self._reloadComments(); },
-            fail: function (e, data) { Azavea.logError(e + " " + data); P.Util.alert("Problem uploading file.") }
+            fail: function (e, data) { Azavea.logError(e + " " + data); P.Util.alert("Problem uploading file.") },
+            add: function (e, data) {
+                //unbind non-image click handler from submit button, and bind this one.
+                $submitButton.off();
+                $submitButton.click(function () {
+                    //TODO- visual indicator that img is ready to upload.
+                    data.formData = formData();
+                    data.submit();
+                });
+            }
+        
         });
 
     };
