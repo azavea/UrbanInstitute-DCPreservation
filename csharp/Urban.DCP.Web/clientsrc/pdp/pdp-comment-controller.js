@@ -53,23 +53,38 @@
                 comment["forwho"] = _commentForField(comment);
                 comment["formattedDate"] = moment(comment.Modified).format('MMMM Do YYYY, h:mm:ss a');
                 var $newComment = $(template(comment));
+                var submitButton = $newComment.find(".save-edit");
                 $comments.append($newComment);
                 $newComment.find(".trash-comment").click(_.bind(self._trashComment, self, comment.Id));
                 $newComment.find(".edit-comment").click(_.bind(self._showCommentEditor, self, $newComment));
                 $newComment.find(".cancel-edit").click(_.bind(self._hideCommentEditors, self));
-                $newComment.find(".save-edit").click(_.bind(self._doCommentEdit, self, $newComment, comment.Id));
+                submitButton.click(_.bind(self._doCommentEdit, self, $newComment, comment.Id));
                 $newComment.find(".comment-access-level-edit").find('option[value="' + comment.AccessLevel + '"]').attr('selected', 'selected');
 
+                var formData = function () {
+                   return {
+                        commentId : comment.Id,
+                        removeImage : false,
+                        text : $newComment.find(".edited-comment").val(),
+                        level: $newComment.find(".comment-access-level-edit").val()
+                   };
+                }
+
                 $newComment.find(".edited-image").fileupload({
-                    autoUpload: true,
+                    autoUpload: false,
                     url: P.Data.path + 'handlers/comments.ashx',
                     type: 'POST',
-                    formData: [{ "name": "commentId", "value": comment.Id },
-                               { "name": "removeImage", "value": false },
-                               { "name": "text", "value": $newComment.find(".edited-comment").val() },
-                               { "name": "level", "value": $newComment.find(".comment-access-level-edit").val() }],
                     done: function () { P.Util.alert("File uploaded."); self._reloadComments(); },
-                    fail: function (e, data) { Azavea.logError(e + " " + data); P.Util.alert("Problem uploading file.") }
+                    fail: function (e, data) { Azavea.logError(e + " " + data); P.Util.alert("Problem uploading file.")},
+                    // On file add, rebind a new click handler to the submit button, that submits the file upload.
+                    add: function (e, data) {
+                        submitButton.off();
+                        submitButton.click(function () {
+                            data.formData = formData();
+                            data.submit();
+                        });
+                    }
+                    
                 });
 
             });
