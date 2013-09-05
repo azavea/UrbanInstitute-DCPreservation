@@ -14,6 +14,7 @@
     .pdp-pdb-control-input, .pdp-pdb-control-input-range {position: relative; display: inline;}
     .pdp-pdb-control-input .ui-icon-close {position: absolute; left: -15px; top: 1px;}
     .pdp-pdb-control .pdp-control-range { width:60px !important; margin: 0 2px; }
+    .pdp-pdb-control .pdp-control-daterange { width:70px !important; margin: 0 2px; }
     .pdp-pdb-control-input-range-clearable {margin-left: 15px !important;}
     .pdp-pdb-control-input-range .ui-icon-close {position: absolute; left: 0px; top: 1px;}
     

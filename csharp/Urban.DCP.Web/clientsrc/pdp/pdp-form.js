@@ -126,6 +126,51 @@
                     return true; 
                  }
                  return false;   
+            },
+            daterangeUpper: function(field, dataObj, prefix) {
+                return P.Form.validators.dateCompare(field, dataObj, prefix, function(val) {
+                    return val === null || val < moment(dataObj.lower);
+                });
+            },
+            
+            daterangeLower: function (field, dataObj, prefix) {
+                return P.Form.validators.dateCompare(field, dataObj, prefix, function (val) {
+                    return val === null || val > moment(dataObj.upper);
+                });
+            },
+            
+            dateCompare: function(field, dataOjb, prefix, comparator) {
+                var $sel = $('#' + pre(prefix, field.id)),
+                    val = $sel.val(),
+                    valid = moment(val).isValid();
+
+                // Must be a date to be in a daterange
+                if (valid) {
+                    var value = moment(val);
+                    // Check the field value
+                    if (comparator(value)) {
+                        $sel.addClass(pre(prefix, 'input-invalid'));
+                        P.Form.validationMsg += 'The range values are not in correct order';
+                        return false;
+                    }
+                }
+                else {
+                    return false;
+                }
+                return true;
+            },
+            
+            daterange: function(field, dataObj, prefix) {
+                var $sel = $('#' + pre(prefix, field.id)),
+                    val = $sel.val(),
+                    valid = moment(val).isValid();
+
+                if (!valid || val === null) {
+                    $sel.addClass(pre(prefix, 'input-invalid'));
+                    P.Form.validationMsg += "The value is not a valid date.";
+                }
+                return valid;
+
             }
         },
         // Perform validation checks on a list of fields, using extra information in the dataObj param

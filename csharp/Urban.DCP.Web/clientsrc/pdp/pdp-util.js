@@ -56,6 +56,17 @@
                     }
                 }
             },
+            date: function(val) {
+                if ($.isArray(val)) {
+                    return _renderArray(val, P.Util.renderers.date);
+                } else {
+                    if (val && typeof(val) === 'string') {
+                        return moment(val).format('MM/DD/YYYY');
+                    } else {
+                        return '[No Value]';
+                    }
+                }
+            },
             text: function(val) {
                 if ($.isArray(val)) {
                     return _renderArray(val, P.Util.renderers.text);

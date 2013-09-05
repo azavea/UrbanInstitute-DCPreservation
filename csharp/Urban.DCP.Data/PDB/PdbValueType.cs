@@ -24,6 +24,10 @@ namespace Urban.DCP.Data.PDB
         /// <summary>
         /// Year-only date type.
         /// </summary>
-        year
+        year,
+        /// <summary>
+        /// MM/DD/YYYY date type.
+        /// </summary>
+        date
     }
 }

@@ -116,7 +116,10 @@
     <Content Include="clientsrc\pdp\css\pdp-manage-orgs.css" />
     <Content Include="clientsrc\pdp\pdp-comment-controller.js" />
     <Content Include="clientsrc\pdp\pdp-manage-orgs.js" />
+    <Content Include="clientsrc\pdp\pdp-widget-pdb-control-range.js" />
     <Content Include="clientsrc\underscore.js" />
+    <Content Include="Scripts\moment.js" />
+    <Content Include="Scripts\moment.min.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
