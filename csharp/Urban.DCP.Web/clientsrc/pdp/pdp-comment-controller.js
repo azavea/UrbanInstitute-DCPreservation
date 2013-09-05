@@ -58,7 +58,7 @@
                 $newComment.find(".trash-comment").click(_.bind(self._trashComment, self, comment.Id));
                 $newComment.find(".edit-comment").click(_.bind(self._showCommentEditor, self, $newComment));
                 $newComment.find(".cancel-edit").click(_.bind(self._hideCommentEditors, self));
-                submitButton.click(_.bind(self._doCommentEdit, self, $newComment, comment.Id));
+                submitButton.click(_.bind(self._doCommentEdit, self, $newComment, comment.Id)); // non image click handler, maybe replaced later
                 $newComment.find(".comment-access-level-edit").find('option[value="' + comment.AccessLevel + '"]').attr('selected', 'selected');
 
                 var formData = function () {
@@ -126,22 +126,20 @@
 
         var onSubmit = function () {
             var text = $comment.val();
-            var imageFile = $image.val();
             var level = $accessLevel.val();
-
             P.Data.putComment(settings.propId, text, level, success, error);
         }
-        $submitButton.click(onSubmit);
+        $submitButton.click(onSubmit); // non-image click handler, maybe replaced later by fileupload
 
+
+        //evaluated by fileupload at file-add time.
         var formData = function() {
-            var level = $accessLevel.val();
-            var formData = { 
+            return { 
                 "_method" : "PUT",
                 "id": settings.propId,
                 "text": $comment.val(),
-                "level": level 
+                "level":  $accessLevel.val()
             };
-            return formData;
         };
 
         $image.fileupload({
@@ -154,7 +152,7 @@
                 //unbind non-image click handler from submit button, and bind this one.
                 $submitButton.off();
                 $submitButton.click(function () {
-                    //TODO- visual indicator that img is ready to upload.
+                    //TODO- visual indicator that img is ready to upload??
                     data.formData = formData();
                     data.submit();
                 });
