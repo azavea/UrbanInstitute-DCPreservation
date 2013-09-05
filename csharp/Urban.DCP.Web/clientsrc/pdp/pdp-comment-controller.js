@@ -51,23 +51,41 @@
             var template = _.template($(settings.commentTemplate).html());
             _.each(data.Comments, function (comment) {
                 comment["forwho"] = _commentForField(comment);
+                comment["formattedDate"] = moment(comment.Modified).format('MMMM Do YYYY, h:mm:ss a');
                 var $newComment = $(template(comment));
+                var submitButton = $newComment.find(".save-edit");
                 $comments.append($newComment);
                 $newComment.find(".trash-comment").click(_.bind(self._trashComment, self, comment.Id));
                 $newComment.find(".edit-comment").click(_.bind(self._showCommentEditor, self, $newComment));
                 $newComment.find(".cancel-edit").click(_.bind(self._hideCommentEditors, self));
-                $newComment.find(".save-edit").click(_.bind(self._doCommentEdit, self, $newComment, comment.Id));
+                submitButton.click(_.bind(self._doCommentEdit, self, $newComment, comment.Id)); // non image click handler, maybe replaced later
                 $newComment.find(".comment-access-level-edit").find('option[value="' + comment.AccessLevel + '"]').attr('selected', 'selected');
 
+                var formData = function () {
+                   return {
+                        commentId : comment.Id,
+                        removeImage : false,
+                        text : $newComment.find(".edited-comment").val(),
+                        level: $newComment.find(".comment-access-level-edit").val()
+                   };
+                }
+
                 $newComment.find(".edited-image").fileupload({
-                    autoUpload: true,
+                    autoUpload: false,
                     url: P.Data.path + 'handlers/comments.ashx',
                     type: 'POST',
-                    formData: [{ "name": "commentId", "value": comment.Id },
-                               { "name": "removeImage", "value": false },
-                               { "name": "text", "value": $newComment.find(".edited-comment").val() }],
-                    done: function () { P.Util.alert("File uploaded.") },
-                    fail: function (e, data) { Azavea.logError(e + " " + data); P.Util.alert("Problem uploading file.") }
+                    done: function () { P.Util.alert("File uploaded."); self._reloadComments(); },
+                    fail: function (e, data) { Azavea.logError(e + " " + data); P.Util.alert("Problem uploading file.")},
+                    // On file add, rebind a new click handler to the submit button, that submits the file upload.
+                    add: function (e, data) {
+                        submitButton.off();
+                        submitButton.click(function () {
+                            //TODO- could switch existing image to upload icon as visual indicator if necesary.
+                            data.formData = formData();
+                            data.submit();
+                        });
+                    }
+                    
                 });
 
             });
@@ -108,29 +126,38 @@
 
         var onSubmit = function () {
             var text = $comment.val();
-            var imageFile = $image.val();
             var level = $accessLevel.val();
-
             P.Data.putComment(settings.propId, text, level, success, error);
         }
-        $submitButton.click(onSubmit);
+        $submitButton.click(onSubmit); // non-image click handler, maybe replaced later by fileupload
 
-        var getFormDataForFileUpload = function() {
-            var level = $accessLevel.val();
-            var formData = [ { "name": "_method", "value" : "PUT"},
-                { "name": "id", "value": settings.propId },
-                { "name": "text", "value": level },
-                { "name": "level", "value": "Public" }];
-            return formData;
+
+        //evaluated by fileupload at file-add time.
+        var formData = function() {
+            return { 
+                "_method" : "PUT",
+                "id": settings.propId,
+                "text": $comment.val(),
+                "level":  $accessLevel.val()
+            };
         };
 
         $image.fileupload({
-            autoUpload: true,
+            autoUpload: false,
             url: P.Data.path + 'handlers/comments.ashx',
             type: 'POST',
-            formData: getFormDataForFileUpload,
             done: function () { P.Util.alert("File uploaded."); self._reloadComments(); },
-            fail: function (e, data) { Azavea.logError(e + " " + data); P.Util.alert("Problem uploading file.") }
+            fail: function (e, data) { Azavea.logError(e + " " + data); P.Util.alert("Problem uploading file.") },
+            add: function (e, data) {
+                //unbind non-image click handler from submit button, and bind this one.
+                $submitButton.off();
+                $submitButton.click(function () {
+                    //TODO- visual indicator that img is ready to upload??
+                    data.formData = formData();
+                    data.submit();
+                });
+            }
+        
         });
 
     };

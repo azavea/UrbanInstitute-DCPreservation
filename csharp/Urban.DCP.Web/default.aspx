@@ -68,17 +68,19 @@
     </script>
 
     <script type="text/template" id="comment-template">
+        <div style=""clear:both"></div>
         <div class="comment" >
             <div class="display">
-                {% if (HasPicture) { %}<img src="/handlers/comment-image.ashx?id={{ Id }}&amp;thumb=true" />{% } %}
+                {% if (HasPicture) { %}<img src="<% Response.Write(ResolveUrl("~/handlers/comment-image.ashx")); %>?id={{ Id }}&amp;thumb=true" />{% } %}
                 <p class="comment-text">{{ Text }}</p>
-                <p class="comment-poster">posted by {{ Username }} on {{ Modified }}</p>
+                <p class="comment-poster">posted by {{ Username }} on {{ formattedDate }}</p>
                 <p class="comment-vis-label">visible to: {{ forwho }}</p>
                 <p>{% if (CanDelete) { %}<button class="trash-comment">trash</button>{% } %}
                    {% if (CanEdit) { %}<button class="edit-comment">edit</button></p>{% } %}
              
             </div>
             <div class="edit" style="display:none">
+                {% if (HasPicture) { %}<img src="<% Response.Write(ResolveUrl("~/handlers/comment-image.ashx")); %>?id={{ Id }}&amp;thumb=true" />{% } %}
                 <select class="comment-access-level-edit">
                     <option value="Public">Public</option>
                     <option value="SameOrg">Same Organization</option>
@@ -86,8 +88,11 @@
                 </select>
                 <input type="file" class="edited-image" name="files[]" /><br />
                 <textarea class="edited-comment">{{ Text }}</textarea><br />
+                
+                {% if (HasPicture) { %}
                 <p><input type="checkbox" class="remove-image" />remove image</p>
-                <p>
+                {% } %}
+                  <p>
                     <button class="cancel-edit">cancel</button>
                     <button class="save-edit">save</button>
                 </p>
