@@ -233,6 +233,9 @@
 		        width: _options.width,
 		        modal: _options.modal,
 		        title: _options.title,
+		        open: function (event, ui) {
+		            $(".ui-dialog-titlebar-close").hide();
+		        },
 		        buttons: {
 	                Close: function() {
 		                $(this).dialog('close');
