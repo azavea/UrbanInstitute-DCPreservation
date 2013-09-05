@@ -23,8 +23,8 @@
         }
 
         var _onChange = Azavea.tryCatch('range values changed', function() {
-            var lowerInit = false,
-                upperInit = false,
+            var lowerValIsInitialized = false,
+                upperValIsInitialized = false,
                 $upperClear,
                 $lowerClear;
 
@@ -35,24 +35,25 @@
 
             // Get these values now, so we don't have to keep looking for that class
             if (!$lower.hasClass('pdp-input-uninit')) {
-                lowerInit = true;
+                lowerValIsInitialized = true;
             }
             if (!$upper.hasClass('pdp-input-uninit')) {
-                upperInit = true;
+                upperValIsInitialized = true;
             }
 
             // Only attempt to validate if these conditions are met:
             //  a) both lower and upper bounds exist and are not '.pdp-input-uninitialized'
             //  b) upper OR lower exists, and the other is '.pdp-input-uninitialized'
-            if ((!upperInit && ($lower.val() || $lower.val() === '0') && lowerInit) ||
-                (!lowerInit && ($upper.val() || $upper.val() === '0') && upperInit) ||
-                (($lower.val() || $lower.val() === '0') && lowerInit) && (($upper.val() || $upper.val() === '0') && upperInit)) {
+            if ((!upperValIsInitialized && ($lower.val() || $lower.val() === '0') && lowerValIsInitialized) ||
+                (!lowerValIsInitialized && ($upper.val() || $upper.val() === '0') && upperValIsInitialized) ||
+                (($lower.val() || $lower.val() === '0') && lowerValIsInitialized)
+                    && (($upper.val() || $upper.val() === '0') && upperValIsInitialized)) {
                 // Give an X before the control to clear the text
                 $lowerClear = $('.ui-icon-close', $lowerContainer);
                 $upperClear = $('.ui-icon-close', $upperContainer);
 
                 // Add a lower clear icon
-                if (lowerInit && $lowerClear.length === 0) {
+                if (lowerValIsInitialized && $lowerClear.length === 0) {
                     $lower
                         .before('<span class="ui-icon ui-icon-close left" title="Remove this filter"></span>')
                         .addClass('pdp-pdb-control-input-range-clearable');
@@ -65,13 +66,13 @@
                         $lower.val('').change();
                     });
 
-                } else if (!lowerInit && $lowerClear.length > 0) {
+                } else if (!lowerValIsInitialized && $lowerClear.length > 0) {
                     $lowerClear.remove();
                     $lower.removeClass('pdp-pdb-control-input-range-clearable');
                 }
 
                 // Add an upper clear icon
-                if (upperInit && $upperClear.length === 0) {
+                if (upperValIsInitialized && $upperClear.length === 0) {
                     $upper
                         .before('<span class="ui-icon ui-icon-close left" title="Remove this filter"></span>')
                         .addClass('pdp-pdb-control-input-range-clearable');
@@ -84,7 +85,7 @@
                         $upper.val('').change();
                     });
 
-                } else if (!upperInit && $upperClear.length > 0) {
+                } else if (!upperValIsInitialized && $upperClear.length > 0) {
                     $upperClear.remove();
                     $upper.removeClass('pdp-pdb-control-input-range-clearable');
                 }
