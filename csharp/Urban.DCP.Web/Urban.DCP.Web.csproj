@@ -341,7 +341,11 @@
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
-    <PreBuildEvent>$(SolutionDir)..\scripts\externals\minifier\minifier.py -i $(ProjectDir) -o $(ProjectDir) -c $(ProjectDir)minifier.conf</PreBuildEvent>
+    <PreBuildEvent>$(SolutionDir)..\scripts\externals\minifier\minifier.py -i $(ProjectDir) -o $(ProjectDir) -c $(ProjectDir)minifier.conf
+</PreBuildEvent>
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <PropertyGroup>
+    <PostBuildEvent>copy $(SolutionDir)\Urban.DCP.Web\Scripts\*.js $(SolutionDir)\Urban.DCP.Web\client</PostBuildEvent>
+  </PropertyGroup>
 </Project>

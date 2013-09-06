@@ -27,7 +27,7 @@ namespace Urban.DCP.Web
             // a custom config file (checked into scripts)
             // http://trac.osgeo.org/openlayers/ticket/2828
             Master.RegisterJavascriptFile("client/OpenLayers-2.11/OpenLayers.js");
-            Master.RegisterJavascriptFile("Scripts/moment.min.js");            
+            Master.RegisterJavascriptFile("client/moment.min.js");            
 
             // JQuery Plugins
             Master.RegisterJavascriptFile("client/ktable/jquery.event.drag-1.4.js");
