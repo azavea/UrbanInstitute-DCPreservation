@@ -1,6 +1,11 @@
 using Azavea.Open.Common;
-
+using Azavea.Open.DAO.SQL;
+using FileHelpers;
+using System;
+using System.IO;
+using Urban.DCP.Data.Uploadable;
 namespace Urban.DCP.Data.PDB
+
 {
     /// <summary>
     /// Represents a single attribute from the PDP data, that lives in
@@ -173,5 +178,7 @@ namespace Urban.DCP.Data.PDB
             }
             return retVal;
         }
+
+       
     }
 }

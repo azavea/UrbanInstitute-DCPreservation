@@ -7,7 +7,10 @@
      <div id="pdp-main">
          <form id="upload" method="POST" enctype="multipart/form-data">
              <input id="dataset" name="dataset" type="file"/>
-             <input id="type" name="type" type="text" value="project"/>
+             <select id="type" name="type">
+                 <option value="project">project</option>
+                 <option value="attribute">attributes</option>
+             </select>
              <input type="submit" value="Upload"/>
          </form>
          
