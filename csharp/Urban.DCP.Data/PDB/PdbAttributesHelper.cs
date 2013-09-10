@@ -18,6 +18,12 @@ namespace Urban.DCP.Data.PDB
         private static readonly Azavea.Database.FastDAO<PdbAttributeValue> _attrValDao =
             new Azavea.Database.FastDAO<PdbAttributeValue>(Config.GetConfig("PDP.Data"), "PDB");
 
+        public static Azavea.Database.FastDAO<PdbAttribute> getAttrDao()
+        {
+            return _attrDao;
+        }
+
+
         /// <summary>
         /// Returns the metadata about the attributes that are columns on the primary
         /// table.  Does not include the allowed values for those columns that have them.

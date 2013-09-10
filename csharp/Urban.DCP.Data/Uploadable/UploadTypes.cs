@@ -2,6 +2,7 @@
 {
     public enum UploadTypes
     {
-        Project
+        Project,
+        Attribute
     }
 }

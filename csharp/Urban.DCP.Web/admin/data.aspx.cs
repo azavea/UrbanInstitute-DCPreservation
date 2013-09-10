@@ -48,7 +48,11 @@ namespace Urban.DCP.Web.admin
                         errors = import.Errors;
                         added = import.Records.Length;
                         break;
-
+                    case UploadTypes.Attribute:
+                        var attrImport = AttributeUploadable.LoadAttributes(context.Request.Files[0].InputStream);
+                        errors = attrImport.Errors;
+                        added = attrImport.Records.Length;
+                        break;
                     default:
                         resultLabel.Text = String.Format("{0} is not a valid upload type.", uploadType);
                         break;
