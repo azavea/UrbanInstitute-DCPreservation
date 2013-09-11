@@ -42,7 +42,9 @@ namespace Urban.DCP.Data.Uploadable
         public static ImportResult<AttributeUploadable> LoadAttributes(Stream data)
         {
             var engine = new FileHelperEngine<AttributeUploadable> { ErrorMode = ErrorMode.SaveAndContinue };
-            var attributes = engine.ReadStream(new StreamReader(data));
+            StreamReader reader = new StreamReader(data);
+            string csv = reader.ReadToEnd();
+            var attributes = engine.ReadString(csv); 
             var results = new ImportResult<AttributeUploadable> { Records = attributes, Errors = engine.ErrorManager };
 
             var _attrDao = PdbAttributesHelper.getAttrDao();
@@ -57,7 +59,10 @@ namespace Urban.DCP.Data.Uploadable
                     {
                         var newAttrRecord = MapUploadAttributeRecordToPdbAttribute(r);
                         _attrDao.Insert(trans, newAttrRecord);
-                    }                
+                    }
+
+                    PdbUploadRevision.AddUploadRevision(UploadTypes.Attribute, csv);
+                    
                     trans.Commit();
                 }
                 catch (Exception)

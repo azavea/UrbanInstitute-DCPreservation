@@ -17,10 +17,12 @@ namespace Urban.DCP.Web.admin
         {
             Master.SetTitle("Data Management");
 
+            Master.RegisterJavascriptFile("../client/moment.min.js");    
             Master.RegisterJavascriptFile("../client/ktable/jquery.event.drag-1.4.js");
             Master.RegisterJavascriptFile("../client/ktable/jquery.ktable.colsizable-1.1.js");
             Master.RegisterCssFile("../client/ktable/css/jquery.ktable.colsizable.css");
             Master.RegisterCssFile("../client/css/pdp-manage-users.css", true);
+            Master.RegisterJavascriptFile("../client/pdp-app.js", true);
 
             if (context.Request.HttpMethod == "POST")
             {

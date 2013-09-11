@@ -70,8 +70,11 @@ namespace Urban.DCP.Data.Uploadable
         /// <returns></returns>
         public static ImportResult<Project> LoadProjects(Stream data)
         {
+            StreamReader reader = new StreamReader(data);
+            string csv = reader.ReadToEnd();
+           
             var engine = new FileHelperEngine<Project> {ErrorMode = ErrorMode.SaveAndContinue};
-            var projects = engine.ReadStream(new StreamReader(data));
+            var projects = engine.ReadString(csv);
             var results = new ImportResult<Project>{Records = projects, Errors = engine.ErrorManager};
 
             if (results.Errors.ErrorCount == 0)
@@ -83,6 +86,8 @@ namespace Urban.DCP.Data.Uploadable
                     _projectDao.DeleteAll(trans);
                     _projectDao.Insert(trans, results.Records);
                     trans.Commit();
+
+                    Urban.DCP.Data.PDB.PdbUploadRevision.AddUploadRevision(UploadTypes.Project, csv);
                 }
                 catch (Exception)
                 {

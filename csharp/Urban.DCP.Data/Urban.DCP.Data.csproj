@@ -140,6 +140,7 @@
     <Compile Include="MultipleColumnListComparer.cs" />
     <Compile Include="MultipleDictionaryValueComparer.cs" />
     <Compile Include="Comment.cs" />
+    <Compile Include="PDB\PdbUploadRevision.cs" />
     <Compile Include="PDB\PdbCategory.cs" />
     <Compile Include="PDB\PdbResultsWithMetadata.cs" />
     <Compile Include="PDB\PdbSubCategory.cs" />

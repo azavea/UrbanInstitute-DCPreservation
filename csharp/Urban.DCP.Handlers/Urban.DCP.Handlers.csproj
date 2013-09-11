@@ -135,6 +135,7 @@
     <Compile Include="AppHealth.cs" />
     <Compile Include="CommentHandler.cs" />
     <Compile Include="CommentImageHandler.cs" />
+    <Compile Include="UploadRevisionHandler.cs" />
     <Compile Include="LoggerHandler.cs" />
     <Compile Include="OrganizationHandler.cs" />
     <Compile Include="EmailConfirmationHandler.cs" />
