@@ -34,8 +34,8 @@ namespace Urban.DCP.Data.Uploadable
         public int? GroupBy;
         public String RequiredRole;
         public int? DefaultTableDisplay;
-        public int? TableColumnOrder;
-        public int? ShortViewOrder; 
+        public String TableColumnOrder;
+        public String ShortViewOrder; 
         public String LongViewOrder;
         public String Difficulty;
    
@@ -108,7 +108,9 @@ namespace Urban.DCP.Data.Uploadable
             daoModel.ShowByDefault = upload.DefaultTableDisplay == 1 ? true : false;
             daoModel.LongViewOrder = upload.LongViewOrder;
             daoModel.Difficulty = (PdbDifficulty)Enum.Parse(typeof(PdbDifficulty), upload.Difficulty);
-
+            daoModel.TableViewOrder = upload.TableColumnOrder;
+            daoModel.ShortViewOrder = upload.ShortViewOrder; 
+       
             return daoModel;
         }
     }
