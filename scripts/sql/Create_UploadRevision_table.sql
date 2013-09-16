@@ -10,7 +10,7 @@ SET ANSI_WARNINGS ON
 COMMIT
 BEGIN TRANSACTION
 GO
-CREATE TABLE dbo.Tmp_UploadRevisions
+CREATE TABLE dbo.UploadRevisions
 	(
 	id int NOT NULL IDENTITY (1, 1),
 	type nchar(100) NULL,
@@ -19,5 +19,5 @@ CREATE TABLE dbo.Tmp_UploadRevisions
 	)  ON [PRIMARY]
 	 TEXTIMAGE_ON [PRIMARY]
 GO
-SET IDENTITY_INSERT dbo.Tmp_UploadRevisions ON
+SET IDENTITY_INSERT dbo.UploadRevisions ON
 GO
