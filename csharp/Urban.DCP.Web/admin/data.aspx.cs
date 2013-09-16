@@ -6,6 +6,7 @@ using FileHelpers;
 using Newtonsoft.Json.Linq;
 using Urban.DCP.Data;
 using Urban.DCP.Data.Uploadable;
+using Urban.DCP.Data.PDB;
 
 namespace Urban.DCP.Web.admin
 {
@@ -51,7 +52,7 @@ namespace Urban.DCP.Web.admin
                         added = import.Records.Length;
                         break;
                     case UploadTypes.Attribute:
-                        var attrImport = AttributeUploadable.LoadAttributes(context.Request.Files[0].InputStream, user);
+                        var attrImport = PdbAttribute.LoadAttributes(context.Request.Files[0].InputStream, user);
                         errors = attrImport.Errors;
                         added = attrImport.Records.Length;
                         break;

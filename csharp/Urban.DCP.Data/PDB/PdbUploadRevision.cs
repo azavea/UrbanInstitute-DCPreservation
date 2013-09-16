@@ -77,7 +77,7 @@ namespace Urban.DCP.Data.PDB
             switch (type)
             {
                 case UploadTypes.Attribute:
-                    Urban.DCP.Data.Uploadable.AttributeUploadable.LoadAttributes(data, u);
+                    Urban.DCP.Data.PDB.PdbAttribute.LoadAttributes(data, u);
                     break;
                 case UploadTypes.Project:
                     Urban.DCP.Data.Uploadable.Project.LoadProjects(data, u);
