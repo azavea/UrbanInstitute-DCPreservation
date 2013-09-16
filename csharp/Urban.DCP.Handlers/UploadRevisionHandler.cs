@@ -46,7 +46,7 @@ namespace Urban.DCP.Handlers
             }
 
             int idToRestore = WebUtil.ParseIntParam(context, "id");
-            Urban.DCP.Data.PDB.PdbUploadRevision.RestoreRevision(idToRestore);
+            Urban.DCP.Data.PDB.PdbUploadRevision.RestoreRevision(idToRestore, user);
 
             context.Response.StatusCode = (int)HttpStatusCode.OK;
             context.Response.Write("{\"status\" : \"OK\"}");

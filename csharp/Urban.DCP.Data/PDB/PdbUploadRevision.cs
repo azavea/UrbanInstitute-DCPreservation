@@ -19,7 +19,8 @@ namespace Urban.DCP.Data.PDB
         public int Id;
         public String Type;
         public DateTime Date;
-        
+        public int UserId;
+
         // A visually, human readable identifier of the uniqueness of this dataset.
         // IE like github's commit id. (First 8 chars of sha1)
         public String Hash {
@@ -36,12 +37,29 @@ namespace Urban.DCP.Data.PDB
         [JsonIgnore]
         public String Data;
 
-        public static void AddUploadRevision(UploadTypes type, String data) {
+        public static void AddUploadRevision(UploadTypes type, String data, User u) {
             var ur = new PdbUploadRevision();
             ur.Type = type.ToString();
             ur.Data = data;
             ur.Date = DateTime.Now;
+            ur.UserId = u.Id;
             _urDao.Insert(ur);
+        }
+
+        public String UserName
+        {
+            get
+            {
+                var user = UserHelper.GetById(UserId);
+                if (user != null)
+                {
+                    return user.UserName;
+                }
+                else
+                {
+                    return "unknown";
+                }
+            }
         }
 
         public static PdbUploadRevision GetById(int uploadRevisionId)
@@ -49,7 +67,7 @@ namespace Urban.DCP.Data.PDB
             return _urDao.GetFirst("Id", uploadRevisionId);
         }
 
-        public static void RestoreRevision(int id)
+        public static void RestoreRevision(int id, User u)
         {
             var ur = GetById(id);
             var type = (UploadTypes)Enum.Parse(typeof(UploadTypes), ur.Type);
@@ -59,10 +77,10 @@ namespace Urban.DCP.Data.PDB
             switch (type)
             {
                 case UploadTypes.Attribute:
-                    Urban.DCP.Data.Uploadable.AttributeUploadable.LoadAttributes(data);
+                    Urban.DCP.Data.Uploadable.AttributeUploadable.LoadAttributes(data, u);
                     break;
                 case UploadTypes.Project:
-                    Urban.DCP.Data.Uploadable.Project.LoadProjects(data);
+                    Urban.DCP.Data.Uploadable.Project.LoadProjects(data, u);
                     break;
                 default:
                     throw new Exception("Unrecgonized revision type.");

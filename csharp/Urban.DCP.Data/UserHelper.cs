@@ -147,6 +147,12 @@ namespace Urban.DCP.Data
             return null;
         }
 
+        public static User GetById(int id) 
+        {
+            return _userDao.GetFirst("Id", id);
+        }
+
+
         /// <summary>
         /// Returns the total count of users in the database. Useful 
         /// for data pagination.

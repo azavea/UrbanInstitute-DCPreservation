@@ -39,7 +39,7 @@ namespace Urban.DCP.Data.Uploadable
         public String LongViewOrder;
         public String Difficulty;
    
-        public static ImportResult<AttributeUploadable> LoadAttributes(Stream data)
+        public static ImportResult<AttributeUploadable> LoadAttributes(Stream data, User u)
         {
             var engine = new FileHelperEngine<AttributeUploadable> { ErrorMode = ErrorMode.SaveAndContinue };
             StreamReader reader = new StreamReader(data);
@@ -61,7 +61,7 @@ namespace Urban.DCP.Data.Uploadable
                         _attrDao.Insert(trans, newAttrRecord);
                     }
 
-                    PdbUploadRevision.AddUploadRevision(UploadTypes.Attribute, csv);
+                    PdbUploadRevision.AddUploadRevision(UploadTypes.Attribute, csv, u);
                     
                     trans.Commit();
                 }

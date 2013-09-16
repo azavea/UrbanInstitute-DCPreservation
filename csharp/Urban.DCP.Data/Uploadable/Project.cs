@@ -68,7 +68,7 @@ namespace Urban.DCP.Data.Uploadable
         /// L
         /// </summary>
         /// <returns></returns>
-        public static ImportResult<Project> LoadProjects(Stream data)
+        public static ImportResult<Project> LoadProjects(Stream data, User u)
         {
             StreamReader reader = new StreamReader(data);
             string csv = reader.ReadToEnd();
@@ -87,7 +87,7 @@ namespace Urban.DCP.Data.Uploadable
                     _projectDao.Insert(trans, results.Records);
                     trans.Commit();
 
-                    Urban.DCP.Data.PDB.PdbUploadRevision.AddUploadRevision(UploadTypes.Project, csv);
+                    Urban.DCP.Data.PDB.PdbUploadRevision.AddUploadRevision(UploadTypes.Project, csv, u);
                 }
                 catch (Exception)
                 {
