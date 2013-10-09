@@ -6,15 +6,17 @@
                 bindTo: P.Pdb
             }, options),
             _flatAttrGroups = {},
-            _criteria = [];
-
+            _criteria = [],
+            _attributes,
+            _viewingClass = 'pdp-pdb-search-category-header-viewing';
+        
         // Flatten attribute cats to be keyed by the attribute with an value of each parent
         // cat.  Ie. { 'LIHTCStatus': ['LIHTC Details', 'Subsidy Information'], ... }
         var _flattenAttrGroups = Azavea.tryCatch('flatten attr cats', function(attrGroups) {
             $.each(attrGroups, function(i, obj) {
                 if (obj.Attrs) {
-                    $.each(obj.Attrs, function(j, attr) {
-                        _flatAttrGroups[attr.UID] = [ attr.Category ];
+                    $.each(obj.Attrs, function (j, attr) {
+                        _flatAttrGroups[attr.UID] = [attr.Category];
                         
                         if (attr.SubCat) {
                             _flatAttrGroups[attr.UID].push(attr.SubCat);
@@ -103,53 +105,16 @@
         });
         
         //Hides the subcategories if a parent category is hidden - we don't want any orphans.
-        var _hideLevel = Azavea.tryCatch('hide levels', function(level) {
-            var i, $level, $levelUp;
-            for(i=2; i>=level; i--) {
-                
-                // Hide the panel and remove the transparent layer
-                $level = $('#pdp-pdb-search-level-' + i);
-                $level
-                    .hide()
-                    .find('.pdp-pdb-search-transparency').remove();
-                
-                // Remove any active states from yourself and your ancestor    
-                $('.pdp-pdb-search-category-header-viewing', $level).removeClass('pdp-pdb-search-category-header-viewing');
-                
-                // These crazy numbers mean: if we are hiding anything but level2, on anything but the second time around (ie, the main panel) clear it.
-                //  Unless we are on the first time around of a level 2 close (which means, hide the level 1 class).
-                if ((level !== 2 && i !== 2) || (level === 2 && i === 2)) {
-                    $('.pdp-pdb-search-category-header-viewing', '#pdp-pdb-search-level-' + (i - 1)).removeClass('pdp-pdb-search-category-header-viewing');
-                }
-                
-                // Hide the actual list
-                $('ul', '#pdp-pdb-search-level-' + i).hide();
-            }
+        var _hideLevel = Azavea.tryCatch('hide subcategory', function ($level) {
+            $level.slideUp();
+            
+            // Remove any active states from yourself and your ancestor    
+            $('.' + _viewingClass, $level).removeClass(_viewingClass);
+            $level.parents('.' + _viewingClass).removeClass(_viewingClass);
         });
-        
-        // Updates the size of $trans, based off of properties on $subcat
-        var _updateTransparentLayerSize = Azavea.tryCatch('update size of transparent layer', function($subcat, $caption, $trans){
-            var i, h=0;
-            
-            // There may be multiple subcat items, add up the cumulative height
-            $subcat.each(function(i, sub){
-                h+= $(sub).outerHeight(true);
-            });
-            
-            // Account for our caption
-            h+= $caption.outerHeight(true);
-            
-            // Set the positioning and size of the flyout, based off subcats
-            //  height + 1 is a magic number, need one more pixel at the bottom for it to really match
-            $trans.height(h + 1);
-            $trans.width($subcat.width());
-            pos = $subcat.position();
-            $trans.css({left: pos.left, top: 0});
-                  
-        });
-        
+
         //Bind criteria events
-        var _bindEvents = Azavea.tryCatch('bind pdb-search events', function($content) {
+        var _bindEvents = Azavea.tryCatch('bind pdb-search events', function ($content) {
             
             //A control value changed - update the cache and the UI
             $(_options.bindTo).bind('pdp-pdb-control-change', function(event, newCritArray) {
@@ -162,59 +127,31 @@
                 //Trigger a criteria change event
                 $(_options.bindTo).trigger('pdp-pdb-criteria-change', [ _criteria ]);
             });
-            
+
             //Someone clicked on a category header. Close other panels and open this one.
-            $('.pdp-pdb-search-category-header', $content).click(function(event) {
+            $('.pdp-pdb-search-category-header', $content).click(function (event) {
                 var catName = $('label', this).text(),
-                    $subcat = $('ul[rel="'+catName+'"]'),
+                    $subcat = $('ul[rel="' + catName + '"]'),
                     $parent,
-                    level = parseInt($subcat.parents('.pdp-pdb-search-level').attr('rel'), 10),
-                    $trans,
-                    $caption,
-                    pos,
                     $this = $(this);
                 
                 if ($subcat.is(':visible')) {
-                    //This is the second click. Make it go away.
-                    _hideLevel(level);
+                    _hideLevel($subcat);
                 } else {
-                    //Hide sibling subcategories
-                    _hideLevel(level);
+                    $('ul.pdp-criteria-list').slideUp();
                     
                     //Show the new one
                     $parent = $subcat.parents('.pdp-pdb-search-level').show();
-                    $subcat.show();
+                    $subcat.slideDown();
                     
                     // Add the caption to the subcat window
                     $('.pdp-pdb-search-category-title', $parent).text(catName);
-                    
-                    // The parent should remain active looking while it's children are displayed.
-                    // Remove any "viewing" classes from this category's parents, siblings children (ie, other category panels)
-                    $this.parent().siblings().children().removeClass('pdp-pdb-search-category-header-viewing');
-                    $this.addClass('pdp-pdb-search-category-header-viewing');
-                    
-                    // Everything is rendered, we now need to place our transparency div under the container
-                    $trans = $('<div class="pdp-pdb-search-transparency"></div>');
-                    $caption = $('div.pdp-pdb-search-category-top', $parent);
-                    
-                    // When it resizes, we need to update the dimensions of the trans layer
-                    $(_options.bindTo).bind('pdp-pdb-control-change', function(event){
-                        _updateTransparentLayerSize($subcat, $caption, $trans);
-                    });
-                    
-                    _updateTransparentLayerSize($subcat, $caption, $trans);
-                    $trans.appendTo($parent); 
+
+                    // Remove styling classes from siblings so they don't look activated
+                    $('.' + _viewingClass).removeClass(_viewingClass);
+                    $this.addClass(_viewingClass);
+
                 }
-            });
-            
-            $(P).bind('pdp-panel-close-event', function(){
-                // Remove any highlights from category headers when a panel is closed by our closer widget
-                $('.pdp-pdb-search-category-header-viewing', '#pdp-pdb-search-level-container').removeClass('pdp-pdb-search-category-header-viewing');
-            });
-            
-            $('.pdp-pdb-search-category-close').click(function(event) {
-                var level = parseInt($(this).parent().parent('.pdp-pdb-search-level').attr('rel'), 10);
-                _hideLevel(level);
             });
             
             $(_options.bindTo).bind('pdp-criteria-reset', function(event) {
@@ -223,15 +160,15 @@
             });
         });
 
-        
-        var _renderAttributes = Azavea.tryCatch('render pdb attributes', function(data, level, parentName, orderedList) {
+
+        var _renderAttributes = Azavea.tryCatch('render pdb attributes', function (data, level, parentName, orderedList) {
             var $container, isSubcat;
             
             if (data.length) {
                 $container = $('[rel="'+parentName+'"]');
                 //Make the container if it doesn't already exist
                 if ($container.length === 0) {
-                    $container = $('<ul rel="'+ (parentName || '') +'"></ul>').appendTo('#pdp-pdb-search-level-' + level);
+                    $container = $('<ul rel="' + (parentName || '') + '"></ul>').appendTo('#pdp-pdb-search-level-' + level);
                 }
                 
                 //Add category labels and containers for the next level
@@ -250,9 +187,8 @@
                         // We are in a subcategory if an ordered list was passed in
                         isSubcat = true;
                     }
-                    
                                                     
-                    var $header = $('<li><div class="pdp-pdb-search-category-header"><span class="pdp-pdb-search-arrow ui-icon ui-icon-play right"></span>' +
+                    var $header = $('<li><div class="pdp-cat-' + cat.Name + ' pdp-pdb-search-category-header"><span class="pdp-pdb-search-arrow ui-icon ui-icon-play right"></span>' +
                          '<span class="pdp-pdb-search-active-count right"></span>' + 
                         '<label class="pdp-pdb-search-category-header-label">'+cat.Name+'</label></div></li>');
                     if (isSubcat) {
@@ -261,12 +197,15 @@
                         $header.appendTo($container);
                     }
                 
-                    if(cat.SubCats && cat.SubCats.length) {
+                    if (cat.SubCats && cat.SubCats.length) {
                         _renderAttributes(cat.SubCats, 1, cat.Name, orderedList);
                     }
-                
-                    var $subContainer = $('<ul rel="'+ (cat.Name || '') +'" class="pdp-shadow-drop"></ul>').appendTo('#pdp-pdb-search-level-' + (level+1));
-                    $.each(cat.Attrs, function(i, attr) {
+
+                    var $subContainer = $('<ul rel="' + (cat.Name || '') + '" class="pdp-criteria-list"></ul>')
+                        .appendTo($container)
+                        .hide();
+                    
+                    $.each(cat.Attrs, function (i, attr) {
                         var $widget;
                         if (attr.CanQuery) {
                             // Test out renderer
@@ -308,13 +247,13 @@
                 
             }
         });
-        
+
         //Render placeholders to the target
         var _render = Azavea.tryCatch('render pdb criteria', function() {
             $('<div id="pdp-pdb-search-level-container" class="pdp-closable-panel-button">' + 
                 '<div id="pdp-pdb-search-level-0" rel="0" class="pdp-pdb-search-level"><span class="pdp-pdb-search-category-close ui-icon ui-icon-circle-close"></span></div>' + 
-                '<div id="pdp-pdb-search-level-1" rel="1" class="pdp-pdb-search-level pdp-closable-panel"><div class="pdp-pdb-search-category-top ui-state-default"><span class="pdp-pdb-search-category-close ui-icon ui-icon-circle-close right"></span><label class="pdp-pdb-search-category-title"></label></div></div>' + 
-                '<div id="pdp-pdb-search-level-2" rel="2" class="pdp-pdb-search-level pdp-closable-panel"><div class="pdp-pdb-search-category-top ui-state-default"><span class="pdp-pdb-search-category-close ui-icon ui-icon-circle-close right"></span><label class="pdp-pdb-search-category-title"></label></div></div>' + 
+                '<div id="pdp-pdb-search-level-1" rel="1" class="pdp-pdb-search-level"><div class="pdp-pdb-search-category-top ui-state-default"><span class="pdp-pdb-search-category-close ui-icon ui-icon-circle-close right"></span><label class="pdp-pdb-search-category-title"></label></div></div>' + 
+                '<div id="pdp-pdb-search-level-2" rel="2" class="pdp-pdb-search-level"><div class="pdp-pdb-search-category-top ui-state-default"><span class="pdp-pdb-search-category-close ui-icon ui-icon-circle-close right"></span><label class="pdp-pdb-search-category-title"></label></div></div>' + 
             '</div>')
                 .appendTo(_options.target);
             
