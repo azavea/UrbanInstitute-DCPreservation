@@ -6,6 +6,7 @@ using FileHelpers;
 using Newtonsoft.Json.Linq;
 using Urban.DCP.Data;
 using Urban.DCP.Data.Uploadable;
+using Urban.DCP.Data.PDB;
 
 namespace Urban.DCP.Web.admin
 {
@@ -17,10 +18,12 @@ namespace Urban.DCP.Web.admin
         {
             Master.SetTitle("Data Management");
 
+            Master.RegisterJavascriptFile("../client/moment.min.js");    
             Master.RegisterJavascriptFile("../client/ktable/jquery.event.drag-1.4.js");
             Master.RegisterJavascriptFile("../client/ktable/jquery.ktable.colsizable-1.1.js");
             Master.RegisterCssFile("../client/ktable/css/jquery.ktable.colsizable.css");
             Master.RegisterCssFile("../client/css/pdp-manage-users.css", true);
+            Master.RegisterJavascriptFile("../client/pdp-app.js", true);
 
             if (context.Request.HttpMethod == "POST")
             {
@@ -44,12 +47,12 @@ namespace Urban.DCP.Web.admin
                 switch (uploadType)
                 {
                     case UploadTypes.Project:
-                        var import = Project.LoadProjects(context.Request.Files[0].InputStream);
+                        var import = Project.LoadProjects(context.Request.Files[0].InputStream, user);
                         errors = import.Errors;
                         added = import.Records.Length;
                         break;
                     case UploadTypes.Attribute:
-                        var attrImport = AttributeUploadable.LoadAttributes(context.Request.Files[0].InputStream);
+                        var attrImport = PdbAttribute.LoadAttributes(context.Request.Files[0].InputStream, user);
                         errors = attrImport.Errors;
                         added = attrImport.Records.Length;
                         break;

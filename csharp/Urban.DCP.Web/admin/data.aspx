@@ -8,8 +8,8 @@
          <form id="upload" method="POST" enctype="multipart/form-data">
              <input id="dataset" name="dataset" type="file"/>
              <select id="type" name="type">
-                 <option value="project">project</option>
-                 <option value="attribute">attributes</option>
+                 <option value="Project">project</option>
+                 <option value="Attribute">attributes</option>
              </select>
              <input type="submit" value="Upload"/>
          </form>
@@ -20,5 +20,30 @@
          </form>
     </div>   
    
+    <div id="previous-revision-container"></div>
+    <button style="display:none" id="request-previous-revision">Request Previous Revision</button>
+
+
+
+    <script type="text/template" id="revision-template">
+        <div class="org">
+            <input type="radio" name="previous-revision" value="{{ Id }}"><span style="font-family:monospace;font-size:1.2em">{{ Hash }}</span>  | {{UserName}} | {{ formattedDate }}</input>
+        </div>
+    </script>
+
+    <script type="text/javascript">
+        _.templateSettings = {
+            interpolate: /\{\{(.+?)\}\}/g
+        };
+        var revisionController = new PDP.UploadRevisionController({
+            typeSelect: "#type", 
+            revisionRadio: "input[name=previous-revision]:checked", 
+            revisionContainer: "#previous-revision-container",
+            revisionTemplate: "#revision-template",
+            requestButton: "#request-previous-revision",
+            handler: '<%=WebUtil.GetApplicationUrl(Request) %>'
+        });
+        revisionController.init();
+    </script>
     
 </asp:Content>

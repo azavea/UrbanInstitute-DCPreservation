@@ -253,4 +253,17 @@
         };
         _callHandler('POST', url, data, callback, error);
     });
+
+    // get a list of revisions for a specified type (IE attributes or Projects)
+    P.Data.getUploadRevisions = Azavea.tryCatch('data get upload revisions', function (type, callback, error) {
+        var url = P.Data.path + 'handlers/upload-revisions.ashx';
+        var data = { "type": type };
+        _callHandler('GET', url, data, callback, error);
+    });
+    // Restore a revision by id number
+    P.Data.postUploadRevisions = Azavea.tryCatch('data post upload revisions', function (id, callback, error) {
+        var url = P.Data.path + 'handlers/upload-revisions.ashx';
+        var data = { "id": id };
+        _callHandler('POST', url, data, callback, error);
+    });
 }(PDP));
