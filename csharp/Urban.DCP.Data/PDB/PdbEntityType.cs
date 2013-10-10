@@ -1,14 +1,18 @@
 namespace Urban.DCP.Data.PDB
 {
     /// <summary>
-    /// What type of data is being dealt with?  In phase one, only properties
-    /// are supported but eventually this may be other types as well.
+    /// What type of data is being dealt with? 
     /// </summary>
     public enum PdbEntityType
     {
         /// <summary>
         /// Property data.
         /// </summary>
-        Properties
+        Properties,
+        /// <summary>
+        /// Physical Condition attributes
+        /// </summary>
+        Reac
+
     }
 }

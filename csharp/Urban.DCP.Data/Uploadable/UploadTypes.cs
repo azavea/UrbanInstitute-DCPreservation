@@ -3,6 +3,7 @@
     public enum UploadTypes
     {
         Project,
-        Attribute
+        Attribute,
+        Reac
     }
 }

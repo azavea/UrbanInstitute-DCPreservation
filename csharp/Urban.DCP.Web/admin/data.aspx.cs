@@ -52,6 +52,9 @@ namespace Urban.DCP.Web.admin
                         var attrLoader = new AttributeUploader();
                         result = attrLoader.Load(context.Request.Files[0].InputStream, user);
                         break;
+                    case UploadTypes.Reac:
+                        var loader = new ReacUploader();
+                        result = loader.Load(context.Request.Files[0].InputStream, user);
                         break;
                     default:
                         resultLabel.Text = String.Format("{0} is not a valid upload type.", uploadType);
