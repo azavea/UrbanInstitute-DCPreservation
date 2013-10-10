@@ -77,10 +77,12 @@ namespace Urban.DCP.Data.PDB
             switch (type)
             {
                 case UploadTypes.Attribute:
-                    Urban.DCP.Data.PDB.PdbAttribute.LoadAttributes(data, u);
+                    var attrLoader = new AttributeUploader();
+                    attrLoader.Load(data, u);
                     break;
                 case UploadTypes.Project:
-                    Urban.DCP.Data.Uploadable.Project.LoadProjects(data, u);
+                    var projLoader = new ProjectUploader();
+                    projLoader.Load(data, u);
                     break;
                 default:
                     throw new Exception("Unrecgonized revision type.");

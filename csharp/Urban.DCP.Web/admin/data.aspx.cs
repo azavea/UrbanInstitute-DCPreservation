@@ -41,40 +41,36 @@ namespace Urban.DCP.Web.admin
                     resultLabel.Text = "CSV File is required";
                 }
 
-                ErrorManager errors = null;
-                int added = 0;
-
+                ImportResult result = null;
                 switch (uploadType)
                 {
                     case UploadTypes.Project:
-                        var import = Project.LoadProjects(context.Request.Files[0].InputStream, user);
-                        errors = import.Errors;
-                        added = import.Records.Length;
+                        var projLoader = new ProjectUploader();
+                        result = projLoader.Load(context.Request.Files[0].InputStream, user);
                         break;
                     case UploadTypes.Attribute:
-                        var attrImport = PdbAttribute.LoadAttributes(context.Request.Files[0].InputStream, user);
-                        errors = attrImport.Errors;
-                        added = attrImport.Records.Length;
+                        var attrLoader = new AttributeUploader();
+                        result = attrLoader.Load(context.Request.Files[0].InputStream, user);
+                        break;
                         break;
                     default:
                         resultLabel.Text = String.Format("{0} is not a valid upload type.", uploadType);
                         break;
                 }
 
-                if (errors != null && errors.ErrorCount > 0)
+                if (result != null && result.Errors.ErrorCount > 0)
                 {
                     resultLabel.Text =
                         String.Format(
                             "There were {0} errors in the uploaded file, no records were imported.  Please correct the errors and try again.",
-                            errors.ErrorCount);
-                    resultTable.DataSource = errors.Errors;
+                            result.Errors.ErrorCount);
+                    resultTable.DataSource = result.Errors.Errors;
                     resultTable.DataBind();
                 }
-                else if (resultLabel.Text == "")
+                else if (result != null && resultLabel.Text == "")
                 {
-                    resultLabel.Text = String.Format("{0} {1} records were imported.", added, uploadType);
+                    resultLabel.Text = String.Format("{0} {1} records were imported.", result.ImportCount, uploadType);
                 }
-                
             }
         }
 
