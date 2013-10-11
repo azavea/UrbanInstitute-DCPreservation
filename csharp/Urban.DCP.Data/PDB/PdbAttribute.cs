@@ -208,7 +208,7 @@ namespace Urban.DCP.Data.PDB
         }
     }
 
-    public class AttributeUploader: AbstractUploadable<PdbAttribute>
+    public class AttributeUploader: AbstractUploadable<PdbAttribute>, IUploadable
     {
         public override UploadTypes UploadType
         {

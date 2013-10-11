@@ -8,6 +8,11 @@ using Urban.DCP.Data.PDB;
 
 namespace Urban.DCP.Data.Uploadable
 {
+    public interface IUploadable
+    {
+        ImportResult Load(Stream s, User u );
+    }
+
     public abstract class AbstractUploadable<T> where T: class, new()
     {
         internal static readonly FastDAO<T> _dao =

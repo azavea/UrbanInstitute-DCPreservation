@@ -71,23 +71,11 @@ namespace Urban.DCP.Data.PDB
         {
             var ur = GetById(id);
             var type = (UploadTypes)Enum.Parse(typeof(UploadTypes), ur.Type);
-            byte[] byteArray = System.Text.Encoding.UTF8.GetBytes(ur.Data);
-            MemoryStream data = new MemoryStream(byteArray);
+            var byteArray = System.Text.Encoding.UTF8.GetBytes(ur.Data);
+            var data = new MemoryStream(byteArray);
 
-            switch (type)
-            {
-                case UploadTypes.Attribute:
-                    var attrLoader = new AttributeUploader();
-                    attrLoader.Load(data, u);
-                    break;
-                case UploadTypes.Project:
-                    var projLoader = new ProjectUploader();
-                    projLoader.Load(data, u);
-                    break;
-                default:
-                    throw new Exception("Unrecgonized revision type.");
-            }
-
+            var loader = LoadHelper.GetLoader(type);
+            loader.Load(data, u);
         }
 
         public static IList<PdbUploadRevision> GetUploadRevisions(UploadTypes type)

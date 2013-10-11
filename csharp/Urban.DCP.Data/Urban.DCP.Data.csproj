@@ -150,6 +150,8 @@
     <Compile Include="Tests\CommentTests.cs" />
     <Compile Include="UiComment.cs" />
     <Compile Include="Uploadable\AbstractUploadable.cs" />
+    <Compile Include="Uploadable\LoadHelper.cs" />
+    <Compile Include="Uploadable\Parcel.cs" />
     <Compile Include="Uploadable\ImportResult.cs" />
     <Compile Include="Uploadable\Project.cs" />
     <Compile Include="ResultsWithMetadata.cs" />
