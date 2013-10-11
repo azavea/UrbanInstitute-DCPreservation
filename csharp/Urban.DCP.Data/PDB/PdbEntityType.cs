@@ -1,7 +1,8 @@
 namespace Urban.DCP.Data.PDB
 {
     /// <summary>
-    /// What type of data is being dealt with? 
+    /// The type of data that is being dealt with regarding filtering
+    /// and displaying
     /// </summary>
     public enum PdbEntityType
     {
@@ -13,6 +14,13 @@ namespace Urban.DCP.Data.PDB
         /// Physical Condition attributes
         /// </summary>
         Reac,
-        RealProperty
+        /// <summary>
+        /// Events related to real property: sales & foreclosures
+        /// </summary>
+        RealProperty,
+        /// <summary>
+        /// Subsidy programs a project might participate in
+        /// </summary>
+        Subsidy
     }
 }

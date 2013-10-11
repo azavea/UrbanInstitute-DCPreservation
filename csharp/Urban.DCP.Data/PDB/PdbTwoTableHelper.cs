@@ -130,75 +130,82 @@ namespace Urban.DCP.Data.PDB
         /// <param name="primaryCrit">Criteria to return the primary table records.</param>
         /// <param name="secondaryCritsGoHere">List of criteria that apply to the secondary table, 
         ///                                    one per attribute being queried.</param>
-        /// <param name="tableCriteria"></param>
+        /// <param name="childTableCriteria">The criteria for child tables will be added to this dictionary</param>
         /// <param name="expressions">List of expressions from the client.</param>
         /// <param name="attrDict">Collection of all the attributes we're dealing with, keyed by ID.</param>
         private static void DistributeExpressions(DaoCriteria primaryCrit,
-                ICollection<DaoCriteria> secondaryCritsGoHere, IDictionary<PdbEntityType, DistributedCriteriaInfo> tableCriteria,
+                ICollection<DaoCriteria> secondaryCritsGoHere, IDictionary<PdbEntityType, DistributedCriteriaInfo> childTableCriteria,
                 IEnumerable<IExpression> expressions, IDictionary<string, PdbAttribute> attrDict)
         {
-
-            if (expressions != null)
+            if (expressions == null) return;
+            foreach (var expr in expressions)
             {
-                foreach (IExpression expr in expressions)
+                if (!(expr is AbstractSinglePropertyExpression))
                 {
-                    if (expr is AbstractSinglePropertyExpression)
+                    throw new NotSupportedException("You attempted to query in a way that is not supported.");
+                }
+
+                var propName = ((AbstractSinglePropertyExpression) expr).Property;
+                if (!attrDict.ContainsKey(propName))
+                {
+                    throw new ArgumentOutOfRangeException("expressions", propName,
+                                                          "No attribute by this name is available to be queried.");
+                }
+                var attr = attrDict[propName];
+                if (!attr.AllowFiltering)
+                {
+                    throw new ArgumentOutOfRangeException("expressions", propName,
+                                                          "No attribute by this name is available to be queried.");
+                }
+                if (attr.InPrimaryTable)
+                {
+                    // Primary table is easy, just add the expression.
+                    primaryCrit.Expressions.Add(expr);
+                }
+                else
+                {
+                    if (attr.EntityType == PdbEntityType.Properties)
                     {
-                        string propName = ((AbstractSinglePropertyExpression) expr).Property;
-                        if (!attrDict.ContainsKey(propName))
-                        {
-                            throw new ArgumentOutOfRangeException("expressions", propName,
-                                                                  "No attribute by this name is available to be queried.");
-                        }
-                        PdbAttribute attr = attrDict[propName];
-                        if (!attr.AllowFiltering)
-                        {
-                            throw new ArgumentOutOfRangeException("expressions", propName,
-                                                                  "No attribute by this name is available to be queried.");
-                        }
-                        if (attr.InPrimaryTable)
-                        {
-                            // Primary table is easy, just add the expression.
-                            primaryCrit.Expressions.Add(expr);
-                        }
-                        else
-                        {
-                            if (attr.EntityType == PdbEntityType.Properties)
-                            {
-                                // Secondary attributes have unique querying requirements as both the
-                                // attribute name and value are columns where must be added to a where clause
-                                AddSecondaryCriteria(secondaryCritsGoHere, attrDict, propName, expr);
-                            }
-                            else
-                            {
-                                if (!tableCriteria.ContainsKey(attr.EntityType))
-                                {
-
-                                    DistributedCriteriaInfo distCritInfo; 
-                                    switch (attr.EntityType)
-                                    {
-                                        case PdbEntityType.Reac:
-                                            distCritInfo = MakeDistCritInfo<Reac>();
-                                            break;
-                                        case PdbEntityType.RealProperty:
-                                            distCritInfo = MakeDistCritInfo<RealPropertyEvent>();
-                                            break;
-                                        default:
-                                            throw new NotSupportedException("Cannot query against: " + attr.EntityType);
-                                    }
-
-                                    tableCriteria[attr.EntityType] = distCritInfo;
-                                }
-                                AddAsTypedExpression(expr, tableCriteria[attr.EntityType].Criteria, propName);
-                            }
-                        }
+                        // Secondary attributes have unique querying requirements as both the
+                        // attribute name and value are columns where must be added to a where clause
+                        AddSecondaryCriteria(secondaryCritsGoHere, attrDict, propName, expr);
                     }
                     else
                     {
-                        throw new NotSupportedException("You attempted to query in a way that is not supported.");
+                        // Child tables are any other tables that are or may be added to the system.
+                        // The dao is selected based on the Entity Type from the Attributes table, and
+                        // a ID list subquery is constructed, similarly to the Secondary attributes.
+                        AddChildTableCriteria(childTableCriteria, attr, expr, propName);
                     }
                 }
             }
+        }
+
+        private static void AddChildTableCriteria(IDictionary<PdbEntityType, 
+            DistributedCriteriaInfo> tableCriteria, PdbAttribute attr, IExpression expr,
+            string propName)
+        {
+            if (!tableCriteria.ContainsKey(attr.EntityType))
+            {
+                DistributedCriteriaInfo distCritInfo;
+                switch (attr.EntityType)
+                {
+                    case PdbEntityType.Reac:
+                        distCritInfo = MakeDistCritInfo<Reac>();
+                        break;
+                    case PdbEntityType.RealProperty:
+                        distCritInfo = MakeDistCritInfo<RealPropertyEvent>();
+                        break;
+                    case PdbEntityType.Subsidy:
+                        distCritInfo = MakeDistCritInfo<Subsidy>();
+                        break;
+                    default:
+                        throw new NotSupportedException("Cannot query against: " + attr.EntityType);
+                }
+
+                tableCriteria[attr.EntityType] = distCritInfo;
+            }
+            AddAsTypedExpression(expr, tableCriteria[attr.EntityType].Criteria, propName);
         }
 
         private static DistributedCriteriaInfo MakeDistCritInfo<T>() where T: class, new()
