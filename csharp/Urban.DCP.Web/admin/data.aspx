@@ -8,9 +8,12 @@
          <form id="upload" method="POST" enctype="multipart/form-data">
              <input id="dataset" name="dataset" type="file"/>
              <select id="type" name="type">
-                 <option value="Project">Project</option>
-                 <option value="Attribute">Attributes</option>
-                 <option value="Reac">Reac Results</option>
+                 <option value="Project">Project Details</option>
+                 <option value="Reac">Reac Scores</option>
+                 <option value="Parcel">Parcel Details</option>
+                 <option value="RealPropertyEvent">Real Property Events</option>
+                 <option value="Subsidy">Subsidy Details</option>
+                 <option value="Attribute">Filter & Display Attributes</option>
              </select>
              <input type="submit" value="Upload"/>
          </form>

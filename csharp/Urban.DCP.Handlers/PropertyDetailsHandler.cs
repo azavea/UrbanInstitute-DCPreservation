@@ -22,7 +22,7 @@ namespace Urban.DCP.Handlers
             IList<SecurityRole> roles = UserHelper.GetUserRoles(context.User.Identity.Name);
             
             PdbTwoTableHelper dataHelper = new PdbTwoTableHelper(Config.GetConfig("PDP.Data"), "Properties",
-                new [] {PdbEntityType.Properties, PdbEntityType.Reac});
+                new [] {PdbEntityType.Properties, PdbEntityType.Reac, PdbEntityType.RealProperty});
 
             List<string> ids = new List<string>();
             string id = WebUtil.GetParam(context, "id", true);

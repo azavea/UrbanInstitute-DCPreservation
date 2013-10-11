@@ -150,6 +150,7 @@
     <Compile Include="Tests\CommentTests.cs" />
     <Compile Include="UiComment.cs" />
     <Compile Include="Uploadable\AbstractUploadable.cs" />
+    <Compile Include="Uploadable\RealPropertyEvent.cs" />
     <Compile Include="Uploadable\LoadHelper.cs" />
     <Compile Include="Uploadable\Parcel.cs" />
     <Compile Include="Uploadable\ImportResult.cs" />
@@ -160,6 +161,7 @@
     <Compile Include="Tests\PropertyLocationTests.cs" />
     <Compile Include="Tests\UserTests.cs" />
     <Compile Include="Uploadable\Reac.cs" />
+    <Compile Include="Uploadable\Subsidy.cs" />
     <Compile Include="Uploadable\UploadTypes.cs" />
     <Compile Include="User.cs" />
     <Compile Include="PDB\PdbAttributesHelper.cs" />

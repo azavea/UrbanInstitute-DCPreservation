@@ -69,7 +69,7 @@ namespace Urban.DCP.Handlers
                 sortDir = ascending ? SortType.Asc : SortType.Desc;
             }
             PdbTwoTableHelper dataHelper = new PdbTwoTableHelper(Config.GetConfig("PDP.Data"), "Properties",
-                new [] {PdbEntityType.Properties, PdbEntityType.Reac});
+                new [] {PdbEntityType.Properties, PdbEntityType.Reac, PdbEntityType.RealProperty, });
 
             // Now get the grouping parameters, if specified.
             IList<string> groupBys = WebUtil.GetJsonStringArrayParam(context, "groupby", true);

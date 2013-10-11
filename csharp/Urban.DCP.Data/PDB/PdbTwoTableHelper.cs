@@ -180,6 +180,9 @@ namespace Urban.DCP.Data.PDB
                                         case PdbEntityType.Reac:
                                             distCritInfo = MakeDistCritInfo<Reac>();
                                             break;
+                                        case PdbEntityType.RealProperty:
+                                            distCritInfo = MakeDistCritInfo<RealPropertyEvent>();
+                                            break;
                                         default:
                                             throw new NotSupportedException("Cannot query against: " + attr.EntityType);
                                     }
@@ -188,7 +191,6 @@ namespace Urban.DCP.Data.PDB
                                 }
                                 AddAsTypedExpression(expr, tableCriteria[attr.EntityType].Criteria, propName);
                             }
-
                         }
                     }
                     else

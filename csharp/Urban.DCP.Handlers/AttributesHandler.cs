@@ -24,7 +24,7 @@ namespace Urban.DCP.Handlers
             IEnumerable<SecurityRole> roles = UserHelper.GetUserRoles(context.User.Identity.Name);
             
             IList<PdbCategory> list = PdbAttributesHelper.GetAttributesForClient(
-                new [] {PdbEntityType.Properties, PdbEntityType.Reac, }, roles);
+                new [] {PdbEntityType.Properties, PdbEntityType.Reac, PdbEntityType.RealProperty}, roles);
             
             context.Response.Write(WebUtil.ObjectToJson(new {
                 TotalResults = list.Count,

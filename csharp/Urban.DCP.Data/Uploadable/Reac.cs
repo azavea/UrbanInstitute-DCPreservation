@@ -1,9 +1,5 @@
 ﻿using System;
-using System.IO;
-using Azavea.Open.Common;
-using Azavea.Open.DAO.SQL;
 using FileHelpers;
-using Urban.DCP.Data.PDB;
 
 namespace Urban.DCP.Data.Uploadable
 {
@@ -17,7 +13,7 @@ namespace Urban.DCP.Data.Uploadable
         /// Date REAC score was given
         /// </summary>
         [FieldConverter(ConverterKind.Date, "MM/dd/yyyy")] 
-        public DateTime Date;
+        public DateTime ScoreDate;
         /// <summary>
         /// Total REAC Score (ScoreNum + ScoreLetter)
         /// </summary>
@@ -32,7 +28,7 @@ namespace Urban.DCP.Data.Uploadable
         public string ScoreLetter;
     }
 
-    public class ReacUploader: AbstractUploadable<Reac>
+    public class ReacUploader: AbstractUploadable<Reac>, IUploadable
     {
         public override UploadTypes UploadType
         {

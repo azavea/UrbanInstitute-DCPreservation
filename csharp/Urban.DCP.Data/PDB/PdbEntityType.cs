@@ -12,7 +12,7 @@ namespace Urban.DCP.Data.PDB
         /// <summary>
         /// Physical Condition attributes
         /// </summary>
-        Reac
-
+        Reac,
+        RealProperty
     }
 }

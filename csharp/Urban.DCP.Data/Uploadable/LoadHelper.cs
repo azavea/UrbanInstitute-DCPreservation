@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Urban.DCP.Data.PDB;
 
 namespace Urban.DCP.Data.Uploadable
@@ -25,6 +22,12 @@ namespace Urban.DCP.Data.Uploadable
                     break;
                 case UploadTypes.Parcel:
                     loader = new ParcelUploader();
+                    break;
+                case UploadTypes.RealPropertyEvent:
+                    loader = new PropertyEventUploader();
+                    break;
+                case UploadTypes.Subsidy:
+                    loader = new SubsidyUploader();
                     break;
                 default:
                     throw new ApplicationException(String.Format("{0} is not a valid upload type.", type));
