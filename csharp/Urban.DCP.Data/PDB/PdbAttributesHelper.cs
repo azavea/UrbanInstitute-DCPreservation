@@ -50,7 +50,7 @@ namespace Urban.DCP.Data.PDB
         ///                         Only attributes they can see will be returned.</param>
         /// <returns>All the attribute metadata for the specified columns.</returns>
         public static IList<PdbCategory> GetAttributesForClient(
-            PdbEntityType entityType, IEnumerable<SecurityRole> userRoles)
+            PdbEntityType[] entityType, IEnumerable<SecurityRole> userRoles)
         {
             IDictionary<string, IDictionary<string, IList<PdbAttribute>>> attrsByCatAndSub =
                 new CheckedDictionary<string, IDictionary<string, IList<PdbAttribute>>>();
@@ -58,7 +58,7 @@ namespace Urban.DCP.Data.PDB
                 new CheckedDictionary<string, IList<PdbAttribute>>();
 
             DaoCriteria crit = new DaoCriteria();
-            crit.Expressions.Add(new EqualExpression("EntityType", entityType));
+            crit.Expressions.Add(new PropertyInListExpression("EntityType", entityType));
             IList<PdbAttribute> attrs = GetAttribRecords(crit, userRoles);
             // Get all the attributes and split 'em up.  Put them either into the single
             // or double-nested dictionary depending on if they have subcategories.
@@ -185,15 +185,15 @@ namespace Urban.DCP.Data.PDB
         /// <summary>
         /// Gets all the attributes, without values, as a dictionary keyed by attribute display name.
         /// </summary>
-        /// <param name="entityType">Only Properties is supported.</param>
+        /// <param name="entityTypes">The list of entity attributes to query for</param>
         /// <param name="userRoles">The roles the current user has.
         ///                         Only attributes they can see will be returned.</param>
         /// <returns>All the attributes visible to someone with these roles.</returns>
-        public static IDictionary<string, PdbAttribute> GetAttributesDictionary(PdbEntityType entityType,
+        public static IDictionary<string, PdbAttribute> GetAttributesDictionary(PdbEntityType[] entityTypes,
                                                                                 IEnumerable<SecurityRole> userRoles)
         {
             DaoCriteria crit = new DaoCriteria();
-            crit.Expressions.Add(new EqualExpression("EntityType", entityType));
+            crit.Expressions.Add(new PropertyInListExpression("EntityType", entityTypes));
             IList<PdbAttribute> attrList = GetAttribRecords(crit, userRoles, true);
             IDictionary<string, PdbAttribute> retVal = new CheckedDictionary<string, PdbAttribute>();
             foreach (PdbAttribute attr in attrList)

@@ -41,21 +41,20 @@ namespace Urban.DCP.Web.admin
                     resultLabel.Text = "CSV File is required";
                 }
 
-                ImportResult result = null;
-                switch (uploadType)
+                IUploadable loader = null;
+                try
                 {
-                    case UploadTypes.Project:
-                        var projLoader = new ProjectUploader();
-                        result = projLoader.Load(context.Request.Files[0].InputStream, user);
-                        break;
-                    case UploadTypes.Attribute:
-                        var attrLoader = new AttributeUploader();
-                        result = attrLoader.Load(context.Request.Files[0].InputStream, user);
-                        break;
-                        break;
-                    default:
-                        resultLabel.Text = String.Format("{0} is not a valid upload type.", uploadType);
-                        break;
+                    loader = LoadHelper.GetLoader(uploadType);
+                }
+                catch (Exception e)
+                {
+                    resultLabel.Text = e.Message;
+                }
+
+                ImportResult result = null;
+                if (loader != null)
+                {
+                    result = loader.Load(context.Request.Files[0].InputStream, user);
                 }
 
                 if (result != null && result.Errors.ErrorCount > 0)

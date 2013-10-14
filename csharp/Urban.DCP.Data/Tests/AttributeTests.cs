@@ -31,7 +31,7 @@ namespace Urban.DCP.Data.Tests
         public void TestGetAllMetadataWithValuesForEveryone()
         {
             IList<PdbCategory> cols = PdbAttributesHelper.GetAttributesForClient(
-                PdbEntityType.Properties, new SecurityRole[] { SecurityRole.@public });
+                new [] {PdbEntityType.Properties}, new SecurityRole[] { SecurityRole.@public });
             AssertCategorizedAttributes(cols, 5, 23, 4, 14, "all users");
         }
         /// <exclude/>
@@ -39,7 +39,7 @@ namespace Urban.DCP.Data.Tests
         public void TestGetAllMetadataWithValues()
         {
             IList<PdbCategory> cols = PdbAttributesHelper.GetAttributesForClient(
-                PdbEntityType.Properties, new SecurityRole[] { SecurityRole.SysAdmin });
+                new [] {PdbEntityType.Properties}, new SecurityRole[] { SecurityRole.SysAdmin });
             AssertCategorizedAttributes(cols, 5, 24, 4, 14, "privileged users");
         }
 

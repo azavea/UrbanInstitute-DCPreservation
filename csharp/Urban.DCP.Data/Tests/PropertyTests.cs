@@ -14,7 +14,7 @@ namespace Urban.DCP.Data.Tests
     public class PropertyTests
     {
         private readonly PdbTwoTableHelper _helper = new PdbTwoTableHelper(Config.GetConfig("PDP.Data"), "Properties",
-                PdbEntityType.Properties);
+                new [] {PdbEntityType.Properties});
         private readonly SecurityRole[] _publicRoles = new SecurityRole[] { SecurityRole.@public };
         [TestFixtureSetUp]
         public void Setup()
