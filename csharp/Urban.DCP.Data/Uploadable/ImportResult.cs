@@ -6,12 +6,12 @@ using FileHelpers;
 
 namespace Urban.DCP.Data.Uploadable
 {
-    public class ImportResult<T>
+    public class ImportResult
     {
         /// <summary>
-        /// The successfully parsed <T> records
+        /// The successfully parsed records count
         /// </summary>
-        public T[] Records;     
+        public int ImportCount;     
 
         /// <summary>
         /// Errors reported in the import process

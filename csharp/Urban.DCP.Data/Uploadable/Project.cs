@@ -14,17 +14,13 @@ namespace Urban.DCP.Data.Uploadable
     [DelimitedRecord(",")]
     public class Project
     {
-        private static readonly Azavea.Database.FastDAO<Project> _projectDao =
-            new Azavea.Database.FastDAO<Project>(Config.GetConfig("PDP.Data"), "PDB");
 
         public string Id;
         public string Status;
         public string Subsidized;
         public string Category;
-        [FieldQuoted('"', QuoteMode.OptionalForRead)]
-        public string Name;
-        [FieldQuoted('"', QuoteMode.OptionalForRead)]
-        public string Address;
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] public string Name;
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] public string Address;
         public string City;
         public string State;
         public string Zip;
@@ -32,73 +28,37 @@ namespace Urban.DCP.Data.Uploadable
         public int? MinAssistedUnits;
         public int? MaxAssistedUnits;
 
-        [FieldConverter(ConverterKind.Date, "MM/dd/yyyy")] 
-        public DateTime? OwnershipEffectiveDate;
+        [FieldConverter(ConverterKind.Date, "MM/dd/yyyy")] public DateTime? OwnershipEffectiveDate;
 
-        [FieldQuoted('"', QuoteMode.OptionalForRead)]
-        public string OwnerName;
-        [FieldQuoted('"', QuoteMode.OptionalForRead)]
-        public string OwnerType;
-        [FieldQuoted('"', QuoteMode.OptionalForRead)]
-        public string ManagerName;
-        [FieldQuoted('"', QuoteMode.OptionalForRead)]
-        public string ManagerType;
-        
-        [FieldConverter(ConverterKind.Date, "MM/dd/yyyy")] 
-        public DateTime? EarliestSubsidyEnd;
-        
-        [FieldConverter(ConverterKind.Date, "MM/dd/yyyy")] 
-        public DateTime? LatestSubsidyEnd;
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] public string OwnerName;
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] public string OwnerType;
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] public string ManagerName;
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] public string ManagerType;
+
+        [FieldConverter(ConverterKind.Date, "MM/dd/yyyy")] public DateTime? EarliestSubsidyEnd;
+
+        [FieldConverter(ConverterKind.Date, "MM/dd/yyyy")] public DateTime? LatestSubsidyEnd;
         public string Ward;
         public string Anc; // Advisory Neighborhood Commission
         public string PoliceArea;
         public string ClusterId;
-        [FieldQuoted('"', QuoteMode.OptionalForRead)]
-        public string ClusterName;
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] public string ClusterName;
         public string CensusTract;
         public double? X;
         public double? Y;
         public double? Lat;
         public double? Lon;
-        [FieldQuoted('"', QuoteMode.OptionalForRead)]
-        public string StreetViewUrl;
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] public string StreetViewUrl;
         public string ImageUrl;
-        
-        /// <summary>
-        /// L
-        /// </summary>
-        /// <returns></returns>
-        public static ImportResult<Project> LoadProjects(Stream data, User u)
-        {
-            StreamReader reader = new StreamReader(data);
-            string csv = reader.ReadToEnd();
-           
-            var engine = new FileHelperEngine<Project> {ErrorMode = ErrorMode.SaveAndContinue};
-            var projects = engine.ReadString(csv);
-            var results = new ImportResult<Project>{Records = projects, Errors = engine.ErrorManager};
 
-            if (results.Errors.ErrorCount == 0)
-            {
-                var trans = new SqlTransaction((AbstractSqlConnectionDescriptor)_projectDao.ConnDesc);
-                try
-                {
-                    // Refresh the project data if successfull 
-                    _projectDao.DeleteAll(trans);
-                    _projectDao.Insert(trans, results.Records);
-                    trans.Commit();
-
-                    Urban.DCP.Data.PDB.PdbUploadRevision.AddUploadRevision(UploadTypes.Project, csv, u);
-                }
-                catch (Exception)
-                {
-                    trans.Rollback();
-                    throw;
-                }
-                
-            }
-            return results;
-        }
     }
 
+    public class ProjectUploader: AbstractUploadable<Project>, IUploadable
+    {
+        public override UploadTypes UploadType
+        {
+            get { return UploadTypes.Project; }
+        }
+    }
  
 }

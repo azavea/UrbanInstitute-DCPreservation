@@ -206,39 +206,13 @@ namespace Urban.DCP.Data.PDB
             }
             return retVal;
         }
+    }
 
-        public static ImportResult<PdbAttribute> LoadAttributes(Stream data, User u)
+    public class AttributeUploader: AbstractUploadable<PdbAttribute>, IUploadable
+    {
+        public override UploadTypes UploadType
         {
-            var engine = new FileHelperEngine<PdbAttribute> { ErrorMode = ErrorMode.SaveAndContinue };
-            StreamReader reader = new StreamReader(data);
-            string csv = reader.ReadToEnd();
-            var attributes = engine.ReadString(csv);
-            var results = new ImportResult<PdbAttribute> { Records = attributes, Errors = engine.ErrorManager };
-
-            var _attrDao = PdbAttributesHelper.getAttrDao();
-
-            if (results.Errors.ErrorCount == 0)
-            {
-                var trans = new SqlTransaction((AbstractSqlConnectionDescriptor)_attrDao.ConnDesc);
-                try
-                {
-                    // Refresh the project data if successfull 
-                    _attrDao.DeleteAll(trans);
-                    _attrDao.Insert(trans, results.Records);
-                    trans.Commit();
-
-                    PdbUploadRevision.AddUploadRevision(UploadTypes.Attribute, csv, u);
-                }
-                catch (Exception)
-                {
-                    trans.Rollback();
-                    throw;
-                }
-
-            }
-            return results;
+            get { return UploadTypes.Attribute; }
         }
-
-       
     }
 }

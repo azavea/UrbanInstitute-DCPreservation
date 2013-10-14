@@ -10,7 +10,7 @@ namespace Urban.DCP.Data.Tests
     public class PropertyLocationTests
     {
         private readonly PdbTwoTableHelper _helper = new PdbTwoTableHelper(Config.GetConfig("PDP.Data"), "Properties",
-                PdbEntityType.Properties);
+                new [] {PdbEntityType.Properties, PdbEntityType.Reac} );
         private readonly SecurityRole[] _publicRoles = new SecurityRole[] { SecurityRole.@public };
         /// <exclude/>
         [Test]

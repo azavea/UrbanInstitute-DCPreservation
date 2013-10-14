@@ -140,6 +140,7 @@
     <Compile Include="MultipleColumnListComparer.cs" />
     <Compile Include="MultipleDictionaryValueComparer.cs" />
     <Compile Include="Comment.cs" />
+    <Compile Include="PDB\DistributedCriteriaInfo.cs" />
     <Compile Include="PDB\PdbUploadRevision.cs" />
     <Compile Include="PDB\PdbCategory.cs" />
     <Compile Include="PDB\PdbResultsWithMetadata.cs" />
@@ -148,6 +149,10 @@
     <Compile Include="PropertyCommentInfo.cs" />
     <Compile Include="Tests\CommentTests.cs" />
     <Compile Include="UiComment.cs" />
+    <Compile Include="Uploadable\AbstractUploadable.cs" />
+    <Compile Include="Uploadable\RealPropertyEvent.cs" />
+    <Compile Include="Uploadable\LoadHelper.cs" />
+    <Compile Include="Uploadable\Parcel.cs" />
     <Compile Include="Uploadable\ImportResult.cs" />
     <Compile Include="Uploadable\Project.cs" />
     <Compile Include="ResultsWithMetadata.cs" />
@@ -155,6 +160,8 @@
     <Compile Include="PDB\PdbResultAttributeMetadata.cs" />
     <Compile Include="Tests\PropertyLocationTests.cs" />
     <Compile Include="Tests\UserTests.cs" />
+    <Compile Include="Uploadable\Reac.cs" />
+    <Compile Include="Uploadable\Subsidy.cs" />
     <Compile Include="Uploadable\UploadTypes.cs" />
     <Compile Include="User.cs" />
     <Compile Include="PDB\PdbAttributesHelper.cs" />
