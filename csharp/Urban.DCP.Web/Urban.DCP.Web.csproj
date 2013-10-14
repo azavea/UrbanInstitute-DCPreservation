@@ -293,6 +293,7 @@
     <Content Include="handlers\comment-image.ashx" />
     <Content Include="handlers\logger.ashx" />
     <Content Include="handlers\upload-revisions.ashx" />
+    <Content Include="admin\export.ashx" />
     <None Include="minifier.conf" />
     <Content Include="packages.config" />
   </ItemGroup>

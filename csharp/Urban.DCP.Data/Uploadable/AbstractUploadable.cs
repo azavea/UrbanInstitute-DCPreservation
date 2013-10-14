@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.IO;
 using Azavea.Database;
 using Azavea.Open.Common;
@@ -8,9 +9,10 @@ using Urban.DCP.Data.PDB;
 
 namespace Urban.DCP.Data.Uploadable
 {
-    public interface IUploadable
+    public interface ILoadable
     {
         ImportResult Load(Stream s, User u );
+        String Export();
     }
 
     public abstract class AbstractUploadable<T> where T: class, new()
@@ -20,6 +22,14 @@ namespace Urban.DCP.Data.Uploadable
 
         public abstract UploadTypes UploadType { get; }
 
+        /// <summary>
+        /// Import from a class defined csv file.  Remove all existing
+        /// records in the target data set, load new rows and archive
+        /// the records for restore points
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public ImportResult Load(Stream data, User user)
         {
             var reader = new StreamReader(data);
@@ -49,6 +59,20 @@ namespace Urban.DCP.Data.Uploadable
                 
             }
             return results;
+        }
+
+        /// <summary>
+        /// Generate csv as string from target data set
+        /// </summary>
+        /// <returns></returns>
+        public String Export()
+        {
+            // Filehelpers doesn't support creating a header row for writing
+            // the csv file, so use the class mapping order.  
+            var header = string.Join(",", _dao.ClassMap.AllDataColsInOrder.ToArray());
+            var rows = _dao.Get();
+            var engine = new FileHelperEngine<T> {HeaderText = header};
+            return engine.WriteString(rows);
         }
     }
 }

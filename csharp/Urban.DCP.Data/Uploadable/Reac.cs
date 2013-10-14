@@ -28,7 +28,7 @@ namespace Urban.DCP.Data.Uploadable
         public string ScoreLetter;
     }
 
-    public class ReacUploader: AbstractUploadable<Reac>, IUploadable
+    public class ReacUploader: AbstractUploadable<Reac>, ILoadable
     {
         public override UploadTypes UploadType
         {

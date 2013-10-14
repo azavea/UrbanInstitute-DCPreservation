@@ -951,7 +951,7 @@ namespace Urban.DCP.Data.PDB
             int fromIndex = wholeQuery.IndexOf(" FROM");
 
             // Write the sub select part of the query from the parts we've cobbled together
-            string newQuery = "SELECT " + foreignKeyField +
+            string newQuery = "SELECT DISTINCT " + foreignKeyField +
                               wholeQuery.Substring(fromIndex);
 
             // Create the whole query now with the primary key in our sub query
