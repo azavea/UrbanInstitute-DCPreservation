@@ -5,9 +5,9 @@ namespace Urban.DCP.Data.Uploadable
 {
     public class LoadHelper
     {
-        public static IUploadable GetLoader(UploadTypes type)
+        public static ILoadable GetLoader(UploadTypes type)
         {
-            IUploadable loader;
+            ILoadable loader;
             
             switch (type)
             {

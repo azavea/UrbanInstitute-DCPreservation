@@ -53,6 +53,7 @@ namespace Urban.DCP.Data.PDB
         /// A "subgrouping" within categories that may be excessively large.
         /// Corresponds to "Grouping".
         /// </summary>
+        [FieldConverter(typeof(EmptyStringToNull))]
         public string SubCategory;
 
         /// <summary>
@@ -70,11 +71,13 @@ namespace Urban.DCP.Data.PDB
         /// <summary>
         /// The name that will be displayed to the user when display (table).
         /// </summary>
+        [FieldConverter(typeof(EmptyStringToNull))]
         public string DisplayName;
 
         /// <summary>
         /// The name that will be displayed to the user when querying.
         /// </summary>
+        [FieldConverter(typeof(EmptyStringToNull))]
         public string FilterName;
 
         /// <summary>
@@ -126,18 +129,21 @@ namespace Urban.DCP.Data.PDB
         /// What order should this attribute be displayed in within the
         /// Table view?
         /// </summary>
+        [FieldConverter(typeof(EmptyStringToNull))]
         public string TableViewOrder;
 
         /// <summary>
         /// What order should this attribute be displayed in within the
         /// "Short" (brief) view?
         /// </summary>
+        [FieldConverter(typeof(EmptyStringToNull))]
         public string ShortViewOrder;
 
         /// <summary>
         /// What order should this attribute be displayed in within the
         /// "Long" (Detailed) view?
         /// </summary>
+        [FieldConverter(typeof(EmptyStringToNull))]
         public string LongViewOrder;
 
         /// <summary>
@@ -208,7 +214,7 @@ namespace Urban.DCP.Data.PDB
         }
     }
 
-    public class AttributeUploader: AbstractUploadable<PdbAttribute>, IUploadable
+    public class AttributeUploader: AbstractUploadable<PdbAttribute>, ILoadable
     {
         public override UploadTypes UploadType
         {

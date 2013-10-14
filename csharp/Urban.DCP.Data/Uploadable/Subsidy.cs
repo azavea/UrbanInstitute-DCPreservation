@@ -53,7 +53,7 @@ namespace Urban.DCP.Data.Uploadable
         public DateTime? SubsidyUpdate;
     }
 
-    public class SubsidyUploader: AbstractUploadable<Subsidy>, IUploadable
+    public class SubsidyUploader: AbstractUploadable<Subsidy>, ILoadable
     {
         public override UploadTypes UploadType
         {

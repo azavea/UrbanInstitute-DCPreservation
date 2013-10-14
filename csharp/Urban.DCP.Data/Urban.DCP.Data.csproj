@@ -162,6 +162,7 @@
     <Compile Include="Tests\UserTests.cs" />
     <Compile Include="Uploadable\Reac.cs" />
     <Compile Include="Uploadable\Subsidy.cs" />
+    <Compile Include="Uploadable\UploadConverters.cs" />
     <Compile Include="Uploadable\UploadTypes.cs" />
     <Compile Include="User.cs" />
     <Compile Include="PDB\PdbAttributesHelper.cs" />

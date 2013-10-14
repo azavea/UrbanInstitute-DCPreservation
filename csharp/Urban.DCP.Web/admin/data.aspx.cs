@@ -41,7 +41,7 @@ namespace Urban.DCP.Web.admin
                     resultLabel.Text = "CSV File is required";
                 }
 
-                IUploadable loader = null;
+                ILoadable loader = null;
                 try
                 {
                     loader = LoadHelper.GetLoader(uploadType);

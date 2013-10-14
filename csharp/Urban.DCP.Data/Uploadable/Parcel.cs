@@ -23,6 +23,10 @@ namespace Urban.DCP.Data.Uploadable
         [FieldQuoted('"', QuoteMode.OptionalForRead)]
         public string OwnerName;
         /// <summary>
+        /// The type of ownership for this parcel
+        /// </summary>
+        public string OwnerType;
+        /// <summary>
         /// Date when this ownership info took effect
         /// </summary>
         [FieldConverter(ConverterKind.Date, "MM/dd/yyyy")] 
@@ -31,13 +35,12 @@ namespace Urban.DCP.Data.Uploadable
         /// Type of ownership
         /// </summary>
         [FieldQuoted('"', QuoteMode.OptionalForRead)]
-        public string OwnerType;
         public int? Units;
         public double? X;
         public double? Y;
     }
 
-    public class ParcelUploader: AbstractUploadable<Parcel>, IUploadable
+    public class ParcelUploader: AbstractUploadable<Parcel>, ILoadable
     {
         public override UploadTypes UploadType
         {

@@ -17,6 +17,10 @@
              </select>
              <input type="submit" value="Upload"/>
          </form>
+         <form id="export" method="GET" action="export.ashx" target="_blank">
+             <input id="export-type" name="type" type="hidden"/>
+             <input type="submit" value="Export"/>
+         </form>
          
          <form id="uploadResult" runat="server">
              <asp:Label runat="server" ID="resultLabel"></asp:Label>
@@ -39,6 +43,12 @@
         _.templateSettings = {
             interpolate: /\{\{(.+?)\}\}/g
         };
+
+        // Use the same type selector for both export and import
+        $('#type').change(function() {
+            $('#export-type').val($(this).val());
+        }).change();
+
         var revisionController = new PDP.UploadRevisionController({
             typeSelect: "#type", 
             revisionRadio: "input[name=previous-revision]:checked", 
