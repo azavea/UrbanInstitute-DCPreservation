@@ -1,11 +1,12 @@
 ﻿using System;
 using FileHelpers;
+using Urban.DCP.Data.Uploadable.Display;
 
 namespace Urban.DCP.Data.Uploadable
 {
     [DelimitedRecord(",")] 
     [IgnoreFirst(1)]
-    public class Reac
+    public class Reac: IDisplaySortable 
     {
 
         public string NlihcId;
@@ -26,6 +27,11 @@ namespace Urban.DCP.Data.Uploadable
         /// Letter component of score
         /// </summary>
         public string ScoreLetter;
+
+        public string GetSortField()
+        {
+            return "ScoreDate";
+        }
     }
 
     public class ReacUploader: AbstractUploadable<Reac>, ILoadable

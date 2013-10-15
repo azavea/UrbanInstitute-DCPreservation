@@ -1,11 +1,12 @@
 ﻿using System;
 using FileHelpers;
+using Urban.DCP.Data.Uploadable.Display;
 
 namespace Urban.DCP.Data.Uploadable
 {
     [DelimitedRecord(",")] 
     [IgnoreFirst(1)]
-    public class RealPropertyEvent
+    public class RealPropertyEvent: IDisplaySortable
     {
 
         public string NlihcId;
@@ -28,6 +29,11 @@ namespace Urban.DCP.Data.Uploadable
         /// </summary>
         [FieldQuoted('"', QuoteMode.OptionalForRead)]
         public string EventDescription;
+
+        public string GetSortField()
+        {
+            return "EventDate";
+        }
     }
 
     public class PropertyEventUploader: AbstractUploadable<RealPropertyEvent>, ILoadable

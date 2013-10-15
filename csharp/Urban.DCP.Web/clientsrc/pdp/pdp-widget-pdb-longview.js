@@ -122,7 +122,9 @@
             } else {
                _displayNoData();
             }
-          
+
+            var childDetails = new P.ProjectDetailsController(propId);
+            childDetails.render($('#pdp-child-display'));
 
             new P.CommentController({
                 propId: propId,
@@ -219,7 +221,7 @@
         // Create the dialog that will show longview details, including space for streetview and title
         var _createLongviewDialog = Azavea.tryCatch('create dialog container', function(){            
             // Create div container for caption, the list, and GSV
-            _$container = $('<div class="pdp-longview"><div class="pdp-longview-caption"></div><table id="pdp-longview-table" class="pdp-longview-list"></table><div id="pdp-streetview-title">Approximate View</div><div class="pdp-longview-street"></div><div id="pdp-longview-comments"></div><div class="pdp-longview-comment-form"></div></div>');
+            _$container = $('<div class="pdp-longview"><div class="pdp-longview-caption"></div><table id="pdp-longview-table" class="pdp-longview-list"></table><div id="pdp-streetview-title">Approximate View</div><div class="pdp-longview-street"></div><div id="pdp-child-display"></div><div id="pdp-longview-comments"></div><div class="pdp-longview-comment-form"></div></div>');
             _$street = $('.pdp-longview-street', _$container);
            
             // Create a link to report download link

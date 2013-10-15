@@ -90,7 +90,7 @@ namespace Urban.DCP.Data
         /// </summary>
         public bool IsNetworked()
         {
-            return RolesList.Contains(SecurityRole.Network);
+            return RolesList.Contains(SecurityRole.network);
         }
 
         /// <summary>
@@ -163,7 +163,7 @@ namespace Urban.DCP.Data
         {
             if (organization == null || organization == Urban.DCP.Data.Organization.NO_ORG) {
                 {
-                    RemoveRole(SecurityRole.Network);
+                    RemoveRole(SecurityRole.network);
                 }
                 Organization = null;
             }
@@ -173,7 +173,7 @@ namespace Urban.DCP.Data
             }
             else
             {
-                AddRole(SecurityRole.Network);
+                AddRole(SecurityRole.network);
                 Organization = organization;
             }
         }
