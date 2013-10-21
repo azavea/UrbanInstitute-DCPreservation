@@ -147,9 +147,14 @@
     <Compile Include="PDB\PdbSubCategory.cs" />
     <Compile Include="AbstractTableColumnMetadata.cs" />
     <Compile Include="PropertyCommentInfo.cs" />
+    <Compile Include="Tests\ChildDisplayTests.cs" />
     <Compile Include="Tests\CommentTests.cs" />
     <Compile Include="UiComment.cs" />
     <Compile Include="Uploadable\AbstractUploadable.cs" />
+    <Compile Include="Uploadable\Display\ChildDisplayHelper.cs" />
+    <Compile Include="Uploadable\Display\ChildResourceInfo.cs" />
+    <Compile Include="Uploadable\Display\ChildResourceType.cs" />
+    <Compile Include="Uploadable\Display\IDisplaySortable.cs" />
     <Compile Include="Uploadable\RealPropertyEvent.cs" />
     <Compile Include="Uploadable\LoadHelper.cs" />
     <Compile Include="Uploadable\Parcel.cs" />

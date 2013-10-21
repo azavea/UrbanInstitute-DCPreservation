@@ -1,11 +1,12 @@
 ﻿using System;
 using FileHelpers;
+using Urban.DCP.Data.Uploadable.Display;
 
 namespace Urban.DCP.Data.Uploadable
 {
     [DelimitedRecord(",")] 
     [IgnoreFirst(1)]
-    public class Subsidy
+    public class Subsidy: IDisplaySortable 
     {
         public string NlihcId;
         /// <summary>
@@ -51,6 +52,11 @@ namespace Urban.DCP.Data.Uploadable
         /// </summary>
         [FieldConverter(ConverterKind.Date, "MM/dd/yyyy")] 
         public DateTime? SubsidyUpdate;
+
+        public string GetSortField()
+        {
+            return "ProgramActiveStart";
+        }
     }
 
     public class SubsidyUploader: AbstractUploadable<Subsidy>, ILoadable

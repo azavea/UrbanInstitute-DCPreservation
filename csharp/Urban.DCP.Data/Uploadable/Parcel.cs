@@ -1,11 +1,12 @@
 ﻿using System;
 using FileHelpers;
+using Urban.DCP.Data.Uploadable.Display;
 
 namespace Urban.DCP.Data.Uploadable
 {
     [DelimitedRecord(",")] 
     [IgnoreFirst(1)]
-    public class Parcel
+    public class Parcel: IDisplaySortable
     {
 
         public string NlihcId;
@@ -38,6 +39,10 @@ namespace Urban.DCP.Data.Uploadable
         public int? Units;
         public double? X;
         public double? Y;
+        public string GetSortField()
+        {
+            return "OwnerDate";
+        }
     }
 
     public class ParcelUploader: AbstractUploadable<Parcel>, ILoadable

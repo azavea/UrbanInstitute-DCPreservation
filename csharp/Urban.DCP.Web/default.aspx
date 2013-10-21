@@ -66,6 +66,81 @@
         <textarea id="new-comment"></textarea><br />
         <button id="submit-new-comment">Submit Comment</button>
     </script>
+   
+    <script type="text/template" id="project-details-template">
+        <div id="project-child-details">
+            {% if (reac) { %}
+            <h4>REAC Scores</h4>
+            <table>
+                <thead>
+                    <th>Score Date</th><th>Score</th>
+                </thead>
+                <tbody>
+                    {{reac}}
+                </tbody>
+            </table>
+            {% } %}
+            
+            {% if (parcel) { %}
+            <h4>Parcel Records</h4>
+            <table>
+                <thead>
+                    <th>SSL</th><th>Parcel Type</th><th>Owner Name</th><th>Owner Date</th><th>Owner Type</th><th>Units</th>
+                </thead>
+                <tbody>
+                    {{parcel}}
+                </tbody>
+            </table>
+            {% } %}
+
+            {% if (property) { %}
+            <h4>Real Property Events</h4>
+            <table>
+                <thead>
+                    <th>SSL</th><th>Event Date</th><th>Event Type</th><th>Event Description</th>
+                </thead>
+                <tbody>
+                    {{property}}
+                </tbody>
+            </table>
+            {% } %}
+
+            {% if (subsidy) { %}
+            <h4>Subsidy Details</h4>
+            <table>
+                <thead>
+                    <th>Active</th><th>Program</th><th>Contract #</th><th>Units Assist</th><th>Start</th><th>End</th><th>Source</th><th>Updated</th>
+                </thead>
+                <tbody>
+                    {{subsidy}}
+                </tbody>
+            </table>
+            {% } %}
+        </div>
+    </script> 
+    <script type="text/template" id="reac-display-template">
+        <tr>
+            <td>{{ScoreDate}}</td><td>{{Score}}</td>
+        </tr>    
+    </script>
+
+    <script type="text/template" id="parcel-display-template">
+        <tr>
+            <td>{{Ssl}}</td><td>{{ParcelType}}</td><td>{{OwnerName}}</td><td>{{OwnerDate}}</td><td>{{OwnerType}}</td><td>{{Units}}</td>
+        </tr>    
+    </script>
+
+    <script type="text/template" id="property-display-template">
+        <tr>
+            <td>{{Ssl}}</td><td>{{EventDate}}</td><td>{{EventType}}</td><td>{{EventDescription}}</td>
+        </tr>    
+    </script>
+
+    <script type="text/template" id="subsidy-display-template">
+        <tr>
+            <td>{{SubsidyActive}}</td><td>{{ProgramName}}</td><td>{{ContractNumber}}</td><td>{{UnitsAssist}}</td><td>{{ProgramActiveStart}}</td><td>{{ProgramActiveEnd}}</td><td>{{SubsidyInfoSource}}</td><td>{{SubsidyNotes}}</td><td>{{SubsidyUpdate}}</td>
+        </tr>    
+    </script>
 
     <script type="text/template" id="comment-template">
         <div style=""clear:both"></div>

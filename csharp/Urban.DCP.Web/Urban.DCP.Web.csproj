@@ -116,6 +116,7 @@
     <Content Include="clientsrc\pdp\css\pdp-manage-orgs.css" />
     <Content Include="clientsrc\pdp\pdp-comment-controller.js" />
     <Content Include="clientsrc\pdp\pdp-manage-orgs.js" />
+    <Content Include="clientsrc\pdp\pdp-project-details.js" />
     <Content Include="clientsrc\pdp\pdp-upload-revision-controller.js" />
     <Content Include="clientsrc\pdp\pdp-widget-pdb-control-range.js" />
     <Content Include="clientsrc\underscore.js" />
@@ -294,6 +295,7 @@
     <Content Include="handlers\logger.ashx" />
     <Content Include="handlers\upload-revisions.ashx" />
     <Content Include="admin\export.ashx" />
+    <Content Include="handlers\property-details-children.ashx" />
     <None Include="minifier.conf" />
     <Content Include="packages.config" />
   </ItemGroup>

@@ -12,30 +12,27 @@ namespace Urban.DCP.Handlers
         /// <summary>
         /// Enable response compression.
         /// </summary>
-        public PropertyDetailsHandler()
-            : base(true)
-        {
-        }
+        public PropertyDetailsHandler(): base(true) {}
 
         protected override void InternalGET(System.Web.HttpContext context, HandlerTimedCache cache)
         {
-            IList<SecurityRole> roles = UserHelper.GetUserRoles(context.User.Identity.Name);
+            var roles = UserHelper.GetUserRoles(context.User.Identity.Name);
             
-            PdbTwoTableHelper dataHelper = new PdbTwoTableHelper(Config.GetConfig("PDP.Data"), "Properties",
+            var dataHelper = new PdbTwoTableHelper(Config.GetConfig("PDP.Data"), "Properties",
                 new [] {PdbEntityType.Properties, PdbEntityType.Reac, PdbEntityType.RealProperty});
 
-            List<string> ids = new List<string>();
-            string id = WebUtil.GetParam(context, "id", true);
+            var ids = new List<string>();
+            var id = WebUtil.GetParam(context, "id", true);
             if (id != null)
             {
                 ids.Add(id);
             }
             else
             {
-                string idList = WebUtil.GetParam(context, "ids", false);
+                var idList = WebUtil.GetParam(context, "ids", false);
                 ids.AddRange(idList.Split(','));
             }
-            PdbResultsWithMetadata list = dataHelper.Query(ids, roles);
+            var list = dataHelper.Query(ids, roles);
 
             context.Response.Write(WebUtil.ObjectToJson(list));
         }

@@ -44,7 +44,7 @@ namespace Urban.DCP.Data.Tests
                     EmailConfirmed = true,
                     Name = "Orggy Org",
                     UserName = "ogre",
-                    Roles = "Network,public",
+                    Roles = "network,public",
                     Organization = 1
                 };
             org2 = new User()
@@ -53,7 +53,7 @@ namespace Urban.DCP.Data.Tests
                 EmailConfirmed = true,
                 Name = "John Rambo",
                 UserName = "johnrambo",
-                Roles = "Network,public",
+                Roles = "network,public",
                 Organization = 2
             };        
             UserHelper.Save(sys);
