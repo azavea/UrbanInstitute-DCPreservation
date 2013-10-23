@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
-using Azavea.Database;
 using Azavea.Open.Common;
+using Azavea.Open.DAO;
 using Azavea.Open.DAO.SQL;
 using FileHelpers;
 using Urban.DCP.Data.PDB;
@@ -22,6 +22,14 @@ namespace Urban.DCP.Data.Uploadable
             new FastDAO<T>(Config.GetConfig("PDP.Data"), "PDB");
 
         public abstract UploadTypes UploadType { get; }
+
+        /// <summary>
+        /// Called before import-ready rows are saved to the database.  Default
+        /// action is a no op.
+        /// </summary>
+        /// <param name="trans"></param>
+        /// <param name="rows"></param>
+        public virtual void PreProcess(SqlTransaction trans, IList<T> rows) {}
 
         /// <summary>
         /// Called after a successful import of a dataset. 
@@ -69,6 +77,7 @@ namespace Urban.DCP.Data.Uploadable
                 try
                 {
                     // Refresh the data if successfull 
+                    PreProcess(trans, rows);
                     _dao.DeleteAll(trans);
                     _dao.Insert(trans, rows);
                     PostProcess(trans, rows);
