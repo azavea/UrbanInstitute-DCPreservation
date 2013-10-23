@@ -33,6 +33,19 @@ namespace Urban.DCP.Data.Uploadable
         /// </summary>
         public virtual void PostProcess(SqlTransaction trans, IList<T> rows) {}
 
+        // Helper method for inserting unqiue values from an import attribute to the
+        // attribute values table.  A common use case from post-process implementations
+        internal static void InsertUnique(ITransaction trans, IEnumerable<T> rows, 
+            Func<T, string> selector, string attr )
+        {
+            PdbAttributesHelper._attrValDao.Insert(trans,
+                rows.Select(selector)
+                    .Distinct()
+                    .Where(name => !String.IsNullOrEmpty(name))
+                    .Select(name => new PdbAttributeValue {AttributeName = attr, Value = name})
+                );
+        }
+
         /// <summary>
         /// Import from a class defined csv file.  Remove all existing
         /// records in the target data set, load new rows and archive

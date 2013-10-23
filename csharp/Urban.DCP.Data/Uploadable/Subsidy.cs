@@ -75,8 +75,9 @@ namespace Urban.DCP.Data.Uploadable
         public override void PostProcess(SqlTransaction trans, IList<Subsidy> rows)
         {
             // Add unique program and agency names to the attribute value table
-            const string program = "ProgramName";
-            const string agency = "SubsidyInfoSource";
+            var cols = _dao.ClassMap.AllDataColsByObjAttrs;
+            var program = cols["ProgramName"];
+            var agency = cols["SubsidyInfoSource"];
 
             PdbAttributesHelper._attrValDao.Delete(trans, new DaoCriteria(
                 new PropertyInListExpression("AttributeName", new [] {program, agency})));
@@ -84,15 +85,5 @@ namespace Urban.DCP.Data.Uploadable
             InsertUnique(trans, rows, r => r.ProgramName, program);
             InsertUnique(trans, rows, r => r.SubsidyInfoSource, agency);
         }
-
-        private static void InsertUnique(ITransaction trans, IEnumerable<Subsidy> rows, 
-            Func<Subsidy, string> selector, string attr )
-        {
-            PdbAttributesHelper._attrValDao.Insert(trans,
-                rows.Select(selector)
-                    .Distinct()
-                    .Select(name => new PdbAttributeValue {AttributeName = attr, Value = name})
-                );
-        }
     }
-}
+} 
