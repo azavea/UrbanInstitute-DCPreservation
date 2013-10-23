@@ -22,9 +22,7 @@ namespace Urban.DCP.Handlers
         protected override void InternalGET(HttpContext context, HandlerTimedCache cache)
         {
             IEnumerable<SecurityRole> roles = UserHelper.GetUserRoles(context.User.Identity.Name);
-            
-            IList<PdbCategory> list = PdbAttributesHelper.GetAttributesForClient(
-                new [] {PdbEntityType.Properties, PdbEntityType.Reac, PdbEntityType.RealProperty}, roles);
+            IList<PdbCategory> list = PdbAttributesHelper.GetAttributesForClient(roles);
             
             context.Response.Write(WebUtil.ObjectToJson(new {
                 TotalResults = list.Count,

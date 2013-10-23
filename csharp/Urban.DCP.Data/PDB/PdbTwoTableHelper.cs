@@ -41,7 +41,9 @@ namespace Urban.DCP.Data.PDB
         private readonly FastDAO<PdbSecondaryTableProperty> SecondaryDao;
         private readonly IConnectionDescriptor ConnDesc;
 
-        private readonly PdbEntityType[] _entityTypes;
+        public static PdbEntityType[] EntityTypes = 
+            new[] {PdbEntityType.Properties, PdbEntityType.Reac,
+                PdbEntityType.RealProperty, PdbEntityType.Subsidy};
 
         /// <summary>
         /// Key: Display name, Value: Column to sum, or * for a count.
@@ -50,9 +52,8 @@ namespace Urban.DCP.Data.PDB
 
         private const string _csvHeaderText = "";
 
-        public PdbTwoTableHelper(Config cfg, string section, PdbEntityType[] types)
+        public PdbTwoTableHelper(Config cfg, string section)
         {
-            _entityTypes = types;
             ConnDesc = ConnectionDescriptor.LoadFromConfig(cfg, section, Hasher.Decrypt);
             _primaryTableName = cfg.GetParameter(section, "PrimaryTable");
             _primaryTableIdColumn = cfg.GetParameter(section, "PrimaryTableIdColumn");
@@ -339,7 +340,7 @@ namespace Urban.DCP.Data.PDB
         {
             // Get the list of attributes we'll be dealing with.
             IDictionary<string, PdbAttribute> attrDict =
-                PdbAttributesHelper.GetAttributesDictionary(_entityTypes, userAuth);
+                PdbAttributesHelper.GetAttributesDictionary(EntityTypes, userAuth);
 
             // Setup the result object.
             PdbResultsWithMetadata retVal = new PdbResultsWithMetadata();
@@ -415,7 +416,7 @@ namespace Urban.DCP.Data.PDB
         {
             // Get the list of attributes we'll be dealing with.
             IDictionary<string, PdbAttribute> attrDict =
-                PdbAttributesHelper.GetAttributesDictionary(_entityTypes, userAuth);
+                PdbAttributesHelper.GetAttributesDictionary(EntityTypes, userAuth);
 
             // Setup the result object.
             PdbResultsWithMetadata retVal = new PdbResultsWithMetadata();
@@ -660,7 +661,7 @@ namespace Urban.DCP.Data.PDB
             }
 
             IDictionary<string, PdbAttribute> attrDict =
-                PdbAttributesHelper.GetAttributesDictionary(_entityTypes, userAuth);
+                PdbAttributesHelper.GetAttributesDictionary(EntityTypes, userAuth);
             // Verify the requested attribs can in fact be grouped by.
             foreach (string attrID in attrsToGroupBy)
             {
@@ -984,7 +985,7 @@ namespace Urban.DCP.Data.PDB
             PdbResultLocations retVal = new PdbResultLocations();
             // Get the list of attributes we'll be dealing with.
             IDictionary<string, PdbAttribute> attrDict =
-                PdbAttributesHelper.GetAttributesDictionary(_entityTypes, roles);
+                PdbAttributesHelper.GetAttributesDictionary(EntityTypes, roles);
             ClassMapping primaryMap = GetClassMapForPrimaryTable(roles);
             DaoCriteria crit = QuerySecondaryAndConstructRealPrimaryCriteria(attrDict, expressions, primaryMap);
 

@@ -15,7 +15,7 @@ namespace Urban.DCP.Data.PDB
         // keep requerying.
         private static readonly Azavea.Database.FastDAO<PdbAttribute> _attrDao =
             new Azavea.Database.FastDAO<PdbAttribute>(Config.GetConfig("PDP.Data"), "PDB");
-        private static readonly Azavea.Database.FastDAO<PdbAttributeValue> _attrValDao =
+        public static readonly Azavea.Database.FastDAO<PdbAttributeValue> _attrValDao =
             new Azavea.Database.FastDAO<PdbAttributeValue>(Config.GetConfig("PDP.Data"), "PDB");
 
         public static Azavea.Database.FastDAO<PdbAttribute> getAttrDao()
@@ -49,8 +49,7 @@ namespace Urban.DCP.Data.PDB
         /// <param name="userRoles">The roles the current user has.
         ///                         Only attributes they can see will be returned.</param>
         /// <returns>All the attribute metadata for the specified columns.</returns>
-        public static IList<PdbCategory> GetAttributesForClient(
-            PdbEntityType[] entityType, IEnumerable<SecurityRole> userRoles)
+        public static IList<PdbCategory> GetAttributesForClient(IEnumerable<SecurityRole> userRoles)
         {
             IDictionary<string, IDictionary<string, IList<PdbAttribute>>> attrsByCatAndSub =
                 new CheckedDictionary<string, IDictionary<string, IList<PdbAttribute>>>();
@@ -58,7 +57,7 @@ namespace Urban.DCP.Data.PDB
                 new CheckedDictionary<string, IList<PdbAttribute>>();
 
             DaoCriteria crit = new DaoCriteria();
-            crit.Expressions.Add(new PropertyInListExpression("EntityType", entityType));
+            crit.Expressions.Add(new PropertyInListExpression("EntityType", PdbTwoTableHelper.EntityTypes));
             IList<PdbAttribute> attrs = GetAttribRecords(crit, userRoles);
             // Get all the attributes and split 'em up.  Put them either into the single
             // or double-nested dictionary depending on if they have subcategories.
