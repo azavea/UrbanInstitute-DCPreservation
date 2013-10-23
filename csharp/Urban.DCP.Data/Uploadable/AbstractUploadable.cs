@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using Azavea.Database;
@@ -21,6 +22,16 @@ namespace Urban.DCP.Data.Uploadable
             new FastDAO<T>(Config.GetConfig("PDP.Data"), "PDB");
 
         public abstract UploadTypes UploadType { get; }
+
+        /// <summary>
+        /// Called after a successful import of a dataset. 
+        /// If not overridden by an implementing class, no op.  If the process
+        /// will be modifiying database values, the caller is encouraged to 
+        /// use the provided transaction, which will be committed or rolled
+        /// back with the main import.  An unhandled exception will cause
+        /// the import to fail and be rolled back
+        /// </summary>
+        public virtual void PostProcess(SqlTransaction trans, IList<T> rows) {}
 
         /// <summary>
         /// Import from a class defined csv file.  Remove all existing
@@ -47,6 +58,7 @@ namespace Urban.DCP.Data.Uploadable
                     // Refresh the data if successfull 
                     _dao.DeleteAll(trans);
                     _dao.Insert(trans, rows);
+                    PostProcess(trans, rows);
                     trans.Commit();
 
                     PdbUploadRevision.AddUploadRevision(UploadType, csv, user);
