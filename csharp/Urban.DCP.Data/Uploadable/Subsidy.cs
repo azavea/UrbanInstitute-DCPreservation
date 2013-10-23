@@ -1,5 +1,11 @@
 ﻿using System;
+using System.Linq;
+using System.Collections.Generic;
+using Azavea.Open.DAO;
+using Azavea.Open.DAO.Criteria;
+using Azavea.Open.DAO.SQL;
 using FileHelpers;
+using Urban.DCP.Data.PDB;
 using Urban.DCP.Data.Uploadable.Display;
 
 namespace Urban.DCP.Data.Uploadable
@@ -64,6 +70,29 @@ namespace Urban.DCP.Data.Uploadable
         public override UploadTypes UploadType
         {
             get { return UploadTypes.Subsidy; }
+        }
+
+        public override void PostProcess(SqlTransaction trans, IList<Subsidy> rows)
+        {
+            // Add unique program and agency names to the attribute value table
+            const string program = "ProgramName";
+            const string agency = "SubsidyInfoSource";
+
+            PdbAttributesHelper._attrValDao.Delete(trans, new DaoCriteria(
+                new PropertyInListExpression("AttributeName", new [] {program, agency})));
+
+            InsertUnique(trans, rows, r => r.ProgramName, program);
+            InsertUnique(trans, rows, r => r.SubsidyInfoSource, agency);
+        }
+
+        private static void InsertUnique(ITransaction trans, IEnumerable<Subsidy> rows, 
+            Func<Subsidy, string> selector, string attr )
+        {
+            PdbAttributesHelper._attrValDao.Insert(trans,
+                rows.Select(selector)
+                    .Distinct()
+                    .Select(name => new PdbAttributeValue {AttributeName = attr, Value = name})
+                );
         }
     }
 }
