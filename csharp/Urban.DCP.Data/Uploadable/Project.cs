@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Azavea.Open.Common;
+using Azavea.Open.DAO.Criteria;
 using Azavea.Open.DAO.SQLServer;
 using Azavea.Open.DAO.SQL;
 using FileHelpers;
+using Urban.DCP.Data.PDB;
 
 namespace Urban.DCP.Data.Uploadable
 {
@@ -43,6 +47,7 @@ namespace Urban.DCP.Data.Uploadable
         public string PoliceArea;
         public string ClusterId;
         [FieldQuoted('"', QuoteMode.OptionalForRead)] public string ClusterName;
+        [FieldNotInFile] public string ClusterCombo;
         public string CensusTract;
         public double? X;
         public double? Y;
@@ -58,6 +63,40 @@ namespace Urban.DCP.Data.Uploadable
         public override UploadTypes UploadType
         {
             get { return UploadTypes.Project; }
+        }
+
+        public override void PreProcess(SqlTransaction trans, IList<Project> rows)
+        {
+            // Update the full version of the cluster name, when available
+            foreach (var row in rows.Where(row => row.ClusterId != "" && row.ClusterName != ""))
+            {
+                row.ClusterCombo = row.ClusterId + ": " + row.ClusterName;
+            }
+        }
+
+        public override void PostProcess(SqlTransaction trans, IList<Project> rows)
+        {
+            var cols = _dao.ClassMap.AllDataColsByObjAttrs;
+            var ward = cols["Ward"];
+            var psa = cols["PoliceArea"];
+            var cluster = cols["ClusterCombo"];
+            var anc = cols["Anc"];
+            var census = cols["CensusTract"];
+            var category = cols["Category"];
+
+            PdbAttributesHelper._attrValDao.Delete(trans, new DaoCriteria(
+                new PropertyInListExpression("AttributeName", new []
+                    {
+                        ward, psa, cluster, anc, census, category
+                    }
+                )));
+
+            InsertUnique(trans, rows, r => r.Ward, ward);
+            InsertUnique(trans, rows, r => r.PoliceArea, psa);
+            InsertUnique(trans, rows, r => r.ClusterCombo, cluster);
+            InsertUnique(trans, rows, r => r.Anc, anc);
+            InsertUnique(trans, rows, r => r.CensusTract, census);
+            InsertUnique(trans, rows, r => r.Category, category);
         }
     }
  
