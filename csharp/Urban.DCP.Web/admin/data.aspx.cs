@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Net;
 using Azavea.Web;
+using Azavea.Web.Handler;
 using Azavea.Web.Page;
 using FileHelpers;
 using Newtonsoft.Json.Linq;
 using Urban.DCP.Data;
 using Urban.DCP.Data.Uploadable;
 using Urban.DCP.Data.PDB;
+using Urban.DCP.Handlers;
 
 namespace Urban.DCP.Web.admin
 {
@@ -68,6 +70,10 @@ namespace Urban.DCP.Web.admin
                 }
                 else if (result != null && resultLabel.Text == "")
                 {
+                    // Importing data could have changed the attributes or attribute values
+                    // so invalidate the cache for that handler.
+                    BaseHandler.ClearThisCache(typeof(AttributesHandler));
+
                     resultLabel.Text = String.Format("{0} {1} records were imported.", result.ImportCount, uploadType);
                 }
             }

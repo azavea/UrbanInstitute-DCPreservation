@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using Azavea.Open.Common;
-using Azavea.Open.DAO;
+using Azavea.Database;
 using Azavea.Open.DAO.SQL;
 using FileHelpers;
 using Urban.DCP.Data.PDB;
@@ -43,7 +43,7 @@ namespace Urban.DCP.Data.Uploadable
 
         // Helper method for inserting unqiue values from an import attribute to the
         // attribute values table.  A common use case from post-process implementations
-        internal static void InsertUnique(ITransaction trans, IEnumerable<T> rows, 
+        internal static void InsertUnique(SqlTransaction trans, IEnumerable<T> rows, 
             Func<T, string> selector, string attr )
         {
             PdbAttributesHelper._attrValDao.Insert(trans,
