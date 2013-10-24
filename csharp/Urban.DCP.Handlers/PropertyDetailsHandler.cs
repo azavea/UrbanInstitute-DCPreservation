@@ -17,9 +17,8 @@ namespace Urban.DCP.Handlers
         protected override void InternalGET(System.Web.HttpContext context, HandlerTimedCache cache)
         {
             var roles = UserHelper.GetUserRoles(context.User.Identity.Name);
-            
-            var dataHelper = new PdbTwoTableHelper(Config.GetConfig("PDP.Data"), "Properties",
-                new [] {PdbEntityType.Properties, PdbEntityType.Reac, PdbEntityType.RealProperty});
+
+            var dataHelper = new PdbTwoTableHelper(Config.GetConfig("PDP.Data"), "Properties");
 
             var ids = new List<string>();
             var id = WebUtil.GetParam(context, "id", true);

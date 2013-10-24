@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.IO;
-using Azavea.Database;
 using Azavea.Open.Common;
+using Azavea.Database;
 using Azavea.Open.DAO.SQL;
 using FileHelpers;
 using Urban.DCP.Data.PDB;
@@ -21,6 +22,37 @@ namespace Urban.DCP.Data.Uploadable
             new FastDAO<T>(Config.GetConfig("PDP.Data"), "PDB");
 
         public abstract UploadTypes UploadType { get; }
+
+        /// <summary>
+        /// Called before import-ready rows are saved to the database.  Default
+        /// action is a no op.
+        /// </summary>
+        /// <param name="trans"></param>
+        /// <param name="rows"></param>
+        public virtual void PreProcess(SqlTransaction trans, IList<T> rows) {}
+
+        /// <summary>
+        /// Called after a successful import of a dataset. 
+        /// If not overridden by an implementing class, no op.  If the process
+        /// will be modifiying database values, the caller is encouraged to 
+        /// use the provided transaction, which will be committed or rolled
+        /// back with the main import.  An unhandled exception will cause
+        /// the import to fail and be rolled back
+        /// </summary>
+        public virtual void PostProcess(SqlTransaction trans, IList<T> rows) {}
+
+        // Helper method for inserting unqiue values from an import attribute to the
+        // attribute values table.  A common use case from post-process implementations
+        internal static void InsertUnique(SqlTransaction trans, IEnumerable<T> rows, 
+            Func<T, string> selector, string attr )
+        {
+            PdbAttributesHelper._attrValDao.Insert(trans,
+                rows.Select(selector)
+                    .Distinct()
+                    .Where(name => !String.IsNullOrEmpty(name))
+                    .Select(name => new PdbAttributeValue {AttributeName = attr, Value = name})
+                );
+        }
 
         /// <summary>
         /// Import from a class defined csv file.  Remove all existing
@@ -45,8 +77,10 @@ namespace Urban.DCP.Data.Uploadable
                 try
                 {
                     // Refresh the data if successfull 
+                    PreProcess(trans, rows);
                     _dao.DeleteAll(trans);
                     _dao.Insert(trans, rows);
+                    PostProcess(trans, rows);
                     trans.Commit();
 
                     PdbUploadRevision.AddUploadRevision(UploadType, csv, user);

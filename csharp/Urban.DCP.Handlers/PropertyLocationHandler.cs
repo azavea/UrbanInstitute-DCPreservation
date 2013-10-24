@@ -24,8 +24,7 @@ namespace Urban.DCP.Handlers
             
             IList<IExpression> expressions = PropertiesHandler.ParseExpressions(context);
 
-            PdbTwoTableHelper dataHelper = new PdbTwoTableHelper(Config.GetConfig("PDP.Data"), "Properties",
-                new [] {PdbEntityType.Properties, PdbEntityType.Reac, PdbEntityType.RealProperty});
+            PdbTwoTableHelper dataHelper = new PdbTwoTableHelper(Config.GetConfig("PDP.Data"), "Properties");
 
             // x and y are expected in web mercator.
             PdbResultLocations list = dataHelper.QueryForLocations(expressions, roles,
