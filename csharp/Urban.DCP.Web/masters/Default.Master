@@ -31,7 +31,13 @@
         <div id="pdp-browser-warning">JavaScript must be enabled on your Internet Browser to use this website.</div>
     </noscript>
     <div id="header">
-        <a href="<%=WebUtil.GetApplicationUrl(Request) %>"><img src="http://placehold.it/220x88" class="pdp-header-logo" ></a>
+        <button type="button" id="navbar-toggle">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a href="<%=WebUtil.GetApplicationUrl(Request) %>"><img src="client/css/images/urban_institute_logo.png" class="pdp-header-logo" ></a>
         
         <div id="login" class="pdp-login-container"></div>
         <div id="signup" class="pdp-signup-container"></div>

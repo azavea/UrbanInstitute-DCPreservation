@@ -68,7 +68,6 @@
             
             _updateLayoutHeight($content, $header, $window, $toolbar);
             $window.resize(function() {
-                _updateLayoutHeight($content, $header, $window, $toolbar);
             });
         });
         

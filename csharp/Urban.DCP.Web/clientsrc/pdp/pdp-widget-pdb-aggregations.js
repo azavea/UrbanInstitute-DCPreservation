@@ -151,7 +151,9 @@
                 });
             });
             
-            $('<div id="pdp-pdb-search-result-type">'+
+            $('<hr>'+
+                '<div id="pdp-pdb-search-result-type">'+
+                '<h4>Show results as</h4>'+
                 '<input type="radio" id="pdp-pdb-search-result-details" name="pdp-pdb-search-result-type" checked="checked" /><label for="pdp-pdb-search-result-details">Details</label>' + 
 		        '<input type="radio" id="pdp-pdb-search-result-counts" name="pdp-pdb-search-result-type" /><label for="pdp-pdb-search-result-counts">Counts</label>' + 
             '</div>' + 

@@ -12,7 +12,7 @@ input, select { margin:0; }
 body { font-size: .8em; font-family: Arial, Helvetica, sans-serif; line-height:1.2em; }
 	
 /* Header div must have high zindex for IE7 panel rendering (signup + login)*/
-#header { background-color:#FFFFFF; position:relative; z-index: 3001;}
+#header { background-color:#e8e8e8; position:relative; z-index: 3001; height: 70px;}
 #pdp-profile-header { 
         padding-left: 5px; background: #fff; position:relative; background: #727A65; color: #fff;}   
    

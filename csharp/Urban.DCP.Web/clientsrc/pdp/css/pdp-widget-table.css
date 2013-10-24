@@ -2,7 +2,7 @@
 	    border-spacing: 0;
 	    border-collapse: collapse;
 }
-    .pdp-table-row-alt-pdb { background: #EEF6D1; /*#dddfd5;*/ }
+    .pdp-table-row-alt-pdb { background: #fff; /*#dddfd5;*/ }
     .pdp-table-row-alt-nyc { background: #DFEBBE; /*#dddfd5;*/ }
     
     .pdp-table-col-extra {width: 75px !important;}

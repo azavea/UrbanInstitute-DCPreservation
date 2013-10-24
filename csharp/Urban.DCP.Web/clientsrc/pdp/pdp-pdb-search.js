@@ -10,10 +10,10 @@
 
         //Render placeholders to the target
         var _render = Azavea.tryCatch('render pdb search', function() {
-            $('<div id="pdp-pdb-search-criteria" class="pdp-pdb-search-container"><h4>Filter by</h4></div>' + 
-            '<div id="pdp-pdb-search-aggregations" class="pdp-pdb-search-container"><h4>Show my results as</h4></div>' + 
-            '<div class="pdp-search-actions"><button id="pdp-pdb-button-search" class="pdp-button">Submit</button>' + 
-            '<a id="pdp-pdb-button-reset" href="javascript:void(0);">Clear</a></div>').appendTo(_options.target);
+            $('<div id="pdp-pdb-search-criteria" class="pdp-pdb-search-container"><h4>Housing Filters:</h4></div>' + 
+            '<div id="pdp-pdb-search-aggregations" class="pdp-pdb-search-container">' + 
+            '<div class="pdp-search-actions"><button id="pdp-pdb-button-search" class="pdp-button">Show Results</button>' + 
+            '<a id="pdp-pdb-button-reset" href="javascript:void(0);">Reset Filters</a></div>').appendTo(_options.target);
             
             $('#pdp-pdb-button-search').button();
         });

@@ -222,13 +222,22 @@
             P.Util.trackMetric('Map', 'Click Marker', idArray.length > 1 ? 'Cluster' : 'Single', idArray ? idArray.length : 1);
             
             // Create and cache the popup
-            _popup = new OpenLayers.Popup.FramedCloud('pdb-popup',
+            _popup = new OpenLayers.Popup.Anchored('pdb-popup',
                 marker.lonlat,
                 new OpenLayers.Size(200, 200),
                 content,
                 null, true
             );
-            
+
+            var offset = {'size':new OpenLayers.Size(0,0),'offset':new OpenLayers.Pixel(-180,-80)};
+            _popup.anchor = offset;
+            _popup.autoSize = true;            
+            _popup.panMapIfOutOfView = true;
+            _popup.relativePosition = "br"
+            _popup.calculateRelativePosition = function () {
+                 return 'tr';
+            }
+
             // Display it on the map
             _map.addPopup(_popup, true);
             
@@ -249,10 +258,10 @@
         var _addMarker = Azavea.tryCatch('add marker', function(property) {
             //var markerPath = 'client/css/images/markers/map-indicator.png';
             // Client requested image be hosted off-domain to give them more styling options
-            var markerPath = 'http://www.furmancenter.org/tweaks/map-indicator.png';
+            var markerPath = '/client/css/images/markers/red-marker.png';
             
             // Add the marker and assign a click function
-            var size = new OpenLayers.Size(24,24);  // previous size: 21, 25
+            var size = new OpenLayers.Size(36,42);  // previous size: 24, 24
             var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
             var icon = new OpenLayers.Icon(markerPath, size, offset);
             
@@ -276,7 +285,7 @@
             var radius = 22 + Math.floor((Math.log(cluster.Keys.length) * 2) + Math.log(cluster.Keys.length / 10) * 5);
 
             // Create the icon the for the, including size (based of off the radius of the cluster area)
-            var markerPath = 'client/css/images/markers/marker-cluster-bg.png';
+            var markerPath = 'client/css/images/markers/red-circle.png';
             var size = new OpenLayers.Size(1, 1);
             var offset = new OpenLayers.Pixel(-(radius/2), -(radius/2));
             var icon = new OpenLayers.Icon(markerPath, size, offset);

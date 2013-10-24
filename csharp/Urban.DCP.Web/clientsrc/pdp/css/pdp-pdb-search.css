@@ -1,7 +1,7 @@
 .pdp-pdb-search-container { margin-bottom:10px; }
 
-#pdp-pdb-search-level-container {background-color: #eef6d1; }
-    #pdp-pdb-search-level-container li {margin-top: 0.05em; }
+#pdp-pdb-search-level-container {background-color: #fff; }
+    #pdp-pdb-search-level-container li {margin-top: 0; }
     .pdp-pdb-search-level { padding-right: 1px; top:45px; bottom:100px; width:100%; overflow-x: hidden; overflow-y:auto; z-index:2000; }
     .pdp-pdb-search-category-top  
     {
@@ -24,55 +24,36 @@
 .pdp-pdb-search-category-header { padding:10px; cursor:pointer; }
     .pdp-pdb-search-category-header label { cursor:pointer; }
 
-#pdp-pdb-search-result-type { text-align:center; }
-    #pdp-pdb-search-result-type .ui-button-text { padding:0.2em 2.6em; }
+#pdp-pdb-search-result-type { text-align:right; height: 120px; }
+    #pdp-pdb-search-result-type .ui-button-text { padding: 12px 12px; }
 #pdp-pdb-search-counts { text-align:right; display:none; }
     #pdp-pdb-search-counts-cols { margin:5px 0; }
 .pdp-criteria-list {
-    background: silver;
+    background: #fff;
 }
 .pdp-pdb-search-category-header.pdp-pdb-control-active {
-    background: -webkit-gradient(linear, left top, left bottom, from(#98D40C), to(#6BA40E));
-	background: -moz-linear-gradient(top,  #98D40C,  #6BA40E);
-	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#98D40C', endColorstr='#6BA40E') !important;
-	color: #fff;
-	border: solid 2px #fff !important;
-	text-shadow: -1px -1px #607860;
-	font-weight: bold;
+	background-color: #fff;
 }
 
 div.pdp-pdb-search-category-header {
-	border: solid 1px #c0c0c0;
-	background: #4e7d0e;
-	background: -webkit-gradient(linear, left top, left bottom, from(#F5F5F5), to(#DDEACD));
-	background: -moz-linear-gradient(top,  #F5F5F5,  #DDEACD);
-	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#F5F5F5', endColorstr='#DDEACD');	
-	color: #2a4203;
+	border-bottom: solid 1px #d2d4d3;
+	background-color: #e8e8e8;
+	color: #6D6E70;
 	text-decoration: none;
 	display: block;
-	margin-bottom: 1px;
-	height: 12px;
-	text-shadow: 0 0.1em 0px #fff;
-	font-weight: bold
+	margin-bottom: 0;
+	height: 16px;
+	font-size: 14px;
+	font-weight: 400;
 }
 
 div.pdp-pdb-search-category-header:hover {
-	
-    background: -webkit-gradient(linear, left top, left bottom, from(#98D40C), to(#6BA40E));
-	background: -moz-linear-gradient(top,  #98D40C,  #6BA40E);
-	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#98D40C', endColorstr='#6BA40E');
-	color: #fff;
-	font-weight: bold;
-	text-shadow: -1px -1px #607860;
+	color: #0F4038
 }  
 
 .pdp-pdb-search-category-header-viewing{
-    background: -webkit-gradient(linear, left top, left bottom, from(#98D40C), to(#6BA40E)) !important;
-	background: -moz-linear-gradient(top,  #98D40C,  #6BA40E) !important;
-	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#98D40C', endColorstr='#6BA40E') !important;
-	color: #fff !important;
-	font-weight: bold;
-	text-shadow: -1px -1px #607860 !important;
+	color: #0F4038 !important;
+	background-color: #fff !important;
 }
   
 #pdp-pdb-search-counts-panel-content { position:relative; white-space:nowrap; padding:10px;	}
@@ -80,7 +61,7 @@ div.pdp-pdb-search-category-header:hover {
     .pdb-pdb-search-counts-category-label { font-weight:bold; }
     .pdp-pdb-search-counts-category { margin:2px 0 2px 15px; }
         .pdp-pdb-search-counts-category li { padding:1px 0; }
-    #pdp-pdb-search-counts-caption {white-space: normal; width: 235px; padding:5px; font-size:0.9em; background-color:#eef6d1; }
+    #pdp-pdb-search-counts-caption {white-space: normal; width: 235px; padding:5px; font-size:0.9em; background-color:#fff; }
         
 #pdp-pdb-search-counts-panel{
 	overflow:auto; 
@@ -138,6 +119,17 @@ div.pdp-pdb-search-category-header:hover {
 	border-color:transparent Silver transparent transparent;
 }
 
-.pdp-pdb-search-active-count{
+.pdp-pdb-search-active-count {
     margin-right: 20px;
+    background-color: #8d2d3b;
+	padding: 1px 7px;
+	border-radius: 20px;
+	color: #fff;
+	font-size: 10px;
+}
+
+.pdp-pdb-search-active-count:empty {
+    margin-right: 20px;
+    background-color: transparent;
+	padding: 0;
 }
