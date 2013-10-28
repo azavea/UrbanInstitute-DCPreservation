@@ -5,13 +5,12 @@
                 target: 'map',
                 bindTo: P,
                 layers: [
-                    new OpenLayers.Layer.Google("Street", {numZoomLevels: 20}),
-                    new OpenLayers.Layer.Google("Satellite", {type: google.maps.MapTypeId.SATELLITE, numZoomLevels: 22}),
+                    new OpenLayers.Layer.Google("Street", { numZoomLevels: 20 }),
+                    new OpenLayers.Layer.Google("Satellite", { type: google.maps.MapTypeId.SATELLITE, numZoomLevels: 22 }),
                     new OpenLayers.Layer.Google("Hybrid", {type: google.maps.MapTypeId.HYBRID, numZoomLevels: 20}),
                     new OpenLayers.Layer.Google("Terrain", {type: google.maps.MapTypeId.TERRAIN})                
                 ],
-                defaultBbox: new OpenLayers.Bounds(-8592401.00507909, 4693042.444139108, -8559494.86440232, 4720636.211350055),
-                maxBbox: new OpenLayers.Bounds(-8592401.00507909, 4693042.444139108, -8559494.86440232, 4720636.211350055)
+                defaultBbox: new OpenLayers.Bounds(-8592401.00507909, 4693042.444139108, -8559494.86440232, 4720636.211350055)
             }, options),
             $target,
             _map,
@@ -433,7 +432,6 @@
                 maxZoomLevel: 17,
                 minZoomLevel: 9,
                 maxExtent: _options.defaultBbox,
-                restrictedExtent: _options.maxBbox,
                 controls: [
                     new OpenLayers.Control.PanPanel(),
                     new OpenLayers.Control.ZoomPanel(),
@@ -473,7 +471,7 @@
             }).init();
             
             // Trigger an event with the max bbox 
-            $(P).trigger('pdp-map-max-bbox', [_options.maxBbox.toArray()]);
+            $(P).trigger('pdp-map-max-bbox', [_options.defaultBbox.toArray()]);
             
             return _self;
         });
