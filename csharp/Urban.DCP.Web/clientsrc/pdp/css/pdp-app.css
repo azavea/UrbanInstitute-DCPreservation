@@ -1,5 +1,6 @@
 #pdb-popup_contentDiv {
     height: auto !important;
+    width: 410px !important;
 }
 
 #pdb-popup:after {
@@ -36,6 +37,7 @@ html, body {
     overflow: visible !important;
     padding: 20px 10px;
     box-shadow: 0px 2px 0px #939598;
+    width: 405px !important;
 }
 
 #pdp-pdb-view hr {
@@ -97,20 +99,30 @@ html, body {
     border: 0;
 }
 
+.pdp-shortview-list-item {
+    margin-bottom: 4px;
+}
+
 .pdp-shortview-value {
-    float: right;
     font-size: 12px!important;
     color: #C88C94;
-    clear: right;
-    font-weight: 600!important;    
+    font-weight: 600!important;
+    width: 300px;  
+    display: inline-block;
+    vertical-align: top;
+    text-align: right;
 }
 
 .pdp-shortview-label {
-    float: left;
     font-size: 12px!important;
     color: #0F4038;
-    clear: left;
     font-weight: 600!important;
+    width: 75px;
+    vertical-align: top;
+    text-align: left;
+    display: inline-block;
+    padding-right: 10px;    
+    line-height: 10px;
 }
 
 #pdp-pdb-button-reset {

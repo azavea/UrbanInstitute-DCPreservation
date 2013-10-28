@@ -224,13 +224,13 @@
             // Create and cache the popup
             _popup = new OpenLayers.Popup.Anchored('pdb-popup',
                 marker.lonlat,
-                new OpenLayers.Size(200, 200),
+                new OpenLayers.Size(400, 200),
                 content,
                 null, true
             );
-
             var offset = {'size':new OpenLayers.Size(0,0),'offset':new OpenLayers.Pixel(-180,-80)};
             _popup.anchor = offset;
+            // _popup.minSize = new OpenLayers.Size(400, 60);
             _popup.autoSize = true;            
             _popup.panMapIfOutOfView = true;
             _popup.relativePosition = "br"
@@ -262,7 +262,7 @@
             
             // Add the marker and assign a click function
             var size = new OpenLayers.Size(36,42);  // previous size: 24, 24
-            var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
+            var offset = new OpenLayers.Pixel(-11, -12);
             var icon = new OpenLayers.Icon(markerPath, size, offset);
             
             var marker = new OpenLayers.Marker(new OpenLayers.LonLat(property.X, property.Y), icon);
