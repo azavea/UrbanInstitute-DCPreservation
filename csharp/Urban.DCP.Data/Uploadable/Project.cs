@@ -74,6 +74,11 @@ namespace Urban.DCP.Data.Uploadable
             }
         }
 
+        /// <summary>
+        /// After new data has been loaded, generate lists of unique values
+        /// to be added to the filter lookup table for populating dropdown
+        /// boxes.
+        /// </summary>
         public override void PostProcess(SqlTransaction trans, IList<Project> rows)
         {
             var cols = _dao.ClassMap.AllDataColsByObjAttrs;

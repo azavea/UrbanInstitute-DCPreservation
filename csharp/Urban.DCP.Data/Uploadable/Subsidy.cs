@@ -72,6 +72,11 @@ namespace Urban.DCP.Data.Uploadable
             get { return UploadTypes.Subsidy; }
         }
 
+        /// <summary>
+        /// After new data has been loaded, generate lists of unique values
+        /// to be added to the filter lookup table for populating dropdown
+        /// boxes.
+        /// </summary>
         public override void PostProcess(SqlTransaction trans, IList<Subsidy> rows)
         {
             // Add unique program and agency names to the attribute value table
