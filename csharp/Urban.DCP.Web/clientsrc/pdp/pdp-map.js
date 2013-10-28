@@ -407,18 +407,10 @@
                 _removePopup();
             });
             
-            // Reset request from nychanis - clear the map
-            $(P.Nychanis).bind('pdp-criteria-reset', function(event) {
-                if (_nychanisLayer){
-                    _map.removeLayer(_nychanisLayer);
-                }
-                _nychanisLayer = null;
-            });
-            
             // Ask for more pdb property data when the map is moved 
             _map.events.register('moveend', _map, _onMoveEnd);
         });
-        
+
         // Render the map to the display
         var _render = Azavea.tryCatch('render map', function() {
             $target = $(_options.target);
@@ -432,6 +424,8 @@
                 maxZoomLevel: 17,
                 minZoomLevel: 9,
                 maxExtent: _options.defaultBbox,
+                zoomMethod: null,
+                transitionEffect: null,
                 controls: [
                     new OpenLayers.Control.PanPanel(),
                     new OpenLayers.Control.ZoomPanel(),
@@ -452,7 +446,11 @@
             // Zoop to the default area
             _map.zoomToExtent(_options.defaultBbox, true);
         });
-            
+
+        _self.resizeMap = function() {
+            _map.updateSize();
+        };
+        
         // Initialize the map    
         _self.init = Azavea.tryCatch('init map and related controls', function() {
             _render();
