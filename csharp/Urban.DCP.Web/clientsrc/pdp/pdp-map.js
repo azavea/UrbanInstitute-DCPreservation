@@ -5,13 +5,12 @@
                 target: 'map',
                 bindTo: P,
                 layers: [
-                    new OpenLayers.Layer.Google("Street", {numZoomLevels: 20}),
-                    new OpenLayers.Layer.Google("Satellite", {type: google.maps.MapTypeId.SATELLITE, numZoomLevels: 22}),
+                    new OpenLayers.Layer.Google("Street", { numZoomLevels: 20 }),
+                    new OpenLayers.Layer.Google("Satellite", { type: google.maps.MapTypeId.SATELLITE, numZoomLevels: 22 }),
                     new OpenLayers.Layer.Google("Hybrid", {type: google.maps.MapTypeId.HYBRID, numZoomLevels: 20}),
                     new OpenLayers.Layer.Google("Terrain", {type: google.maps.MapTypeId.TERRAIN})                
                 ],
-                defaultBbox: new OpenLayers.Bounds(-8592401.00507909, 4693042.444139108, -8559494.86440232, 4720636.211350055),
-                maxBbox: new OpenLayers.Bounds(-8592401.00507909, 4693042.444139108, -8559494.86440232, 4720636.211350055)
+                defaultBbox: new OpenLayers.Bounds(-8592401.00507909, 4693042.444139108, -8559494.86440232, 4720636.211350055)
             }, options),
             $target,
             _map,
@@ -417,18 +416,10 @@
                 _removePopup();
             });
             
-            // Reset request from nychanis - clear the map
-            $(P.Nychanis).bind('pdp-criteria-reset', function(event) {
-                if (_nychanisLayer){
-                    _map.removeLayer(_nychanisLayer);
-                }
-                _nychanisLayer = null;
-            });
-            
             // Ask for more pdb property data when the map is moved 
             _map.events.register('moveend', _map, _onMoveEnd);
         });
-        
+
         // Render the map to the display
         var _render = Azavea.tryCatch('render map', function() {
             $target = $(_options.target);
@@ -442,7 +433,8 @@
                 maxZoomLevel: 17,
                 minZoomLevel: 9,
                 maxExtent: _options.defaultBbox,
-                restrictedExtent: _options.maxBbox,
+                zoomMethod: null,
+                transitionEffect: null,
                 controls: [
                     new OpenLayers.Control.PanPanel(),
                     new OpenLayers.Control.ZoomPanel(),
@@ -463,7 +455,11 @@
             // Zoop to the default area
             _map.zoomToExtent(_options.defaultBbox, true);
         });
-            
+
+        _self.resizeMap = function() {
+            _map.updateSize();
+        };
+        
         // Initialize the map    
         _self.init = Azavea.tryCatch('init map and related controls', function() {
             _render();
@@ -482,7 +478,7 @@
             }).init();
             
             // Trigger an event with the max bbox 
-            $(P).trigger('pdp-map-max-bbox', [_options.maxBbox.toArray()]);
+            $(P).trigger('pdp-map-max-bbox', [_options.defaultBbox.toArray()]);
             
             return _self;
         });

@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Azavea.Open.Common;
+using Azavea.Open.DAO.Criteria;
 using Azavea.Open.DAO.SQLServer;
 using Azavea.Open.DAO.SQL;
 using FileHelpers;
+using Urban.DCP.Data.PDB;
 
 namespace Urban.DCP.Data.Uploadable
 {
@@ -14,17 +18,13 @@ namespace Urban.DCP.Data.Uploadable
     [DelimitedRecord(",")]
     public class Project
     {
-        private static readonly Azavea.Database.FastDAO<Project> _projectDao =
-            new Azavea.Database.FastDAO<Project>(Config.GetConfig("PDP.Data"), "PDB");
 
         public string Id;
         public string Status;
         public string Subsidized;
         public string Category;
-        [FieldQuoted('"', QuoteMode.OptionalForRead)]
-        public string Name;
-        [FieldQuoted('"', QuoteMode.OptionalForRead)]
-        public string Address;
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] public string Name;
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] public string Address;
         public string City;
         public string State;
         public string Zip;
@@ -32,68 +32,77 @@ namespace Urban.DCP.Data.Uploadable
         public int? MinAssistedUnits;
         public int? MaxAssistedUnits;
 
-        [FieldConverter(ConverterKind.Date, "MM/dd/yyyy")] 
-        public DateTime? OwnershipEffectiveDate;
+        [FieldConverter(ConverterKind.Date, "MM/dd/yyyy")] public DateTime? OwnershipEffectiveDate;
 
-        [FieldQuoted('"', QuoteMode.OptionalForRead)]
-        public string OwnerName;
-        [FieldQuoted('"', QuoteMode.OptionalForRead)]
-        public string OwnerType;
-        [FieldQuoted('"', QuoteMode.OptionalForRead)]
-        public string ManagerName;
-        [FieldQuoted('"', QuoteMode.OptionalForRead)]
-        public string ManagerType;
-        
-        [FieldConverter(ConverterKind.Date, "MM/dd/yyyy")] 
-        public DateTime? EarliestSubsidyEnd;
-        
-        [FieldConverter(ConverterKind.Date, "MM/dd/yyyy")] 
-        public DateTime? LatestSubsidyEnd;
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] public string OwnerName;
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] public string OwnerType;
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] public string ManagerName;
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] public string ManagerType;
+
+        [FieldConverter(ConverterKind.Date, "MM/dd/yyyy")] public DateTime? EarliestSubsidyEnd;
+
+        [FieldConverter(ConverterKind.Date, "MM/dd/yyyy")] public DateTime? LatestSubsidyEnd;
         public string Ward;
         public string Anc; // Advisory Neighborhood Commission
         public string PoliceArea;
         public string ClusterId;
-        [FieldQuoted('"', QuoteMode.OptionalForRead)]
-        public string ClusterName;
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] public string ClusterName;
+        [FieldNotInFile] public string ClusterCombo;
         public string CensusTract;
         public double? X;
         public double? Y;
         public double? Lat;
         public double? Lon;
-        [FieldQuoted('"', QuoteMode.OptionalForRead)]
-        public string StreetViewUrl;
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] public string StreetViewUrl;
         public string ImageUrl;
-        
-        /// <summary>
-        /// L
-        /// </summary>
-        /// <returns></returns>
-        public static ImportResult<Project> LoadProjects(Stream data)
-        {
-            var engine = new FileHelperEngine<Project> {ErrorMode = ErrorMode.SaveAndContinue};
-            var projects = engine.ReadStream(new StreamReader(data));
-            var results = new ImportResult<Project>{Records = projects, Errors = engine.ErrorManager};
 
-            if (results.Errors.ErrorCount == 0)
-            {
-                var trans = new SqlTransaction((AbstractSqlConnectionDescriptor)_projectDao.ConnDesc);
-                try
-                {
-                    // Refresh the project data if successfull 
-                    _projectDao.DeleteAll(trans);
-                    _projectDao.Insert(trans, results.Records);
-                    trans.Commit();
-                }
-                catch (Exception)
-                {
-                    trans.Rollback();
-                    throw;
-                }
-                
-            }
-            return results;
-        }
     }
 
+    public class ProjectUploader: AbstractUploadable<Project>, ILoadable
+    {
+        public override UploadTypes UploadType
+        {
+            get { return UploadTypes.Project; }
+        }
+
+        public override void PreProcess(SqlTransaction trans, IList<Project> rows)
+        {
+            // Update the full version of the cluster name, when available
+            foreach (var row in rows.Where(row => row.ClusterId != "" && row.ClusterName != ""))
+            {
+                row.ClusterCombo = row.ClusterId + ": " + row.ClusterName;
+            }
+        }
+
+        /// <summary>
+        /// After new data has been loaded, generate lists of unique values
+        /// to be added to the filter lookup table for populating dropdown
+        /// boxes.
+        /// </summary>
+        public override void PostProcess(SqlTransaction trans, IList<Project> rows)
+        {
+            var cols = _dao.ClassMap.AllDataColsByObjAttrs;
+            var ward = cols["Ward"];
+            var psa = cols["PoliceArea"];
+            var cluster = cols["ClusterCombo"];
+            var anc = cols["Anc"];
+            var census = cols["CensusTract"];
+            var category = cols["Category"];
+
+            PdbAttributesHelper._attrValDao.Delete(trans, new DaoCriteria(
+                new PropertyInListExpression("AttributeName", new []
+                    {
+                        ward, psa, cluster, anc, census, category
+                    }
+                )));
+
+            InsertUnique(trans, rows, r => r.Ward, ward);
+            InsertUnique(trans, rows, r => r.PoliceArea, psa);
+            InsertUnique(trans, rows, r => r.ClusterCombo, cluster);
+            InsertUnique(trans, rows, r => r.Anc, anc);
+            InsertUnique(trans, rows, r => r.CensusTract, census);
+            InsertUnique(trans, rows, r => r.Category, category);
+        }
+    }
  
 }

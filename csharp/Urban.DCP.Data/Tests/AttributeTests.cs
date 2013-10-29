@@ -30,16 +30,14 @@ namespace Urban.DCP.Data.Tests
         [Test]
         public void TestGetAllMetadataWithValuesForEveryone()
         {
-            IList<PdbCategory> cols = PdbAttributesHelper.GetAttributesForClient(
-                PdbEntityType.Properties, new SecurityRole[] { SecurityRole.@public });
+            IList<PdbCategory> cols = PdbAttributesHelper.GetAttributesForClient(new [] { SecurityRole.@public });
             AssertCategorizedAttributes(cols, 5, 23, 4, 14, "all users");
         }
         /// <exclude/>
         [Test]
         public void TestGetAllMetadataWithValues()
         {
-            IList<PdbCategory> cols = PdbAttributesHelper.GetAttributesForClient(
-                PdbEntityType.Properties, new SecurityRole[] { SecurityRole.SysAdmin });
+            IList<PdbCategory> cols = PdbAttributesHelper.GetAttributesForClient(new [] { SecurityRole.SysAdmin });
             AssertCategorizedAttributes(cols, 5, 24, 4, 14, "privileged users");
         }
 

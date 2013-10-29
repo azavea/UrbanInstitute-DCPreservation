@@ -12,7 +12,9 @@
             },
             _$main,
             _$tabContainer,
-            _$tabContent;
+            _$tabContent,
+            _handleResize,
+            _map;
 
         //Toggles what functionality is currently visible, based on the state.
         //This works by using multiple classes on elements in the DOM. You can
@@ -49,13 +51,15 @@
             
         //Sets all of the important heights so that we always use all of the
         //vertical height but never have scrollbars (ie. a border layout of sorts).
-        var _updateLayoutHeight = Azavea.tryCatch('update layout height', function($content, $header, $window, $toolbar) {
-            var h = $header.outerHeight();
-            var w = $window.height();
-            
-            $content.outerHeight(w - h);
-            _$main.outerHeight(w - h - $toolbar.outerHeight());
-            _$tabContent.outerHeight(w - h - $toolbar.outerHeight());
+        var _updateLayoutHeightFn = Azavea.tryCatch('update layout height', function($content, $header, $window, $toolbar) {
+            return function() {
+                var h = $header.outerHeight();
+                var w = $window.height();
+
+                $content.outerHeight(w - h);
+                _$main.outerHeight(w - h - $toolbar.outerHeight());
+                _$tabContent.outerHeight(w - h - $toolbar.outerHeight());
+            };
         });
         
         //Caches the main layout elements and initializes the heights to
@@ -65,10 +69,10 @@
             var $content = $('#content');
             var $toolbar = $('#pdp-main-toolbar');
             var $window = $(window);
-            
-            _updateLayoutHeight($content, $header, $window, $toolbar);
-            $window.resize(function() {
-            });
+
+            _handleResize = _updateLayoutHeightFn($content, $header, $window, $toolbar);
+            _handleResize();
+            $window.resize(_.debounce(_handleResize, 200));
         });
         
         //Init the Nychanis and PDB tabs
@@ -108,8 +112,24 @@
             $('label', _options.dataViewPickerTarget)
                 .click(function(event) {
                     _setUiTypeState($(this).attr('for'));
+
+                    if (_map) {
+                        _map.resizeMap();
+                    }
                 });
         });
+
+
+        var _initNavBar = function() {
+            var toggle = function() {
+                $("#left").toggleClass('visible');
+                $("#center").toggleClass('visible');
+                $("#navbar-toggle").toggleClass('visible');
+            };
+
+            $(P.Pdb).bind('pdp-data-force-update', toggle);
+            $("#navbar-toggle").click(toggle);
+        };
         
         var _initNoDataAlert = Azavea.tryCatch('init no data alerts', function(){
             $(P.Pdb).bind('pdp-data-response', function(event, data) {
@@ -157,6 +177,7 @@
             _updateContent();
             _setDataTypeState(_uiState.dataType);
             _initNoDataAlert();
+            _initNavBar();
 
             //Dark lord of all PDB results
             PDP.Pdb.Results({ 
@@ -176,9 +197,10 @@
             // If google is gone, tell the user the map isn't working.  Tables are ok though.
             try{
                 //Lord of the Map - both Nychanis and PDB
-                P.Widget.Map({
+                _map = P.Widget.Map({
                     target: '#pdp-map-content'
-                }).init();
+                });
+                _map.init();
             }
             catch(err){
                 Azavea.log(err);

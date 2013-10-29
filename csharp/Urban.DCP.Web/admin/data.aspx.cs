@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Net;
 using Azavea.Web;
+using Azavea.Web.Handler;
 using Azavea.Web.Page;
 using FileHelpers;
 using Newtonsoft.Json.Linq;
 using Urban.DCP.Data;
 using Urban.DCP.Data.Uploadable;
+using Urban.DCP.Data.PDB;
+using Urban.DCP.Handlers;
 
 namespace Urban.DCP.Web.admin
 {
@@ -17,10 +20,12 @@ namespace Urban.DCP.Web.admin
         {
             Master.SetTitle("Data Management");
 
+            Master.RegisterJavascriptFile("../client/moment.min.js");    
             Master.RegisterJavascriptFile("../client/ktable/jquery.event.drag-1.4.js");
             Master.RegisterJavascriptFile("../client/ktable/jquery.ktable.colsizable-1.1.js");
             Master.RegisterCssFile("../client/ktable/css/jquery.ktable.colsizable.css");
             Master.RegisterCssFile("../client/css/pdp-manage-users.css", true);
+            Master.RegisterJavascriptFile("../client/pdp-app.js", true);
 
             if (context.Request.HttpMethod == "POST")
             {
@@ -38,40 +43,39 @@ namespace Urban.DCP.Web.admin
                     resultLabel.Text = "CSV File is required";
                 }
 
-                ErrorManager errors = null;
-                int added = 0;
-
-                switch (uploadType)
+                ILoadable loader = null;
+                try
                 {
-                    case UploadTypes.Project:
-                        var import = Project.LoadProjects(context.Request.Files[0].InputStream);
-                        errors = import.Errors;
-                        added = import.Records.Length;
-                        break;
-                    case UploadTypes.Attribute:
-                        var attrImport = AttributeUploadable.LoadAttributes(context.Request.Files[0].InputStream);
-                        errors = attrImport.Errors;
-                        added = attrImport.Records.Length;
-                        break;
-                    default:
-                        resultLabel.Text = String.Format("{0} is not a valid upload type.", uploadType);
-                        break;
+                    loader = LoadHelper.GetLoader(uploadType);
+                }
+                catch (Exception e)
+                {
+                    resultLabel.Text = e.Message;
                 }
 
-                if (errors != null && errors.ErrorCount > 0)
+                ImportResult result = null;
+                if (loader != null)
+                {
+                    result = loader.Load(context.Request.Files[0].InputStream, user);
+                }
+
+                if (result != null && result.Errors.ErrorCount > 0)
                 {
                     resultLabel.Text =
                         String.Format(
                             "There were {0} errors in the uploaded file, no records were imported.  Please correct the errors and try again.",
-                            errors.ErrorCount);
-                    resultTable.DataSource = errors.Errors;
+                            result.Errors.ErrorCount);
+                    resultTable.DataSource = result.Errors.Errors;
                     resultTable.DataBind();
                 }
-                else if (resultLabel.Text == "")
+                else if (result != null && resultLabel.Text == "")
                 {
-                    resultLabel.Text = String.Format("{0} {1} records were imported.", added, uploadType);
+                    // Importing data could have changed the attributes or attribute values
+                    // so invalidate the cache for that handler.
+                    BaseHandler.ClearThisCache(typeof(AttributesHandler));
+
+                    resultLabel.Text = String.Format("{0} {1} records were imported.", result.ImportCount, uploadType);
                 }
-                
             }
         }
 

@@ -9,8 +9,7 @@ namespace Urban.DCP.Data.Tests
     [TestFixture]
     public class PropertyLocationTests
     {
-        private readonly PdbTwoTableHelper _helper = new PdbTwoTableHelper(Config.GetConfig("PDP.Data"), "Properties",
-                PdbEntityType.Properties);
+        private readonly PdbTwoTableHelper _helper = new PdbTwoTableHelper(Config.GetConfig("PDP.Data"), "Properties");
         private readonly SecurityRole[] _publicRoles = new SecurityRole[] { SecurityRole.@public };
         /// <exclude/>
         [Test]

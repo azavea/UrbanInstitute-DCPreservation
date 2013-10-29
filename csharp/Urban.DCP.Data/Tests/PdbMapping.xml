@@ -67,4 +67,50 @@
     <property name="Text" column="Text"/>
   </class>
 
+  <class name="Urban.DCP.Data.Uploadable.Reac,Urban.DCP.Data" table="Reac">
+    <property name="NlihcId" column="NLIHC_ID" />
+    <property name="ScoreDate" column="ScoreDate" />
+    <property name="Score" column="Score" />
+    <property name="ScoreNum" column="ScoreNum" />
+    <property name="ScoreLetter" column="ScoreLetter" />
+  </class>
+
+  <class name="Urban.DCP.Data.Uploadable.Parcel,Urban.DCP.Data" table="Parcel">
+    <property name="NlihcId" column="NLIHC_ID" />
+    <property name="Ssl" column="SSL" />
+    <property name="ParcelType" column="ParcelType" />
+    <property name="OwnerName" column="OwnerName" />
+    <property name="OwnerDate" column="OwnerDate" />
+    <property name="OwnerType" column="OwnerType" />
+    <property name="Units" column="Units" />
+    <property name="X" column="X" />
+    <property name="Y" column="Y" />
+  </class>
+
+  <class name="Urban.DCP.Data.Uploadable.RealPropertyEvent,Urban.DCP.Data" table="RealProperty">
+    <property name="NlihcId" column="NLIHC_ID" />
+    <property name="Ssl" column="SSL" />
+    <property name="EventDate" column="EventDate" />
+    <property name="EventType" column="EventType" />
+    <property name="EventDescription" column="EventDescription" />
+  </class>
+
+  <class name="Urban.DCP.Data.Uploadable.Subsidy,Urban.DCP.Data" table="Subsidy">
+    <property name="NlihcId" column="NLIHC_ID" />
+    <property name="SubsidyActive" column="SubsidyActive" />
+    <property name="ProgramName" column="ProgramName" />
+    <property name="SubsidyInfo" column="Subsidy" />
+    <property name="ContractNumber" column="ContractNumber" />
+    <property name="UnitsAssist" column="UnitsAssist" />
+    <property name="ProgramActiveStart" column="ProgramActiveStart" />
+    <property name="ProgramActiveEnd" column="ProgramActiveEnd" />
+    <property name="SubsidyInfoSource" column="SubsidyInfoSource" />
+    <property name="SubsidyNotes" column="SubsidyNotes" />
+    <property name="SubsidyUpdate" column="SubsidyUpdate" />
+  </class>
+
+  <class name="Urban.DCP.Data.Uploadable.Display.ChildResourceInfo,Urban.DCP.Data" table="ChildResourceRestrictions">
+    <property name="Resource" column="ChildResource" type="string" />
+    <property name="RoleForDisplay" column="RoleForDisplay" type="string"/>
+  </class>
 </hibernate-mapping>

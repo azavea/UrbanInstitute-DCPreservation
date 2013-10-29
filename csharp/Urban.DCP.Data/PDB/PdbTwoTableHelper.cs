@@ -11,6 +11,7 @@ using Azavea.Open.DAO.SQL;
 using Azavea.Utilities.Common;
 using Azavea.Utilities.GeoUtilities;
 using GeoAPI.Geometries;
+using Urban.DCP.Data.Uploadable;
 using DictionaryDao = Azavea.Database.DictionaryDao;
 using System.IO;
 using Reprojector=Azavea.Open.Reprojection.Reprojector;
@@ -40,7 +41,9 @@ namespace Urban.DCP.Data.PDB
         private readonly FastDAO<PdbSecondaryTableProperty> SecondaryDao;
         private readonly IConnectionDescriptor ConnDesc;
 
-        private readonly PdbEntityType _entityType;
+        public static PdbEntityType[] EntityTypes = 
+            new[] {PdbEntityType.Properties, PdbEntityType.Reac,
+                PdbEntityType.RealProperty, PdbEntityType.Subsidy};
 
         /// <summary>
         /// Key: Display name, Value: Column to sum, or * for a count.
@@ -49,9 +52,8 @@ namespace Urban.DCP.Data.PDB
 
         private const string _csvHeaderText = "";
 
-        public PdbTwoTableHelper(Config cfg, string section, PdbEntityType type)
+        public PdbTwoTableHelper(Config cfg, string section)
         {
-            _entityType = type;
             ConnDesc = ConnectionDescriptor.LoadFromConfig(cfg, section, Hasher.Decrypt);
             _primaryTableName = cfg.GetParameter(section, "PrimaryTable");
             _primaryTableIdColumn = cfg.GetParameter(section, "PrimaryTableIdColumn");
@@ -79,7 +81,7 @@ namespace Urban.DCP.Data.PDB
 
         protected internal ClassMapping GetClassMapForPrimaryTable(IEnumerable<SecurityRole> userAuth)
         {
-            IList<PdbAttribute> attrs = PdbAttributesHelper.GetPrimaryTableColumns(_entityType, userAuth);
+            IList<PdbAttribute> attrs = PdbAttributesHelper.GetPrimaryTableColumns(PdbEntityType.Properties, userAuth);
             IList<ClassMapColDefinition> cols = new List<ClassMapColDefinition>();
             bool primaryKeyDoneYet = false;
             bool latDoneYet = false;
@@ -118,7 +120,7 @@ namespace Urban.DCP.Data.PDB
             {
                 cols.Add(new ClassMapColDefinition("Lon", _primaryTableLonColumn, null));
             }
-            return new ClassMapping(_entityType + "_Primary", _primaryTableName, cols, false);
+            return new ClassMapping(PdbEntityType.Properties + "_Primary", _primaryTableName, cols, false);
         }
 
         /// <summary>
@@ -129,88 +131,148 @@ namespace Urban.DCP.Data.PDB
         /// <param name="primaryCrit">Criteria to return the primary table records.</param>
         /// <param name="secondaryCritsGoHere">List of criteria that apply to the secondary table, 
         ///                                    one per attribute being queried.</param>
+        /// <param name="childTableCriteria">The criteria for child tables will be added to this dictionary</param>
         /// <param name="expressions">List of expressions from the client.</param>
         /// <param name="attrDict">Collection of all the attributes we're dealing with, keyed by ID.</param>
         private static void DistributeExpressions(DaoCriteria primaryCrit,
-                                                  ICollection<DaoCriteria> secondaryCritsGoHere, IEnumerable<IExpression> expressions,
-                                                  IDictionary<string, PdbAttribute> attrDict)
+                ICollection<DaoCriteria> secondaryCritsGoHere, IDictionary<PdbEntityType, DistributedCriteriaInfo> childTableCriteria,
+                IEnumerable<IExpression> expressions, IDictionary<string, PdbAttribute> attrDict)
         {
-            if (expressions != null)
+            if (expressions == null) return;
+            foreach (var expr in expressions)
             {
-                foreach (IExpression expr in expressions)
+                if (!(expr is AbstractSinglePropertyExpression))
                 {
-                    if (expr is AbstractSinglePropertyExpression)
+                    throw new NotSupportedException("You attempted to query in a way that is not supported.");
+                }
+
+                var propName = ((AbstractSinglePropertyExpression) expr).Property;
+                if (!attrDict.ContainsKey(propName))
+                {
+                    throw new ArgumentOutOfRangeException("expressions", propName,
+                                                          "No attribute by this name is available to be queried.");
+                }
+                var attr = attrDict[propName];
+                if (!attr.AllowFiltering)
+                {
+                    throw new ArgumentOutOfRangeException("expressions", propName,
+                                                          "No attribute by this name is available to be queried.");
+                }
+                if (attr.InPrimaryTable)
+                {
+                    // Primary table is easy, just add the expression.
+                    primaryCrit.Expressions.Add(expr);
+                }
+                else
+                {
+                    if (attr.EntityType == PdbEntityType.Properties)
                     {
-                        string propName = ((AbstractSinglePropertyExpression) expr).Property;
-                        if (!attrDict.ContainsKey(propName))
-                        {
-                            throw new ArgumentOutOfRangeException("expressions", propName,
-                                                                  "No attribute by this name is available to be queried.");
-                        }
-                        PdbAttribute attr = attrDict[propName];
-                        if (!attr.AllowFiltering)
-                        {
-                            throw new ArgumentOutOfRangeException("expressions", propName,
-                                                                  "No attribute by this name is available to be queried.");
-                        }
-                        if (attr.InPrimaryTable)
-                        {
-                            // Primary table is easy, just add the expression.
-                            primaryCrit.Expressions.Add(expr);
-                        }
-                        else
-                        {
-                            // Secondary table is more complicated, we need to query it repeatedly
-                            // to get the IDs that satisfy each expression separately, then only
-                            // return IDs that match every expression.  So we just return a list of
-                            // the criteria for each expression individually.
-
-                            // This is because we need to say "name = blah AND value = blah"
-                            DaoCriteria secondCrit = new DaoCriteria();
-                            secondCrit.Expressions.Add(new EqualExpression("AttributeName", attrDict[propName].Name));
-
-                            if (expr is EqualExpression)
-                            {
-                                EqualExpression typedExpr = (EqualExpression) expr;
-                                secondCrit.Expressions.Add(new EqualExpression("Value", typedExpr.Value,
-                                                                               typedExpr.TrueOrNot()));
-                            }
-                            else if (expr is GreaterExpression)
-                            {
-                                GreaterExpression typedExpr = (GreaterExpression) expr;
-                                secondCrit.Expressions.Add(new GreaterExpression("Value", typedExpr.Value,
-                                                                                 typedExpr.TrueOrNot()));
-                            }
-                            else if (expr is LesserExpression)
-                            {
-                                LesserExpression typedExpr = (LesserExpression) expr;
-                                secondCrit.Expressions.Add(new LesserExpression("Value", typedExpr.Value,
-                                                                                typedExpr.TrueOrNot()));
-                            }
-                            else if (expr is PropertyInListExpression)
-                            {
-                                PropertyInListExpression typedExpr = (PropertyInListExpression)expr;
-                                secondCrit.Expressions.Add(new PropertyInListExpression("Value", typedExpr.Values,
-                                                                                        typedExpr.TrueOrNot()));
-                            }
-                            else if (expr is LikeExpression)
-                            {
-                                LikeExpression typedExpr = (LikeExpression) expr;
-                                secondCrit.Expressions.Add(new LikeExpression("Value", typedExpr.Value, 
-                                                                                typedExpr.TrueOrNot()));
-                            }
-                            else
-                            {
-                                throw new NotSupportedException("You attempted to query in a way that is not supported.");
-                            }
-                            secondaryCritsGoHere.Add(secondCrit);
-                        }
+                        // Secondary attributes have unique querying requirements as both the
+                        // attribute name and value are columns where must be added to a where clause
+                        AddSecondaryCriteria(secondaryCritsGoHere, attrDict, propName, expr);
                     }
                     else
                     {
-                        throw new NotSupportedException("You attempted to query in a way that is not supported.");
+                        // Child tables are any other tables that are or may be added to the system.
+                        // The dao is selected based on the Entity Type from the Attributes table, and
+                        // a ID list subquery is constructed, similarly to the Secondary attributes.
+                        AddChildTableCriteria(childTableCriteria, attr, expr, propName);
                     }
                 }
+            }
+        }
+
+        private static void AddChildTableCriteria(IDictionary<PdbEntityType, 
+            DistributedCriteriaInfo> tableCriteria, PdbAttribute attr, IExpression expr,
+            string propName)
+        {
+            if (!tableCriteria.ContainsKey(attr.EntityType))
+            {
+                DistributedCriteriaInfo distCritInfo;
+                switch (attr.EntityType)
+                {
+                    case PdbEntityType.Reac:
+                        distCritInfo = MakeDistCritInfo<Reac>();
+                        break;
+                    case PdbEntityType.RealProperty:
+                        distCritInfo = MakeDistCritInfo<RealPropertyEvent>();
+                        break;
+                    case PdbEntityType.Subsidy:
+                        distCritInfo = MakeDistCritInfo<Subsidy>();
+                        break;
+                    default:
+                        throw new NotSupportedException("Cannot query against: " + attr.EntityType);
+                }
+
+                tableCriteria[attr.EntityType] = distCritInfo;
+            }
+            AddAsTypedExpression(expr, tableCriteria[attr.EntityType].Criteria, propName);
+        }
+
+        private static DistributedCriteriaInfo MakeDistCritInfo<T>() where T: class, new()
+        {
+            var dao = new FastDAO<T>(Config.GetConfig("PDP.Data"), "PDB");
+            var map = dao.ClassMap;
+            var da = dao.ConnDesc.CreateDataAccessLayer();
+
+            return new DistributedCriteriaInfo
+                {
+                    ClassMap = map,
+                    DataAccessLayer = da,
+                    Criteria = new DaoCriteria()
+                };
+        }
+        private static void AddSecondaryCriteria(ICollection<DaoCriteria> criteria,
+            IDictionary<string, PdbAttribute> attrDict, string propName, IExpression expr)
+        {
+            // Secondary table is more complicated, we need to query it repeatedly
+            // to get the IDs that satisfy each expression separately, then only
+            // return IDs that match every expression.  So we just return a list of
+            // the criteria for each expression individually.
+
+            // This is because we need to say "name = blah AND value = blah"
+            DaoCriteria secondCrit = new DaoCriteria();
+            secondCrit.Expressions.Add(new EqualExpression("AttributeName", attrDict[propName].Name));
+
+            AddAsTypedExpression(expr, secondCrit, "Value");
+            criteria.Add(secondCrit);
+        }
+
+        private static void AddAsTypedExpression(IExpression expr, DaoCriteria criteria, string propName)
+        {
+            if (expr is EqualExpression)
+            {
+                EqualExpression typedExpr = (EqualExpression) expr;
+                criteria.Expressions.Add(new EqualExpression(propName, typedExpr.Value,
+                                                               typedExpr.TrueOrNot()));
+            }
+            else if (expr is GreaterExpression)
+            {
+                GreaterExpression typedExpr = (GreaterExpression) expr;
+                criteria.Expressions.Add(new GreaterExpression(propName, typedExpr.Value,
+                                                                 typedExpr.TrueOrNot()));
+            }
+            else if (expr is LesserExpression)
+            {
+                LesserExpression typedExpr = (LesserExpression) expr;
+                criteria.Expressions.Add(new LesserExpression(propName, typedExpr.Value,
+                                                                typedExpr.TrueOrNot()));
+            }
+            else if (expr is PropertyInListExpression)
+            {
+                PropertyInListExpression typedExpr = (PropertyInListExpression) expr;
+                criteria.Expressions.Add(new PropertyInListExpression(propName, typedExpr.Values,
+                                                                        typedExpr.TrueOrNot()));
+            }
+            else if (expr is LikeExpression)
+            {
+                LikeExpression typedExpr = (LikeExpression) expr;
+                criteria.Expressions.Add(new LikeExpression(propName, typedExpr.Value,
+                                                              typedExpr.TrueOrNot()));
+            }
+            else
+            {
+                throw new NotSupportedException("You attempted to query in a way that is not supported.");
             }
         }
 
@@ -278,7 +340,7 @@ namespace Urban.DCP.Data.PDB
         {
             // Get the list of attributes we'll be dealing with.
             IDictionary<string, PdbAttribute> attrDict =
-                PdbAttributesHelper.GetAttributesDictionary(_entityType, userAuth);
+                PdbAttributesHelper.GetAttributesDictionary(EntityTypes, userAuth);
 
             // Setup the result object.
             PdbResultsWithMetadata retVal = new PdbResultsWithMetadata();
@@ -354,7 +416,7 @@ namespace Urban.DCP.Data.PDB
         {
             // Get the list of attributes we'll be dealing with.
             IDictionary<string, PdbAttribute> attrDict =
-                PdbAttributesHelper.GetAttributesDictionary(_entityType, userAuth);
+                PdbAttributesHelper.GetAttributesDictionary(EntityTypes, userAuth);
 
             // Setup the result object.
             PdbResultsWithMetadata retVal = new PdbResultsWithMetadata();
@@ -599,7 +661,7 @@ namespace Urban.DCP.Data.PDB
             }
 
             IDictionary<string, PdbAttribute> attrDict =
-                PdbAttributesHelper.GetAttributesDictionary(_entityType, userAuth);
+                PdbAttributesHelper.GetAttributesDictionary(EntityTypes, userAuth);
             // Verify the requested attribs can in fact be grouped by.
             foreach (string attrID in attrsToGroupBy)
             {
@@ -847,43 +909,58 @@ namespace Urban.DCP.Data.PDB
             // Secondary table is a key value table, so we OR together a bunch of nested criteria.
             IList<DaoCriteria> secondaryCrits = new List<DaoCriteria>();
 
+            var tableCriteria = new Dictionary<PdbEntityType, DistributedCriteriaInfo>();
+
             // Parse the expressions from the json structure and put them on whichever table they belong to.
-            DistributeExpressions(primaryCrit, secondaryCrits, expressions, attrDict);
+            DistributeExpressions(primaryCrit, secondaryCrits, tableCriteria, expressions, attrDict);
 
             // Step 1: query the secondary table.  This is on the theory that the secondary table
             // lookup might give us only a few records back.  If this provides poor performance, some
             // options would be to query the primary first, query whichever one has more expressions
             // first, or something else.
-            if (secondaryCrits.Count > 0)
+            if (secondaryCrits.Count > 0 || tableCriteria.Count > 0)
             {
                 // Step 2: Construct a sub-select clause to check if the primary table key 
                 // is in the secondary table where clause, searching on "Attribute".
                 IDaLayer daLayer = SecondaryDao.ConnDesc.CreateDataAccessLayer();
                 string foreignKeyField = SecondaryDao.ClassMap.AllDataColsByObjAttrs["ForeignKey"];
                 string idField = primaryMap.AllDataColsByObjAttrs["UID"];
-                foreach (DaoCriteria secondaryCrit in secondaryCrits)
+                foreach (var secondaryCrit in secondaryCrits)
                 {
-                    SqlDaQuery daQuery = (SqlDaQuery) daLayer.CreateQuery(SecondaryDao.ClassMap, secondaryCrit);
+                    AddLinkedCriteriaToPrimaryAsExpression(daLayer, SecondaryDao.ClassMap, secondaryCrit,
+                        foreignKeyField, idField, primaryCrit);
+                }
 
-                    // Get the actual sql query from our daLayer
-                    string wholeQuery = daQuery.Sql.ToString();
-
-                    // Grab the index for FROM since we want to use that part as our subselect
-                    int fromIndex = wholeQuery.IndexOf(" FROM");
-
-                    // Write the sub select part of the query from the parts we've cobbled together
-                    string newQuery = "SELECT " + foreignKeyField +
-                                      wholeQuery.Substring(fromIndex);
-
-                    // Create the whole query now with the primary key in our sub query
-                    string inExpression = idField + " IN (" + newQuery + ")";
-                    IExpression expression = new HandWrittenExpression(inExpression, daQuery.Params);
-
-                    // Add the expression to our primary criteria.
-                    primaryCrit.Expressions.Add(expression);
+                foreach (var info in tableCriteria.Select(criteriaInfo => criteriaInfo.Value))
+                {
+                    AddLinkedCriteriaToPrimaryAsExpression(info.DataAccessLayer, info.ClassMap,
+                        info.Criteria, foreignKeyField, idField, primaryCrit );
                 }
             }
             return primaryCrit;
+        }
+
+        private void AddLinkedCriteriaToPrimaryAsExpression(IDaLayer daLayer, ClassMapping classMap, 
+            DaoCriteria secondaryCrit, string foreignKeyField, string idField, DaoCriteria primaryCrit)
+        {
+            SqlDaQuery daQuery = (SqlDaQuery) daLayer.CreateQuery(classMap, secondaryCrit);
+
+            // Get the actual sql query from our daLayer
+            string wholeQuery = daQuery.Sql.ToString();
+
+            // Grab the index for FROM since we want to use that part as our subselect
+            int fromIndex = wholeQuery.IndexOf(" FROM");
+
+            // Write the sub select part of the query from the parts we've cobbled together
+            string newQuery = "SELECT DISTINCT " + foreignKeyField +
+                              wholeQuery.Substring(fromIndex);
+
+            // Create the whole query now with the primary key in our sub query
+            string inExpression = idField + " IN (" + newQuery + ")";
+            IExpression expression = new HandWrittenExpression(inExpression, daQuery.Params);
+
+            // Add the expression to our primary criteria.
+            primaryCrit.Expressions.Add(expression);
         }
 
         /// <summary>
@@ -908,7 +985,7 @@ namespace Urban.DCP.Data.PDB
             PdbResultLocations retVal = new PdbResultLocations();
             // Get the list of attributes we'll be dealing with.
             IDictionary<string, PdbAttribute> attrDict =
-                PdbAttributesHelper.GetAttributesDictionary(_entityType, roles);
+                PdbAttributesHelper.GetAttributesDictionary(EntityTypes, roles);
             ClassMapping primaryMap = GetClassMapForPrimaryTable(roles);
             DaoCriteria crit = QuerySecondaryAndConstructRealPrimaryCriteria(attrDict, expressions, primaryMap);
 
