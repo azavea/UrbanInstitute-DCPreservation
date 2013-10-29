@@ -24,7 +24,6 @@
 .pdp-pdb-search-category-header { padding:10px; cursor:pointer; }
     .pdp-pdb-search-category-header label { cursor:pointer; }
 
-#pdp-pdb-search-result-type { text-align:right; height: 120px; }
     #pdp-pdb-search-result-type .ui-button-text { padding: 12px 12px; }
 #pdp-pdb-search-counts { text-align:right; display:none; }
     #pdp-pdb-search-counts-cols { margin:5px 0; }
@@ -57,7 +56,6 @@ div.pdp-pdb-search-category-header:hover {
 }
   
 #pdp-pdb-search-counts-panel-content { position:relative; white-space:nowrap; padding:10px;	}
-    #pdp-pdb-search-counts-panel-close { position:absolute; position:absolute; top:3px; right:3px; cursor:pointer; z-index:10001; }
     .pdb-pdb-search-counts-category-label { font-weight:bold; }
     .pdp-pdb-search-counts-category { margin:2px 0 2px 15px; }
         .pdp-pdb-search-counts-category li { padding:1px 0; }
@@ -74,18 +72,7 @@ div.pdp-pdb-search-category-header:hover {
 /* Bubble with a border rather than solid colour
 ------------------------------------------ */
 
-#pdp-pdb-search-counts-container{
-	position:absolute;
-	background:#ffffff;
-	width: 300px;
-	left: 305px;
-	top: 48px;
-	bottom:110px;
-	display:none;
-	z-index:10000; 
-	border: Solid 1px Silver;
-	min-height:300px;
-}
+#pdp-pdb-search-counts-container{ display: none;}
 
 #pdp-pdb-search-counts-container:after {
 	content:"\00a0";

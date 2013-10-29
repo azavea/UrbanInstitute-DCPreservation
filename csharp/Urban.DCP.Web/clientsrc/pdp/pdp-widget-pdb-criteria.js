@@ -137,6 +137,7 @@
                 
                 if ($subcat.is(':visible')) {
                     _hideLevel($subcat);
+                    $this.removeClass(_viewingClass);
                 } else {
                     $('ul.pdp-criteria-list').slideUp();
                     

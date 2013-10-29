@@ -21,7 +21,7 @@
         
         var _focusDetails = Azavea.tryCatch('focus details', function() {
             $('#pdp-pdb-search-counts').slideUp();
-            _$countsPanel.hide();
+            _$countsPanel.slideUp();
             
             // Take away the group by criteria, so we can search by details
             $(_options.bindTo).trigger('pdp-pdb-aggregations-change', [[], false]);
@@ -29,8 +29,8 @@
             // Enable the search button, search at anytime for property details
             $('#pdp-pdb-button-search').button('enable');
         });
-        
-        var _focusCounts = Azavea.tryCatch('focus counts', function() {
+
+        var _focusCounts = Azavea.tryCatch('focus counts', function () {
             var $statusMsg = $('#pdp-pdb-search-counts');
             if (!$statusMsg.is(':visible')) {
                 $statusMsg.slideDown();
@@ -38,9 +38,9 @@
             
             //Show counts panel
             if (_$countsPanel.is(':visible')) {
-                _$countsPanel.hide();
+                _$countsPanel.slideUp();
             } else {
-                _$countsPanel.show();
+                _$countsPanel.slideDown();
             }
                                
             // Bring back the possible groupbys selected before a search by details
@@ -72,26 +72,17 @@
             //Show the group by panel when counts is selected
             $('label[for="pdp-pdb-search-result-counts"]')
                 .click(_focusCounts);
-
-            //Show the panel when the "change" link is clicked
-            $('#pdp-pdb-search-counts-change').click(function(){
-                if (!_$countsPanel.is(':visible')) {
-                    _$countsPanel.show();
-                } else {
-                    _$countsPanel.hide();
-                }
-            });
             
             //Close the panel when the X is clicked
             $('#pdp-pdb-search-counts-panel-close').click(function(event) {
-                _$countsPanel.hide();
+                _$countsPanel.slideUp();
             });
             
             //These windows are weird so we're handing the mutual exclusivity manually
             $(document).bind('mouseup', function(event){
                 if (!$(event.target).is('#pdp-pdb-search-counts-change') && 
                     $(event.target).closest('#pdp-pdb-search-counts-panel').length === 0) {
-                    _$countsPanel.hide();
+                    _$countsPanel.slideUp();
                 }
             });
             
@@ -151,17 +142,15 @@
                 });
             });
             
-            $('<hr>'+
-                '<div id="pdp-pdb-search-result-type">'+
+            $('<div id="pdp-pdb-search-result-type">' +
                 '<h4>Show results as</h4>'+
                 '<input type="radio" id="pdp-pdb-search-result-details" name="pdp-pdb-search-result-type" checked="checked" /><label for="pdp-pdb-search-result-details">Details</label>' + 
 		        '<input type="radio" id="pdp-pdb-search-result-counts" name="pdp-pdb-search-result-type" /><label for="pdp-pdb-search-result-counts">Counts</label>' + 
             '</div>' + 
             '<div id="pdp-pdb-search-counts">' +
                 '<div id="pdp-pdb-search-counts-cols">Count data by (<strong>none selected</strong>)</div>' +
-                '<a id="pdp-pdb-search-counts-change" href="javascript:void(0);">(change)</a>' +
-            '</div>' +
-            '<div id="pdp-pdb-search-counts-container" class="pdp-shadow-drop ui-corner-all">' +
+                '</div>' +
+            '<div id="pdp-pdb-search-counts-container">' +
                 '<div id="pdp-pdb-search-counts-panel">' + 
                     '<div id="pdp-pdb-search-counts-panel-content">' +
                         '<div id="pdp-pdb-search-counts-panel-close"><span class="ui-icon ui-icon-circle-close"></span></div>' +
@@ -169,8 +158,8 @@
                         '<ul id="pdp-pdb-search-counts-panel-cols"></ul>' + 
                     '</div>' + 
                 '</div>' +
-            '</div>').appendTo(_options.target);
-            
+            '</div><hr>').prependTo(_options.target);
+
             _renderCountsAttrs(data, $('#pdp-pdb-search-counts-panel-cols'));
             
             //Remove empty categories
