@@ -225,10 +225,6 @@ html, body {
     -webkit-transition: margin-left .2s    
 }
 
-.pdp-toolbar {
-    display: none;
-}
-
 .pdp-pdb-search-category-header-viewing label {
     color: #0F4038;
     font-size: 14px;
@@ -329,7 +325,7 @@ html { overflow:hidden; }
 .pdp-table-title { padding-top :10px; padding-left:5px; padding-bottom: 2px; font-size:1.4em; margin-right:100px; line-height:1.1em;}    
 .pdp-pdb-table-title-details {margin-left: 150px;}
 #pdp-pdb-title-display, #pdp-pdb-title-count {display: inline}
-.pdp-main-content { display:none; height:100%; border: solid 1px Silver;}
+.pdp-main-content { display:none; height:95%; border: solid 1px Silver;}
     .pdp-table-toolbar { min-height:40px; z-index:1200; }
         .pdp-table-col-selector { position:absolute; top:8px; left:5px; bottom:100px; }
         .pdp-table-export { position:absolute; top:17px; right:5px; }

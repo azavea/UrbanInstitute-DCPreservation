@@ -16,13 +16,13 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="contentPlaceHolder" runat="server">
     <div id="center">
-        <div id="pdp-main-toolbar" class="pdp-toolbar">
-            <div id="pdp-view-picker">
-			    <input type="radio" id="pdp-table-view" name="radio" /><label for="pdp-table-view">Table</label>
-			    <input type="radio" id="pdp-map-view" name="radio" checked="checked" /><label for="pdp-map-view">Map</label>
-		    </div>
-        </div>
         <div id="pdp-main">
+            <div id="pdp-main-toolbar" class="pdp-toolbar">
+                <div id="pdp-view-picker">
+                    <input type="radio" id="pdp-table-view" name="radio" /><label for="pdp-table-view">Table</label>
+                    <input type="radio" id="pdp-map-view" name="radio" checked="checked" /><label for="pdp-map-view">Map</label>
+                </div>
+            </div>
             <div id="pdp-map-content" class="pdp-main-content pdp-map-view pdp-pdb-view pdp-nychanis-view">
                 <div id="pdp-map-title-content" class="ui-corner-all"></div>
                 <div id="pdp-map-layers-content"></div>
@@ -40,12 +40,6 @@
     </div>
     <div id="left">
         <div id="pdp-tab-container">
-            <div class="pdp-toolbar">
-                <ul class="pdp-tab-header">
-		            <li class="pdp-tab pdp-tab-pdb ui-corner-top"><a href="#pdp-pdb-view">Properties</a></li>
-	            </ul>
-	        </div>
-
             <div class="pdp-tab-content-container">
                 <div id="pdp-pdb-view" class="pdp-tab-content"></div>
             </div>
