@@ -18,7 +18,6 @@
             _pointToFlash,
             _nychanisLayer,
             _pdbLayer,
-            _outlineLayer,
             _popup,
             // Used for reprojection from lat/lon.
             _proj = new OpenLayers.Projection("EPSG:4326"),
@@ -44,11 +43,11 @@
             if (_popup) {
                 _map.removePopup(_popup);
             }
-        }); 
-
+        });
+        
         // Render a button on the target to zoom into the coordinates provided
         var _renderPopupZoom = Azavea.tryCatch('render popup zoom', function(lonlat, $target) {
-            $('<button id="pdp-map-popup-zoom-button" class="pdp-button left">Zoom Here</button>')
+            $('<button id="pdp-map-popup-zoom-button" class="pdp-button">Zoom Here</button>')
                 .button()
                 .appendTo($target)
                 .click(function() {
@@ -134,6 +133,7 @@
                 $property;
 
             $target.empty();
+            _popupPropertyId = -1;
             _popupPropertyIdByIndex = [];
             _popupIndexByPropertyId = {};
             
@@ -147,7 +147,10 @@
             });
 
             $.each(data.Values, function(j, record) {
-                $property = $('<div id="pdp-popup-property-' + (j+1) + '" class="pdp-shortview-property"><div class="pdp-shortview-caption"></div><ul class="pdp-shortview-list"></ul><div class="pdp-shortview-link"></div></div>');
+                $property = $('<div id="pdp-popup-property-' + (j + 1) + '" class="pdp-shortview-property"><h2 class="pdp-shortview-caption"></h2><hr>' +
+                    '<ul class="pdp-shortview-list"></ul>' +
+                    '</div>');
+                
                 listItems = '';
                 id = record[idIndex];
                 
@@ -158,7 +161,7 @@
                 $.each(data.Attrs, function(i, attr) {
                     show = true;
                     // Locate the Property Name for our caption, which may be null and mark it to not show in list
-                    if (attr.Name === 'Property Name') {
+                    if (attr.Name === 'Project Name') {
                         caption = record[i] || '';
                     } else if (attr.ShortOrder && (_options.hideNoValues ? (record[i] || record[i] === 0) : true) ) {
                         // Show this attribute value (unless hideNoValues = true and there is no value)
@@ -171,18 +174,12 @@
                 // Remove any existing list and append new list to the dialog container
                 $('.pdp-shortview-list', $property).empty().append(listItems);
                 $('.pdp-shortview-caption', $property).html(caption);
-                
-                $('.pdp-shortview-link', $property)
-                    .html('<a class="pdp-property-details-' + id + '" href="javascript:void(0);">More Details</a>')
-                    .click(function(){
-                        $(P.Pdb).trigger('pdp-pdb-show-longview', [record, data.Attrs]);
-                    });
+
 
                 //Only show the first one by default
-                
                 if (j > 0 ) {
                     $property.hide();
-                } else if (_popupPropertyId === -1){
+                } else if (_popupPropertyId === -1) {
                     // Track the property Id of the selected for the purpose of adding the popup after a zoom
                     _popupPropertyId = id;
                 }
@@ -197,6 +194,15 @@
                 
                 $target.append($property);
             });
+            
+            $('<button class="pdp-button pdp-property-details">more details</button>')
+                .button()
+                .appendTo('.pdp-shortview-link')
+                .click(function () {
+                    // Show the currently selected id's longview
+                    var curRecord = data.Values[_popupIndexByPropertyId[_popupPropertyId]];
+                    $(P.Pdb).trigger('pdp-pdb-show-longview', [curRecord, data.Attrs]);
+                });
         });
 
         // For a given marker, display a popup for the array of property ids
@@ -215,7 +221,12 @@
             _removePopup(_popup);
             
             // Create a basic info bubble with loading... text
-            var content = '<div class="pdp-map-popup-pager"></div><div id="pdp-map-popup-container">Loading...</div><div class="pdp-map-popup-footer"><div class="pdp-map-popup-zoom"></div></div>';
+            var content = '<div class="pdp-map-popup-pager"></div>' +
+                '<div id="pdp-map-popup-container">Loading...</div>' +
+                '<div class="pdp-map-popup-footer">' +
+                    '<div class="pdp-shortview-link"></div>' +
+                    '<div class="pdp-map-popup-zoom"></div>' +
+                '</div>';
             
             // Track clicking on a map marker, type and number of properties represented by marker
             P.Util.trackMetric('Map', 'Click Marker', idArray.length > 1 ? 'Cluster' : 'Single', idArray ? idArray.length : 1);
@@ -229,13 +240,12 @@
             );
             var offset = {'size':new OpenLayers.Size(0,0),'offset':new OpenLayers.Pixel(-180,-80)};
             _popup.anchor = offset;
-            // _popup.minSize = new OpenLayers.Size(400, 60);
             _popup.autoSize = true;            
             _popup.panMapIfOutOfView = true;
-            _popup.relativePosition = "br"
+            _popup.relativePosition = "br";
             _popup.calculateRelativePosition = function () {
-                 return 'tr';
-            }
+                return 'tr';
+            };
 
             // Display it on the map
             _map.addPopup(_popup, true);
@@ -252,7 +262,7 @@
                 _trackPopup = false;
             });
         });
-
+        
         // Add single property markers to the map
         var _addMarker = Azavea.tryCatch('add marker', function(property) {
             //var markerPath = 'client/css/images/markers/map-indicator.png';
@@ -336,7 +346,7 @@
             }
         });
 
-        var _handleMapZoomTo = Azavea.tryCatch('Zoom to a specific region of the map', function(event, left, bottom, right, top, flashx, flashy) {
+        var _handleMapZoomTo = Azavea.tryCatch('Zoom to a specific region of the map', function (event, left, bottom, right, top, flashx, flashy) {
             // This is coming in as lat/lon, we want spherical mercator.
             var bounds = new OpenLayers.Bounds(left, bottom, right, top);
             bounds.transform(_proj, _map.getProjectionObject());
@@ -363,7 +373,8 @@
         var _triggerPdbDataRequest = Azavea.tryCatch('pdb data request', function(event){
             //Transform from mercator to lat/lon
             var bbox = _map.getExtent();
-            $(P.Pdb).trigger('pdp-map-data-request', [ bbox.left, bbox.bottom, bbox.right, bbox.top ]);
+            $(P.Pdb).trigger('pdp-map-data-request', [bbox.left, bbox.bottom, bbox.right, bbox.top]);
+            _map.updateSize();
         });
         
         var _onMoveEnd = Azavea.tryCatch('on moveend', 
@@ -388,7 +399,7 @@
             
             // Handle the return of pdb map data
             $(P.Pdb).bind('pdp-map-data-response', _handlePdbMapResponse);
-            
+
             // When we force a data request
             $(P.Pdb).bind('pdp-data-force-update', _triggerPdbDataRequest);
             

@@ -89,16 +89,6 @@ html, body {
     background-position: -150px -211px !important;
 }
 
-#pdp-map-popup-zoom-button {
-    background-color: #A7A9AB;
-    background-image: none;
-    color: #fff;
-    text-shadow: rgba(0, 0, 0, 0.3) -1px 2px 0px;
-    font-weight: 300;
-    box-shadow: 0px 2px 0px #939598;
-    border: 0;
-}
-
 .pdp-shortview-list-item {
     margin-bottom: 4px;
 }

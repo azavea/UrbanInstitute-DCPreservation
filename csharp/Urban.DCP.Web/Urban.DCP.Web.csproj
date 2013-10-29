@@ -205,7 +205,6 @@
     <Content Include="clientsrc\pdp\css\pdp-widget-loading-indicator.css" />
     <Content Include="clientsrc\pdp\pdp-browser-warning.js" />
     <Content Include="clientsrc\pdp\pdp-widget-loading-indicator.js" />
-    <Content Include="clientsrc\pdp\css\pdp-nychanis-search.css" />
     <Content Include="clientsrc\pdp\css\pdp-widget-map-layers.css" />
     <Content Include="clientsrc\pdp\pdp-map.js" />
     <Content Include="clientsrc\pdp\pdp-widget-map-layers.js" />

@@ -6,10 +6,8 @@
     .pdp-map-popup-pager div { float:left; cursor:pointer; margin-right:8px; border: solid 1px #c0c0c0; }
     .pdp-map-popup-pager div:hover {border-color: #4D6916;}
         .pdp-map-popup-pager-summary { padding:0 4px; height:16px; line-height:16px; font-size:11px; cursor:default !important; }
-    .pdp-map-popup-zoom { font-size:11px; margin-left:3px; }
-    #pdp-map-popup-zoom-button { padding: 2px 10px; float:right;}
-    .pdp-shortview-link { padding: 2px 0 4px 0; position: absolute; bottom: 0;}
-.pdp-map-icon { cursor:pointer; }
+.pdp-map-icon { cursor:pointer;
+}
 .pdp-map-aggregated-icon { cursor:pointer; }
     .pdp-map-aggregated-icon img { display:none; }
 
@@ -55,6 +53,16 @@
     
 }    
 .pdp-shortview-property {height: 175px; overflow: auto;}
+.pdp-map-popup-footer div { display: inline-block;}
+.pdp-map-popup-footer button {
+    background-color: #A7A9AB;
+    background-image: none;
+    color: #fff;
+    text-shadow: rgba(0, 0, 0, 0.3) -1px 2px 0px;
+    font-weight: 300;
+    box-shadow: 0px 2px 0px #939598;
+    border: 0;
+}
 
 /* This is to hide the streetview man */
 .olLayerGoogleCopyright { display:none; }
