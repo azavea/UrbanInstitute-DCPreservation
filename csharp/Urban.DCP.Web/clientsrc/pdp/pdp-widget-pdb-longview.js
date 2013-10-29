@@ -16,8 +16,8 @@
             _sv,
             _$street,
             _userRole;
-       
-        var _displayNoData = Azavea.tryCatch('display no street view data', function(){
+
+        var _displayNoData = Azavea.tryCatch('display no street view data', function () {
             // No data for this location, display text it
             _$street.empty().html('<div class="pdp-longview-street-none">No image available for this location.</div>');
         });
@@ -49,7 +49,7 @@
             $.each(attrs, function(i, attr) {
                 show = true;
                 // Locate the Property Name for our caption, which may be null and mark it to not show in list
-                if (attr.UID === 'PropertyName') {
+                if (attr.UID === 'Proj_Name') {
                     caption = record[i] ? record[i] : '';
                     show = false;
                 }
@@ -83,9 +83,7 @@
                                      '<td><div class="pdp-longview-value">' + v + '</div></td></tr>'; 
                 }
             });
-            
- 
-            
+
             // Track longview showing
             P.Util.trackMetric(_userRole, 'Properties | Display Longview');
             
@@ -136,8 +134,6 @@
 
             // Show the dialog
             _$container.dialog('open');
-            
-           
         });
         
         // Determines the yaw between two lat/longs
@@ -221,7 +217,18 @@
         // Create the dialog that will show longview details, including space for streetview and title
         var _createLongviewDialog = Azavea.tryCatch('create dialog container', function(){            
             // Create div container for caption, the list, and GSV
-            _$container = $('<div class="pdp-longview"><div class="pdp-longview-caption"></div><table id="pdp-longview-table" class="pdp-longview-list"></table><div id="pdp-streetview-title">Approximate View</div><div class="pdp-longview-street"></div><div id="pdp-child-display"></div><div id="pdp-longview-comments"></div><div class="pdp-longview-comment-form"></div></div>');
+            _$container = $('<div class="pdp-longview">' +
+                    '<h2 class="pdp-longview-caption"></h2><hr>' +
+                    '<div id="pdp-longview-left">' +
+                '<div class="pdp-longview-street"></div>' +
+                        '<table id="pdp-longview-table" class="pdp-longview-list"></table>' +
+                        '<div id="pdp-child-display"></div>' +
+                    '</div>' +
+                    '<div id="pdp-longview-right">' +
+                        '<div id="pdp-longview-comments"></div>' +
+                        '<div class="pdp-longview-comment-form"></div>' +
+                    '</div>' +
+                '</div>');
             _$street = $('.pdp-longview-street', _$container);
            
             // Create a link to report download link
@@ -234,7 +241,6 @@
 		        height: _options.height,
 		        width: _options.width,
 		        modal: _options.modal,
-		        title: _options.title,
 		        open: function (event, ui) {
 		            $(".ui-dialog-titlebar-close").hide();
 		        },

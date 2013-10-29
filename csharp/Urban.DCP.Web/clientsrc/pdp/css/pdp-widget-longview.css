@@ -16,13 +16,6 @@
     line-height: 30px;
 }
 
-.pdp-longview-list {
-    float: left;
-    padding: 7px;
-    width: 45%;
-    margin-right: 10px;
-}   
-
 .pdp-longview-list-item .pdp-rendered-list{
     list-style: disc;
     margin-left: 30px;
@@ -33,3 +26,15 @@
 }
 .pdp-shortview-caption {font-weight: bold; font-size:large; padding: 3px 0px 10px;}
 #pdp-streetview-title { padding-bottom: 3px; font-weight: bold;}
+
+#pdp-longview-left {
+    float: left;
+    width: 50%;
+}
+#pdp-longview-right {
+    float: right;
+    width: 49%;
+    height: 100%;
+    border-left: 1px solid #c0c0c0;
+    padding-left: 5px;
+}
