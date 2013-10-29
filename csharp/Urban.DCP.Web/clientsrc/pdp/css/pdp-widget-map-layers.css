@@ -7,10 +7,10 @@
     background-color: #fff;
     text-align: center;
     padding: 0.1em 0.25em;
-    width: 65px;
+    width: 95px;
     cursor:pointer;    
     right: 10px;
-    top: 10px;
+    top: 50px;
 }
 
 #pdp-map-layers-panel {
@@ -22,7 +22,7 @@
     border: Solid 1px #c0c0c0;
     padding: 5px 15px;
     right: 10px;
-    top: 35px;
+    top: 85px;
 }
 
 #pdp-nychanis-results-container{

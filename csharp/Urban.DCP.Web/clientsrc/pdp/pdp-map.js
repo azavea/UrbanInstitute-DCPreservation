@@ -284,8 +284,8 @@
            // If this is the marker that contains our property that had a popup before, add the popup back
             if (_trackPopup === true && _popupPropertyId === property.Id ) {
                 _addPopup(marker, [ property.Id]);
-            }           
-                        
+            }
+            
             $('#' + icon.imageDiv.id).addClass('pdp-map-icon');
         });
 

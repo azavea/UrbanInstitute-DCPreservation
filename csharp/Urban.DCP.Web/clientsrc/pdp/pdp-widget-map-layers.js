@@ -82,7 +82,7 @@
         // Render the basic markup that this widget uses   
         var _render = Azavea.tryCatch('render map layer widget', function() {
             // We need a button and a panel, which holds elements
-            $('<button id="pdp-map-layers" class="pdp-closable-panel-button pdp-shadow-drop">Legend</button>' + 
+            $('<button id="pdp-map-layers" class="pdp-closable-panel-button pdp-shadow-drop">Basemap</button>' + 
                 '<div id="pdp-map-layers-panel" class="pdp-closable-panel pdp-shadow-drop">' + 
                     '<div id="pdp-map-layers-panel-buttonset" class="pdp-map-layers-section">' +
                         '<input id="pdp-map-layers-street" name="pdp-map-layers-buttons" class="pdp-map-layer-button" value="Street" type="radio" checked="checked"/>' +

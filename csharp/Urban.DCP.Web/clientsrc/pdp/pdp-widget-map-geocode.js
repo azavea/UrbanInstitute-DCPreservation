@@ -139,7 +139,7 @@
         // Render the basic markup that this widget uses   
         var _render = Azavea.tryCatch('render map geocode widget', function() {
             // We need a button and a panel, which holds elements
-            $('<button id="pdp-map-geocode" class="pdp-closable-panel-button pdp-shadow-drop">Go To</button>' + 
+            $('<button id="pdp-map-geocode" class="pdp-closable-panel-button pdp-shadow-drop">Go To Address</button>' + 
                 '<div id="pdp-map-geocode-panel" class="pdp-closable-panel pdp-shadow-drop">' + 
                     '<div id="pdp-map-geocode-panel-search" class="pdp-map-geocode-section">' +
                         '<label for="pdp-map-geocode-input">Address / Intersection / Place Name</label>' +

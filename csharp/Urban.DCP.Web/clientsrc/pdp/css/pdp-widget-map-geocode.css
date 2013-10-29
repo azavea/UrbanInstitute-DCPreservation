@@ -7,10 +7,10 @@
     background-color: #fff;
     text-align: center;
     padding: 0.1em 0.25em;
-    width: 65px;
+    width: 150px;
     cursor:pointer;    
-    right: 85px;
-    top: 10px;
+    right: 120px;
+    top: 50px;
 }
 
 #pdp-map-geocode-panel {
@@ -21,8 +21,8 @@
     position: absolute;
     border: Solid 1px #c0c0c0;
     padding: 10px;
-    right: 85px;
-    top: 35px;
+    right: 120px;
+    top: 85px;
 }
     #pdp-map-geocode-panel label { color:#2A4203; font-weight:bold; padding-bottom:10px; display:block; }
     #pdp-map-geocode-input { width:200px; margin-right:10px; }
