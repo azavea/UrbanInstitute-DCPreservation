@@ -22,6 +22,7 @@ optgroup {font-style: normal;}
 .pdp-input-button, .pdp-button { border:1px solid #999;padding:4px 8px;font-size:1.1em;font-weight:bold;margin:0 8px 0 0;cursor:pointer;color:#363636;background-color:#ccc;
     -moz-border-radius:6px;
     -webkit-border-radius:6px;
+    border-radius: 6px;
     background-image:-moz-linear-gradient(center top, #eee, #aaa);
     background-image:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#eee), to(#aaa));
     text-shadow:rgba(240, 240, 240, 0.6) 1px 1px 0px; }

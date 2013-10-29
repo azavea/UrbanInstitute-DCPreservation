@@ -64,28 +64,28 @@ html, body {
 }
 
 .ui-icon-play {
-    background-image:url('/client/jqueryui/css/custom/images/ui-icons_222222_256x240.png') !important;
+    background-image:url('../jqueryui/css/custom/images/ui-icons_222222_256x240.png') !important;
     background-position: -133px -212px !important;
 }
 
 .pdp-pdb-search-category-header-viewing .ui-icon-play {
-    background-image:url('/client/jqueryui/css/custom/images/ui-icons_222222_256x240.png') !important;
+    background-image:url('../jqueryui/css/custom/images/ui-icons_222222_256x240.png') !important;
     background-position: -114px -212px !important;
 }
 
 .ui-icon-help {
-    background-image:url('/client/jqueryui/css/custom/images/ui-icons_222222_256x240.png') !important;
+    background-image:url('../jqueryui/css/custom/images/ui-icons_222222_256x240.png') !important;
     background-position: -96px -210px !important;
     margin: 0 1px -2px 5px;
 }
 
 .ui-icon-circle-close {
-    background-image:url('/client/jqueryui/css/custom/images/ui-icons_222222_256x240.png') !important;
+    background-image:url('../jqueryui/css/custom/images/ui-icons_222222_256x240.png') !important;
     background-position: -150px -211px !important;
 }
 
 .ui-icon-close {
-    background-image:url('/client/jqueryui/css/custom/images/ui-icons_222222_256x240.png') !important;
+    background-image:url('../jqueryui/css/custom/images/ui-icons_222222_256x240.png') !important;
     background-position: -150px -211px !important;
 }
 
@@ -363,6 +363,7 @@ html { overflow:hidden; }
     background: #FCF2A6;
     -moz-border-radius: 11px;
     -webkit-border-radius: 11px;
+    border-radius: 11px;
     color: #000;
     text-align:center;
 }

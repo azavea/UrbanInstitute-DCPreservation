@@ -16,6 +16,7 @@
     	opacity:0.95;
     	-moz-border-radius:30px;
     	-webkit-border-radius:30px;
+        border-radius: 30px;
     	text-shadow:1px 1px 1px #000;
     	color: #fff;
 		background: #8d2d3b; /* Old browsers */

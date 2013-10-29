@@ -267,8 +267,8 @@
         var _addMarker = Azavea.tryCatch('add marker', function(property) {
             //var markerPath = 'client/css/images/markers/map-indicator.png';
             // Client requested image be hosted off-domain to give them more styling options
-            var markerPath = '/client/css/images/markers/red-marker.png';
-            
+            var markerPath = 'client/css/images/markers/red-marker.png';
+
             // Add the marker and assign a click function
             var size = new OpenLayers.Size(36,42);  // previous size: 24, 24
             var offset = new OpenLayers.Pixel(-11, -12);
