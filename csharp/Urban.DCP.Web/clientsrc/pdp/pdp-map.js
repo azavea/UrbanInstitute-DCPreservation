@@ -195,7 +195,7 @@
                 $target.append($property);
             });
             
-            $('<button class="pdp-button pdp-property-details">more details</button>')
+            $('<button class="pdp-button pdp-property-details">More Details</button>')
                 .button()
                 .appendTo('.pdp-shortview-link')
                 .click(function () {
@@ -234,13 +234,13 @@
             // Create and cache the popup
             _popup = new OpenLayers.Popup.Anchored('pdb-popup',
                 marker.lonlat,
-                new OpenLayers.Size(400, 200),
+                new OpenLayers.Size(300, 200),
                 content,
                 null, true
             );
-            var offset = {'size':new OpenLayers.Size(0,0),'offset':new OpenLayers.Pixel(-180,-80)};
+            var offset = {'size':new OpenLayers.Size(0,0),'offset':new OpenLayers.Pixel(-180,-66)};
             _popup.anchor = offset;
-            _popup.autoSize = true;            
+            _popup.autoSize = true;
             _popup.panMapIfOutOfView = true;
             _popup.relativePosition = "br";
             _popup.calculateRelativePosition = function () {
@@ -271,7 +271,7 @@
 
             // Add the marker and assign a click function
             var size = new OpenLayers.Size(36,42);  // previous size: 24, 24
-            var offset = new OpenLayers.Pixel(-11, -12);
+            var offset = new OpenLayers.Pixel(-11, -18);
             var icon = new OpenLayers.Icon(markerPath, size, offset);
             
             var marker = new OpenLayers.Marker(new OpenLayers.LonLat(property.X, property.Y), icon);

@@ -7,10 +7,12 @@
     background-color: #fff;
     text-align: center;
     padding: 0.1em 0.25em;
-    width: 150px;
     cursor:pointer;    
     right: 120px;
-    top: 50px;
+    top: 30px;
+    background-image: none;
+    box-shadow: 0px 2px 0px rgba(118, 81, 89, 0.2);
+    font-size: 12px;
 }
 
 #pdp-map-geocode-panel {
@@ -22,9 +24,11 @@
     border: Solid 1px #c0c0c0;
     padding: 10px;
     right: 120px;
-    top: 85px;
+    top: 89px;
+    box-shadow: 0px 2px 0px rgba(118, 81, 89, 0.2);
+    border-radius: 5px;    
 }
-    #pdp-map-geocode-panel label { color:#2A4203; font-weight:bold; padding-bottom:10px; display:block; }
+    #pdp-map-geocode-panel label { font-weight:bold; padding-bottom:10px; display:block; }
     #pdp-map-geocode-input { width:200px; margin-right:10px; }
     #pdp-map-geocode-submit { padding:0 6px; }
 
