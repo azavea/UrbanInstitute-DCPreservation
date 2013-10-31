@@ -37,7 +37,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a href="<%=WebUtil.GetApplicationUrl(Request) %>"><img src="client/css/images/urban_institute_logo.png" class="pdp-header-logo" ></a>
+        <a href="<%=WebUtil.GetApplicationUrl(Request) %>"><img src="~/client/css/images/urban_institute_logo.png" class="pdp-header-logo" runat="server" /></a>
         
         <div id="login" class="pdp-login-container"></div>
         <div id="signup" class="pdp-signup-container"></div>
