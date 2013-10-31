@@ -31,7 +31,7 @@ namespace Urban.DCP.Data.Uploadable
         public int? TotalUnits;
         public int? MinAssistedUnits;
         public int? MaxAssistedUnits;
-
+        public int? BuildingCount; 
         [FieldConverter(ConverterKind.Date, "MM/dd/yyyy")] public DateTime? OwnershipEffectiveDate;
 
         [FieldQuoted('"', QuoteMode.OptionalForRead)] public string OwnerName;
@@ -42,6 +42,27 @@ namespace Urban.DCP.Data.Uploadable
         [FieldConverter(ConverterKind.Date, "MM/dd/yyyy")] public DateTime? EarliestSubsidyEnd;
 
         [FieldConverter(ConverterKind.Date, "MM/dd/yyyy")] public DateTime? LatestSubsidyEnd;
+        /// <summary>
+        /// A display version of the Agencies who are providing subsidy
+        /// </summary>
+        public string Agencies;
+        /// <summary>
+        /// A display version of the Portfolios of subsidy programs in this project
+        /// </summary>
+        public string Portfolios;
+
+        // The follow are Statuses and Year begun for various specific subsidy programs
+        public string HudFinancialStatus;
+        public int? HudFinancialYear;
+        public string HudPbraStatus;
+        public int? HudPbraYear;
+        public string LihtcStatus;
+        public int? LihtcYear;
+        public string HptfStatus;
+        public int? HptfYear;
+        public string IzAduStatus;
+        public int? IzAduYear;
+        
         public string Ward;
         public string Anc; // Advisory Neighborhood Commission
         public string PoliceArea;
