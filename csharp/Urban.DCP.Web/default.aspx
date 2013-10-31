@@ -19,8 +19,8 @@
         <div id="pdp-main">
             <div id="pdp-main-toolbar" class="pdp-toolbar">
                 <div id="pdp-view-picker">
-                    <input type="radio" id="pdp-table-view" name="radio" /><label for="pdp-table-view">Table</label>
                     <input type="radio" id="pdp-map-view" name="radio" checked="checked" /><label for="pdp-map-view">Map</label>
+                    <input type="radio" id="pdp-table-view" name="radio" /><label for="pdp-table-view">Table</label>
                 </div>
             </div>
             <div id="pdp-map-content" class="pdp-main-content pdp-map-view pdp-pdb-view pdp-nychanis-view">
