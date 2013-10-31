@@ -176,32 +176,15 @@
                 $.each(data, function(i, cat) {
                     // Create an array for everything that will get listed on this panel, it will be as big as
                     // the number of attributes + the number of sub cats.  
-                    if (!orderedList) {
-                        var size = cat.Attrs.length;
-                        if (cat.SubCats && cat.SubCats.length) {
-                            size += cat.SubCats.length;
-                        }
-                        orderedList = [];
-                        orderedList.length = size;
-                        isSubcat = false;
-                    } else {
-                        // We are in a subcategory if an ordered list was passed in
-                        isSubcat = true;
-                    }
+                    var size = cat.Attrs.length;
+                    orderedList = [];
+                    orderedList.length = size;
                                                     
                     var $header = $('<li><div class="pdp-cat-' + cat.Name + ' pdp-pdb-search-category-header"><span class="pdp-pdb-search-arrow ui-icon ui-icon-play right"></span>' +
                          '<span class="pdp-pdb-search-active-count right"></span>' + 
                         '<label class="pdp-pdb-search-category-header-label">'+cat.Name+'</label></div></li>');
-                    if (isSubcat) {
-                        orderedList[parseInt(cat.Order, 10) - 1] = {li: $header, target: $container};
-                    } else {    
-                        $header.appendTo($container);
-                    }
+                    $header.appendTo($container);
                 
-                    if (cat.SubCats && cat.SubCats.length) {
-                        _renderAttributes(cat.SubCats, 1, cat.Name, orderedList);
-                    }
-
                     var $subContainer = $('<ul rel="' + (cat.Name || '') + '" class="pdp-criteria-list"></ul>')
                         .appendTo($container)
                         .hide();
@@ -211,7 +194,7 @@
                         if (attr.CanQuery) {
                             // Test out renderer
                             if (P.Widget.PdbControls[attr.UiType]) {
-                                $widget = $('<li></li>');//.appendTo($subContainer);
+                                $widget = $('<li></li>');
                                 if (P.Widget.PdbControls[attr.UiType]){
                                     P.Widget.PdbControls[attr.UiType]($widget, attr);
                                     if (isSubcat){
