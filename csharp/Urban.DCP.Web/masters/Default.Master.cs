@@ -22,10 +22,12 @@ namespace Urban.DCP.Web.masters
             string appUrl = WebUtil.GetApplicationUrl(Request);
 
             RegisterCssFile("//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css");
+            RegisterCssFile("/client/css/swipebox/swipebox.css");
             RegisterCssFile(appUrl + "client/pdp-core.css", true);
             RegisterJavascriptFile("//code.jquery.com/jquery-1.9.1.js");
             RegisterJavascriptFile("//code.jquery.com/jquery-migrate-1.1.0.js");
             RegisterJavascriptFile("//code.jquery.com/ui/1.10.3/jquery-ui.js");
+            RegisterJavascriptFile("client/jquery.swipebox.min.js");
 
             RegisterJavascriptFile(appUrl + "client/pdp-core.js", true);
         }
