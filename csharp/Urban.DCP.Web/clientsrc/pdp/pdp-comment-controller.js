@@ -74,8 +74,11 @@
                     autoUpload: false,
                     url: P.Data.path + 'handlers/comments.ashx',
                     type: 'POST',
-                    done: function () { P.Util.alert("File uploaded."); self._reloadComments(); },
-                    fail: function (e, data) { Azavea.logError(e + " " + data); P.Util.alert("Problem uploading file.")},
+                    done: function () {self._reloadComments(); },
+                    fail: function (e, data) {
+                        Azavea.logError(e + " " + data);
+                        P.Util.alert("Problem uploading file.");
+                    },
                     // On file add, rebind a new click handler to the submit button, that submits the file upload.
                     add: function (e, data) {
                         submitButton.off();
@@ -93,6 +96,10 @@
             
         }
 
+        $(".swipebox").swipebox({
+            hideBarsDelay: 0
+        });
+        
         if (data.CanAdd) {
             self._renderCommentForm(settings.propId);
         }
@@ -116,7 +123,6 @@
             $comment.html("");
             $image.val("");
             self._reloadComments.call(self, settings.propId);
-            P.Util.alert(STRINGS.commentPosted);
         };
 
         var error = function(resp, status, err) {
@@ -146,7 +152,7 @@
             autoUpload: false,
             url: P.Data.path + 'handlers/comments.ashx',
             type: 'POST',
-            done: function () { P.Util.alert("File uploaded."); self._reloadComments(); },
+            done: function () { self._reloadComments(); },
             fail: function (e, data) { Azavea.logError(e + " " + data); P.Util.alert("Problem uploading file.") },
             add: function (e, data) {
                 //unbind non-image click handler from submit button, and bind this one.
@@ -165,7 +171,6 @@
     controller.prototype._trashComment = function (commentId) {
         var self = this;
         var onSuccess = function () {
-            P.Util.alert("comment deleted");
             self._reloadComments.call(self, settings.propId);
         };
         var onError = function(resp, status, err) {
@@ -207,7 +212,6 @@
             accessLevel = $comment.find("select.comment-access-level-edit").val();
 
         var success = function() {
-            P.Util.alert("comment edited");
             self._reloadComments();
         };
 

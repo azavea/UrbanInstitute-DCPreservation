@@ -141,11 +141,15 @@
         <div style=""clear:both"></div>
         <div class="comment" >
             <div class="display">
-                {% if (HasPicture) { %}<img src="<% Response.Write(ResolveUrl("~/handlers/comment-image.ashx")); %>?id={{ Id }}&amp;thumb=true" />{% } %}
+                {% if (HasPicture) { %}
+                    <a href="<% Response.Write(ResolveUrl("~/handlers/comment-image.ashx")); %>?id={{ Id }}" class="swipebox" title="{{Text}}">
+                        <img src="<% Response.Write(ResolveUrl("~/handlers/comment-image.ashx")); %>?id={{ Id }}&amp;thumb=true" />
+                    </a> 
+                {% } %}
                 <p class="comment-text">{{ Text }}</p>
                 <p class="comment-poster">{{ Username }}</p>
                 <p class="comment-date">Posted on {{ formattedDate }} for {{ forwho }}</p>
-                <p>{% if (CanDelete) { %}<button class="trash-comment">trash</button>{% } %}
+                <p>{% if (CanDelete) { %}<button class="trash-comment">delete</button>{% } %}
                    {% if (CanEdit) { %}<button class="edit-comment">edit</button></p>{% } %}
              
             </div>
