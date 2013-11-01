@@ -51,7 +51,7 @@
             var template = _.template($(settings.commentTemplate).html());
             _.each(data.Comments, function (comment) {
                 comment["forwho"] = _commentForField(comment);
-                comment["formattedDate"] = moment(comment.Modified).format('MMMM Do YYYY, h:mm:ss a');
+                comment["formattedDate"] = moment(comment.Modified).format('MM Do YYYY, h:mm:ss a');
                 var $newComment = $(template(comment));
                 var submitButton = $newComment.find(".save-edit");
                 $comments.append($newComment);
@@ -61,14 +61,14 @@
                 submitButton.click(_.bind(self._doCommentEdit, self, $newComment, comment.Id)); // non image click handler, maybe replaced later
                 $newComment.find(".comment-access-level-edit").find('option[value="' + comment.AccessLevel + '"]').attr('selected', 'selected');
 
-                var formData = function () {
-                   return {
-                        commentId : comment.Id,
-                        removeImage : false,
-                        text : $newComment.find(".edited-comment").val(),
+                var formData = function() {
+                    return {
+                        commentId: comment.Id,
+                        removeImage: false,
+                        text: $newComment.find(".edited-comment").val(),
                         level: $newComment.find(".comment-access-level-edit").val()
-                   };
-                }
+                    };
+                };
 
                 $newComment.find(".edited-image").fileupload({
                     autoUpload: false,
@@ -112,23 +112,23 @@
         var $image = $("#comment-image");
         var $accessLevel = $("#comment-access-level");
 
-        var success = function () {
+        var success = function() {
             $comment.html("");
             $image.val("");
-            self._reloadComments.call(self, settings.propId); 
+            self._reloadComments.call(self, settings.propId);
             P.Util.alert(STRINGS.commentPosted);
-        }
+        };
 
-        var error = function (resp, status, err) {
+        var error = function(resp, status, err) {
             Azavea.logError(status + " " + err);
             P.Util.alert(STRINGS.errorPuttingComment);
-        }
+        };
 
-        var onSubmit = function () {
+        var onSubmit = function() {
             var text = $comment.val();
             var level = $accessLevel.val();
             P.Data.putComment(settings.propId, text, level, success, error);
-        }
+        };
         $submitButton.click(onSubmit); // non-image click handler, maybe replaced later by fileupload
 
 
@@ -168,24 +168,24 @@
             P.Util.alert("comment deleted");
             self._reloadComments.call(self, settings.propId);
         };
-        var onError = function (resp, status, err) {
+        var onError = function(resp, status, err) {
             Azavea.logError(status + " " + err);
             self._reloadComments.call(self, settings.propId);
-        }
+        };
         P.Data.deleteComment(commentId, onSuccess, onError);
     };
 
-    controller.prototype._hideCommentEditors = function () {
-        $(".comment .edit").hide("fast" , function() {
+    controller.prototype._hideCommentEditors = function() {
+        $(".comment .edit").hide("fast", function() {
             $(".comment .display").show("fast");
         });
-    }
+    };
 
-    controller.prototype._showCommentEditor = function ($comment) {
-        $comment.find(".display").hide("fast", function () {
+    controller.prototype._showCommentEditor = function($comment) {
+        $comment.find(".display").hide("fast", function() {
             $comment.find(".edit").show("fast");
         });
-    }
+    };
 
 
     function _commentForField(comment) {
@@ -200,7 +200,7 @@
         }
     }
 
-    controller.prototype._doCommentEdit = function ($comment, id) {
+    controller.prototype._doCommentEdit = function($comment, id) {
         var self = this,
             newText = $comment.find(".edited-comment").val(),
             removeImage = $comment.find(".remove-image").attr("checked") == "checked",
@@ -217,7 +217,7 @@
         };
 
         P.Data.postComment(id, newText, removeImage, accessLevel, success, error);
-        
 
-    }
+
+    };
 }(PDP));
