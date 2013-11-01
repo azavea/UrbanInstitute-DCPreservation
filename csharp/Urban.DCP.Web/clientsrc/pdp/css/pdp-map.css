@@ -1,8 +1,11 @@
 .olFramedCloudPopupContent { padding:0 0 5px 0; overflow:hidden; }
 
-#pdp-map-popup-container { height:200px; width:402px; overflow:auto; padding:5px 0 0 5px; }
+#pdp-map-popup-container { height:200px; width: auto; overflow:auto; }
     .pdp-map-popup-prev { margin-left: 5px; }
 .pdp-map-popup-footer { height:16px; position: relative; top: -17px; }
+	.pdp-map-popup-pager {
+		height: 30px;
+	}
     .pdp-map-popup-pager div { float:left; cursor:pointer; margin-right:8px; border: solid 1px #c0c0c0; }
     .pdp-map-popup-pager div:hover {border-color: #4D6916;}
         .pdp-map-popup-pager-summary { padding:0 4px; height:16px; line-height:16px; font-size:11px; cursor:default !important; }

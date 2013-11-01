@@ -6,14 +6,11 @@
     .pdp-table-row-alt-nyc { background: #DFEBBE; /*#dddfd5;*/ }
     
     .pdp-table-col-extra {width: 75px !important;}
-    .pdp-table th { cursor:pointer; color: #fff; text-align:center; font-weight: bold; border: 0px;}
+    .pdp-table th { background-image: none !important; cursor:pointer; color: #fff; text-align:center; font-weight: normal; font-size: 14px; border: 0px; background-color: #8d2d3b; }
     .pdp-table th { 
-        padding:2px 3px 2px 6px; text-shadow: -1px -1px 0px #607860 ;
-        background: -webkit-gradient(linear, left top, left bottom, from(#A1AE8D), to(#727A65));
-	    background: -moz-linear-gradient(top,  #A1AE8D,  #727A65);
-	    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#A1AE8D', endColorstr='#727A65') !important;
+        padding:10px 3px 6px 6px;
     }
-    .pdp-table td { padding:2px 3px 2px 6px; border-left: 1px solid #c0c0c0;}
+    .pdp-table td { padding: 6px 12px;}
     .pdp-table th.pdp-table-col-nosort { cursor:auto; }
 
 .pdp-table-pager-ctrl { float:left; padding: 1px 2px; margin-left: 3px;}

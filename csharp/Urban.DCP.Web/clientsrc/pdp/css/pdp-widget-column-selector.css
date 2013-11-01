@@ -12,7 +12,8 @@
     overflow: auto; 
     clear: both;
     background-color: #ffffff;
-    white-space:nowrap
+    white-space:nowrap;
+    box-shadow: 0px 2px 0px #765159 !important;
 }
 
 #pdp-column-select-panel-close { 

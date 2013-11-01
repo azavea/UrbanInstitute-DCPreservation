@@ -79,7 +79,8 @@
                     }else{
                         v = record[i];
                     }
-                    listItems += '<tr><td>' + label + '</td>' + 
+                    listItems += '<tr><td><span class="pdp-pdb-control-label-help ui-icon ui-icon-help"></span></td>' +
+                                     '<td>' + label + '</td>' + 
                                      '<td><div class="pdp-longview-value">' + v + '</div></td></tr>'; 
                 }
             });
@@ -218,7 +219,7 @@
         var _createLongviewDialog = Azavea.tryCatch('create dialog container', function(){            
             // Create div container for caption, the list, and GSV
             _$container = $('<div class="pdp-longview">' +
-                    '<h2 class="pdp-longview-caption"></h2><hr>' +
+                    '<h2 class="pdp-longview-caption"></h2>' +
                     '<div id="pdp-longview-left">' +
                 '<div class="pdp-longview-street"></div>' +
                         '<table id="pdp-longview-table" class="pdp-longview-list"></table>' +

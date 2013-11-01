@@ -21,7 +21,8 @@
 .pdp-pdb-control-tooltip, .pdp-pdb-control-tooltip-left {
     background-color:#3a3a3c;
     padding:10px 15px;
-    width:200px;
+    width:auto;
+    max-width: 200px;
     display:none;
     color:#fff;
     text-align:left;

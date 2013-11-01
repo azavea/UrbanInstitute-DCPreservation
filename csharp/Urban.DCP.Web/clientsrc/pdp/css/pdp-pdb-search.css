@@ -31,7 +31,6 @@
     background: #fff;
 }
 .pdp-pdb-search-category-header.pdp-pdb-control-active {
-	background-color: #fff;
 }
 
 div.pdp-pdb-search-category-header {
@@ -62,7 +61,7 @@ div.pdp-pdb-search-category-header:hover {
     #pdp-pdb-search-counts-caption {white-space: normal; width: 235px; padding:5px; font-size:0.9em; background-color:#fff; }
         
 #pdp-pdb-search-counts-panel{
-	overflow:auto; 
+	overflow: hidden; 
 	position: relative;
 	height:100%;
 }

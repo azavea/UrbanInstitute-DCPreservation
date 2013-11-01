@@ -124,6 +124,7 @@
             var toggle = function() {
                 $("#left").toggleClass('visible');
                 $("#center").toggleClass('visible');
+                $("#content").toggleClass('visible');                
                 $("#navbar-toggle").toggleClass('visible');
             };
 

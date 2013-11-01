@@ -1,12 +1,13 @@
-.pdp-longview-value { padding:2px; }
-.pdp-longview-label, .pdp-shortview-label { padding:2px; font-weight:bold; }
-.pdp-longview-caption {font-weight: bold; font-size:x-large; padding: 3px 0px 10px;}
+.pdp-longview-value { padding:2px; font-weight: bold; }
+.pdp-longview-label, .pdp-shortview-label { padding:2px; font-weight: normal; }
+.pdp-longview-caption {font-weight: bold; font-size:x-large; padding: 12px 0px 20px;}
 .pdp-longview-street { 
     float:none;
     border-style: solid; 
     border-color: #808080; 
     border-width:thin; 
-    height: 300px;
+    height: 250px;
+    margin-bottom: 1em;    
     overflow:hidden;
 }
 .pdp-longview-street-none{
@@ -34,7 +35,7 @@
 #pdp-longview-right {
     float: right;
     width: 49%;
-    height: 100%;
+    height: auto;
     border-left: 1px solid #c0c0c0;
     padding-left: 5px;
 }
