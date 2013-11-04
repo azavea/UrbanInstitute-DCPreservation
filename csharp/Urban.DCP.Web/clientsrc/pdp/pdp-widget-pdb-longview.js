@@ -221,6 +221,7 @@
             _$container = $('<div class="pdp-longview">' +
                     '<h2 class="pdp-longview-caption"></h2>' +
                     '<div id="pdp-longview-left">' +
+                    '<h3>Property Details</h3>' + 
                 '<div class="pdp-longview-street"></div>' +
                         '<table id="pdp-longview-table" class="pdp-longview-list"></table>' +
                         '<div id="pdp-child-display"></div>' +
@@ -253,7 +254,7 @@
                 
                 $('button', _$container).addClass('pdp-button');
         });
-        
+
         // Override the P.Util.renderer to place custom code in the ExtraCol
         P.Util.renderers.propertyDetails = function(value, id, record, attrs) {
             // Bind an event for this particular row for later

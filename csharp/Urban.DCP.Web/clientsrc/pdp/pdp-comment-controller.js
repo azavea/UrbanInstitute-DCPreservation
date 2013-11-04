@@ -49,6 +49,7 @@
         } else {
 
             var template = _.template($(settings.commentTemplate).html());
+            $comments.append("<h3>{{num}} Comments".replace(/{{num}}/, data.Comments.length));
             _.each(data.Comments, function (comment) {
                 comment["forwho"] = _commentForField(comment);
                 comment["formattedDate"] = moment(comment.Modified).format('MM Do YYYY, h:mm:ss a');
