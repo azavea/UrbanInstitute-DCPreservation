@@ -291,7 +291,7 @@
 
         // Add markers that represent clustered properties to the map
         var _addClusterMarker = Azavea.tryCatch('add cluster marker', function(cluster) {
-            var radius = 22 + Math.floor((Math.log(cluster.Keys.length) * 2) + Math.log(cluster.Keys.length / 10) * 5);
+            var radius = 30 + Math.floor((Math.log(cluster.Keys.length) * 5) + Math.log(cluster.Keys.length / 10) * 5);
 
             // Create the icon the for the, including size (based of off the radius of the cluster area)
             var markerPath = 'client/css/images/markers/red-circle.png';
