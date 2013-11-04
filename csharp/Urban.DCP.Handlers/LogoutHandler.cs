@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Web.Security;
 using Azavea.Web.Handler;
+using Newtonsoft.Json.Linq;
 
 namespace Urban.DCP.Handlers
 {
@@ -16,6 +17,7 @@ namespace Urban.DCP.Handlers
 
             // Let the client know that it's going to be ok
             context.Response.StatusCode = (int)HttpStatusCode.OK;
+            context.Response.Write(JObject.FromObject(new { status = "ok"}));
         }
     }
 }
