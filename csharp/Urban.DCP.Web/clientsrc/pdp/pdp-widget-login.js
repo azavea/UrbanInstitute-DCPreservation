@@ -99,9 +99,10 @@ var _self = {},
 
         // Display our login information on the widget, with profile, admin and logout links.
         var _displayLoginInfo = Azavea.tryCatch('display login info', function(user){
-            var profile='',
-                admin = '',
-                $logout = {};
+            var profile = '',
+                $manage = '',
+                $logout = {},
+                $manageOptions = $('#manage-options');
                 
             // Hide our form, link
             $('pdp-login-panel').remove();
@@ -112,7 +113,11 @@ var _self = {},
             
             // If the user has roles, then it is a sysadmin, we can show the admin link
             if (user.Admin) {
-                admin = '<a href="' + decodeURI(_options.appUrl +  _options.adminUrl) + '" class="pdp-link pdp-header-link">User Administration</a>';
+                $manage = $('<a href="#" class="pdp-link pdp-header-link">Manage</a>');
+                
+                $manage.click(function () {
+                    $manageOptions.toggle();
+                });
             }
             
             // Setup a log out link that logs out and redirects to a safe page
@@ -123,7 +128,7 @@ var _self = {},
                     window.location.href = decodeURIComponent(_options.logoutUrl);
                 });
             });
-            $(_options.target).empty().append(profile, admin, $logout);
+            $(_options.target).empty().append(profile, $manage, $manageOptions, $logout);
         });
         
         // Setup actions on our form.

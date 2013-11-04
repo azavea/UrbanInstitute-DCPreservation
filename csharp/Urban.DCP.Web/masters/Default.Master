@@ -38,14 +38,21 @@
             <span class="icon-bar"></span>
         </button>
         <a href="<%=WebUtil.GetApplicationUrl(Request) %>"><img src="~/client/css/images/urban_institute_logo.png" class="pdp-header-logo" runat="server" /></a>
-        
-        <div id="login" class="pdp-login-container"></div>
-        <div id="signup" class="pdp-signup-container"></div>
-        <div id="pdp-header-linkbar">
-            <a href="http://www.urban.org">Urban Institute</a>
-            <a href="http://www.urban.org/data/">Data</a>
-            <a href="http://www.urban.org/data/disclaimer/">Disclaimer</a>
-            <a href="http://www.urban.org/data/search/guide/">Help</a>
+       
+        <div id="header-wrap"> 
+            <div id="pdp-header-linkbar">
+                <a href="http://www.urban.org">Urban Institute</a>
+                <a href="http://www.urban.org/data/">Data</a>
+                <a href="http://www.urban.org/data/disclaimer/">Disclaimer</a>
+                <a href="http://www.urban.org/data/search/guide/">Help</a>
+            </div>
+            <div id="login" class="pdp-login-container"></div>
+            <div id="signup" class="pdp-signup-container"></div>
+            <ul id="manage-options">
+                <li><a href="~/admin/manage-users.aspx" runat="server">Manage Users</a></li>
+                <li><a href="~/admin/manage-orgs.aspx" runat="server">Manage Organizations</a></li>
+                <li><a href="~/admin/data.aspx" runat="server">Manage Data</a></li>
+            </ul>
         </div>
     </div>
     <div id="content">
