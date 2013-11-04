@@ -4,7 +4,7 @@ local/
 config/MergeFiles/
 *.user
 *.suo
-*.log
+*.log*
 _ReSharper*
 csharp/Urban.DCP.Web/client/*
 csharp/*/Web.config
