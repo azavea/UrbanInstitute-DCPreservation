@@ -270,8 +270,8 @@
             var markerPath = 'client/css/images/markers/red-marker.png';
 
             // Add the marker and assign a click function
-            var size = new OpenLayers.Size(36,42);  // previous size: 24, 24
-            var offset = new OpenLayers.Pixel(-11, -18);
+            var size = new OpenLayers.Size(20,29);  // previous size: 24, 24
+            var offset = new OpenLayers.Pixel(-10, -29);
             var icon = new OpenLayers.Icon(markerPath, size, offset);
             
             var marker = new OpenLayers.Marker(new OpenLayers.LonLat(property.X, property.Y), icon);
