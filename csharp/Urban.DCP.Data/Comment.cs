@@ -43,9 +43,13 @@ namespace Urban.DCP.Data
         public int? AssociatedOrgId;
         public string AssociatedOrgName
         {
-            get { return AssociatedOrgId.HasValue && AssociatedOrgId.Value > 0
-                    ? Organization.getOrgById(AssociatedOrgId.Value).Name 
-                    : null; 
+            get { 
+                if (AssociatedOrgId.HasValue && AssociatedOrgId.Value > 0)
+                {
+                    var org = Organization.getOrgById(AssociatedOrgId.Value);
+                    if (org != null) return org.Name;
+                }
+                return null; 
             }
         }
 

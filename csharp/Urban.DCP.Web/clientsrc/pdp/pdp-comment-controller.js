@@ -50,7 +50,7 @@
 
             var template = _.template($(settings.commentTemplate).html());
             $comments.append("<h3>{{num}} Comment".replace(/{{num}}/, data.Comments.length)
-                + (data.Comments.length > 1) ? "s" : "" + "</h3>");
+                + (data.Comments.length > 1 ? "s" : "") + "</h3>");
             _.each(data.Comments, function (comment) {
                 comment["forwho"] = _commentForField(comment);
                 comment["formattedDate"] = moment(comment.Modified).format('MM Do YYYY, h:mm:ss a');
@@ -155,7 +155,9 @@
             url: P.Data.path + 'handlers/comments.ashx',
             type: 'POST',
             done: function () { self._reloadComments(); },
-            fail: function (e, data) { Azavea.logError(e + " " + data); P.Util.alert("Problem uploading file.") },
+            fail: function (e, data) { Azavea.logError(e + " " + data);
+                P.Util.alert("Problem uploading file.");
+            },
             add: function (e, data) {
                 //unbind non-image click handler from submit button, and bind this one.
                 $submitButton.off();
@@ -165,7 +167,7 @@
                     data.submit();
                 });
             }
-        
+
         });
 
     };
@@ -199,7 +201,9 @@
         if (comment.AccessLevel == 'Public') {
             return "Everyone";
         } else if (comment.AccessLevel == 'SameOrg') {
-            return comment.AssociatedOrgName + " members only";
+            return comment.AssociatedOrgName
+                ? comment.AssociatedOrgName + " members only"
+                : "unknown organization members only";
         } else if (comment.AccessLevel == 'Network') {
             return "Network Members only";
         } else {
