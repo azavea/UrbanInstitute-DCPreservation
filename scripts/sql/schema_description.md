@@ -1,4 +1,3 @@
-
 Attributes
 Filters, DisplayTable columns and Summary and Detail popups are controlled by enteries in the Attributes table 
 
