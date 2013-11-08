@@ -41,13 +41,8 @@
 }
 
 .pdp-table-col-sortdesc, .pdp-table-col-sortasc{
-    background: -webkit-gradient(linear, left top, left bottom, from(#98D40C), to(#6BA40E)) !important;
-	background: -moz-linear-gradient(top,  #98D40C,  #6BA40E) !important;
-	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#98D40C', endColorstr='#6BA40E') !important;
-	color: #fff;
-	
-	text-shadow: -1px -1px #004D0F;
-	font-weight: bold;
+    background-image: none;
+    background-color: #a63344 !important;
 }
 
 /* IE7 will not take display:none for a col element.  It will take a vis: collapse, but FF will not.*/ 

@@ -1,3 +1,21 @@
+.pdp-map-icon:after {
+    content: "";
+    background: url(/client/css/images/markers/marker-shadow.png) no-repeat 0 0;
+    width: 24px;
+    height: 12px;
+    display: block;
+    position: relative;
+    background-size: 100%;
+    top: -5px;
+    left: 9px;
+}
+
+#header-wrap {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
 #pdp-pdb-search-counts-panel-close {
     display: none;
 }
@@ -382,7 +400,7 @@ html { overflow:hidden; }
     #left { width:320px; position:absolute; top:0; left:0; bottom: 0; }
     #center { margin-left:320px; height:100%; }
 
-#pdp-header-linkbar { position: absolute; right: 150px; top: 10px; }
+#pdp-header-linkbar { display: inline; margin-right: 10px; }
 #pdp-header-linkbar a { padding-left: 5px; color: #939597; font-size: 12px; }
 
 .pdp-header-logo{ padding-left: 10px; padding-top: 12px; width: 244px; }
