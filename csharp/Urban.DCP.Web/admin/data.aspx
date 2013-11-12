@@ -35,7 +35,8 @@
 
     <script type="text/template" id="revision-template">
         <div class="org">
-            <input type="radio" name="previous-revision" value="{{ Id }}"><span style="font-family:monospace;font-size:1.2em">{{ Hash }}</span>  | {{UserName}} | {{ formattedDate }}</input>
+            <input type="radio" name="previous-revision" value="{{ Id }}"/>
+            <span style="font-family:monospace;font-size:1.2em">{{ Hash }}</span>  | {{UserName}} | {{ formattedDate }}
         </div>
     </script>
 
