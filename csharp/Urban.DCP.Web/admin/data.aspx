@@ -35,7 +35,8 @@
 
     <script type="text/template" id="revision-template">
         <div class="org">
-            <input type="radio" name="previous-revision" value="{{ Id }}"><span style="font-family:monospace;font-size:1.2em">{{ Hash }}</span>  | {{UserName}} | {{ formattedDate }}</input>
+            <input type="radio" name="previous-revision" value="{{ Id }}"/>
+            <span style="font-family:monospace;font-size:1.2em">{{ Hash }}</span>  | {{UserName}} | {{ formattedDate }}
         </div>
     </script>
 
@@ -48,6 +49,21 @@
         $('#type').change(function() {
             $('#export-type').val($(this).val());
         }).change();
+
+        // Set the right ref path for this /admin resouce
+        PDP.Data.path = '../';
+        
+        // Login widget setup
+        PDP.Widget.Login({ 
+            target: '#login',
+            profileUrl: 'user/profile.aspx',
+            logoutUrl: 'default.aspx',
+            adminUrl: 'admin/manage-users.aspx',
+            appUrl: '<%=WebUtil.GetApplicationUrl(Request) %>'
+        }).init();
+        
+        // Let any page elements know current logged in status
+        PDP.Util.initLoginStatus();
 
         var revisionController = new PDP.UploadRevisionController({
             typeSelect: "#type", 

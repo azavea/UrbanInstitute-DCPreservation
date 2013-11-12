@@ -22,47 +22,6 @@
         });
     }
 
-    function handleDelete(row) {
-        var self = this;
-        var id = $(row).find('input').attr("data-id");
-        var callback = function () {
-            self._fetch();
-        }
-        var errback = function () {
-            PDP.Util.alert("There was an error deleting that organization");
-        }
-        P.Data.deleteOrganization(id, _.bind(callback, self), errback);
-    }
-
-    function handleAddition() {
-        var self = this;
-        var name = $(self._settings.addRowInputId).val();
-        if (!name) { return };
-        var callback = function () {
-            self._fetch();
-        }
-        var errback = function () {
-            PDP.Util.alert("There was an error adding that organization.", "Error");
-        }
-        P.Data.addOrganization(name, name, _.bind(callback, self), errback);
-    }
-
-    function handleUpdate(row) {
-        var self = this;
-        var id = $(row).find('input').attr("data-id");
-        var $input = $(row).find('input')
-        var newName = $input.val();
-        var callback = function () {
-            $input.addClass("saved");
-            setTimeout( function() {
-                $input.removeClass("saved");
-            }, 500);
-        }
-        var errback = function () {
-            PDP.Util.alert("There was an error updating that organization.", "Error");
-        }
-        P.Data.updateOrganization(id, newName, callback, errback);
-    }
 
     P.ManageOrgs = function (opts) {
         var self = this;
@@ -70,18 +29,97 @@
         self._settings = opts;
         self._orgs = [];
         self._rowTemplate = _.template($(self._settings.rowTemplateId).html());
+        self._updateTemplate = _.template($(self._settings.updateTemplateId).html());
+
+
+        // Set the right ref path for this /admin resouce
+        P.Data.path = '../';
+        
+        // Login widget setup
+        P.Widget.Login({ 
+            target: '#login',
+            profileUrl: 'user/profile.aspx',
+            logoutUrl: 'default.aspx',
+            adminUrl: 'admin/manage-users.aspx',
+            appUrl: self._settings.handler
+        }).init();
+        
+        // Let any page elements know current logged in status
+        P.Util.initLoginStatus();
+        
+        self._handleDelete = function() {
+            var $this = $(this),
+                $row = $this.parents('tr'), id = $this.data("id"),
+                name = $row.find('.name').text();
+
+            var callback = function() {
+                self._fetch();
+            };
+            var errback = function() {
+                PDP.Util.alert("There was an error deleting that organization");
+            };
+            var ok = confirm("Are you sure you want to delete " + name + "?");
+            if (ok) {
+                P.Data.deleteOrganization(id, callback, errback);
+            }
+        };
+
+        self._handleAddition = function () {
+            var name = $(self._settings.addRowInputId).val();
+            if (!name) {
+                PDP.Util.alert("You must provide an organization name");
+                return;
+            }
+            var callback = function() {
+                self._fetch();
+            };
+            var errback = function() {
+                PDP.Util.alert("There was an error adding that organization.", "Error");
+            };
+            P.Data.addOrganization(name, name, _.bind(callback, self), errback);
+        };
+
+        self._handleUpdate = function() {
+            var name = $(this).parents('tr').find('.name').text(),
+                id = $(this).data('id'),
+                errback = function() {
+                    PDP.Util.alert("There was an error updating the organization.", "Error");
+                };
+            
+            $(self._updateTemplate({ name: name })).dialog({
+                buttons: {
+                    update: function () {
+                        var newName = $(this).find('.updated-name').val();
+                        P.Data.updateOrganization(id, newName, _.bind(self._fetch, self), errback);
+                        $(this).dialog('destroy');
+                    },
+                    cancel: function () {
+                        $(this).dialog('destroy');
+                    }
+
+                }
+            });
+                
+        };
     };
 
-    P.ManageOrgs.prototype.init = function () {
+    P.ManageOrgs.prototype.init = function() {
         var self = this;
         P.Data.path = "../";
-        $("button[data-action=add]").click(_.bind(handleAddition, self));
-        $(self._settings.addRowInputId).keyup(function (e) {
-            if (e.keyCode == ENTER_KEY) { handleAddition.call(self) }
+        $("button[data-action=add]").click(self._handleAddition);
+        $(self._settings.addRowInputId).keyup(function(e) {
+            if (e.keyCode == ENTER_KEY) {
+                self._handleAddition();
+            }
         });
-        self._fetch();
-    }
 
+        $(self._settings.rowContainerId)
+            .on('click', '.edit', self._handleUpdate)
+            .on('click', '.delete', self._handleDelete);
+        
+        self._fetch();
+    };
+    
     P.ManageOrgs.prototype._fetch = function () {
         var self = this;
         self._orgs = [];
@@ -90,29 +128,18 @@
             self._render();
         };
         var errback = function () {
-            PDP.Util.alert("There was an error fetching registered organizations", "Error");
+            PDP.Util.alert("There was an error fetching network organizations", "Error");
         };
         P.Data.getOrganizations(callback, errback);
     };
 
     P.ManageOrgs.prototype._render = function () {
-        var self = this;
-        var $rowContainer = $(self._settings.rowContainerId);
+        var self = this,
+            $rowContainer = $(self._settings.rowContainerId);
+
         $rowContainer.empty();
         _.each(self._orgs, function (org) {
             $rowContainer.append(self._rowTemplate(org));
-        });
-        _.each($(self._settings.rowClass), function (row) {
-            //bind delete handlers
-            $(row).find("button[data-action=delete]").click(_.bind(handleDelete, self, row));
-            //bind update handlers
-            $(row).find("input")
-                .bind("change", _.bind(handleUpdate, self, row))
-                .keyup(function(e) {
-                    if (e.keyCode == ENTER_KEY) {
-                        handleUpdate.call(self, row);
-                    }
-                });
         });
         $(self._settings.addRowInputId).val("");;
     };

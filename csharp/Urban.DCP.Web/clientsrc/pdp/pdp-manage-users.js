@@ -74,10 +74,10 @@
                     var username = $('#pdp-username').val(),
                         password = $('#pdp-password').val(),
                         name = $('#pdp-name').val(),
-                        email = $('#pdp-email').val();
-                        roles = _getSelectedRoles();
+                        email = $('#pdp-email').val(),
+                        roles = _getSelectedRoles(),
                         organization = $("#pdp-select-org").val();
-
+                    
                     // Send the data to be updated
                     P.Data.updateUser( username, name, email, password, roles, organization, function() {
                             //Success - Reload the user table
@@ -141,7 +141,7 @@
                                 break;
                             case 'Organization':
                                 $("#pdp-select-org").val(record[i]);
-                                break
+                                break;
                             default:
                                 Azavea.log('An unknown user field was not accounted for: [' + attrs[i].UID + ']');  
                                 break;                              
