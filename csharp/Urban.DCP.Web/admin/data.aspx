@@ -50,6 +50,21 @@
             $('#export-type').val($(this).val());
         }).change();
 
+        // Set the right ref path for this /admin resouce
+        PDP.Data.path = '../';
+        
+        // Login widget setup
+        PDP.Widget.Login({ 
+            target: '#login',
+            profileUrl: 'user/profile.aspx',
+            logoutUrl: 'default.aspx',
+            adminUrl: 'admin/manage-users.aspx',
+            appUrl: '<%=WebUtil.GetApplicationUrl(Request) %>'
+        }).init();
+        
+        // Let any page elements know current logged in status
+        PDP.Util.initLoginStatus();
+
         var revisionController = new PDP.UploadRevisionController({
             typeSelect: "#type", 
             revisionRadio: "input[name=previous-revision]:checked", 

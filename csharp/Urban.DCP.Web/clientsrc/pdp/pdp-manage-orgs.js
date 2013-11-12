@@ -31,6 +31,22 @@
         self._rowTemplate = _.template($(self._settings.rowTemplateId).html());
         self._updateTemplate = _.template($(self._settings.updateTemplateId).html());
 
+
+        // Set the right ref path for this /admin resouce
+        P.Data.path = '../';
+        
+        // Login widget setup
+        P.Widget.Login({ 
+            target: '#login',
+            profileUrl: 'user/profile.aspx',
+            logoutUrl: 'default.aspx',
+            adminUrl: 'admin/manage-users.aspx',
+            appUrl: self._settings.handler
+        }).init();
+        
+        // Let any page elements know current logged in status
+        P.Util.initLoginStatus();
+        
         self._handleDelete = function() {
             var $this = $(this),
                 $row = $this.parents('tr'), id = $this.data("id"),
