@@ -23,7 +23,6 @@
                         <input id="pdp-username" type="text" class="pdp-input pdp-input-text" readonly="readonly" />
                     </div>
                 </li>
-                </li>
                 <li>
                     <label for="pdp-name" class="pdp-form-label">Name</label>
                     <div class="pdp-form-ctrl">
@@ -39,12 +38,12 @@
                 <li>
                     <label class="pdp-form-label" for="pdp-select-org">Organization</label>
                     <div class="pdp-form-ctrl">
-                         <select id="pdp-select-org" class="pdp-input" />
+                         <select id="pdp-select-org" class="pdp-input" >
                             <option >test</option>
                         </select>
                      </div>
                 </li>
-                
+             </ul>   
                 <input id="pdp-change-password" type="checkbox" tabindex="3" class="pdp-input" />
                 <label for="pdp-change-password" class="pdp-form-list-label">Change Password</label>
                 <div id="pdp-password-container">
@@ -64,31 +63,32 @@
                     </ul>
                 </div>
                 
-                </select>
                 <fieldset class="pdp-form">
                     <legend>User Privileges</legend>
-                    <li>
-                        <label for="pdp-role-public" class="pdp-form-label">Public</label>
-                        <div class="pdp-form-ctrl">
-                            <input id="pdp-role-public" type="checkbox" value="public" class="pdp-input pdp-input-checkbox pdp-role-input" tabindex="6" />
-                        </div>
-                    </li>
-                    <li>
-                        <label for="pdp-role-limited" class="pdp-form-label">Limited</label>
-                        <div class="pdp-form-ctrl">
-                            <input id="pdp-role-limited" type="checkbox" value="limited" class="pdp-input pdp-input-checkbox pdp-role-input" tabindex="7" />
-                        </div>
-                    </li>
-                    <li>
-                        <label for="pdp-role-sysadmin" class="pdp-form-label">SysAdmin</label>
-                        <div class="pdp-form-ctrl">
-                            <input id="pdp-role-sysadmin" type="checkbox" value="SysAdmin" class="pdp-input pdp-input-checkbox pdp-role-input" tabindex="8" />
-                        </div>
-                    </li>
                     <p>The Network priveledge wil be automatically addded if an organization is selected.</p>
+                    <ul>
+                        <li>
+                            <label for="pdp-role-public" class="pdp-form-label">Public</label>
+                            <div class="pdp-form-ctrl">
+                                <input id="pdp-role-public" type="checkbox" value="public" class="pdp-input pdp-input-checkbox pdp-role-input" tabindex="6" />
+                            </div>
+                        </li>
+                        <li>
+                            <label for="pdp-role-limited" class="pdp-form-label">Limited</label>
+                            <div class="pdp-form-ctrl">
+                                <input id="pdp-role-limited" type="checkbox" value="limited" class="pdp-input pdp-input-checkbox pdp-role-input" tabindex="7" />
+                            </div>
+                        </li>
+                        <li>
+                            <label for="pdp-role-sysadmin" class="pdp-form-label">SysAdmin</label>
+                            <div class="pdp-form-ctrl">
+                                <input id="pdp-role-sysadmin" type="checkbox" value="SysAdmin" class="pdp-input pdp-input-checkbox pdp-role-input" tabindex="8" />
+                            </div>
+                        </li>
+                    </ul>
                 </fieldset>
-            </ul>
 	    
+        </fieldset>
     </div>
 
 
