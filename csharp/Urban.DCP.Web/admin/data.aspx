@@ -26,18 +26,20 @@
              <asp:Label runat="server" ID="resultLabel"></asp:Label>
              <asp:GridView runat="server" ID="resultTable" class="admin-result-table"></asp:GridView>
          </form>
+        
+         <h3>Previous Uploads</h3> 
+         <div>To restore a previous working version of a dataset, select from the list below:</div>
+        <ul id="previous-revision-container"></ul>
+        <button style="display:none" id="request-previous-revision">Restore Previous Revision</button>
     </div>   
-   
-    <div id="previous-revision-container"></div>
-    <button style="display:none" id="request-previous-revision">Request Previous Revision</button>
-
-
 
     <script type="text/template" id="revision-template">
-        <div class="org">
-            <input type="radio" name="previous-revision" value="{{ Id }}"/>
-            <span style="font-family:monospace;font-size:1.2em">{{ Hash }}</span>  | {{UserName}} | {{ formattedDate }}
-        </div>
+        <li>
+            <label>
+                <input type="radio" name="previous-revision" value="{{ Id }}"/>
+                <span style="font-family:monospace;font-size:1.2em">{{ Hash }} ({{Id}})</span> by {{UserName}} on {{ formattedDate }}
+            </label>
+        </li>
     </script>
 
     <script type="text/javascript">

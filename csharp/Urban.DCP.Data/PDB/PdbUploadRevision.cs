@@ -14,6 +14,10 @@ namespace Urban.DCP.Data.PDB
     {
         private static readonly FastDAO<PdbUploadRevision> _urDao =
          new FastDAO<PdbUploadRevision>(Config.GetConfig("PDP.Data"), "PDB");
+       
+        // Return only a reasonable amount of previous upload revisions
+        private const int MaxRevisionsReturned = 15;
+
         public int Id;
         public String Type;
         public DateTime Date;
@@ -32,6 +36,7 @@ namespace Urban.DCP.Data.PDB
                 return delimitedHexHash.Substring(0,11);
             }
         }
+
         [JsonIgnore]
         public String Data;
 
@@ -75,9 +80,10 @@ namespace Urban.DCP.Data.PDB
         {
             var crit = new DaoCriteria();
             crit.Expressions.Add(new EqualExpression("Type", type.ToString()));
-            crit.Orders.Add(new SortOrder("Date", SortType.Asc));
+            crit.Orders.Add(new SortOrder("Date", SortType.Desc));
+            crit.Limit = MaxRevisionsReturned;
        
-            var revisions = _urDao.Get(crit );
+            var revisions = _urDao.Get(crit);
             return revisions;
         }
 
