@@ -79,7 +79,7 @@
                     }else{
                         v = record[i];
                     }
-                    listItems += '<tr><td><span class="pdp-pdb-control-label-help ui-icon ui-icon-help"></span></td>' +
+                    listItems += '<tr><td><span class="pdp-pdb-control-label-help ui-icon ui-icon-help" title="' + attr.Description + '"></span></td>' +
                                      '<td>' + label + '</td>' + 
                                      '<td><div class="pdp-longview-value">' + v + '</div></td></tr>'; 
                 }
@@ -108,6 +108,12 @@
             
             // Remove any existing list and append new list to the dialog container
             $table = $('#pdp-longview-table', _$container).empty().append(listItems);
+            $table.find('.pdp-pdb-control-label-help').tooltip({
+                tipClass: 'pdp-pdb-control-tooltip',
+	            position: 'center right',
+	            offset: [-2, 10],
+	            effect: "fade"
+            });
            
             // The table is made, style the alt rows
             $('tr:odd', $table).addClass('pdp-table-row-alt-pdb');
