@@ -56,7 +56,8 @@
         </select>
          </p>
         <label for="comment-image">Comment Image</label><br />
-        <input type="file" name="files[]" id="comment-image"/><br />
+        <input type="file" name="files[]" class="edited-image" id="comment-image"/><br />
+        <div class="image-status"></div>
         <label for="new-comment">New Comment</label><br />
         <textarea id="new-comment"></textarea><br />
         <button id="submit-new-comment">Submit Comment</button>
@@ -161,10 +162,11 @@
                     <option value="Network">Network</option>
                 </select>
                 <input type="file" class="edited-image" name="files[]" /><br />
+                <div class="image-status"></div>
                 <textarea class="edited-comment">{{ Text }}</textarea><br />
                 
                 {% if (HasPicture) { %}
-                <p><input type="checkbox" class="remove-image" />remove image</p>
+                <p><label><input type="checkbox" class="remove-image" />remove image</label></p>
                 {% } %}
                   <p>
                     <button class="cancel-edit">cancel</button>
