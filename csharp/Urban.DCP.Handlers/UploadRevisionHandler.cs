@@ -1,34 +1,34 @@
 ﻿using System;
-using System.IO;
 using System.Net;
-using System.Linq;
 using System.Web;
-using Azavea.Open.Common;
-using Azavea.Utilities.Common;
 using Azavea.Web;
-using Azavea.Web.Exceptions;
 using Azavea.Web.Handler;
 using Newtonsoft.Json.Linq;
 using Urban.DCP.Data;
+using Urban.DCP.Data.PDB;
+using Urban.DCP.Data.Uploadable;
 
 
 namespace Urban.DCP.Handlers
 {
     public class UploadRevisionHandler : BaseHandler
     {
+
+        private const string UnauthMessage = "Not authorized, only superusers can manage revisions.";
+
         protected override void InternalGET(HttpContext context, HandlerTimedCache cache)
         {
             var user = UserHelper.GetUser(context.User.Identity.Name);
             if (!user.IsSysAdmin())
             {
                 context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
-                context.Response.Write("Not authorized, only superusers can manage revisions.");
+                context.Response.Write(UnauthMessage);
                 return;
             }
 
-            String type = WebUtil.GetParam(context, "type", false);
-            var typeEnum = (Data.Uploadable.UploadTypes)Enum.Parse(typeof(Data.Uploadable.UploadTypes), type); 
-            var uploadRevisions = Urban.DCP.Data.PDB.PdbUploadRevision.GetUploadRevisions(typeEnum);
+            var type = WebUtil.GetParam(context, "type", false);
+            var typeEnum = (UploadTypes)Enum.Parse(typeof(UploadTypes), type); 
+            var uploadRevisions = PdbUploadRevision.GetUploadRevisions(typeEnum);
             var json =  WebUtil.ObjectToJson(uploadRevisions);
 
             context.Response.StatusCode = (int)HttpStatusCode.OK;
@@ -41,15 +41,19 @@ namespace Urban.DCP.Handlers
             if (!user.IsSysAdmin())
             {
                 context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
-                context.Response.Write("Not authorized, only superusers can manage revisions.");
+                context.Response.Write(UnauthMessage);
                 return;
             }
 
-            int idToRestore = WebUtil.ParseIntParam(context, "id");
-            Urban.DCP.Data.PDB.PdbUploadRevision.RestoreRevision(idToRestore, user);
+            var idToRestore = WebUtil.ParseIntParam(context, "id");
+            PdbUploadRevision.RestoreRevision(idToRestore, user);
 
             context.Response.StatusCode = (int)HttpStatusCode.OK;
-            context.Response.Write("{\"status\" : \"OK\"}");
+            context.Response.Write(JObject.FromObject(new
+                {
+                    status = "OK"
+                }
+            ));
 
         }
     }
