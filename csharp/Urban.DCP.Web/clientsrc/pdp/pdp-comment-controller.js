@@ -72,30 +72,8 @@
                     };
                 };
 
-                $newComment.find(".edited-image").fileupload({
-                    autoUpload: false,
-                    url: P.Data.path + 'handlers/comments.ashx',
-                    type: 'POST',
-                    done: function () {self._reloadComments(); },
-                    fail: function (e, data) {
-                        Azavea.logError(e + " " + data);
-                        P.Util.alert("Problem uploading file.");
-                    },
-                    // On file add, rebind a new click handler to the submit button, that submits the file upload.
-                    add: function (e, data) {
-                        submitButton.off();
-                        submitButton.click(function () {
-                            //TODO- could switch existing image to upload icon as visual indicator if necesary.
-                            data.formData = formData();
-                            data.submit();
-                        });
-                    }
-                    
-                });
-
+                self._registerSubmit(formData, submitButton, $newComment);
             });
-
-            
         }
 
         $(".swipebox").swipebox({
@@ -105,7 +83,6 @@
         if (data.CanAdd) {
             self._renderCommentForm(settings.propId);
         }
-
     };
 
     controller.prototype._renderCommentForm = function () {
@@ -150,28 +127,38 @@
             };
         };
 
-        $image.fileupload({
+        self._registerSubmit(formData, $submitButton, $newCommentForm);
+    };
+
+    controller.prototype._registerSubmit = function (formData, $submitButton, $commentBlock) {
+
+        var self = this,
+            $uploader = $commentBlock.find(".edited-image"),
+            $imageLabel = $commentBlock.find(".image-status");
+
+        $uploader.fileupload({
             autoUpload: false,
             url: P.Data.path + 'handlers/comments.ashx',
             type: 'POST',
-            done: function () { self._reloadComments(); },
-            fail: function (e, data) { Azavea.logError(e + " " + data);
+            done: function () {self._reloadComments(); },
+            fail: function (e, data) {
+                Azavea.logError(e + " " + data);
                 P.Util.alert("Problem uploading file.");
             },
+            // On file add, rebind a new click handler to the submit button, that submits the file upload.
             add: function (e, data) {
-                //unbind non-image click handler from submit button, and bind this one.
                 $submitButton.off();
-                $submitButton.click(function () {
-                    //TODO- visual indicator that img is ready to upload??
-                    data.formData = formData();
-                    data.submit();
-                });
+                    $submitButton.click(function () {
+                        $uploader.show();
+                        data.formData = formData();
+                        data.submit();
+                    });
+                }
             }
-
+            
         });
-
     };
-
+    
     controller.prototype._trashComment = function (commentId) {
         var self = this;
         var onSuccess = function () {
