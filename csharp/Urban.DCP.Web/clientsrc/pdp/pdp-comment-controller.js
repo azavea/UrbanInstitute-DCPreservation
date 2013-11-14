@@ -148,6 +148,10 @@
             // On file add, rebind a new click handler to the submit button, that submits the file upload.
             add: function (e, data) {
                 $submitButton.off();
+                var file = data.files[0];
+                if (file) {
+                    $uploader.hide();
+                    $imageLabel.text("Comment Image: " + file.name);
                     $submitButton.click(function () {
                         $uploader.show();
                         data.formData = formData();
@@ -168,7 +172,11 @@
             Azavea.logError(status + " " + err);
             self._reloadComments.call(self, settings.propId);
         };
-        P.Data.deleteComment(commentId, onSuccess, onError);
+        if (confirm("Are you sure you want to delete this comment?"))
+        {
+            P.Data.deleteComment(commentId, onSuccess, onError);
+        }
+
     };
 
     controller.prototype._hideCommentEditors = function() {
