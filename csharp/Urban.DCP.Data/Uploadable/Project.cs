@@ -79,7 +79,7 @@ namespace Urban.DCP.Data.Uploadable
 
     }
 
-    public class ProjectUploader: AbstractUploadable<Project>, ILoadable
+    public class ProjectUploader: AbstractLoadable<Project>, ILoadable
     {
         public override UploadTypes UploadType
         {

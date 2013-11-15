@@ -65,7 +65,7 @@ namespace Urban.DCP.Data.Uploadable
         }
     }
 
-    public class SubsidyUploader: AbstractUploadable<Subsidy>, ILoadable
+    public class SubsidyUploader: AbstractLoadable<Subsidy>, ILoadable
     {
         public override UploadTypes UploadType
         {

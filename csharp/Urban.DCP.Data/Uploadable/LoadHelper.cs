@@ -29,6 +29,9 @@ namespace Urban.DCP.Data.Uploadable
                 case UploadTypes.Subsidy:
                     loader = new SubsidyUploader();
                     break;
+                case UploadTypes.Comment:
+                    loader = new CommentExporter();
+                    break;
                 default:
                     throw new ApplicationException(String.Format("{0} is not a valid upload type.", type));
             }

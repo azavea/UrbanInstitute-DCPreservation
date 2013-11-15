@@ -45,7 +45,7 @@ namespace Urban.DCP.Data.Uploadable
         }
     }
 
-    public class ParcelUploader: AbstractUploadable<Parcel>, ILoadable
+    public class ParcelUploader: AbstractLoadable<Parcel>, ILoadable
     {
         public override UploadTypes UploadType
         {
