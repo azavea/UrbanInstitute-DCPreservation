@@ -16,11 +16,19 @@ namespace Urban.DCP.Data.Uploadable
         String Export();
     }
 
-    public abstract class AbstractUploadable<T> where T: class, new()
+    public abstract class AbstractLoadable<T> where T: class, new()
     {
         internal static readonly FastDAO<T> _dao =
             new FastDAO<T>(Config.GetConfig("PDP.Data"), "PDB");
 
+        /// <summary>
+        /// Is this dataset only available for export?
+        /// </summary>
+        public bool ReadOnly = false;
+
+        /// <summary>
+        /// The upload type of this dataset
+        /// </summary>
         public abstract UploadTypes UploadType { get; }
 
         /// <summary>
@@ -64,6 +72,8 @@ namespace Urban.DCP.Data.Uploadable
         /// <returns></returns>
         public ImportResult Load(Stream data, User user)
         {
+            if (ReadOnly) return null;
+
             var reader = new StreamReader(data);
             var csv = reader.ReadToEnd();
            

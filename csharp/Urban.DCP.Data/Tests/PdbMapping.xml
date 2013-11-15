@@ -57,14 +57,14 @@
       <generator class="native" />
     </id>
     <property name="NlihcId" column="NLIHCID" />
-    <property name="Username" column="Username"/>
     <property name="AccessLevel" column="AccessLevel" type="string" />
     <property name="AssociatedOrgId" column="Org" />
     <property name="Created" column="Created"/>
     <property name="Modified" column="Modified" />
+    <property name="Username" column="Username"/>
     <property name="LastEditorId" column="LastEditorId"/>
-    <property name="Image" column="Image" type="bytearray" />
     <property name="Text" column="Text"/>
+    <property name="Image" column="Image" type="bytearray" />
   </class>
 
   <class name="Urban.DCP.Data.Uploadable.Reac,Urban.DCP.Data" table="Reac">

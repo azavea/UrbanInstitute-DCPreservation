@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using Azavea.Database;
 using Azavea.Open.Common;
 using Azavea.Open.DAO.Criteria;
+using FileHelpers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Urban.DCP.Data.Uploadable;
 
 namespace Urban.DCP.Data
 {
@@ -19,6 +21,8 @@ namespace Urban.DCP.Data
         public UnauthorizedToEditCommentException(string msg) : base(msg) { }
     }
 
+    [IgnoreFirst(1)]
+    [DelimitedRecord(",")]
     public class Comment
     {
         private static readonly FastDAO<Comment> _dao =
@@ -52,8 +56,9 @@ namespace Urban.DCP.Data
                 return null; 
             }
         }
-
+        [FieldConverter(ConverterKind.Date, "MM/dd/yyyy")]
         public DateTime Created;
+        [FieldConverter(ConverterKind.Date, "MM/dd/yyyy")]
         public DateTime Modified;
         public string Username;
 
@@ -64,15 +69,17 @@ namespace Urban.DCP.Data
         public string LastEditorId;
 
         /// <summary>
+        /// Text value of comment
+        /// </summary>
+        [FieldQuoted]
+        public string Text;
+
+        /// <summary>
         /// Optional Image attached to comment
         /// </summary>
         [JsonIgnore]
+        [FieldNotInFile]
         public byte[] Image;
-
-        /// <summary>
-        /// Text value of comment
-        /// </summary>
-        public string Text;
 
         [JsonIgnore]
         public User User
@@ -267,4 +274,17 @@ namespace Urban.DCP.Data
         }
     }
 
+    public class CommentExporter : AbstractLoadable<Comment>, ILoadable
+    {
+        public CommentExporter()
+        {
+            ReadOnly = true;
+        }
+
+        public override UploadTypes UploadType
+        {
+            get { return UploadTypes.Comment; }
+        }
+
+    }
 }

@@ -34,7 +34,7 @@ namespace Urban.DCP.Data.Uploadable
         }
     }
 
-    public class ReacUploader: AbstractUploadable<Reac>, ILoadable
+    public class ReacUploader: AbstractLoadable<Reac>, ILoadable
     {
         public override UploadTypes UploadType
         {

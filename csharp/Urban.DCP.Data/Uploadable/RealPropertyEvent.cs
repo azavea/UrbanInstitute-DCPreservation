@@ -36,7 +36,7 @@ namespace Urban.DCP.Data.Uploadable
         }
     }
 
-    public class PropertyEventUploader: AbstractUploadable<RealPropertyEvent>, ILoadable
+    public class PropertyEventUploader: AbstractLoadable<RealPropertyEvent>, ILoadable
     {
         public override UploadTypes UploadType
         {

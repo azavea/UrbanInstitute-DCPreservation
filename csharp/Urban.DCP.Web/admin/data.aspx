@@ -14,8 +14,9 @@
                  <option value="RealPropertyEvent">Real Property Events</option>
                  <option value="Subsidy">Subsidy Details</option>
                  <option value="Attribute">Filter & Display Attributes</option>
+                 <option value="Comment" data-readonly="true">Property Comments</option>
              </select>
-             <input type="submit" value="Upload"/>
+             <input id="upload-set" type="submit" value="Upload"/>
          </form>
          <form id="export" method="GET" action="export.ashx" target="_blank">
              <input id="export-type" name="type" type="hidden"/>
@@ -46,10 +47,13 @@
         _.templateSettings = {
             interpolate: /\{\{(.+?)\}\}/g
         };
-
+        var $upload = $('#upload-set');
         // Use the same type selector for both export and import
         $('#type').change(function() {
-            $('#export-type').val($(this).val());
+            var $this = $(this);
+            $('#export-type').val($this.val());
+            var isReadOnly = $this.find('option:selected').data('readonly') || false;
+            $upload.attr('disabled', isReadOnly);
         }).change();
 
         // Set the right ref path for this /admin resouce

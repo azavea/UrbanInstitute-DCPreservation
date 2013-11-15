@@ -1,7 +1,8 @@
 ﻿namespace Urban.DCP.Data.Uploadable
 {
     /// <summary>
-    /// The various types of data that can be uploaded by the client
+    /// The various types of data that can be loaded (import/export or both)
+    /// by the client
     /// </summary>
     public enum UploadTypes
     {
@@ -10,6 +11,7 @@
         Reac,
         Parcel, 
         RealPropertyEvent,
-        Subsidy
+        Subsidy,
+        Comment
     }
 }
