@@ -12,6 +12,10 @@ namespace Urban.DCP.Data.PDB
         /// </summary>
         public string FilterName;
         /// <summary>
+        /// The summary, hover tip information 
+        /// </summary>
+        public string Description;
+        /// <summary>
         /// What order should this attribute be displayed in within the
         /// "Long" (Detailed) view?
         /// </summary>
@@ -38,6 +42,7 @@ namespace Urban.DCP.Data.PDB
         {
             Name = attr.DisplayName;
             FilterName = attr.FilterName;
+            Description = attr.Description;
             ValType = attr.ValueType == null ? null : attr.ValueType.ToString();
             Order = attr.TableViewOrder;
             LongOrder = attr.LongViewOrder;

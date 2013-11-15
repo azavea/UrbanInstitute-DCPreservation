@@ -30,6 +30,8 @@ namespace Urban.DCP.Web
             Master.RegisterJavascriptFile("client/ktable/jquery.event.drag-1.4.js");
             Master.RegisterJavascriptFile("client/ktable/jquery.ktable.colsizable-1.1.js");
             Master.RegisterJavascriptFile("client/jquery.tooltip/jquery.tooltip.min.js");
+            Master.RegisterCssFile("client/css/swipebox/swipebox.css");
+            Master.RegisterJavascriptFile("client/jquery.swipebox.min.js");
 
             // Application js
             Master.RegisterJavascriptFile("client/pdp.config.js", false);
