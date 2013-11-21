@@ -3,8 +3,8 @@
 <%@ MasterType TypeName="Urban.DCP.Web.masters.Default" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="contentPlaceHolder" runat="server">
-     <h2 id="pdp-profile-header">Manage Preservation Network Organizations</h2>
-     <div id="pdp-main"> 
+     <h1 id="pdp-profile-header">Manage Preservation Network Organizations</h1>
+     <div id="pdp-main" class="manage"> 
          <h4>Add New Organization</h4>
          <input type="text" id="new-org-name" placeholder="Org Name"/><button data-action="add">Add Organization</button>
 

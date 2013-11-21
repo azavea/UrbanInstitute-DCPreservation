@@ -150,8 +150,8 @@
                 <p class="comment-text">{{ Text }}</p>
                 <p class="comment-poster">{{ Username }}</p>
                 <p class="comment-date">Posted on {{ formattedDate }} for {{ forwho }}</p>
-                <p>{% if (CanDelete) { %}<button class="trash-comment">delete</button>{% } %}
-                   {% if (CanEdit) { %}<button class="edit-comment">edit</button></p>{% } %}
+                <p>{% if (CanDelete) { %}<button class="trash-comment">Delete</button>{% } %}
+                   {% if (CanEdit) { %}<button class="edit-comment">Edit</button></p>{% } %}
              
             </div>
             <div class="edit" style="display:none">
@@ -169,8 +169,8 @@
                 <p><label><input type="checkbox" class="remove-image" />remove image</label></p>
                 {% } %}
                   <p>
-                    <button class="cancel-edit">cancel</button>
-                    <button class="save-edit">save</button>
+                    <button class="cancel-edit">Cancel</button>
+                    <button class="save-edit">Save</button>
                 </p>
             </div>
             <hr />
