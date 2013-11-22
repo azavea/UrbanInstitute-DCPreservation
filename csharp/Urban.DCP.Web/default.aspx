@@ -67,50 +67,58 @@
         <div id="project-child-details">
             {% if (reac) { %}
             <h4>REAC Scores</h4>
-            <table>
-                <thead>
-                    <th>Score Date</th><th>Score</th>
-                </thead>
-                <tbody>
-                    {{reac}}
-                </tbody>
-            </table>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <th>Score Date</th><th>Score</th>
+                    </thead>
+                    <tbody>
+                        {{reac}}
+                    </tbody>
+                </table>
+            </div>
             {% } %}
             
             {% if (parcel) { %}
             <h4>Parcel Records</h4>
-            <table>
-                <thead>
-                    <th>SSL</th><th>Parcel Type</th><th>Owner Name</th><th>Owner Date</th><th>Owner Type</th><th>Units</th>
-                </thead>
-                <tbody>
-                    {{parcel}}
-                </tbody>
-            </table>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <th>SSL</th><th>Parcel Type</th><th>Owner Name</th><th>Owner Date</th><th>Owner Type</th><th>Units</th>
+                    </thead>
+                    <tbody>
+                        {{parcel}}
+                    </tbody>
+                </table>
+            </div>
             {% } %}
 
             {% if (property) { %}
             <h4>Real Property Events</h4>
-            <table>
-                <thead>
-                    <th>SSL</th><th>Event Date</th><th>Event Type</th><th>Event Description</th>
-                </thead>
-                <tbody>
-                    {{property}}
-                </tbody>
-            </table>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <th>SSL</th><th>Event Date</th><th>Event Type</th><th>Event Description</th>
+                    </thead>
+                    <tbody>
+                        {{property}}
+                    </tbody>
+                </table>
+            </div>
             {% } %}
 
             {% if (subsidy) { %}
             <h4>Subsidy Details</h4>
-            <table>
-                <thead>
-                    <th>Active</th><th>Program</th><th>Contract #</th><th>Units Assist</th><th>Start</th><th>End</th><th>Source</th><th>Updated</th>
-                </thead>
-                <tbody>
-                    {{subsidy}}
-                </tbody>
-            </table>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <th>Active</th><th>Program</th><th>Contract #</th><th>Units Assist</th><th>Start</th><th>End</th><th>Source</th><th>Updated</th>
+                    </thead>
+                    <tbody>
+                        {{subsidy}}
+                    </tbody>
+                </table>
+            </div>
             {% } %}
         </div>
     </script> 
