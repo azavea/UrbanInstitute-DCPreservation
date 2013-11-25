@@ -48,17 +48,17 @@
     <script type="text/template" id="comment-form-template">
         <h1>Add Comment</h1>
        <p>
-         <label for="comment-access-level">Access Level</label>
+         <label for="comment-access-level" class="comment-access-level">Access Level</label>
         <select id="comment-access-level">
             <option value="Public">Public</option>
             <option value="SameOrg">Same Organization</option>
             <option value="Network">Network</option>
         </select>
          </p>
-        <label for="comment-image">Comment Image</label><br />
+        <label for="comment-image" class="comment-image">Comment Image</label>
         <input type="file" name="files[]" class="edited-image" id="comment-image"/><br />
         <div class="image-status"></div>
-        <label for="new-comment">New Comment</label><br />
+        <label for="new-comment" class="new-comment">Comment</label>
         <textarea id="new-comment"></textarea><br />
         <button id="submit-new-comment">Submit Comment</button>
     </script>
@@ -66,8 +66,8 @@
     <script type="text/template" id="project-details-template">
         <div id="project-child-details">
             {% if (reac) { %}
-            <h4>REAC Scores</h4>
-            <div class="table-wrapper">
+            <h3 class="pull-header">REAC Scores</h3>
+            <div class="table-wrapper" style="display: none">
                 <table>
                     <thead>
                         <th>Score Date</th><th>Score</th>
@@ -80,8 +80,8 @@
             {% } %}
             
             {% if (parcel) { %}
-            <h4>Parcel Records</h4>
-            <div class="table-wrapper">
+            <h3 class="pull-header">Parcel Records</h3>
+            <div class="table-wrapper" style="display: none">
                 <table>
                     <thead>
                         <th>SSL</th><th>Parcel Type</th><th>Owner Name</th><th>Owner Date</th><th>Owner Type</th><th>Units</th>
@@ -94,8 +94,8 @@
             {% } %}
 
             {% if (property) { %}
-            <h4>Real Property Events</h4>
-            <div class="table-wrapper">
+            <h3 class="pull-header">Real Property Events</h3>
+            <div class="table-wrapper" style="display: none">
                 <table>
                     <thead>
                         <th>SSL</th><th>Event Date</th><th>Event Type</th><th>Event Description</th>
@@ -108,8 +108,8 @@
             {% } %}
 
             {% if (subsidy) { %}
-            <h4>Subsidy Details</h4>
-            <div class="table-wrapper">
+            <h3 class="pull-header">Subsidy Details</h3>
+            <div class="table-wrapper" style="display: none">
                 <table>
                     <thead>
                         <th>Active</th><th>Program</th><th>Contract #</th><th>Units Assist</th><th>Start</th><th>End</th><th>Source</th><th>Updated</th>
@@ -156,23 +156,26 @@
                     </a> 
                 {% } %}
                 <p class="comment-text">{{ Text }}</p>
-                <p class="comment-poster">{{ Username }}</p>
+                <p class="comment-poster">by {{ Username }}</p>
                 <p class="comment-date">Posted on {{ formattedDate }} for {{ forwho }}</p>
                 <p>{% if (CanDelete) { %}<button class="trash-comment">Delete</button>{% } %}
                    {% if (CanEdit) { %}<button class="edit-comment">Edit</button></p>{% } %}
-             
             </div>
-            <div class="edit" style="display:none">
-                {% if (HasPicture) { %}<img src="<% Response.Write(ResolveUrl("~/handlers/comment-image.ashx")); %>?id={{ Id }}&amp;thumb=true" />{% } %}
-                <select class="comment-access-level-edit">
-                    <option value="Public">Public</option>
-                    <option value="SameOrg">Same Organization</option>
-                    <option value="Network">Network</option>
-                </select>
+            <div class="edit pdp-longview-comment-form" style="display:none">
+                <p>
+                    <label for="comment-access-level" class="comment-access-level">Access Level</label>                
+                    <select class="comment-access-level-edit">
+                        <option value="Public">Public</option>
+                        <option value="SameOrg">Same Organization</option>
+                        <option value="Network">Network</option>
+                    </select>
+                </p>
+                <label for="comment-image" class="comment-image">Comment Image</label>
+                {% if (HasPicture) { %}<img src="<% Response.Write(ResolveUrl("~/handlers/comment-image.ashx")); %>?id={{ Id }}&amp;thumb=true" />{% } %}              
                 <input type="file" class="edited-image" name="files[]" /><br />
                 <div class="image-status"></div>
+                <label for="new-comment" class="new-comment">Comment</label>                
                 <textarea class="edited-comment">{{ Text }}</textarea><br />
-                
                 {% if (HasPicture) { %}
                 <p><label><input type="checkbox" class="remove-image" />remove image</label></p>
                 {% } %}

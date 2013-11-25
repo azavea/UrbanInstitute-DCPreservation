@@ -51,6 +51,8 @@
         };
 
         $target.empty().append(panelTmpl(children));
+        console.log(children);
+        console.log(panelTmpl(children));
     };
 
 }(PDP));
