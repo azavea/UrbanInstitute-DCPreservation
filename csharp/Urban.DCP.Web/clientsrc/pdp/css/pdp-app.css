@@ -155,7 +155,7 @@ button #pdp-login-button {
 
 .pdp-map-icon:after {
     content: "";
-    background: url(client/css/images/markers/marker-shadow.png) no-repeat 0 0;
+    background: url(images/markers/marker-shadow.png) no-repeat 0 0;
     width: 24px;
     height: 12px;
     display: block;
