@@ -51,6 +51,11 @@
         };
 
         $target.empty().append(panelTmpl(children));
+        $('.pull-header').click(function () {
+            $(this).nextUntil('.pull-header').slideToggle(0, function () {
+            });
+            $(this).toggleClass('open');
+        });
     };
 
 }(PDP));
