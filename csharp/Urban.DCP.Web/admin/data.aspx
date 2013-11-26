@@ -3,8 +3,8 @@
 <%@ MasterType TypeName="Urban.DCP.Web.masters.Default" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="contentPlaceHolder" runat="server">
-     <h2 id="pdp-profile-header">Upload Data Sets</h2>
-     <div id="pdp-main">
+     <h1 id="pdp-profile-header">Upload Data Sets</h1>
+     <div id="pdp-main" class="manage">
          <form id="upload" method="POST" enctype="multipart/form-data">
              <input id="dataset" name="dataset" type="file"/>
              <select id="type" name="type">
