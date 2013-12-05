@@ -98,9 +98,14 @@
     });
         
     // Update user details    
-    P.Data.updateUser = Azavea.tryCatch('data create user', function(username, name, email, password, roles, organization, callback, error) {
+    P.Data.updateUser = Azavea.tryCatch('data create user', function (username, name, email,
+        password, roles, organization, active, callback, error) {
         var url = P.Data.path + 'handlers/users.ashx';
-        var data = { username: username, name: name, email: email, password: password, roles: roles, organization: organization == null ? 0 : organization };
+        var data = {
+            username: username, name: name, email: email, password: password,
+            roles: roles, organization: organization == null ? 0 : organization,
+            active: active
+        };
         _callHandler('PUT', url, data, callback, error);
     });
     

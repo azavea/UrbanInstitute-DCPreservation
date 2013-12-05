@@ -1,10 +1,11 @@
 ﻿using System;
+using Azavea.Web.Page;
 
 namespace Urban.DCP.Web.admin
 {
-    public partial class ManageUsers : System.Web.UI.Page
+    public partial class ManageUsers : BasePage
     {
-        protected void Page_Load(object sender, EventArgs e)
+        protected override void InternalGET (System.Web.HttpContext context)
         {
             Master.SetTitle("User Management");
 

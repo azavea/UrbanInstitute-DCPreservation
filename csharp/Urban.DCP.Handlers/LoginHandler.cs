@@ -22,14 +22,25 @@ namespace Urban.DCP.Handlers
             {
                 // We are currently logged in
                 User user = UserHelper.GetUser(context.User.Identity.Name);
-                context.Response.StatusCode = (int)HttpStatusCode.OK;
-                context.Response.Write(WebUtil.ObjectToJson(new {Name = user.Name, Admin = user.IsSysAdmin(), Limited = user.IsLimited(), EmailConfirmed = user.EmailConfirmed}));
-                return;
+
+                if (user.Active)
+                {
+                    context.Response.StatusCode = (int) HttpStatusCode.OK;
+                    context.Response.Write(
+                        WebUtil.ObjectToJson(
+                            new
+                                {
+                                    user.Name,
+                                    Admin = user.IsSysAdmin(),
+                                    Limited = user.IsLimited(),
+                                    user.EmailConfirmed
+                                }));
+                    return;
+                }
             }
 
             // Nobody was logged in
             context.Response.StatusCode = (int) HttpStatusCode.NoContent;
-            return;
         }
 
         /// <summary>
@@ -46,6 +57,12 @@ namespace Urban.DCP.Handlers
             {
                 context.Response.StatusCode = (int)HttpStatusCode.NotFound;
                 context.Response.Write("Account was not found.");
+                return;
+            }
+            if (!user.Active)
+            {
+                context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                context.Response.Write("Account is not active.");
                 return;
             }
 
