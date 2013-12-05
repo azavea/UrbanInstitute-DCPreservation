@@ -1,14 +1,9 @@
 ﻿using System;
 using System.Net;
-using System.Security.Principal;
 using System.Web;
-using System.Web.Security;
-using Azavea.Open.Common;
-using Azavea.Utilities.Common;
 using Azavea.Web;
 using Azavea.Web.Handler;
 using Urban.DCP.Data;
-using System.Net.Mail;
 using System.Collections.Generic;
 
 namespace Urban.DCP.Handlers
@@ -31,7 +26,7 @@ namespace Urban.DCP.Handlers
                 User user = UserHelper.GetUser(context.User.Identity.Name);
                 if (user.IsSysAdmin())
                 {
-                    IList<Organization> orgs = Organization.GetAll();
+                    IList<Organization> orgs = Organization.GetAllActive();
 
                     context.Response.StatusCode = (int)HttpStatusCode.OK;
                     string json = WebUtil.ObjectToJson(orgs);

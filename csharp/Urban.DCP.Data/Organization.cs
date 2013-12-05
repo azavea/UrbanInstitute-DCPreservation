@@ -20,6 +20,7 @@ namespace Urban.DCP.Data
 
         public int Id;
         public string Name;
+        public bool Active;
 
         /// <summary>
         /// Get an organization by id.
@@ -39,24 +40,25 @@ namespace Urban.DCP.Data
         }
 
         /// <summary>
-        /// Get a list of organizations
+        /// Get a list of all active organizations
         /// </summary>
         /// <returns></returns>
-        public static IList<Organization> GetAll()
+        public static IList<Organization> GetAllActive()
         {
-            return _orgDao.Get();
+            return _orgDao.Get("Active", true);
         }
 
         /// <summary>
-        ///  Delete an organization by id.
+        ///  Delete an organization by id, this has the side effect of
+        /// de-activating all users of that organization.
         /// </summary>
-        /// <param name="organizationId">the id of the org to delete.</param>
+        /// <param name="organizationId">The id of the org to delete.</param>
         public static void Delete(int organizationId)
         {
-            UserHelper.ClearOrganizationForUsers(organizationId);
-            var crit = new DaoCriteria();
-            crit.Expressions.Add(new EqualExpression("Id", organizationId));
-            _orgDao.Delete(crit);
+            UserHelper.DeactivateUsersOfOrg(organizationId);
+            var org = _orgDao.GetFirst("Id", organizationId);
+            org.Active = false;
+            _orgDao.Update(org);
         }
 
         /// <summary>
@@ -65,9 +67,7 @@ namespace Urban.DCP.Data
         /// <param name="name"></param>
         public static void Add(string name)
         {
-            //TODO: unique constraint on Name.
-            var org = new Organization();
-            org.Name = name;
+            var org = new Organization {Name = name, Active = true};
             _orgDao.Insert(org);
         }
 
