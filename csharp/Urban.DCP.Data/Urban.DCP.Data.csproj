@@ -187,7 +187,9 @@
     <Compile Include="UserResultMetadata.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Tests\Pdb.config" />
     <None Include="Tests\test.config" />
   </ItemGroup>

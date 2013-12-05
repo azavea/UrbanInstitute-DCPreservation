@@ -3,8 +3,8 @@
 <%@ MasterType TypeName="Urban.DCP.Web.masters.Default" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="contentPlaceHolder" runat="server">
-     <h2 id="pdp-profile-header">User Administration</h2>
-     <div id="pdp-main">
+     <h1 id="pdp-profile-header">User Administration</h1>
+     <div id="pdp-main" class="manage">
          <div id="pdp-pdb-table-content" style="display:block;">
             <div id="pdp-admin-user-table"></div>
             <div id="pdp-user-table-pager" class="pdp-user-table-pager"></div>

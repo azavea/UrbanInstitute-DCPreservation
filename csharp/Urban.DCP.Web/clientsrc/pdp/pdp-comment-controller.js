@@ -53,7 +53,7 @@
                 + (data.Comments.length > 1 ? "s" : "") + "</h3>");
             _.each(data.Comments, function (comment) {
                 comment["forwho"] = _commentForField(comment);
-                comment["formattedDate"] = moment(comment.Modified).format('MM Do YYYY, h:mm:ss a');
+                comment["formattedDate"] = moment(comment.Modified).format('MM/DD/YY h:mm A');
                 var $newComment = $(template(comment));
                 var submitButton = $newComment.find(".save-edit");
                 $comments.append($newComment);

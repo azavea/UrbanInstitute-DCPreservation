@@ -55,8 +55,8 @@
         
 .input-invalid { border:solid 2px #ff0000; }    
 .pdp-input-uninit { color:#8D8D8D; }
-.pdp-selected-criteria { font-size:0.82em; font-weight:bold; padding:2px 0; }
+.pdp-selected-criteria { font-size:0.82em; font-weight:bold; padding:2px 0; background-color: #8d2d3b; padding: 2px 5px 2px 2px; display: inline-block; border-radius: 4px; margin: 0 3px 4px 0; }
     .pdp-selected-criteria .ui-icon { cursor:pointer; }
-    .pdp-selected-criteria label { padding-left: 4px; font-size: 12px; color: #d1d2d4; font-weight: normal; line-height: 19px; }
+    .pdp-selected-criteria label { padding-left: 4px; font-size: 12px; color: #d0d0d2; font-weight: normal; line-height: 19px; }
 .ui-autocomplete { max-height:110px; overflow-y:auto; }
 

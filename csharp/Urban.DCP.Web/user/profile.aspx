@@ -3,7 +3,7 @@
 <%@ MasterType TypeName="Urban.DCP.Web.masters.Default" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="contentPlaceHolder" runat="server">
-    <h2 id="pdp-profile-header">Your Profile</h2>
+    <h1 id="pdp-profile-header" class="manage">Your Profile</h1>
     <div class="pdp-form">
         <fieldset class="pdp-profile-form" >
             <div class="pdp-form-message">Use this form to update your basic account information.</div>

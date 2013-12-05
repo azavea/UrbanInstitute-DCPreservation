@@ -71,7 +71,7 @@
         $requestButton.hide();
         _.each(data, function (r) {
             $requestButton.show();
-            r["formattedDate"] = moment(r.Date).format('MM/DD/YYYY, h:mm:ss a');
+            r["formattedDate"] = moment(r.Date).format('MM/DD/YYYY h:mm A');
             $revisionContainer.append(revisionTemplate(r));
         });
     }
