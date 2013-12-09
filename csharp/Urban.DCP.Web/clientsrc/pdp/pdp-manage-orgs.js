@@ -55,10 +55,10 @@
             var callback = function() {
                 self._fetch();
             };
-            var errback = function() {
+            var errback = function () {
                 PDP.Util.alert("There was an error deleting that organization");
             };
-            var ok = confirm("Are you sure you want to delete " + name + "?");
+            var ok = confirm("Are you sure you want to delete " + name + "? \nAll users in this organization will be deactivated.");
             if (ok) {
                 P.Data.deleteOrganization(id, callback, errback);
             }

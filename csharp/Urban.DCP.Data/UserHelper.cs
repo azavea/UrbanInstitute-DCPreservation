@@ -54,8 +54,9 @@ namespace Urban.DCP.Data
         /// <param name="email">The email address of this user.</param>
         /// <param name="name">The actual name of this user.</param>
         /// <param name="roles">A comma seperated list of roles assigned to this user.</param>
+        /// <param name="active">The users active status</param>
         public static User UpdateUser(string userName, string hashedPassword, string email, 
-                                            string name, string roles, int organization)
+                                            string name, string roles, int organization, bool? active)
         {
             // Determine if this is new user or an update 
             User userAccount = GetUser(userName);
@@ -91,7 +92,12 @@ namespace Urban.DCP.Data
             {
                 userAccount.SetOrganization(organization);
             }
-            
+
+            if (active.HasValue)
+            {
+                userAccount.Active = active.Value;
+            }
+
             // Save the information to the database
             _userDao.Update(userAccount);
 
@@ -116,6 +122,7 @@ namespace Urban.DCP.Data
             user.Password = hashedPassword;
             user.Email = email;
             user.Name = name;
+            user.Active = true;
             if (StringHelper.IsNonBlank(roles))
             {
                 user.Roles = roles;
@@ -246,7 +253,7 @@ namespace Urban.DCP.Data
         /// <param name="hashedPassword"></param>
         public static void SavePassword(string userName, string hashedPassword)
         {
-            UpdateUser(userName, hashedPassword, null, null, null, Organization.NO_UPDATE);
+            UpdateUser(userName, hashedPassword, null, null, null, Organization.NO_UPDATE, null);
         }
 
         /// <summary>
@@ -270,6 +277,7 @@ namespace Urban.DCP.Data
             if (isSysAdmin)
             {
                 retVal.Add(user.UserName);
+                retVal.Add(user.Active);
                 retVal.Add(user.Name);
                 retVal.Add(user.Email);
                 retVal.Add(user.Roles);
@@ -350,6 +358,7 @@ namespace Urban.DCP.Data
         {
             IList<UserResultMetadata> retVal = new List<UserResultMetadata>();
             retVal.Add(new UserResultMetadata("UserName","User Name", "text", true));
+            retVal.Add(new UserResultMetadata("Active","Active", "boolean", true));
             retVal.Add(new UserResultMetadata("Name", "Full Name", "text", true));
             retVal.Add(new UserResultMetadata("Email", "Email", "text", true));
             retVal.Add(new UserResultMetadata("Roles", "Roles", "text", true));
@@ -364,20 +373,16 @@ namespace Urban.DCP.Data
         }
 
         /// <summary>
-        /// Clear organization byte for all users at a given org id.  Called
+        /// Deactivate all users of an organization, occurs
         /// when org is deleted.
         /// </summary>
         /// <param name="organizationId">The org id to search.</param>
-        public static void ClearOrganizationForUsers(int organizationId)
+        public static void DeactivateUsersOfOrg(int organizationId)
         {
-            IList<User> users = _userDao.Get("Organization", organizationId);
-            for (int i = 0; i < users.Count; i++)
-            {
-                 users[i].Organization = 0;
-                _userDao.Save(users[i]);
-            }
+            _userDao.UpdateColumn(new DaoCriteria(
+                new EqualExpression("Organization", organizationId)),
+                "Active", false 
+            );
         }
-
-
     }
 }

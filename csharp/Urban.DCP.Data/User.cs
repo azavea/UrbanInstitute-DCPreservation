@@ -17,6 +17,11 @@ namespace Urban.DCP.Data
         /// </summary>
         public int Id;
         /// <summary>
+        /// Is this user account active?  Users who are 'deleted'
+        /// or whos organizations are deleted will be deactivated 
+        /// </summary>
+        public bool Active;
+        /// <summary>
         /// User handle.
         /// </summary>
         public string UserName;

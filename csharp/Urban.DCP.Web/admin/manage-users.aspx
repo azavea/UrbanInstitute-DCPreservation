@@ -18,6 +18,12 @@
         <fieldset class="pdp-form">
             <ul class="pdp-form-list">
                 <li>
+                    <label for="pdp-active" class="pdp-form-label">Active</label>
+                    <div class="pdp-form-ctrl">
+                        <input id="pdp-active" type="checkbox" class="pdp-input" />
+                    </div>
+                </li>
+                <li>
                     <label for="pdp-username" class="pdp-form-label">Username</label>
                     <div class="pdp-form-ctrl">
                         <input id="pdp-username" type="text" class="pdp-input pdp-input-text" readonly="readonly" />

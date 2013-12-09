@@ -8,9 +8,9 @@
                 bindTo: P,
                 fields: [
                     { id:'name', required:true },
-                    { id:'email', required:true, validator:'email' },
+                    { id: 'email', required: true, validator: 'email' },
                     { id:'password', required:true, type:'password', validator:'password' },
-                    { id:'password-2', required:true, type:'password' }
+                    { id: 'password-2', required: true, type: 'password' }
                 ]
             }, options);
         
@@ -76,10 +76,11 @@
                         name = $('#pdp-name').val(),
                         email = $('#pdp-email').val(),
                         roles = _getSelectedRoles(),
-                        organization = $("#pdp-select-org").val();
+                        organization = $("#pdp-select-org").val(),
+                        active = $("#pdp-active").is(":checked");
                     
                     // Send the data to be updated
-                    P.Data.updateUser( username, name, email, password, roles, organization, function() {
+                    P.Data.updateUser( username, name, email, password, roles, organization, active, function() {
                             //Success - Reload the user table
                             $(_options.bindTo).trigger('pdp-data-force-update');
                             
@@ -142,8 +143,11 @@
                             case 'Organization':
                                 $("#pdp-select-org").val(record[i]);
                                 break;
+                            case 'Active':
+                                $('#pdp-active').prop('checked', record[i]);
+                                break;
                             default:
-                                Azavea.log('An unknown user field was not accounted for: [' + attrs[i].UID + ']');  
+                                Azavea.log('An unknown user field was not accounted for: [' + attrs[i].UID + ']');
                                 break;                              
                         }
                     }
