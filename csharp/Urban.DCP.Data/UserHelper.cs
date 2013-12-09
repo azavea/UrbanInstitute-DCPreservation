@@ -373,20 +373,16 @@ namespace Urban.DCP.Data
         }
 
         /// <summary>
-        /// Clear organization byte for all users at a given org id.  Called
+        /// Deactivate all users of an organization, occurs
         /// when org is deleted.
         /// </summary>
         /// <param name="organizationId">The org id to search.</param>
-        public static void ClearOrganizationForUsers(int organizationId)
+        public static void DeactivateUsersOfOrg(int organizationId)
         {
-            IList<User> users = _userDao.Get("Organization", organizationId);
-            for (int i = 0; i < users.Count; i++)
-            {
-                 users[i].Organization = 0;
-                _userDao.Save(users[i]);
-            }
+            _userDao.UpdateColumn(new DaoCriteria(
+                new EqualExpression("Organization", organizationId)),
+                "Active", false 
+            );
         }
-
-
     }
 }
