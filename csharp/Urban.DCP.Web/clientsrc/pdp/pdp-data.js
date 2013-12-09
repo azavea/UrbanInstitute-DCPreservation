@@ -77,10 +77,10 @@
     });
 
     // Create a new user and logs them in
-    P.Data.createUser = Azavea.tryCatch('data create user', function(username, name, email, password, roles, callback, error) {
-        var url = P.Data.path + 'handlers/users.ashx';
-        var data = { username: username, name: name, email: email, password: password, roles: roles };
-        _callHandler('POST', url, data, callback, error);
+    P.Data.createUser = Azavea.tryCatch('data create user',
+        function (signupFields, callback, error) {
+            var url = P.Data.path + 'handlers/users.ashx';
+            _callHandler('POST', url, signupFields, callback, error);
     });
     
     // Get details of single user
