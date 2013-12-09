@@ -38,6 +38,11 @@ namespace Urban.DCP.Data
         /// </summary>
         public string Name;
         /// <summary>
+        /// Company or organization affiliation, as contact information, not
+        /// Preservation Network Organization
+        /// </summary>
+        public string Affiliation;
+        /// <summary>
         /// The actual text in the column - a comma separated list of roles
         /// </summary>
         public string Roles;
@@ -50,9 +55,15 @@ namespace Urban.DCP.Data
         /// </summary>
         public Boolean EmailConfirmed;
         /// <summary>
-        /// The organization id.
+        /// The Preservation Network Organization id that this user
+        /// is affiliated with
         /// </summary>
         public int? Organization;
+        /// <summary>
+        /// During signup, did the user request to be considered for a
+        /// Preservation Network affiliation?
+        /// </summary>
+        public bool NetworkRequested;
 
 
         /// <summary>

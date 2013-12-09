@@ -112,8 +112,11 @@ namespace Urban.DCP.Data
         /// <param name="email">The email address of this user.</param>
         /// <param name="name">The actual name of this user.</param>
         /// <param name="roles">A comma seperated list of roles assigned to this user.</param>
+        /// <param name="affiliation">The company or organization the user is affiliated with.
+        /// Not necessarily the Network Preservation org, but could also be.</param>
+        /// <param name="network">Did this user request to be recognized as a Network member?</param>
         public static User CreateUser(string userName, string hashedPassword, string email,
-                                            string name, string roles)
+              string name, string roles, string affiliation = null, bool network = false)
         {
             User user = new User();
 
@@ -123,6 +126,9 @@ namespace Urban.DCP.Data
             user.Email = email;
             user.Name = name;
             user.Active = true;
+            user.Affiliation = affiliation;
+            user.NetworkRequested = network;
+
             if (StringHelper.IsNonBlank(roles))
             {
                 user.Roles = roles;

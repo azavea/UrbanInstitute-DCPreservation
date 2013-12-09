@@ -78,6 +78,7 @@
 		                });
             });
             */
+            var successMsg = "Thank you for registering, please check your email for verification instructions.";
             
             // Submit our signup data on the button click
             $('#pdp-signup-button').button().click(function() {
@@ -87,33 +88,21 @@
                     
                     // Try validating the user input
                     if(P.Form.validate(_options.fields, {}, '.pdp-signup-panel')) {
-                        var username = $('#pdp-signup-username').val(),
-                            password = $('#pdp-signup-password').val(),
-                            name = $('#pdp-signup-name').val(),
-                            email = $('#pdp-signup-email').val();
-                            roles = '';
+                        var signupFields = {
+                            username: $('#pdp-signup-username').val(),
+                            affiliation: $('#pdp-signup-org').val(),
+                            password: $('#pdp-signup-password').val(),
+                            name: $('#pdp-signup-name').val(),
+                            email: $('#pdp-signup-email').val(),
+                            roles: '',
+                            network: $('#pdp-signup-network').is(':checked')
+                        };
                         
-                            P.Data.createUser(username, name, email, password, roles,
-
-                                /*
-                                In the future we may come back to this if email ver isn't applicable
-                                to all classes of user.
-
-                                function () {
-                            //Redirect to the default page
-                            P.Data.login(username, password, function(user) {
-                                $(_options.bindTo).trigger('pdp-login-success', [user]);
-                                $(_options.bindTo).trigger('pdp-login-status-refresh', [user]);
-                            }, function() {
-                                window.location.href = _options.landingUrl;
-                            });
-                        }, function(respText) {
-                            _displayErrorMsg(respText);
-                        }*/
-                        function () {
-                            P.Util.alert("Please check your email for verification instructions", "Registration Successfull",
-                                function () { window.location.href = _options.landingUrl; }
-                            );
+                        P.Data.createUser(signupFields,
+                            function () {
+                                P.Util.alert(successMsg, "Registration Successfull",
+                                    function () { window.location.href = _options.landingUrl; }
+                                );
                         });
                     } else {
                         _displayErrorMsg(P.Form.validationMsg);
@@ -144,6 +133,12 @@
                                     '</div>' +
                                 '</li>' +
                                 '<li>' +
+                                    '<label for="pdp-signup-org" class="pdp-form-label">Company/Organization:</label>' +
+                                    '<div class="pdp-form-ctrl">' +
+                                        '<input id="pdp-signup-org" type="text" class="pdp-input-shorttext" tabindex="2" />' +
+                                    '</div>' +
+                                '</li>' +
+                                '<li>' +
                                     '<label for="pdp-signup-email" class="pdp-form-label">Email:</label>' +
                                     '<div class="pdp-form-ctrl">' +
                                         '<input id="pdp-signup-email" type="text" class="pdp-input-shorttext" tabindex="3" />' +
@@ -169,6 +164,12 @@
                                         '<label class="pdp-form-label">I Agree to the <a id="pdp-signup-terms-display" href="javascript:void(0);">Terms of Service</a></label>' +
                                     '</div>' +
                                 '</li>' +*/
+                                '<li>' +
+                                    '<div class="pdp-form-ctrl">' +
+                                        '<input id="pdp-signup-network" type="checkbox" class="pdp-input pdp-input-checkbox" tabindex="6" />' +
+                                        '<label class="pdp-form-label">I am a member of the <a id="pdp-signup-network" target="_blank" href="http://www.neighborhoodindicators.org/activities/partner/dc-preservation-network">Preservation Network</a></label>' +
+                                    '</div>' +
+                                '</li>' +
                             '</ul>' +
                             '<div class="pdp-form-buttons">' +
                                 '<button id="pdp-signup-button" class="pdp-button" tabindex="7">Sign Up</button>' +

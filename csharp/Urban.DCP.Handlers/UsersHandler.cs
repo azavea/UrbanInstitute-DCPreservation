@@ -94,6 +94,8 @@ namespace Urban.DCP.Handlers
             string email = WebUtil.GetParam(context, "email", true);
             string name = WebUtil.GetParam(context, "name", true);
             string roles = WebUtil.GetParam(context, "roles", true);
+            var affiliation = WebUtil.GetParam(context, "affiliation", true);
+            var networkRequest = WebUtil.ParseBoolParam(context, "network");
 
             // If the password is coming through here (we haven't passed it out to
             // be able to pass it back in), we assume it's clear text and needs to be hashed.
@@ -107,7 +109,8 @@ namespace Urban.DCP.Handlers
 
             if (userInDb == null)
             {
-                User newUser = UserHelper.CreateUser(userName, hashPass, email, name, roles);
+                User newUser = UserHelper.CreateUser(userName, hashPass, email, name, 
+                    roles, affiliation, networkRequest);
 
                 // Send an email to notify that a user has signed up and is requesting new permissions
                 SendNewUserMailToAdmin(newUser);
@@ -143,7 +146,7 @@ namespace Urban.DCP.Handlers
                     string name = WebUtil.GetParam(context, "name", true);
                     int organization = WebUtil.ParseIntParam(context, "organization");
                     bool active = WebUtil.ParseBoolParam(context, "active");
-                    string roles = WebUtil.GetParam(context, "roles", true); 
+                    string roles = WebUtil.GetParam(context, "roles", true);
 
                     if (! authUser.IsSysAdmin()) {
                         // Don't update roles if not SU
@@ -208,11 +211,7 @@ namespace Urban.DCP.Handlers
             }
         }
 
-        /// <summary>
-        /// Sends an email 
-        /// </summary>
-        /// <param name="newUser">The user who has just registered.</param>
-        private void SendNewUserMailToAdmin(User newUser)
+        private static Mailer GetMailer()
         {
             // Get the mailer values from the config
             Config config = Config.GetConfig("PDP.Web");
@@ -223,6 +222,29 @@ namespace Urban.DCP.Handlers
             string smtpUser = config.GetParameter("Mailer", "SmtpUser");
             string smtpHashedPassword = config.GetParameter("Mailer", "SmtpHashedPassword");
 
+            // Setup the mailer and message
+            return new Mailer(smtpServer, smtpPort, smtpUser, smtpHashedPassword);
+
+        }
+
+        private string UserInfoTextBlock(User user)
+        {
+            return user.UserName + Environment.NewLine +
+                   user.Name + Environment.NewLine +
+                   user.Email + Environment.NewLine +
+                   user.Affiliation + Environment.NewLine +
+                   "Network Preservation Request: " + user.NetworkRequested;
+        }
+
+        /// <summary>
+        /// Sends an email 
+        /// </summary>
+        /// <param name="newUser">The user who has just registered.</param>
+        private void SendNewUserMailToAdmin(User newUser)
+        {
+            // Get the mailer values from the config
+            Config config = Config.GetConfig("PDP.Web");
+
             // Email settings
             string emailBody = config.GetParameter("NewUserNotification", "Body");
             string emailFromAddress = config.GetParameter("NewUserNotification", "FromEmail");
@@ -231,15 +253,14 @@ namespace Urban.DCP.Handlers
             string emailSubject = config.GetParameter("NewUserNotification", "Subject");
 
             // Substitute our values for the tokens from config
-            emailBody = emailBody.Replace("{UserInfo}", newUser.UserName + Environment.NewLine + newUser.Name + Environment.NewLine + newUser.Email);
+            emailBody = emailBody.Replace("{UserInfo}", UserInfoTextBlock(newUser));
 
-            // Setup the mailer and message
-            Mailer mailer = new Mailer(smtpServer, smtpPort, smtpUser, smtpHashedPassword);
             MailMessage msg = new MailMessage(new MailAddress(emailFromAddress, emailFromName), new MailAddress(emailTo));
             msg.Subject = emailSubject;
             msg.Body = emailBody;
 
             // Send it
+            var mailer = GetMailer();
             bool sent = mailer.SendMessageObject(msg);
 
             _log.Debug("Reset Email message sent, returned: [" + sent.ToString() + "]");
@@ -254,12 +275,6 @@ namespace Urban.DCP.Handlers
             // Get the mailer values from the config
             Config config = Config.GetConfig("PDP.Web");
 
-            // SMTP config
-            string smtpServer = config.GetParameter("Mailer", "SmtpServer");
-            int smtpPort = Convert.ToInt32(config.GetParameter("Mailer", "SmtpPort"));
-            string smtpUser = config.GetParameter("Mailer", "SmtpUser");
-            string smtpHashedPassword = config.GetParameter("Mailer", "SmtpHashedPassword");
-
             //Email settings
             string link = String.Format(config.GetParameter("EmailVerification", "ConfirmationURI"), user.UserName, user.EmailConfirmationToken);
             string emailBody = String.Format(config.GetParameter("EmailVerification", "Body"), user.Name,
@@ -269,17 +284,18 @@ namespace Urban.DCP.Handlers
             string emailTo = user.Email;
             string emailSubject = config.GetParameter("EmailVerification", "Subject");
 
-
             // Setup the mailer and message
-            Mailer mailer = new Mailer(smtpServer, smtpPort, smtpUser, smtpHashedPassword);
             MailMessage msg = new MailMessage(new MailAddress(emailFromAddress, emailFromName), new MailAddress(emailTo));
             msg.Subject = emailSubject;
             msg.Body = emailBody;
             msg.IsBodyHtml = true;
+
             // Send it
+            var mailer = GetMailer();
             bool sent = mailer.SendMessageObject(msg);
 
-            _log.Debug("Confirmation Email message sent, returned: [" + sent.ToString() + "]");
+            _log.Debug(String.Format(
+                "Confirmation Email for {0} message sent, returned: [{1}]", user.UserName, sent));
         }
     
     
