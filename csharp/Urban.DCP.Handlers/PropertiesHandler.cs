@@ -89,7 +89,7 @@ namespace Urban.DCP.Handlers
                 string export = dataHelper.ResultsAsCsv(list, ((groupBys != null) && (groupBys.Count > 0)));
 
                 // Setup the response to handle this type of request
-                context.Response.AddHeader("Content-Disposition", "attachment;filename=Furman_Center_SHIP_Properties.csv");
+                context.Response.AddHeader("Content-Disposition", "attachment;filename=DC_Preservation_Properties.csv");
                 context.Response.ContentType = "text/csv";
                 context.Response.Write(export);
                 return;
