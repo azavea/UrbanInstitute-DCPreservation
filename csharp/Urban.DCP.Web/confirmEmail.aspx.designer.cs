@@ -10,6 +10,18 @@
 namespace Urban.DCP.Web {
     
     
-    public partial class WebForm1 {
+    public partial class ConfirmEmailPage {
+        
+        /// <summary>
+        /// Master property.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated property.
+        /// </remarks>
+        public new Urban.DCP.Web.masters.Default Master {
+            get {
+                return ((Urban.DCP.Web.masters.Default)(base.Master));
+            }
+        }
     }
 }
