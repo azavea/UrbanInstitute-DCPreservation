@@ -55,8 +55,11 @@ namespace Urban.DCP.Data
         /// <param name="name">The actual name of this user.</param>
         /// <param name="roles">A comma seperated list of roles assigned to this user.</param>
         /// <param name="active">The users active status</param>
+        /// <param name="affiliation">The company or org the user is associated with.</param>
+        /// <param name="confirmedEmail">Has the user's email address been confirmed</param>
         public static User UpdateUser(string userName, string hashedPassword, string email, 
-                                            string name, string roles, int organization, bool? active)
+                                            string name, string roles, int organization, bool? active,
+                                            string affiliation = null, bool? confirmedEmail = false)
         {
             // Determine if this is new user or an update 
             User userAccount = GetUser(userName);
@@ -81,6 +84,12 @@ namespace Urban.DCP.Data
             {
                 userAccount.Roles = roles;
             }
+            if (confirmedEmail.HasValue)
+            {
+                userAccount.EmailConfirmed = confirmedEmail.Value;
+            }
+
+            userAccount.Affiliation = affiliation;
 
             // Only overwrite password if the new one is non-blank
             if (StringHelper.IsNonBlank(hashedPassword))
@@ -283,11 +292,14 @@ namespace Urban.DCP.Data
             if (isSysAdmin)
             {
                 retVal.Add(user.UserName);
+                retVal.Add(user.EmailConfirmed);
                 retVal.Add(user.Active);
                 retVal.Add(user.Name);
                 retVal.Add(user.Email);
                 retVal.Add(user.Roles);
                 retVal.Add(user.Organization);
+                retVal.Add(user.Affiliation);
+                retVal.Add(user.NetworkRequested);
             }
             else
             {
@@ -364,11 +376,14 @@ namespace Urban.DCP.Data
         {
             IList<UserResultMetadata> retVal = new List<UserResultMetadata>();
             retVal.Add(new UserResultMetadata("UserName","User Name", "text", true));
-            retVal.Add(new UserResultMetadata("Active","Active", "boolean", true));
+            retVal.Add(new UserResultMetadata("EmailConfirmed", "Email Confirmed", "bool", false ));
+            retVal.Add(new UserResultMetadata("Active","Active", "bool", true));
             retVal.Add(new UserResultMetadata("Name", "Full Name", "text", true));
             retVal.Add(new UserResultMetadata("Email", "Email", "text", true));
             retVal.Add(new UserResultMetadata("Roles", "Roles", "text", true));
-            retVal.Add(new UserResultMetadata("Organization", "Organization", "organization", true));
+            retVal.Add(new UserResultMetadata("Organization", "Preservation Network Org", "organization", true));
+            retVal.Add(new UserResultMetadata("Affiliation", "Affiliation", "text", false ));
+            retVal.Add(new UserResultMetadata("NetworkRequested", "Network Requested", "bool", false ));
             
             return retVal;
         }

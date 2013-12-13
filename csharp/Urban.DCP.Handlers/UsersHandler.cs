@@ -147,6 +147,8 @@ namespace Urban.DCP.Handlers
                     int organization = WebUtil.ParseIntParam(context, "organization");
                     bool active = WebUtil.ParseBoolParam(context, "active");
                     string roles = WebUtil.GetParam(context, "roles", true);
+                    var affiliation = WebUtil.GetParam(context, "affiliation", true);
+                    var emailConfirmed = WebUtil.ParseBoolParam(context, "confirmed");
 
                     if (! authUser.IsSysAdmin()) {
                         // Don't update roles if not SU
@@ -163,7 +165,8 @@ namespace Urban.DCP.Handlers
                         hashPass = Hasher.Encrypt(pass);
                     }
 
-                    User user = UserHelper.UpdateUser(userName, hashPass, email, name, roles, organization, active);
+                    User user = UserHelper.UpdateUser(userName, hashPass, email, name, 
+                        roles, organization, active, affiliation, emailConfirmed);
                     
                     if (user != null)
                     {

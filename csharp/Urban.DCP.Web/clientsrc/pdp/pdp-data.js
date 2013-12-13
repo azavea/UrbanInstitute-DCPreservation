@@ -99,12 +99,12 @@
         
     // Update user details    
     P.Data.updateUser = Azavea.tryCatch('data create user', function (username, name, email,
-        password, roles, organization, active, callback, error) {
+        password, roles, organization, active, confirmed, affiliation, callback, error) {
         var url = P.Data.path + 'handlers/users.ashx';
         var data = {
             username: username, name: name, email: email, password: password,
             roles: roles, organization: organization == null ? 0 : organization,
-            active: active
+            active: active, confirmed: confirmed, affiliation: affiliation
         };
         _callHandler('PUT', url, data, callback, error);
     });

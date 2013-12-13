@@ -22,6 +22,10 @@
                     <div class="pdp-form-ctrl">
                         <input id="pdp-active" type="checkbox" class="pdp-input" />
                     </div>
+                    <label for="pdp-email-confirm" class="pdp-form-label">Email Confirmed</label>
+                    <div class="pdp-form-ctrl">
+                        <input id="pdp-email-confirm" type="checkbox" class="pdp-input" />
+                    </div>
                 </li>
                 <li>
                     <label for="pdp-username" class="pdp-form-label">Username</label>
@@ -42,7 +46,19 @@
                     </div>
                 </li>
                 <li>
-                    <label class="pdp-form-label" for="pdp-select-org">Organization</label>
+                    <label for="pdp-affiliation" class="pdp-form-label">Affiliation</label>
+                    <div class="pdp-form-ctrl">
+                        <input id="pdp-affiliation" type="text" class="pdp-input pdp-input-text" tabindex="3" />
+                    </div>
+                </li>
+                <li>
+                    <label for="pdp-requesting" class="pdp-form-label">Requesting Network Membership</label>
+                    <div class="pdp-form-ctrl">
+                        <input id="pdp-requesting" type="checkbox" disabled class="pdp-input" />
+                    </div>
+                </li>
+                <li>
+                    <label class="pdp-form-label" for="pdp-select-org">Network Org</label>
                     <div class="pdp-form-ctrl">
                          <select id="pdp-select-org" class="pdp-input" >
                             <option >test</option>

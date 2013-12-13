@@ -39,7 +39,7 @@
         });
         
         // Returns a comma seperated list of roles that are checked on the dialog
-        var _getSelectedRoles = Azavea.tryCatch('get selected roles', function(){
+        var _getSelectedRoles = Azavea.tryCatch('get selected roles', function () {
             var retValue = "";
             
             // Loop through the checked role checkboxes
@@ -70,17 +70,20 @@
                 $(event.target).addClass('pdp-input-button-disabled');
                 
                 // Validate our few fields
-                if(P.Form.validate(_options.fields, {}, _options.target, P.prefix)) {
+                if (P.Form.validate(_options.fields, {}, _options.target, P.prefix)) {
                     var username = $('#pdp-username').val(),
                         password = $('#pdp-password').val(),
                         name = $('#pdp-name').val(),
                         email = $('#pdp-email').val(),
                         roles = _getSelectedRoles(),
                         organization = $("#pdp-select-org").val(),
-                        active = $("#pdp-active").is(":checked");
+                        active = $("#pdp-active").is(":checked"),
+                        aff = $('#pdp-affiliation').val(),
+                        confirmed = $('#pdp-email-confirm').is(':checked');
                     
                     // Send the data to be updated
-                    P.Data.updateUser( username, name, email, password, roles, organization, active, function() {
+                    P.Data.updateUser(username, name, email, password, roles,
+                        organization, active, confirmed, aff, function () {
                             //Success - Reload the user table
                             $(_options.bindTo).trigger('pdp-data-force-update');
                             
@@ -104,12 +107,11 @@
         });
         
         // For ExtraCol "Edit" configure link click to display dialog with user info for edit.
-        var _overrideRenderer = Azavea.tryCatch('override edit renderer', function(){
+        var _overrideRenderer = Azavea.tryCatch('override edit renderer', function() {
 
-            P.Util.renderers.organization = function (value, index, record, attrs) {
+            P.Util.renderers.organization = function(value) {
                 return _self.orgMap[value];
-            }
-
+            };
 
             P.Util.renderers.userEdit = function (value, index, record, attrs) {
                 
@@ -145,6 +147,15 @@
                                 break;
                             case 'Active':
                                 $('#pdp-active').prop('checked', record[i]);
+                                break;
+                            case 'EmailConfirmed':
+                                $('#pdp-email-confirm').prop('checked', record[i]);
+                                break;
+                            case 'Affiliation':
+                                $('#pdp-affiliation').val(record[i]);
+                                break;
+                            case 'NetworkRequested':
+                                $('#pdp-requesting').prop('checked', record[i]);
                                 break;
                             default:
                                 Azavea.log('An unknown user field was not accounted for: [' + attrs[i].UID + ']');
