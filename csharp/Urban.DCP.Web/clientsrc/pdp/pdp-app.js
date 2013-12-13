@@ -217,12 +217,13 @@
             
             // A bit of magic here, to ensure that everything is lined up correctly
             $(window).resize();
-            
+
             // Everything is set up, display the splash screen if needed
+            /* Presently, the splash screen is undeveloped and not shown
             P.Widget.Splash({
                 backgroundOpacity: 0.5
             }).init();
-            
+           */ 
             return _self;
         });
         
