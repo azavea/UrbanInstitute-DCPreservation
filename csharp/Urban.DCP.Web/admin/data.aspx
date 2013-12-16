@@ -6,25 +6,28 @@
      <h1 id="pdp-profile-header">Upload Data Sets</h1>
      <div id="pdp-main" class="manage">
          <form id="upload" method="POST" enctype="multipart/form-data">
-             <input id="dataset" name="dataset" type="file"/>
-             <select id="type" name="type">
-                 <option value="Project">Project Details</option>
-                 <option value="Reac">Reac Scores</option>
-                 <option value="Parcel">Parcel Details</option>
-                 <option value="RealPropertyEvent">Real Property Events</option>
-                 <option value="Subsidy">Subsidy Details</option>
-                 <option value="Attribute">Filter & Display Attributes</option>
-                 <option value="Comment" data-readonly="true">Property Comments</option>
-             </select>
-             <input id="upload-set" type="submit" value="Upload"/>
+             <h3>Select dataset type and the local file to upload.</h3>
+             <div id="dataset-selection-panel">
+                 <input id="dataset" name="dataset" type="file"/>
+                 <select id="type" class="dataset-type" name="type">
+                     <option value="Project">Project Details</option>
+                     <option value="Reac">Reac Scores</option>
+                     <option value="Parcel">Parcel Details</option>
+                     <option value="RealPropertyEvent">Real Property Events</option>
+                     <option value="Subsidy">Subsidy Details</option>
+                     <option value="Attribute">Filter & Display Attributes</option>
+                     <option value="Comment" data-readonly="true">Property Comments</option>
+                 </select>
+             </div>
+             <input id="upload-set" type="submit" value="Upload Selected File"/>
          </form>
          <form id="export" method="GET" action="export.ashx" target="_blank">
              <input id="export-type" name="type" type="hidden"/>
-             <input type="submit" value="Export"/>
+             <input type="submit" value="Export Selected Dataset"/>
          </form>
-         
+        <hr/> 
          <form id="uploadResult" runat="server">
-             <asp:Label runat="server" ID="resultLabel"></asp:Label>
+             <asp:Label runat="server" ID="resultLabel" CssClass="import-results"></asp:Label>
              <asp:GridView runat="server" ID="resultTable" class="admin-result-table"></asp:GridView>
          </form>
         

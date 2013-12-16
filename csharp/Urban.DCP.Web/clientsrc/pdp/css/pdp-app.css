@@ -757,3 +757,19 @@ button.ui-button:active {
 
 /* Override feedbacker image*/ 
 .feedbacker-floatLeft .feedbacker-openbutton-imgtab strong { background:url(images/feedbacker-tab-left-green.png) no-repeat !important;text-indent:-1000px;height:94px;width:26px;padding:0; }
+
+
+#dataset-selection-panel {
+    background-color: silver;
+    padding: 20px;
+    border-radius: 2px;
+}
+
+.dataset-type {
+    padding: 3px;
+}
+
+.import-results {
+    color: rgb(30, 151, 49);
+    font-weight: bold;
+}
