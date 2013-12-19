@@ -28,11 +28,19 @@
             },
             // Perform password validations.  Assumes 2 password fields named the same with a "-2" appended to one.
             password: function(field, dataObj, prefix) {
-                var sel = '#' + pre(prefix, field.id);
+                var sel = '#' + pre(prefix, field.id),
+                    minRequiredLength = 8;
                 // If password fields are visible, make sure both inputs have same values.
-                if($(sel).is(':visible')) {
+                if ($(sel).is(':visible')) {
                     var pw1 = $(sel).val(),
                         pw2 = $(sel + '-2').val();
+                    
+                    if (pw1.length < minRequiredLength) {
+                        P.Form.validationMsg += 'Password must be at least '
+                            + minRequiredLength + ' characters';
+                        return false;
+                    }
+
                     if(pw1 !== pw2) {
                         $(sel + ', ' + sel + '-2').addClass( pre(prefix, 'input-invalid') );
                         P.Form.validationMsg += 'Passwords do not match.';
