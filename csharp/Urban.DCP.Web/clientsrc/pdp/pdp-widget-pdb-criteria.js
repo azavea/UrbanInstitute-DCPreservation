@@ -277,6 +277,9 @@
                     _flattenAttrGroups(_attributes);
                     _render();
                     _bindEvents();
+
+                    // Initiate a search by default
+                    $(_options.bindTo).trigger('pdp-data-force-update');
                 }
                 finally {
                     // Stop the loading indicator
