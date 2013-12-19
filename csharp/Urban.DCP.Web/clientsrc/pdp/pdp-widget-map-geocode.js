@@ -12,7 +12,7 @@
             _$resultsContainer,
             _$resultsList,
             _$panel,
-            _nycBounds, 
+            _dcBounds,
             _geocoder;
 
        // When a new base layer is selected, trigger an event to tell the map                               
@@ -61,33 +61,24 @@
         var _geocode = Azavea.tryCatch('geocode an input', function() {
             // Do all this google stuff in a try block so we can still run the app if google is down
             try{
-                // This is a bounding box (in lat/lon) that will "bias" the results toward NYC.
-                if(!_nycBounds){
-                    _nycBounds = new google.maps.LatLngBounds(new google.maps.LatLng(40.496, -74.257),new google.maps.LatLng(40.916, -73.699));
+                // This is a bounding box (in lat/lon) that will "bias" the results toward DC.
+                if(!_dcBounds){
+                    _dcBounds = new google.maps.LatLngBounds(new google.maps.LatLng(38.896, -77.257),new google.maps.LatLng(38.996, -76.899));
                 }
                 if (!_geocoder){
                     _geocoder = new google.maps.Geocoder();
                 }
             
                 var text = _$geocodeInput.val();
-                if (text === 'asteroids') {
-                    // Whee!
-                    var s = document.createElement('script');
-                    s.type='text/javascript';
-                    document.body.appendChild(s);
-                    s.src='http://erkie.github.com/asteroids.min.js';
-                    _$geocodeInput.val('Thanks to Erik Rothoff Andersson!');
-                } else {
-                    // When we attempt a geocode, we start by clearing all the old results, errors, etc.
-                    _$resultsContainer.hide();
-                    _$geocodeFailure.hide();
-                    if (text) {
-                        var geocodeParams = {
-                                address: text,
-                                bounds: _nycBounds
-                            };
-                        _geocoder.geocode(geocodeParams, _processGeocodeResults);
-                    }
+                // When we attempt a geocode, we start by clearing all the old results, errors, etc.
+                _$resultsContainer.hide();
+                _$geocodeFailure.hide();
+                if (text) {
+                    var geocodeParams = {
+                            address: text,
+                            bounds: _dcBounds
+                        };
+                    _geocoder.geocode(geocodeParams, _processGeocodeResults);
                 }
             }
             catch(err){
