@@ -339,8 +339,11 @@ namespace Urban.DCP.Data.PDB
                                             int orderCol, SortType? orderDir, IEnumerable<SecurityRole> userAuth, int numPerPage, int page)
         {
             // Get the list of attributes we'll be dealing with.
-            IDictionary<string, PdbAttribute> attrDict =
+            var queryAttributes =
                 PdbAttributesHelper.GetAttributesDictionary(EntityTypes, userAuth);
+
+            var displayAttributes = 
+                PdbAttributesHelper.GetAttributesDictionary(new [] {PdbEntityType.Properties } , userAuth);
 
             // Setup the result object.
             PdbResultsWithMetadata retVal = new PdbResultsWithMetadata();
@@ -348,7 +351,7 @@ namespace Urban.DCP.Data.PDB
             retVal.Values = new List<IList<object>>();
             // Create the metadata list.
             List<PdbResultAttributeMetadata> resultMetadata = new List<PdbResultAttributeMetadata>();
-            foreach (PdbAttribute attrib in attrDict.Values)
+            foreach (PdbAttribute attrib in displayAttributes.Values)
             {
                 resultMetadata.Add(new PdbResultAttributeMetadata(attrib));
             }
@@ -360,7 +363,7 @@ namespace Urban.DCP.Data.PDB
             // options would be to query the primary first, query whichever one has more expressions
             // first, or something else.
             ClassMapping primaryMap = GetClassMapForPrimaryTable(userAuth);
-            DaoCriteria primaryCrit = QuerySecondaryAndConstructRealPrimaryCriteria(attrDict, expressions, primaryMap);
+            DaoCriteria primaryCrit = QuerySecondaryAndConstructRealPrimaryCriteria(queryAttributes, expressions, primaryMap);
 
             if (primaryCrit != null)
             {
@@ -379,7 +382,7 @@ namespace Urban.DCP.Data.PDB
                         throw new ArgumentOutOfRangeException("orderCol", orderCol,
                                                               "No attribute by this index is available to sort the results by.");
                     }
-                    PdbAttribute attr = attrDict[resultMetadata[orderCol].UID];
+                    PdbAttribute attr = queryAttributes[resultMetadata[orderCol].UID];
                     if (attr.InPrimaryTable)
                     {
                         // Just add the order clause.
