@@ -2,7 +2,7 @@
 select, input { font-size:12px; }
 optgroup {font-style: normal;}
 .pdp-form {padding: 5px; margin-left: 5px;}
-
+.tiny { font-size: 11px; }
 .pdp-input-text { border:1px solid #777;padding:4px 4px;font-size:1.1em;width:300px;background-color:#f3f3f3;margin-right:6px;
     background-image:-moz-linear-gradient(center top, #ebebeb, #fff 55%);
     background-image:-webkit-gradient(linear, 0% 0%, 0% 55%, from(#ebebeb), to(#fff)); }

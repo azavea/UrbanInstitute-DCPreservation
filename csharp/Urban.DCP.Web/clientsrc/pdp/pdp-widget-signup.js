@@ -147,7 +147,7 @@
                             '</ul>' +
                             '<ul class="pdp-form-list">' +
                                 '<li>' +
-                                    '<label for="pdp-signup-password" class="pdp-form-label">Password:</label>' +
+                                    '<label for="pdp-signup-password" class="pdp-form-label">Password <span class="tiny">(minimum 8 characters)</span>:</label>' +
                                     '<div class="pdp-form-ctrl">' +
                                         '<input id="pdp-signup-password" type="password" class="pdp-input-shorttext" tabindex="4" />' +
                                     '</div>' +

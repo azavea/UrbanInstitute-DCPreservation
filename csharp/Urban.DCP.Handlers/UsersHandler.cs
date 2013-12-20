@@ -87,6 +87,7 @@ namespace Urban.DCP.Handlers
         /// </summary>
         protected override void InternalPOST(System.Web.HttpContext context, HandlerTimedCache cache)
         {
+            const int minRequiredPassLength = 8;
 
             // Grab the params for this user
             string userName = WebUtil.GetParam(context, "username", true);
@@ -102,6 +103,11 @@ namespace Urban.DCP.Handlers
             string hashPass = null;
             if (StringHelper.IsNonBlank(pass))
             {
+                if (pass.Length < minRequiredPassLength)
+                {
+                    throw new AzaveaWebBadRequestException(
+                        String.Format("Password must be {0} characters long", minRequiredPassLength));
+                }
                 hashPass = Hasher.Encrypt(pass);
             }
 
