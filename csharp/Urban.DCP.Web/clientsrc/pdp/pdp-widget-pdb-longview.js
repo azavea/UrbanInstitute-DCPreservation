@@ -105,7 +105,7 @@
                     }
                 });
             }
-            
+
             // Remove any existing list and append new list to the dialog container
             $table = $('#pdp-longview-table', _$container).empty().append(listItems);
             $table.find('.pdp-pdb-control-label-help').tooltip({
@@ -287,6 +287,19 @@
              $(P).bind('pdp-login-success', function(event, user){
                 _setUserRole(user);
             });
+
+            // Ensure that the dialog box does not exceed the size of the window
+            // during resize events
+            var $window = $(window),
+                gutter = 50,
+                updateDialogSize = _.debounce(function() {
+                    _$container.dialog('option', {
+                        height: _options.height > $window.height() ? $window.height() - gutter : _options.height,
+                        width: _options.width > $window.width() ? $window.width() - gutter : _options.width,
+                        position: "center"
+                    });
+                }, 400);
+            $window.resize(updateDialogSize);
             
             // Create the container for the UI Dialog
             _createLongviewDialog();
