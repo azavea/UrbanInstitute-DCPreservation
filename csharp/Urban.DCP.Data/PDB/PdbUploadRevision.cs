@@ -13,7 +13,7 @@ namespace Urban.DCP.Data.PDB
     public class PdbUploadRevision
     {
         private static readonly FastDAO<PdbUploadRevision> _urDao =
-         new FastDAO<PdbUploadRevision>(Config.GetConfig("PDP.Data"), "PDB");
+         new FastDAO<PdbUploadRevision>(Config.GetConfig("PDP.Data"), "Admin");
        
         // Return only a reasonable amount of previous upload revisions
         private const int MaxRevisionsReturned = 15;

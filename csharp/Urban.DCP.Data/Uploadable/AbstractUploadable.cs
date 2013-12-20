@@ -18,8 +18,11 @@ namespace Urban.DCP.Data.Uploadable
 
     public abstract class AbstractLoadable<T> where T: class, new()
     {
-        internal static readonly FastDAO<T> _dao =
+        internal static readonly FastDAO<T> _readDao =
             new FastDAO<T>(Config.GetConfig("PDP.Data"), "PDB");
+
+        internal static readonly FastDAO<T> _writeDao =
+            new FastDAO<T>(Config.GetConfig("PDP.Data"), "Admin");
 
         /// <summary>
         /// Is this dataset only available for export?
@@ -83,13 +86,13 @@ namespace Urban.DCP.Data.Uploadable
 
             if (results.Errors.ErrorCount == 0)
             {
-                var trans = new SqlTransaction((AbstractSqlConnectionDescriptor)_dao.ConnDesc);
+                var trans = new SqlTransaction((AbstractSqlConnectionDescriptor)_writeDao.ConnDesc);
                 try
                 {
                     // Refresh the data if successfull 
                     PreProcess(trans, rows);
-                    _dao.DeleteAll(trans);
-                    _dao.Insert(trans, rows);
+                    _writeDao.DeleteAll(trans);
+                    _writeDao.Insert(trans, rows);
                     PostProcess(trans, rows);
                     trans.Commit();
 
@@ -113,8 +116,8 @@ namespace Urban.DCP.Data.Uploadable
         {
             // Filehelpers doesn't support creating a header row for writing
             // the csv file, so use the class mapping order.  
-            var header = string.Join(",", _dao.ClassMap.AllDataColsInOrder.ToArray());
-            var rows = _dao.Get();
+            var header = string.Join(",", _readDao.ClassMap.AllDataColsInOrder.ToArray());
+            var rows = _readDao.Get();
             var engine = new FileHelperEngine<T> {HeaderText = header};
             return engine.WriteString(rows);
         }

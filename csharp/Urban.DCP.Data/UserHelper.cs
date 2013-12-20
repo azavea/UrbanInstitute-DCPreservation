@@ -23,7 +23,7 @@ namespace Urban.DCP.Data
             new System.Diagnostics.StackTrace().GetFrame(0).GetMethod().DeclaringType.Namespace);
 
         private static readonly FastDAO<User> _userDao =
-            new FastDAO<User>(Config.GetConfig("PDP.Data"), "Users");
+            new FastDAO<User>(Config.GetConfig("PDP.Data"), "Admin");
 
         /// <summary>
         /// Returns the roles the given user has.

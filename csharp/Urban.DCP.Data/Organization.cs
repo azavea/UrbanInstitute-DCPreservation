@@ -18,6 +18,9 @@ namespace Urban.DCP.Data
         private static readonly FastDAO<Organization> _orgDao =
            new FastDAO<Organization>(Config.GetConfig("PDP.Data"), "PDB");
 
+        private static readonly FastDAO<Organization> _orgWriteDao =
+           new FastDAO<Organization>(Config.GetConfig("PDP.Data"), "Admin");
+        
         public int Id;
         public string Name;
         public bool Active;
@@ -58,7 +61,7 @@ namespace Urban.DCP.Data
             UserHelper.DeactivateUsersOfOrg(organizationId);
             var org = _orgDao.GetFirst("Id", organizationId);
             org.Active = false;
-            _orgDao.Update(org);
+            _orgWriteDao.Update(org);
         }
 
         /// <summary>
@@ -68,7 +71,7 @@ namespace Urban.DCP.Data
         public static void Add(string name)
         {
             var org = new Organization {Name = name, Active = true};
-            _orgDao.Insert(org);
+            _orgWriteDao.Insert(org);
         }
 
         /// <summary>
@@ -80,7 +83,7 @@ namespace Urban.DCP.Data
         {
             var org = getOrgById(id);
             org.Name = name;
-            _orgDao.Update(org);
+            _orgWriteDao.Update(org);
         }
             
     }

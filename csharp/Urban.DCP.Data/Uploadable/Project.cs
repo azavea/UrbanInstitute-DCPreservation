@@ -102,7 +102,7 @@ namespace Urban.DCP.Data.Uploadable
         /// </summary>
         public override void PostProcess(SqlTransaction trans, IList<Project> rows)
         {
-            var cols = _dao.ClassMap.AllDataColsByObjAttrs;
+            var cols = _readDao.ClassMap.AllDataColsByObjAttrs;
             var ward = cols["Ward"];
             var psa = cols["PoliceArea"];
             var cluster = cols["ClusterCombo"];

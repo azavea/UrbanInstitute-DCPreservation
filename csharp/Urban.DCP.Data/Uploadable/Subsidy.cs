@@ -80,7 +80,7 @@ namespace Urban.DCP.Data.Uploadable
         public override void PostProcess(SqlTransaction trans, IList<Subsidy> rows)
         {
             // Add unique program and agency names to the attribute value table
-            var cols = _dao.ClassMap.AllDataColsByObjAttrs;
+            var cols = _readDao.ClassMap.AllDataColsByObjAttrs;
             var program = cols["ProgramName"];
             var agency = cols["SubsidyInfoSource"];
 
