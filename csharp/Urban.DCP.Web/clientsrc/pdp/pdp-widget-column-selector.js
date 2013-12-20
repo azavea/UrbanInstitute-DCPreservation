@@ -37,12 +37,6 @@
                         
                         // Render top level controls
                         _renderAttrs(obj.Attrs, $cat.children('ul.pdp-column-select-category'));
-                        
-                        // Render sub cats
-                        if (obj.SubCats && obj.SubCats.length) {
-                            _renderAttrs(obj.SubCats, $('ul.pdp-column-select-category', $cat));
-                        }
-                        
                     } else {
                         // Handle the attributes, if there is no Category or Name, we don't want the choice
                         if(obj.Category && obj.Name){
@@ -64,7 +58,7 @@
             _renderAttrs(data, $('#pdp-column-select-panel-cols'));
             
             //Remove empty categories
-            $('ul.pdp-column-category:empty').parent().remove();
+            $('ul.pdp-column-select-category:empty').parent().remove();
         });
         
         // Show/hide the column list panel
