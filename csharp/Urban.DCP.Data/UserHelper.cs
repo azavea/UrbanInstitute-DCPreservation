@@ -405,5 +405,10 @@ namespace Urban.DCP.Data
                 "Active", false 
             );
         }
+
+        public static User UpdateUser(string userName, string hashedPassword, string email, string name, string roles)
+        {
+            return UpdateUser(userName, hashedPassword, email, name, roles, Organization.NO_UPDATE, null, null, null);
+        }
     }
 }

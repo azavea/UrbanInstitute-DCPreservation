@@ -144,24 +144,19 @@ namespace Urban.DCP.Handlers
                 //Return the details for this user
                 if (StringHelper.SafeEquals(userName, context.User.Identity.Name) || authUser.IsSysAdmin())
                 {
-                    
-
                     // Grab the params for this user
                     string pass = WebUtil.GetParam(context, "password", true);
                     string email = WebUtil.GetParam(context, "email", true);
                     string name = WebUtil.GetParam(context, "name", true);
                     int organization = WebUtil.ParseIntParam(context, "organization");
-                    bool active = WebUtil.ParseBoolParam(context, "active");
+                    bool active = false;
+                    var hasActive = WebUtil.ParseOptionalBoolParam(context, "active", ref active);
                     string roles = WebUtil.GetParam(context, "roles", true);
                     var affiliation = WebUtil.GetParam(context, "affiliation", true);
-                    var emailConfirmed = WebUtil.ParseBoolParam(context, "confirmed");
+                    bool emailConfirmed = false;
+                    var hasConfirmed = WebUtil.ParseOptionalBoolParam(context, "confirmed", ref emailConfirmed);
 
-                    if (! authUser.IsSysAdmin()) {
-                        // Don't update roles if not SU
-                        roles = authUser.Roles;
-                        // Don't update organization if not SU
-                        organization = Organization.NO_UPDATE;
-                    } 
+                    User user = null;
 
                     // If the password is coming through here (we haven't passed it out to
                     // be able to pass it back in), we assume it's clear text and needs to be hashed.
@@ -171,9 +166,21 @@ namespace Urban.DCP.Handlers
                         hashPass = Hasher.Encrypt(pass);
                     }
 
-                    User user = UserHelper.UpdateUser(userName, hashPass, email, name, 
-                        roles, organization, active, affiliation, emailConfirmed);
-                    
+                    if (authUser.IsSysAdmin())
+                    {
+                        var newActiveVal = hasActive ? active : (bool?) null;
+                        var newConfirmedVal = hasConfirmed ? emailConfirmed : (bool?) null;
+ 
+                        user = UserHelper.UpdateUser(userName, hashPass, email, name,
+                                                     roles, organization, newActiveVal, affiliation, newConfirmedVal);
+                    }
+                    else
+                    {
+                        // Don't update roles if not SU
+                        user = UserHelper.UpdateUser(userName, hashPass, email, name, authUser.Roles);
+                    }
+
+
                     if (user != null)
                     {
                         context.Response.StatusCode = (int) HttpStatusCode.OK;

@@ -80,14 +80,13 @@
                     
                     // Validate our few fields
                     if(P.Form.validate(_options.fields, {}, _options.target, P.prefix)) {
-                            var password = $('#pdp-password').val(),
+                        var password = $('#pdp-password').val(),
                             name = $('#pdp-name').val(),
                             email = $('#pdp-email').val();
-                            roles = '';
                         
                         // Send the data to be updated
-                        var NO_ORG_UPDATE = -1;
-                        P.Data.updateUser( _options.userName, name, email, password, roles, NO_ORG_UPDATE, function(user) {
+                        P.Data.updateProfile(_options.userName, name, email, password,
+                            function (user) {
                                 //Success
                                 P.Util.quickAlert('Your profile has been updated.');
                                 

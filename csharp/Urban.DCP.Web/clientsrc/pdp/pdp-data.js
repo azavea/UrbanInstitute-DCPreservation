@@ -96,7 +96,15 @@
         var data = {page: page, pageSize: pageSize, sortby: sortBy, sortasc: sortAsc };
         _callHandler('GET', url, data, callback, error);
     });
+
+    // User profile has fewer fields than admin profile
+    P.Data.updateProfile = Azavea.tryCatch('data update profile', function(username, name,
+        email, password, callback, error) {
         
+        P.Data.updateUser(username, name, email, password, null, null, null, null, null,
+            callback, error);
+    });
+    
     // Update user details    
     P.Data.updateUser = Azavea.tryCatch('data create user', function (username, name, email,
         password, roles, organization, active, confirmed, affiliation, callback, error) {
