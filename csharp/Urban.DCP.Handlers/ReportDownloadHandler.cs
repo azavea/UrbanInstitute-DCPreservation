@@ -88,7 +88,8 @@ namespace Urban.DCP.Handlers
                 return;
             }
 
-            if (roles.Contains(SecurityRole.SysAdmin) || roles.Contains(SecurityRole.limited))
+            // Network members (and sysadmins) have access to more detailed reports
+            if (roles.Contains(SecurityRole.SysAdmin) || roles.Contains(SecurityRole.network))
             {
                 // Limited access reports are available
                 dir = cfg.GetParameter("DetailedReports", "limited");

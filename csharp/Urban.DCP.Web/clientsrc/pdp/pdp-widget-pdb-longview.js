@@ -9,7 +9,7 @@
                 height: 750,
                 width: 750,
                 title: 'Property Description',
-                linkText: 'Download Full Report'
+                linkText: '&raquo; Download Full Report as PDF'
             }, options),
             _$container = {},
             _panorama,
@@ -227,8 +227,9 @@
             _$container = $('<div class="pdp-longview">' +
                     '<h2 class="pdp-longview-caption"></h2>' +
                     '<div id="pdp-longview-left">' +
-                    '<h3>Property Details</h3>' + 
-                '<div class="pdp-longview-street"></div>' +
+                        '<h3>Property Details</h3>' + 
+                        '<div class="pdp-longview-street"></div>' +
+                        '<a id="pdp-download-report" style="display=none;" href="javascript:void(0)">' + _options.linkText + '</a>' + 
                         '<table id="pdp-longview-table" class="pdp-longview-list"></table>' +
                         '<div id="pdp-child-display"></div>' +
                     '</div>' +
@@ -238,10 +239,7 @@
                     '</div>' +
                 '</div>');
             _$street = $('.pdp-longview-street', _$container);
-           
-            // Create a link to report download link
-            _$container.append('<a id="pdp-download-report" style="display=none;" href="javascript:void(0)">' + _options.linkText + '</a>');
-            
+
             // Tell the DialogUI about the container, with options
             _$container.dialog({
 		        autoOpen: false,
