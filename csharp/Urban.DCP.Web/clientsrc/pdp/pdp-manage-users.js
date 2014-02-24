@@ -100,7 +100,7 @@
                             _displayErrorMsg(respText);
                         });
                 } else {
-                    _displayDialogErrorMsg('All fields are required.');
+                    _displayDialogErrorMsg('All fields are required.  Passwords must be at least 8 characters long.');
                     $('.pdp-input-invalid:first').focus();
                 }
             }                

@@ -26,7 +26,7 @@
                     <div id="pdp-password-container">
                         <ul class="pdp-form-list">
                             <li>
-                                <label for="pdp-password" class="pdp-form-label">Password:</label>
+                                <label for="pdp-password" class="pdp-form-label">Password (8 character minimum):</label>
                                 <div class="pdp-form-ctrl">
                                     <input id="pdp-password" type="password" class="pdp-input pdp-input-text" tabindex="5" />
                                 </div>

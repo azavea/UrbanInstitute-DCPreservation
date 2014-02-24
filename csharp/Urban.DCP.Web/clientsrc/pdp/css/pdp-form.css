@@ -36,3 +36,6 @@ optgroup {font-style: normal;}
     .pdp-form ul { padding:4px 8px; }
         .pdp-form li { margin:2px 0 6px;padding:6px 0; }
 
+.pdp-form-messages.ui-state-error {
+    border: 0;
+}
