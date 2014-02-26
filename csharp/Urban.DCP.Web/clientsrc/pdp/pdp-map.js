@@ -8,9 +8,10 @@
                     new OpenLayers.Layer.Google("Street", { numZoomLevels: 20 }),
                     new OpenLayers.Layer.Google("Satellite", { type: google.maps.MapTypeId.SATELLITE, numZoomLevels: 22 }),
                     new OpenLayers.Layer.Google("Hybrid", {type: google.maps.MapTypeId.HYBRID, numZoomLevels: 20}),
-                    new OpenLayers.Layer.Google("Terrain", {type: google.maps.MapTypeId.TERRAIN})                
+                    new OpenLayers.Layer.Google("Terrain", {type: google.maps.MapTypeId.TERRAIN})
                 ],
-                defaultBbox: new OpenLayers.Bounds(-8592401.00507909, 4693042.444139108, -8559494.86440232, 4720636.211350055)
+                defaultBbox: new OpenLayers.Bounds(-8592401.00507909, 4693042.444139108, -8559494.86440232, 4720636.211350055),
+                maxBbox: new OpenLayers.Bounds(-8630657.73773582, 4664063.2557904925, -8504078.018895568, 4752730.208601296)
             }, options),
             $target,
             _map,
@@ -262,7 +263,7 @@
                 _trackPopup = false;
             });
         });
-        
+
         // Add single property markers to the map
         var _addMarker = Azavea.tryCatch('add marker', function(property) {
             //var markerPath = 'client/css/images/markers/map-indicator.png';
@@ -444,6 +445,10 @@
                 maxZoomLevel: 17,
                 minZoomLevel: 9,
                 maxExtent: _options.defaultBbox,
+                // Restriction must be in place for the map.zoomToMaxExtent()
+                // to work.  This restricted extent is still in DC much expanded
+                // to not interfere with map panning
+                restrictedExtent: _options.maxBbox,
                 zoomMethod: null,
                 transitionEffect: null,
                 controls: [
