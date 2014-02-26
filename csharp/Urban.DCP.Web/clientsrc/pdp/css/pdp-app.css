@@ -764,6 +764,9 @@ button.ui-button:active {
     padding: 20px;
     border-radius: 2px;
 }
+#dataset {
+    width: 450px;
+}
 
 .dataset-type {
     padding: 3px;
