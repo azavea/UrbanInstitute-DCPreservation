@@ -45,7 +45,7 @@
         var children = {
             reac: renderAndFormat(details.Reac, ['ScoreDate'], reacTmpl),
             parcel: renderAndFormat(details.Parcel, ['OwnerDate'], parcelTmpl),
-            property: renderAndFormat(details.Property, ['EventDate'], eventTmpl),
+            property: renderAndFormat(details.RealProperty, ['EventDate'], eventTmpl),
             subsidy: renderAndFormat(details.Subsidy,
                 ['ProgramActiveStart', 'ProgramActiveEnd', 'SubsidyUpdate'], subsidyTmpl)
         };
