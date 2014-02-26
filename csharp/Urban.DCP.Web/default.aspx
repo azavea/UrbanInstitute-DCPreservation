@@ -51,8 +51,8 @@
          <label for="comment-access-level" class="comment-access-level">Access Level</label>
         <select id="comment-access-level">
             <option value="Public">Public</option>
-            <option value="SameOrg">Same Organization</option>
             <option value="Network">Network</option>
+            <option value="SameOrg">Same Organization</option>
         </select>
          </p>
         <label for="comment-image" class="comment-image">Comment Image</label>
