@@ -30,7 +30,10 @@
         };
             
         _self.init = Azavea.tryCatch('init profile', function() {
-            
+            $.ajaxSetup({
+                cache: false
+            });
+
             // Set the right ref path
             P.Data.path = '../';
 

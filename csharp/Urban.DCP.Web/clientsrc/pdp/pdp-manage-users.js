@@ -212,7 +212,10 @@
         
         // Initialization routines for user admin page
         _self.init = Azavea.tryCatch('init profile', function() {
-            
+            $.ajaxSetup({
+                cache: false
+            });
+
             // Set the right ref path
             P.Data.path = '../';
 

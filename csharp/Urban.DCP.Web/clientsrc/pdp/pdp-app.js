@@ -145,6 +145,10 @@
         });
         
         _self.init = Azavea.tryCatch('init app', function() {
+            $.ajaxSetup({
+                cache: false
+            });
+
             _$main = $('#pdp-main');
             _$tabContainer = $('#pdp-tab-container');
             _$tabContent = $('.pdp-tab-content-container');

@@ -11,6 +11,8 @@ namespace Urban.DCP.Handlers
     public class OrganizationHandler : BaseHandler
     {
 
+        protected override bool UseResponseCache(HttpContext context) { return false; }
+
         /// <summary>
         /// Get a list of Organizations
         /// </summary>

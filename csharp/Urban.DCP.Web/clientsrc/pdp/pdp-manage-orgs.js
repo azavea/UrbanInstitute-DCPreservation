@@ -31,6 +31,9 @@
         self._rowTemplate = _.template($(self._settings.rowTemplateId).html());
         self._updateTemplate = _.template($(self._settings.updateTemplateId).html());
 
+        $.ajaxSetup({
+            cache: false
+        });
 
         // Set the right ref path for this /admin resouce
         P.Data.path = '../';
