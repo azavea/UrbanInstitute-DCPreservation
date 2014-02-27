@@ -264,6 +264,26 @@
             });
         });
 
+        var _panMapIfPopupOffRightEdge = Azavea.tryCatch('pan map for popup', function(evt) {
+            // If the popup will be off the right edge of the screen
+            // pan it so that it will be visible.  All other edges
+            // OpenLayers handles panning itself.  This is because we have 
+            // offsets applied via CSS so the map isn't aware of the 'true'
+            // boundaries.  The magic numbers move the popup to a spot where
+            // generally the X button will be visible, as requested by client.
+            var halfPopupWidth = 215,
+                popupHeight = 280,
+                topGutter = 250,
+                heightDiff = (topGutter + popupHeight) - evt.clientY,
+                yPanAmount = heightDiff > 0 ? heightDiff : 0,
+                $window = $(window);
+
+            if ($window.width() - evt.clientX < halfPopupWidth) {
+                // The quick defer is to move the animation to the bottom of the event stack
+                _.defer(function () { _map.pan(halfPopupWidth, -yPanAmount); }, 0);
+            }
+        });
+        
         // Add single property markers to the map
         var _addMarker = Azavea.tryCatch('add marker', function(property) {
             //var markerPath = 'client/css/images/markers/map-indicator.png';
@@ -276,7 +296,8 @@
             var icon = new OpenLayers.Icon(markerPath, size, offset);
             
             var marker = new OpenLayers.Marker(new OpenLayers.LonLat(property.X, property.Y), icon);
-            marker.events.register('click', marker, function() {
+            marker.events.register('click', marker, function(evt) {
+                _panMapIfPopupOffRightEdge(evt);
                 _addPopup(marker, [ property.Id]);
             });
             
