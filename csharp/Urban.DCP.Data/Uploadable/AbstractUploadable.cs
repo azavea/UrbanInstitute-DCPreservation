@@ -6,6 +6,7 @@ using Azavea.Open.Common;
 using Azavea.Database;
 using Azavea.Open.DAO.SQL;
 using FileHelpers;
+using FileHelpers.Events;
 using Urban.DCP.Data.PDB;
 
 namespace Urban.DCP.Data.Uploadable
@@ -119,7 +120,16 @@ namespace Urban.DCP.Data.Uploadable
             var header = string.Join(",", _readDao.ClassMap.AllDataColsInOrder.ToArray());
             var rows = _readDao.Get();
             var engine = new FileHelperEngine<T> {HeaderText = header};
+            engine.AfterWriteRecord += EngineOnAfterWriteRecord;
             return engine.WriteString(rows);
         }
+
+        /// <summary>
+        /// Method which implementing classes can provide post-row creation
+        /// changes for special cases when exporting.  Default implementation
+        /// is a no-op.
+        /// </summary>
+        internal virtual void EngineOnAfterWriteRecord(EngineBase engine, 
+            AfterWriteEventArgs<T> args) {}
     }
 }
