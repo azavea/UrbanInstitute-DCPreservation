@@ -24,14 +24,16 @@ namespace Urban.DCP.Data.Uploadable
         [FieldQuoted('"', QuoteMode.OptionalForRead)]
         public string OwnerName;
         /// <summary>
+        /// Date when this ownership info took effect
+        /// </summary>
+        [FieldConverter(ConverterKind.Date, "M/d/yyyy")] 
+        public DateTime? OwnerDate;
+
+        /// <summary>
         /// The type of ownership for this parcel
         /// </summary>
         public string OwnerType;
-        /// <summary>
-        /// Date when this ownership info took effect
-        /// </summary>
-        [FieldConverter(ConverterKind.Date, "MM/dd/yyyy")] 
-        public DateTime? OwnerDate;
+
         /// <summary>
         /// Type of ownership
         /// </summary>

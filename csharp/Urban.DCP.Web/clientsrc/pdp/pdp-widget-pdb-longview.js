@@ -231,12 +231,12 @@
                         '<div class="pdp-longview-street"></div>' +
                         '<a id="pdp-download-report" style="display=none;" href="javascript:void(0)">' + _options.linkText + '</a>' + 
                         '<table id="pdp-longview-table" class="pdp-longview-list"></table>' +
-                        '<div id="pdp-child-display"></div>' +
                     '</div>' +
                     '<div id="pdp-longview-right">' +
                         '<div id="pdp-longview-comments"></div>' +
                         '<div class="pdp-longview-comment-form"></div>' +
                     '</div>' +
+                    '<div id="pdp-child-display"></div>' +
                 '</div>');
             _$street = $('.pdp-longview-street', _$container);
 
