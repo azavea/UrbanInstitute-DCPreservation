@@ -11,7 +11,8 @@ namespace Urban.DCP.Data
         {
             _user = user;
             Comments = Comment.GetAuthorizedComments(id, user)
-                .Select(c => UiComment.FromComment(c, user));
+                .Select(c => UiComment.FromComment(c, user))
+                .OrderByDescending(c => c.Created);
         }
 
         public readonly IEnumerable<UiComment> Comments ;

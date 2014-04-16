@@ -286,5 +286,13 @@ namespace Urban.DCP.Data
             get { return UploadTypes.Comment; }
         }
 
+        // Comment images are bytes in the db and don't make sense in the
+        // export, but we can mark the row with image presence
+        internal override void EngineOnAfterWriteRecord(EngineBase engine, 
+            FileHelpers.Events.AfterWriteEventArgs<Comment> args)
+        {
+            args.RecordLine += "," + args.Record.HasPicture;
+        }
+
     }
 }
