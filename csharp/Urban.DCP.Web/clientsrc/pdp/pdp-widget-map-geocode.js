@@ -120,7 +120,7 @@
                     .dblclick(_stopPropagation);
             _$submitButton.click(_geocode);
             // Enable form submission by hitting "enter" (keycode = 13) in form
-            _$geocodeInput.keyup(function(event){
+            _$geocodeInput.keydown(function(event) {
                 if (event.which === 13){
                     _$submitButton.click();
                 }
