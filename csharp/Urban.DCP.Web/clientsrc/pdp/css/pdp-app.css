@@ -60,6 +60,10 @@
     overflow-x: auto;
 }
 
+#pdp-child-display {
+    clear: both;
+}
+
 #pdp-child-display td, #pdp-child-display th {
     padding: 10px;
     text-align: left;
