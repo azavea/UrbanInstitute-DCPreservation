@@ -323,7 +323,8 @@
 
             // Create the marker, add it to the map and add a click event to it to display a popup
             var marker = new OpenLayers.Marker(new OpenLayers.LonLat(cluster.X, cluster.Y), icon);
-            marker.events.register('click', marker, function() {
+            marker.events.register('click', marker, function(evt) {
+                _panMapIfPopupOffRightEdge(evt);
                 _addPopup(marker, cluster.Keys);
             });
 
