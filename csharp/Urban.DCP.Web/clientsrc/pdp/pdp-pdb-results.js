@@ -224,6 +224,10 @@
                 $(_options.bindTo).trigger('pdp-show-counts-panel');
                 return;    
             }
+
+            if (_activeCountMode) {
+                $(_options.bindTo).trigger('pdp-view-table');
+            }
             
             P.Data.getProperties(criteria, pageSize, page, colIndex, sortAsc, groupBys,
                 function(data) {
