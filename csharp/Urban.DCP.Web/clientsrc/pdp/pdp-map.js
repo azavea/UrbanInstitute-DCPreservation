@@ -164,7 +164,8 @@
                     // Locate the Property Name for our caption, which may be null and mark it to not show in list
                     if (attr.Name === 'Project Name') {
                         caption = record[i] || '';
-                    } else if (attr.ShortOrder && (_options.hideNoValues ? (record[i] || record[i] === 0) : true) ) {
+                    } else if (attr.ShortOrder && attr.Name
+                            && (_options.hideNoValues ? (record[i] || record[i] === 0) : true)) {
                         // Show this attribute value (unless hideNoValues = true and there is no value)
                         label = '<label class="pdp-shortview-label">' + attr.Name + ':</label>';
                         value = '<label class="pdp-shortview-value">' + P.Util.renderers[attr.ValType](record[i]) + '</label>';

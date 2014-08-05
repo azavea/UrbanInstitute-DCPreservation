@@ -68,7 +68,8 @@
                 }
 
                 // Show this attribute value (unless hideNoValues = true and there is no value)
-                if (show && attr.LongOrder && (_options.hideNoValues ? record[i] || record[i] === 0 : true) ) {
+                if (show && attr.LongOrder && attr.Name
+                        && (_options.hideNoValues ? record[i] || record[i] === 0 : true)) {
                     label = '<label class="pdp-longview-label">' + attr.Name + ':</label>';
                     if ($.isArray(record[i])){
                         // For this list, we just want to comma delimit the array
