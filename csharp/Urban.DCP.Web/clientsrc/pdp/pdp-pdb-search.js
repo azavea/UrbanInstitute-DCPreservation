@@ -32,6 +32,7 @@
             //Clear the criteria and results
             $('#pdp-pdb-button-reset').click(function(){
                 $(_options.bindTo).trigger('pdp-criteria-reset');
+                $(_options.bindTo).trigger('pdp-data-force-update');
             });
         });
 
