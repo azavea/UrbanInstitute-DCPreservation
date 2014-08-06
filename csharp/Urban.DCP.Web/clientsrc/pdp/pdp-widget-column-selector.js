@@ -39,7 +39,7 @@
                         _renderAttrs(obj.Attrs, $cat.children('ul.pdp-column-select-category'));
                     } else {
                         // Handle the attributes, if there is no Category or Name, we don't want the choice
-                        if(obj.Category && obj.Name){
+                        if(obj.Category && obj.Name && obj.CanShowInTable){
                             // This is a criteria attribute
                             $('<li rel="' + obj.CategoryOrder + '"><input type="checkbox" id="col-sel-'+obj.UID+'" /><label for="col-sel-'+obj.UID+'" class="pdp-pdb-column-label">'+obj.QueryName+'</label></li>').appendTo($target);
                         }

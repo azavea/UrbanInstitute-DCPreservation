@@ -72,6 +72,10 @@ namespace Urban.DCP.Data.PDB
         /// The collection of values that are allowed for this attribute.
         /// </summary>
         public List<IDictionary<string, object>> Values;
+        /// <summary>
+        /// Primary table fields can be shown in table views (1:1 relationship with property)
+        /// </summary>
+        public bool CanShowInTable;
 
         /// <summary>
         /// This constructor copies the necessary fields off the attribute.
@@ -102,6 +106,7 @@ namespace Urban.DCP.Data.PDB
             ValType = attr.ValueType == null ? null : attr.ValueType.ToString();
             Values = legitValues;
             QueryName = attr.FilterName;
+            CanShowInTable = attr.InPrimaryTable;
         }
     }
 }
