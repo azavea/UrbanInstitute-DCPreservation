@@ -3,7 +3,7 @@
         var _self = {},
             _options = $.extend({
                 target: 'body',
-                bindTo: P,
+                bindTo: P.Pdb,
                 tabTarget: ''
             }, options),
             _uiState = {
@@ -108,6 +108,10 @@
         //Init the Table/Map radio button
         var _initViewToolbar = Azavea.tryCatch('init data view picker', function(){
             $(_options.dataViewPickerTarget).buttonset();
+
+            $(_options.bindTo).bind('pdp-view-table', function() {
+                _setUiTypeState('pdp-table-view');
+            });
 
             $('label', _options.dataViewPickerTarget)
                 .click(function(event) {
