@@ -404,7 +404,7 @@
         
             _curColVisibility = [];
             $.each(_curResponse.Attrs, function(i, obj) {
-                _curColVisibility.push(obj.OnByDefault);
+                _curColVisibility.push(obj.OnByDefault && obj.Name);
             });
         });
         
