@@ -75,7 +75,8 @@
                 // We are allowing for the number 0 to be valid
                 if (value === null || !numberRegex.test(value)) {
                     $(sel).addClass( pre(prefix, 'input-invalid') );
-                    P.Form.validationMsg += 'Not a valid number';
+                    var validationMsg = 'Not a valid number';
+                    setValidationMessage($(sel), validationMsg);
                     return false;
                 }
                 return true;
@@ -128,7 +129,8 @@
                     // Check there is a value and that it is above the min/max from the dataObj
                     if (val === null || val < dataObj.min || val > dataObj.max) {
                         $(sel).addClass( pre(prefix, 'input-invalid') );
-                        P.Form.validationMsg += 'The value is not between [' + dataObj.min + '] and [' + dataObj.max + ']';
+                        var validationMsg = 'Value must be between ' + dataObj.min + ' and ' + dataObj.max + '';
+                        setValidationMessage($(sel), validationMsg);
                         return false;
                     }
                     return true; 
@@ -175,7 +177,8 @@
 
                 if (!valid || val === null) {
                     $sel.addClass(pre(prefix, 'input-invalid'));
-                    P.Form.validationMsg += "The value is not a valid date.";
+                    var validationMsg = "The value is not a valid date.";
+                    setValidationMessage($sel, validationMsg);
                 }
                 return valid;
 
@@ -184,6 +187,8 @@
         // Perform validation checks on a list of fields, using extra information in the dataObj param
         validate: function(fields, dataObj, container, prefix) {
             P.Form.validationMsg = '';
+            clearAllValidationMessages();
+            
             // Remove any invalid classes from the fields before validation
             $( '.' + pre(prefix, 'input-invalid'), container || '.pdp-form').removeClass( pre(prefix, 'input-invalid') );
 
@@ -219,4 +224,15 @@
             });
         }
     };
+
+    function setValidationMessage($input, msg) {
+        $input
+            .parents('.pdp-pdb-control')
+            .find('.validation-msg')
+            .text(msg);
+    }
+
+    function clearAllValidationMessages() {
+        $('.validation-msg').empty();
+    }
 }(PDP));

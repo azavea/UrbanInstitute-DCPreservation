@@ -14,7 +14,8 @@ optgroup {font-style: normal;}
 .pdp-input-textarea { height:64px; }
 .pdp-input-select { border:1px solid #777;padding:7px 4px;font-size:1.1em;-moz-border-radius:4px;margin-right:6px; }
 .pdp-input-checkbox { margin:0;vertical-align:middle; margin-right: 2px;}
-.pdp-input-invalid { border-width: 2px; border-color:#b44;background-color:#fbdfdf;
+.validation-msg { color: #b44; }
+.input-invalid { border-width: 1px; border-color:#b44;background-color:#fbdfdf;
     background-image:-moz-linear-gradient(center top, #fbdada, #fbe0e0 55%);
     background-image:-webkit-gradient(linear, 0% 0%, 0% 55%, from(#fbdada), to(#fbe0e0)); }
 .pdp-input-readonly { padding:0 8px;font-size:1.1em; }

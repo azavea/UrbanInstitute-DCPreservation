@@ -128,7 +128,11 @@
                 $text.addClass('pdp-input-uninit').val(msg);
 
                 // Remove any invalidation markup
-                $text.removeClass('input-invalid');
+                $text.removeClass('input-invalid')
+                    .parents('.pdp-pdb-control')
+                    .find('.validation-msg')
+                    .empty();
+
             }
         });
 
