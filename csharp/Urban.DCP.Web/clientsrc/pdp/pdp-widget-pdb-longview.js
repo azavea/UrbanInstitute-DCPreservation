@@ -45,8 +45,9 @@
                 v;
                 
             // Loop through each attribute to see if it should be included in the long view
-            // and build a list of label/values
-            $.each(attrs, function(i, attr) {
+            // and build a list of label/values.  
+            $.each(P.Util.sortByWithIndex(attrs, "LongOrder"), function(index, attr) {
+                var i = attr.index;
                 show = true;
                 // Locate the Property Name for our caption, which may be null and mark it to not show in list
                 if (attr.UID === 'Proj_Name') {
