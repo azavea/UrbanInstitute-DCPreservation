@@ -20,33 +20,39 @@ namespace Urban.DCP.Data.PDB
         /// <summary>
         /// Tells what kind of data the attribute is for.  Currently only properties are supported.
         /// </summary>
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public PdbEntityType EntityType;
 
         /// <summary>
         /// The column name within the primary table or "AttrName"
         /// within the secondary table.  Known as "Attribute" in the table.
         /// </summary>
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public string Name;
 
         /// <summary>
         /// Is this a property that can be queried on?
         /// </summary>
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public bool AllowFiltering;
 
         /// <summary>
         /// What order should this attribute be displayed in for the criteria list within the 
         /// category and subcategory?
         /// </summary>
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public string FilterAttrOrder;
 
         /// <summary>
         /// Used for grouping related properties.
         /// </summary>
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public string Category;
 
         /// <summary>
         /// What order should this attribute's category be displayed in for the criteria list?
         /// </summary>
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public string FilterCatOrder;
 
         /// <summary>
@@ -54,35 +60,41 @@ namespace Urban.DCP.Data.PDB
         /// Corresponds to "Grouping".
         /// </summary>
         [FieldConverter(typeof(EmptyStringToNull))]
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public string SubCategory;
 
         /// <summary>
         /// What order should this attribute's subcategory be displayed in for the criteria list
         /// within the category?
         /// </summary>
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public string FilterSubCatOrder;
 
         /// <summary>
         /// Is this attribute in the primary, or secondary, table?
         /// Corresponds to "IsNative".
         /// </summary>
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public bool InPrimaryTable;
 
         /// <summary>
         /// The name that will be displayed to the user when display (table).
         /// </summary>
         [FieldConverter(typeof(EmptyStringToNull))]
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public string DisplayName;
 
         /// <summary>
         /// The name that will be displayed to the user when querying.
         /// </summary>
         [FieldConverter(typeof(EmptyStringToNull))]
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public string FilterName;
 
         /// <summary>
         /// A verbose description that can be offered to the user.
         /// </summary>
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public string Description;
 
         /// <summary>
@@ -91,11 +103,13 @@ namespace Urban.DCP.Data.PDB
         /// or "range" (min / max controls) etc.
         /// Corresponds to "AttributeType".
         /// </summary>
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public PdbUiType? UiType;
 
         /// <summary>
         /// Money, year, text, etc.
         /// </summary>
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public PdbValueType? ValueType;
 
         /// <summary>
@@ -112,17 +126,20 @@ namespace Urban.DCP.Data.PDB
         /// <summary>
         /// Is this a property that can be grouped by when querying?
         /// </summary>
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public bool AllowGroupBy;
 
         /// <summary>
         /// The role the user must have in order to view / query / etc this attribute.
         /// Corresponds to "SecurityLevel"
         /// </summary>
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public SecurityRole? RequiredRole;
 
         /// <summary>
         /// In result grids, is this attribute shown by default?
         /// </summary>
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public bool? ShowByDefault;
 
         /// <summary>
@@ -130,6 +147,7 @@ namespace Urban.DCP.Data.PDB
         /// Table view?
         /// </summary>
         [FieldConverter(typeof(EmptyStringToNull))]
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public string TableViewOrder;
 
         /// <summary>
@@ -137,6 +155,7 @@ namespace Urban.DCP.Data.PDB
         /// "Short" (brief) view?
         /// </summary>
         [FieldConverter(typeof(EmptyStringToNull))]
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public string ShortViewOrder;
 
         /// <summary>
@@ -144,12 +163,14 @@ namespace Urban.DCP.Data.PDB
         /// "Long" (Detailed) view?
         /// </summary>
         [FieldConverter(typeof(EmptyStringToNull))]
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public string LongViewOrder;
 
         /// <summary>
         /// This may be removed, but it is used for if we have a "basic" and "advanced"
         /// query screen.
         /// </summary>
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public PdbDifficulty? Difficulty;
 
 

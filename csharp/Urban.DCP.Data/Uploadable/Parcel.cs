@@ -9,14 +9,17 @@ namespace Urban.DCP.Data.Uploadable
     public class Parcel: IDisplaySortable
     {
 
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public string NlihcId;
         /// <summary>
         /// Parcel record Identifier
         /// </summary>
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public string Ssl;
         /// <summary>
         /// Res/Non Res, single family, etc
         /// </summary>
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public string ParcelType;
         /// <summary>
         /// Parcel owner name
@@ -27,11 +30,13 @@ namespace Urban.DCP.Data.Uploadable
         /// Date when this ownership info took effect
         /// </summary>
         [FieldConverter(ConverterKind.Date, "M/d/yyyy")] 
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public DateTime? OwnerDate;
 
         /// <summary>
         /// The type of ownership for this parcel
         /// </summary>
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public string OwnerType;
 
         /// <summary>
