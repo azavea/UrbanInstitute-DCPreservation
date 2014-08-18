@@ -14,22 +14,27 @@ namespace Urban.DCP.Data.Uploadable
     [IgnoreFirst(1)]
     public class Subsidy: IDisplaySortable 
     {
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public string NlihcId;
         /// <summary>
         /// Description of the status of the project for this program
         /// </summary>
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public string SubsidyActive;
         /// <summary>
         /// The name of the subsidy program
         /// </summary>
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public string ProgramName;
         /// <summary>
         /// Unknown
         /// </summary>
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public string SubsidyInfo;
         /// <summary>
         /// The contract number for this project and this program
         /// </summary>
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public string ContractNumber;
         /// <summary>
         /// The numbers of assisted units provided for under this program
@@ -39,24 +44,29 @@ namespace Urban.DCP.Data.Uploadable
         /// The date which this project entered active status for this program
         /// </summary>
         [FieldConverter(ConverterKind.Date, "MM/dd/yyyy")] 
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public DateTime? ProgramActiveStart;
         /// <summary>
         /// The date which this project leaves active status for this program
         /// </summary>
         [FieldConverter(ConverterKind.Date, "MM/dd/yyyy")] 
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public DateTime? ProgramActiveEnd;
         /// <summary>
         /// The source program for this program
         /// </summary>
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public string SubsidyInfoSource;
         /// <summary>
         /// Notes on this projects participation in the program
         /// </summary>
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public string SubsidyNotes;
         /// <summary>
         /// Date when this program status was updated
         /// </summary>
         [FieldConverter(ConverterKind.Date, "MM/dd/yyyy")] 
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public DateTime? SubsidyUpdate;
 
         public string GetSortField()

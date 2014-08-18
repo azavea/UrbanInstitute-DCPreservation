@@ -19,62 +19,97 @@ namespace Urban.DCP.Data.Uploadable
     public class Project
     {
 
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public string Id;
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public string Status;
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public string Subsidized;
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public string Category;
-        [FieldQuoted('"', QuoteMode.OptionalForRead)] public string Name;
-        [FieldQuoted('"', QuoteMode.OptionalForRead)] public string Address;
+        [FieldQuoted('"', QuoteMode.OptionalForRead)]
+        public string Name;
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
+        public string Address;
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public string City;
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public string State;
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public string Zip;
         public int? TotalUnits;
         public int? MinAssistedUnits;
         public int? MaxAssistedUnits;
         public int? BuildingCount; 
-        [FieldConverter(ConverterKind.Date, "MM/dd/yyyy")] public DateTime? OwnershipEffectiveDate;
+
+        [FieldConverter(ConverterKind.Date, "MM/dd/yyyy")] 
+        [FieldQuoted('"', QuoteMode.OptionalForRead)]
+        public DateTime? OwnershipEffectiveDate;
 
         [FieldQuoted('"', QuoteMode.OptionalForRead)] public string OwnerName;
         [FieldQuoted('"', QuoteMode.OptionalForRead)] public string OwnerType;
         [FieldQuoted('"', QuoteMode.OptionalForRead)] public string ManagerName;
         [FieldQuoted('"', QuoteMode.OptionalForRead)] public string ManagerType;
 
-        [FieldConverter(ConverterKind.Date, "MM/dd/yyyy")] public DateTime? EarliestSubsidyEnd;
+        [FieldConverter(ConverterKind.Date, "MM/dd/yyyy")] 
+        [FieldQuoted('"', QuoteMode.OptionalForRead)]
+        public DateTime? EarliestSubsidyEnd;
 
-        [FieldConverter(ConverterKind.Date, "MM/dd/yyyy")] public DateTime? LatestSubsidyEnd;
+        [FieldConverter(ConverterKind.Date, "MM/dd/yyyy")]
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
+        public DateTime? LatestSubsidyEnd;
+
         /// <summary>
         /// A display version of the Agencies who are providing subsidy
         /// </summary>
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public string Agencies;
         /// <summary>
         /// A display version of the Portfolios of subsidy programs in this project
         /// </summary>
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public string Portfolios;
 
         // The follow are Statuses and Year begun for various specific subsidy programs
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public string HudFinancialStatus;
         public int? HudFinancialYear;
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public string HudPbraStatus;
         public int? HudPbraYear;
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public string LihtcStatus;
         public int? LihtcYear;
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public string HptfStatus;
         public int? HptfYear;
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public string IzAduStatus;
         public int? IzAduYear;
         
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public string Ward;
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public string Anc; // Advisory Neighborhood Commission
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public string PoliceArea;
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public string ClusterId;
-        [FieldQuoted('"', QuoteMode.OptionalForRead)] public string ClusterName;
-        [FieldNotInFile] public string ClusterCombo;
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
+        public string ClusterName;
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
+        [FieldNotInFile] 
+        public string ClusterCombo;
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public string CensusTract;
         public double? X;
         public double? Y;
         public double? Lat;
         public double? Lon;
-        [FieldQuoted('"', QuoteMode.OptionalForRead)] public string StreetViewUrl;
+        [FieldQuoted('"', QuoteMode.OptionalForRead)]
+        public string StreetViewUrl;
+
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public string ImageUrl;
 
     }

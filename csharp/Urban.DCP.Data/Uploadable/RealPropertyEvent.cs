@@ -9,20 +9,24 @@ namespace Urban.DCP.Data.Uploadable
     public class RealPropertyEvent: IDisplaySortable
     {
 
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public string NlihcId;
         /// <summary>
         /// Parcel record Identifier
         /// </summary>
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public string Ssl;
         /// <summary>
         /// Date when this event was recorded
         /// </summary>
         [FieldConverter(ConverterKind.Date, "MM/dd/yyyy")] 
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public DateTime? EventDate;
         /// <summary>
         /// Key for type of event: Property Sale, Foreclosure Notice,
         ///  Foreclosure Outcome
         /// </summary>
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public string EventType;
         /// <summary>
         /// Detailed description of the event type

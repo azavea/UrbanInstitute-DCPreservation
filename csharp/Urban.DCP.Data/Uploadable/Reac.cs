@@ -9,15 +9,18 @@ namespace Urban.DCP.Data.Uploadable
     public class Reac: IDisplaySortable 
     {
 
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public string NlihcId;
         /// <summary>
         /// Date REAC score was given
         /// </summary>
         [FieldConverter(ConverterKind.Date, "MM/dd/yyyy")] 
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public DateTime ScoreDate;
         /// <summary>
         /// Total REAC Score (ScoreNum + ScoreLetter)
         /// </summary>
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public string Score;
         /// <summary>
         /// Number componenet of score
@@ -26,6 +29,7 @@ namespace Urban.DCP.Data.Uploadable
         /// <summary>
         /// Letter component of score
         /// </summary>
+        [FieldQuoted('"', QuoteMode.OptionalForRead)] 
         public string ScoreLetter;
 
         public string GetSortField()
