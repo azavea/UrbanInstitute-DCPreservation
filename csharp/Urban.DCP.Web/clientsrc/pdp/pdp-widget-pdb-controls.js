@@ -13,7 +13,7 @@
 
     // All controls will be in identical containers, which are created here
     var _makeContainer = Azavea.tryCatch('creating control container', function (id, name, desc) {
-        return $('<div class="pdp-pdb-control"><div class="pdp-pdb-control-label ui-state-default"><label class="">' + name + '</label><span class="pdp-pdb-control-label-help ui-icon ui-icon-help" title="' + (desc || name) + '"></span></div></div>'); //add a help icon here-ish
+        return $('<div class="pdp-pdb-control"><div class="pdp-pdb-control-label ui-state-default"><label class="">' + name + '</label><span class="pdp-pdb-control-label-help ui-icon ui-icon-help" title="' + (desc || name) + '"></span></div><div class="validation-msg"></div></div>'); //add a help icon here-ish
     });
     
     //<summary>
@@ -26,6 +26,7 @@
         if (valA > valB) {return 1;}
         return 0;
     });
+
     //<summary>
     //A basic string comparer for sorting an array of objects which might have a Group property
     //</summary>    
