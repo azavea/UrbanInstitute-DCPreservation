@@ -208,6 +208,15 @@
         },
         trackMetric: function(category, action, label, value){
             _gaq.push(['_trackEvent', category, action, label, value]);
+        },
+        sortByWithIndex: function(attributeList, sortKey) {
+            // Sort by specified attribute, and track the
+            // original index of the object in the list to read the record
+            // values by the correct index.
+            return _.chain(attributeList)
+                .map(function(attr, i) { return _.extend(attr, { index: i }); })
+                .sortBy(sortKey)
+                .value();
         }
     };
 }(PDP));

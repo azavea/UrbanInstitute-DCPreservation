@@ -159,8 +159,9 @@
                 _popupPropertyIdByIndex.push(id);
                 _popupIndexByPropertyId[id] = j;
                 
-                $.each(data.Attrs, function(i, attr) {
+                $.each(P.Util.sortByWithIndex(data.Attrs, "ShortOrder"), function(index, attr) {
                     show = true;
+                    var i = attr.index;
                     // Locate the Property Name for our caption, which may be null and mark it to not show in list
                     if (attr.Name === 'Project Name') {
                         caption = record[i] || '';
