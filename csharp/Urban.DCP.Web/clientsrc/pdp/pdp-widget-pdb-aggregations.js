@@ -54,19 +54,12 @@
                 _$countsPanel.show();
             });
             
-            //Reset the criteria
-            $(_options.bindTo).bind('pdp-criteria-reset', function(event) {
-                $('input:checked', '#pdp-pdb-search-counts-panel-cols')
-                    .attr('checked', '')
-                    .removeAttr('disabled')
-                    .change();
-            });
             
             //Turn the radio buttons into a buttonset
             $('#pdp-pdb-search-result-type').buttonset();
             
             //Toggle list view vs aggregation view
-            $('label[for="pdp-pdb-search-result-details"]')
+            var $detailToggle = $('label[for="pdp-pdb-search-result-details"]')
                 .click(_focusDetails);
             
             //Show the group by panel when counts is selected
@@ -78,6 +71,16 @@
                 _$countsPanel.slideUp();
             });
             
+            //Reset the criteria
+            $(_options.bindTo).bind('pdp-criteria-reset', function(event) {
+                $('input:checked', '#pdp-pdb-search-counts-panel-cols')
+                    .attr('checked', false)
+                    .removeAttr('disabled')
+                    .change();
+
+                $detailToggle.click();
+            });
+
             //These windows are weird so we're handing the mutual exclusivity manually
             $(document).bind('mouseup', function(event){
                 if (!$(event.target).is('#pdp-pdb-search-counts-change') && 
