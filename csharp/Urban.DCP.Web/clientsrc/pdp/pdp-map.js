@@ -298,11 +298,17 @@
             var icon = new OpenLayers.Icon(markerPath, size, offset);
             
             var marker = new OpenLayers.Marker(new OpenLayers.LonLat(property.X, property.Y), icon);
+
             marker.events.register('click', marker, function(evt) {
                 _panMapIfPopupOffRightEdge(evt);
                 _addPopup(marker, [ property.Id]);
             });
-            
+
+            marker.events.register('touchstart', marker, function(evt) {
+                _panMapIfPopupOffRightEdge(evt);
+                _addPopup(marker, [ property.Id]);
+            });
+
             _pdbLayer.addMarker(marker);
             
            // If this is the marker that contains our property that had a popup before, add the popup back
@@ -325,7 +331,13 @@
 
             // Create the marker, add it to the map and add a click event to it to display a popup
             var marker = new OpenLayers.Marker(new OpenLayers.LonLat(cluster.X, cluster.Y), icon);
+
             marker.events.register('click', marker, function(evt) {
+                _panMapIfPopupOffRightEdge(evt);
+                _addPopup(marker, cluster.Keys);
+            });
+
+            marker.events.register('touchstart', marker, function(evt) {
                 _panMapIfPopupOffRightEdge(evt);
                 _addPopup(marker, cluster.Keys);
             });
