@@ -299,14 +299,13 @@
             
             var marker = new OpenLayers.Marker(new OpenLayers.LonLat(property.X, property.Y), icon);
 
-            marker.events.register('click', marker, function(evt) {
-                _panMapIfPopupOffRightEdge(evt);
-                _addPopup(marker, [ property.Id]);
-            });
-
-            marker.events.register('touchstart', marker, function(evt) {
-                _panMapIfPopupOffRightEdge(evt);
-                _addPopup(marker, [ property.Id]);
+            marker.events.on({
+                'click': _markerClick,
+                'touchstart': _markerClick,
+                'scope': {
+                    'marker': marker,
+                    'ids': [property.Id]
+                }
             });
 
             _pdbLayer.addMarker(marker);
@@ -332,14 +331,13 @@
             // Create the marker, add it to the map and add a click event to it to display a popup
             var marker = new OpenLayers.Marker(new OpenLayers.LonLat(cluster.X, cluster.Y), icon);
 
-            marker.events.register('click', marker, function(evt) {
-                _panMapIfPopupOffRightEdge(evt);
-                _addPopup(marker, cluster.Keys);
-            });
-
-            marker.events.register('touchstart', marker, function(evt) {
-                _panMapIfPopupOffRightEdge(evt);
-                _addPopup(marker, cluster.Keys);
+            marker.events.on({
+                'click': _markerClick,
+                'touchstart': _markerClick,
+                'scope': {
+                    'marker': marker,
+                    'ids': cluster.Keys
+                }
             });
 
             _pdbLayer.addMarker(marker);
@@ -359,6 +357,11 @@
             $('img', $markerDiv).css({ width: radius + 'px', height: radius + 'px' });
             $('<span class="pdp-map-marker-aggregated-label">' + cluster.Keys.length + '</span>').css(labelCss).appendTo($markerDiv);
         });
+
+        var _markerClick = function(evnt) {
+            _panMapIfPopupOffRightEdge(evnt);
+            _addPopup(this.marker, this.ids);
+        };
 
         // Data is returned for property info, place markers on the map.  Results are in two groups:
         //  Singles - which are non-clustered individual properties, and Clusters - which are points representing
