@@ -89,7 +89,10 @@ namespace Urban.DCP.Data
                 userAccount.EmailConfirmed = confirmedEmail.Value;
             }
 
-            userAccount.Affiliation = affiliation;
+            if (affiliation != null)
+            {
+                userAccount.Affiliation = affiliation;
+            }
 
             // Only overwrite password if the new one is non-blank
             if (StringHelper.IsNonBlank(hashedPassword))
@@ -268,7 +271,7 @@ namespace Urban.DCP.Data
         /// <param name="hashedPassword"></param>
         public static void SavePassword(string userName, string hashedPassword)
         {
-            UpdateUser(userName, hashedPassword, null, null, null, Organization.NO_UPDATE, null);
+            UpdateUser(userName, hashedPassword, null, null, null, Organization.NO_UPDATE, null, null, null);
         }
 
         /// <summary>
