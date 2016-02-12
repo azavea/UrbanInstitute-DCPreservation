@@ -11,8 +11,8 @@ namespace Urban.DCP.Web
             Master.SetTitle("Home");
 
             // OpenLayers css
-            Master.RegisterCssFile("client/OpenLayers-2.13/theme/default/style.css");
-            Master.RegisterCssFile("client/OpenLayers-2.13/theme/default/google.css");
+            Master.RegisterCssFile("client/OpenLayers-2.12/theme/default/style.css");
+            Master.RegisterCssFile("client/OpenLayers-2.12/theme/default/google.css");
             Master.RegisterCssFile("client/ktable/css/jquery.ktable.colsizable.css");
             Master.RegisterCssFile("client/css/pdp-app.css", true);
             
@@ -21,8 +21,8 @@ namespace Urban.DCP.Web
             Master.RegisterCssFile("client/css/pdp-ie-lte7.css", "lte IE 7", true);
 
             // Google maps
-            Master.RegisterJavascriptFile("http://maps.google.com/maps/api/js?key=AIzaSyDHOAuglMot0ksK700_wU6xGT-3FXi9-no&sensor=false&");
-            Master.RegisterJavascriptFile("client/OpenLayers-2.13/OpenLayers.js");
+            Master.RegisterJavascriptFile("http://maps.google.com/maps/api/js?key=AIzaSyDHOAuglMot0ksK700_wU6xGT-3FXi9-no&&");
+            Master.RegisterJavascriptFile("client/OpenLayers-2.12/OpenLayers.js");
             Master.RegisterJavascriptFile("client/moment.min.js");            
 
 
