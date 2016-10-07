@@ -39,4 +39,5 @@ optgroup {font-style: normal;}
 
 .pdp-form-messages.ui-state-error {
     border: 0;
+    padding: 5px;
 }
