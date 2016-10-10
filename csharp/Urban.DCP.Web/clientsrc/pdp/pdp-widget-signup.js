@@ -97,13 +97,13 @@
                             roles: '',
                             network: $('#pdp-signup-network').is(':checked')
                         };
-                        
+
                         P.Data.createUser(signupFields,
                             function () {
                                 P.Util.alert(successMsg, "Registration Successfull",
                                     function () { window.location.href = _options.landingUrl; }
                                 );
-                        });
+                        }, _displayErrorMsg);
                     } else {
                         _displayErrorMsg(P.Form.validationMsg);
                         $('.pdp-input-invalid:first', '.pdp-signup-panel').focus();
