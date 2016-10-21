@@ -269,7 +269,10 @@
 
         var _setupExtras = Azavea.tryCatch('set up extra features that req special auth', function (user) {
             if (user && user.EmailConfirmed) {
-                $(_options.bindTo).trigger('pdp-enable-extras');
+                // Broadcast that extra features are enabled because a confirmed
+                // user is logged in.  Supply the user object in case more fine
+                // grained control is need for a particular widget
+                $(_options.bindTo).trigger('pdp-enable-extras', user);
             } else {
                 $(_options.bindTo).trigger('pdp-disable-extras');
             }

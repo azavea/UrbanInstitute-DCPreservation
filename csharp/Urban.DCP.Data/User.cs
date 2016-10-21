@@ -127,6 +127,16 @@ namespace Urban.DCP.Data
             return RolesList.Contains(SecurityRole.limited);
         }
 
+        /// <summary>
+        /// Is the user authorized to export as csv?  Must be confirmed and
+        /// either Network or SysAdmin role
+        /// </summary>
+        /// <returns></returns>
+        public bool CanExport()
+        {
+            return EmailConfirmed && (IsNetworked() || IsSysAdmin());
+        }
+
         public override string ToString()
         {
             return Name;

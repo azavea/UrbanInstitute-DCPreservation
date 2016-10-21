@@ -36,8 +36,11 @@
                 $container.hide();
             });
 
-            $(_options.bindTo).bind('pdp-enable-extras', function () {
-                _extrasEnabled = true;
+            $(_options.bindTo).bind('pdp-enable-extras', function (evt, user) {
+                // Export should be enabled only for 'network' and 'sysadmin'
+                if (user && (user.Networked || user.Admin )) {
+                    _extrasEnabled = true;
+                }
             });
 
             $(_options.bindTo).bind('pdp-disable-extras', function () {
