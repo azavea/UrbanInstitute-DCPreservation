@@ -33,6 +33,7 @@ namespace Urban.DCP.Handlers
                                     user.Name,
                                     Admin = user.IsSysAdmin(),
                                     Limited = user.IsLimited(),
+                                    Networked = user.IsNetworked(),
                                     user.EmailConfirmed
                                 }));
                     return;

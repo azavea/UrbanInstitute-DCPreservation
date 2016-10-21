@@ -43,9 +43,9 @@ namespace Urban.DCP.Handlers
             User authUser = UserHelper.GetUser(context.User.Identity.Name);
             if (csv)
             {
-                if (authUser == null || !authUser.EmailConfirmed)
+                if (authUser == null || !authUser.CanExport())
                 {
-                    throw new AzaveaWebNotAuthorizedException("Insuffient privileges (User must have email confirmed to export csv.)");
+                    throw new AzaveaWebNotAuthorizedException("Insuffient privileges (Network user must have email confirmed to export csv.)");
                 }
             }
 
