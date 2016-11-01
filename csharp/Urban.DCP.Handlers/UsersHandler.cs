@@ -94,7 +94,6 @@ namespace Urban.DCP.Handlers
             string pass = WebUtil.GetParam(context, "password", true);
             string email = WebUtil.GetParam(context, "email", true);
             string name = WebUtil.GetParam(context, "name", true);
-            string roles = WebUtil.GetParam(context, "roles", true);
             var affiliation = WebUtil.GetParam(context, "affiliation", true);
             var networkRequest = WebUtil.ParseBoolParam(context, "network");
 
@@ -115,6 +114,9 @@ namespace Urban.DCP.Handlers
 
             if (userInDb == null)
             {
+                // New registered users are automatically assigned the 'limited' role
+                // in addition to 'public'
+                const string roles = "public,limited";
                 User newUser = UserHelper.CreateUser(userName, hashPass, email, name, 
                     roles, affiliation, networkRequest);
 
